@@ -2,11 +2,15 @@ extends layout
 
 block content
   div#container
-    div#level
-    div#shop 상점
-      span 쥐:
-      span#mouse
-      button#refresh(onclick="refreshShop()") 상점 새로고침
+    div
+      span 내 IP
+      span#myIp
+    div#level 레벨 1
+    div
+      span 내 쥐: 
+      span#mouse 10
+    div#shop
+      button#refresh(onclick="shopReload()") 상점 새로고침
       div#shoppingList
     div#board
       table
@@ -90,17 +94,3 @@ block content
             td#5
               span 5
     div#waits
-      table 
-        tr 
-          td
-            button 1
-          td
-            button 2
-          td
-            button 3
-          td
-            button 4
-          td
-            button 5
-          td
-            button 6
