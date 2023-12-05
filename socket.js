@@ -21,12 +21,11 @@ module.exports = (server) => {
             let {type, data} = msg;
             switch(type){
                 case 'shopReload':
-                    let newCats = [];
-                    for(let i = 0; i < 4; i++){
-                        newCats.push(getRandomCat());
-                    }
+                    let newCats = getNewCats();
                     players.forEach((player) => {
-                        player.send(JSON.stringify({type:'shopReload', data:newCats}));
+                        player.send(JSON.stringify(
+                            {type:'newShoppingList', data:newCats}
+                        ));
                     });
                     break;
             }
@@ -43,6 +42,10 @@ module.exports = (server) => {
     });
 }
 
-function getRandomCat(){
-    return Math.floor(Math.random() * 20);
+function getNewCats(){
+    let newCats = [];
+    for(let i=0; i<4; i++){
+        newCats.push(Math.floor(Math.random() * 4));
+    }
+    return newCats;
 }
