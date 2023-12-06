@@ -2,102 +2,106 @@ extends layout
 
 block content
   div#container
-    div
-      span 내 IP
-      span#myIp
-    div#level 레벨 1
-    div
-      span 내 쥐: 
-      span#mouse 10
-    div#shop
-      button#reload 상점 새로고침
-      div#shoppingList
-    div#board
-      table
-        tbody
-          tr
-            td#0
-              span 0
-            td#1
-              span 1
-            td#2
-              span 2
-            td#3
-              span 3
-            td#4
-              span 4
-            td#5
-              span 5
-          tr
-            td#0
-              span 0
-            td#1
-              span 1
-            td#2
-              span 2
-            td#3
-              span 3
-            td#4
-              span 4
-            td#5
-              span 5
-          tr
-            td#0
-              span 0
-            td#1
-              span 1
-            td#2
-              span 2
-            td#3
-              span 3
-            td#4
-              span 4
-            td#5
-              span 5
-          tr
-            td#0
-              span 0
-            td#1
-              span 1
-            td#2
-              span 2
-            td#3
-              span 3
-            td#4
-              span 4
-            td#5
-              span 5
-          tr
-            td#0
-              span 0
-            td#1
-              span 1
-            td#2
-              span 2
-            td#3
-              span 3
-            td#4
-              span 4
-            td#5
-              span 5
-          tr
-            td#0
-              span 0
-            td#1
-              span 1
-            td#2
-              span 2
-            td#3
-              span 3
-            td#4
-              span 4
-            td#5
-              span 5
-    div#waits
-      div#wait1
-      div#wait2
-      div#wait3
-      div#wait4
-      div#wait5
-      div#wait6
-      div#wait7
+    #home 
+      span#title 고양이 체스
+      button#startBtn(onclick="enterGame()")
+        h2 게임시작
+    #waiting
+      h2 대기열 
+      div
+        span 내 ID
+        span#myId &nbsp?
+      div
+        span 현재 대기자 수 :
+        span#currentPlayers &nbsp1명
+      div
+        span 3명이 모이면 게임이 시작됩니다. 
+    #game
+      div#levelWrapper
+        span 레벨
+        span#level 1
+      div#expWrapper
+        span 경험치
+        span#exp 0
+      div#mouseWrapper
+        span 🐭
+        span#mouse 10
+      #shop
+        button#reload(onclick="shopReload()") 상점 새로고침
+        #shoppingList
+      #board
+        table
+          tbody
+            tr
+              td
+                span 0
+              td
+                span 1
+              td
+                span 2
+              td
+                span 3
+              td
+                span 4
+              td
+                span 5
+            tr
+              td
+                span 0
+              td
+                span 1
+              td
+                span 2
+              td
+                span 3
+              td
+                span 4
+              td
+                span 5
+            tr
+              td
+                span 0
+              td
+                span 1
+              td
+                span 2
+              td
+                span 3
+              td
+                span 4
+              td
+                span 5
+            tr
+              td
+                span 0
+              td
+                span 1
+              td
+                span 2
+              td
+                span 3
+              td
+                span 4
+              td
+                span 5
+            tr
+              td
+                span 0
+              td
+                span 1
+              td
+                span 2
+              td
+                span 3
+              td
+                span 4
+              td
+                span 5
+      #waits
+        #wait1
+        #wait2
+        #wait3
+        #wait4
+        #wait5
+        #wait6
+        #wait7

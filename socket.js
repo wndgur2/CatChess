@@ -1,51 +1,71 @@
-const webSocket = require('ws');
+const Player = require("./public/modules/Player.js");
+const Game = require("./public/modules/Game.js");
+const webSocket = require("ws");
 
-let players = [];
+let waitingPlayers = [];
+let games = [];
 
 module.exports = (server) => {
     const wss = new webSocket.Server({ server });
-    
-    wss.on('connection', (ws, req) => {
-        const ip = ws._socket.remoteAddress || req.socket.remoteAddress || req.headers['x-forwarded-for'];
-        console.log('새로운 클라이언트 접속', ip);
-        ws.send(JSON.stringify({
-            type:'yourIpIs',
-            data:ip
-        }));
-        players.push(ws);
-        // console.log(players);
-    
-        ws.on('message', (message) => {
+
+    wss.on("connection", (ws, req) => {
+        console.log("새로운 클라이언트 접속");
+
+        ws.on("message", (message) => {
             let msg = JSON.parse(message);
-            console.log("수신된 메시지", msg);
-            let {type, data} = msg;
-            switch(type){
-                case 'shopReload':
-                    let newCats = getNewCats();
-                    players.forEach((player) => {
-                        player.send(JSON.stringify(
-                            {type:'newShoppingList', data:newCats}
-                        ));
-                    });
+            let { from, type, data } = msg;
+            console.log(msg);
+            switch (type) {
+                case "init":
+                    if (from) return;
+                    let id = getNewId();
+                    sendMsg(ws, "yourIdIs", id);
                     break;
+                case "addPlayer":
+                    if (!from) return;
+                    waitingPlayers.push(new Player(from, ws));
+                    waitingPlayers.forEach((player) => {
+                        sendMsg(
+                            player.ws,
+                            "newPlayerConnected",
+                            waitingPlayers.length
+                        );
+                    });
+                    if (waitingPlayers.length >= 3) {
+                        waitingPlayers.forEach((player) => {
+                            sendMsg(player.ws, "gameMatched", null);
+                        });
+                        let game = new Game(waitingPlayers.splice(0, 3));
+                        games.push(game);
+                        game.start();
+                    }
             }
         });
-    
-        ws.on('error', (error) => {
+
+        ws.on("error", (error) => {
             console.error(error);
         });
-    
-        ws.on('close', () => {
-            console.log('클라이언트 접속 해제', ip);
-            players = players.filter((player) => player !== ws);
+
+        ws.on("close", () => {
+            console.log("클라이언트 접속 해제");
         });
     });
+};
+
+function sendMsg(ws, type, data) {
+    ws.send(
+        JSON.stringify({
+            from: "server",
+            type,
+            data,
+        })
+    );
 }
 
-function getNewCats(){
-    let newCats = [];
-    for(let i=0; i<4; i++){
-        newCats.push(Math.floor(Math.random() * 4));
-    }
-    return newCats;
+function getNewId() {
+    let id = "";
+    // do {
+    id = Math.random().toString(36).substr(2, 11);
+    // } while (players.find((player) => player.id === id));
+    return id;
 }
