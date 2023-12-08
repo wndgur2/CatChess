@@ -23,25 +23,29 @@ class Player {
     sellCat(cat) {
         this.money += cat.price;
 
-        if (this.board.includes(cat))
+        if (this.board.includes(cat)) {
+            if (this.game.state !== GAME_STATE.ARRANGE) {
+                console.log("전투중인 기물은 팔 수 없습니다.");
+                return;
+            }
             this.board[this.board.indexOf(cat)] = null;
-        else if (this.waits.includes(cat))
+        } else if (this.waits.includes(cat))
             this.waits.splice(this.waits.indexOf(cat), 1);
     }
 
     putCat(cat, x, y) {
-        if (!this.waits.includes(cat)) return;
+        if (this.game.state !== GAME_STATE.ARRANGE) {
+            console.log("전투중에는 기물을 배치할 수 없습니다.");
+            return;
+        }
+        if (!this.waits.includes(cat)) {
+            console.log("보유중인 기물이 아닙니다. ", cat);
+            return;
+        }
 
         this.board[y][x] = cat;
         this.waits.splice(this.waits.indexOf(cat), 1);
     }
 }
 
-if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-    module.exports = Player;
-}
-
-// ES6 Modules (browser)
-if (typeof window !== "undefined") {
-    window.Player = Player;
-}
+module.exports = Player;

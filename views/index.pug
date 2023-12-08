@@ -3,19 +3,19 @@ extends layout
 block content
   div#container
     #home 
-      span#title 고양이 체스
-      button#startBtn(onclick="enterGame()")
-        h2 게임시작
+      span#title 테스트
+      button#enterGame
+        h2 ENter
     #waiting
       h2 대기열 
       div
         span 내 ID
-        span#myId &nbsp?
+        span#id &nbsp?
       div
         span 현재 대기자 수 :
         span#currentPlayers &nbsp1명
       div
-        span 3명이 모이면 게임이 시작됩니다. 
+        span 3명이 모이면 시작됩니다. 
     #game
       div#levelWrapper
         span 레벨
@@ -27,7 +27,7 @@ block content
         span 🐭
         span#mouse 10
       #shop
-        button#reload(onclick="shopReload()") 상점 새로고침
+        button#reload 상점 새로고침
         #shoppingList
       #board
         table

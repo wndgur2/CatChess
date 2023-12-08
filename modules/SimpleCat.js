@@ -26,12 +26,4 @@ class SimpleCat {
         this.delay -= this.speed;
     }
 }
-
-if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-    module.exports = SimpleCat;
-}
-
-// ES6 Modules (browser)
-if (typeof window !== "undefined") {
-    window.SimpleCat = SimpleCat;
-}
+module.exports = SimpleCat;

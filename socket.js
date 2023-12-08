@@ -1,5 +1,5 @@
-const Player = require("./public/modules/Player.js");
-const Game = require("./public/modules/Game.js");
+const Player = require("./modules/Player.js");
+const Game = require("./modules/Game.js");
 const webSocket = require("ws");
 
 let waitingPlayers = [];
@@ -17,8 +17,23 @@ module.exports = (server) => {
             console.log(msg);
             switch (type) {
                 case "init":
-                    if (from) return;
-                    let id = getNewId();
+                    let id;
+                    if (from) {
+                        id = from;
+                        games.forEach((game) => {
+                            game.players.forEach((player) => {
+                                if (player.id === id) {
+                                    sendMsg(
+                                        ws,
+                                        "gameData",
+                                        JSON.stringify(game.getGameData())
+                                    );
+                                }
+                            });
+                        });
+                    } else {
+                        id = getNewId();
+                    }
                     sendMsg(ws, "yourIdIs", id);
                     break;
                 case "addPlayer":
