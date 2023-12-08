@@ -21,7 +21,7 @@ export default class Socket {
                     this.id = data;
                     localStorage.setItem("id", data);
                     break;
-                case "newPlayerConnected":
+                case "newPlayer":
                     let cur = document.getElementById("currentPlayers");
                     cur.innerHTML = data + "명";
                     break;
@@ -31,8 +31,8 @@ export default class Socket {
                 case "newShoppingList":
                     // setShoppingList(data);
                     break;
-                case "userChanged":
-                    // setUser(data);
+                case "playerData":
+                    Game.setSinglePlayer(data);
                     break;
                 default:
                     break;

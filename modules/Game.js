@@ -1,5 +1,6 @@
+const { sendMsg } = require("./utils.js");
+
 const GAME_STATE = {
-    WAIT: "wait",
     ARRANGE: "arrange",
     BATTLE: "battle",
     FINISH: "finish",
@@ -9,12 +10,7 @@ Object.freeze(GAME_STATE);
 
 class Game {
     constructor(players) {
-        this.state = GAME_STATE.WAIT;
         this.players = players;
-        this.winner = null;
-    }
-
-    start() {
         console.log("game start");
         this.players.forEach((player) => {
             player.game = this;
@@ -24,16 +20,14 @@ class Game {
 
     arrange() {
         this.state = GAME_STATE.ARRANGE;
+        this.players.forEach((player) => {
+            sendMsg(player.ws, "gameState", this.state);
+        });
     }
 
     getGameData() {
-        return {
-            type: "gameData",
-            data: {
-                state: this.state,
-                players: this.players,
-            },
-        };
+        return "gamedata";
     }
 }
+
 module.exports = Game;

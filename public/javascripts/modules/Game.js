@@ -9,6 +9,11 @@ export default class Game {
         document.getElementById("game").style.display = "flex";
         Game.isStarted = true;
     }
-
+    static setSinglePlayer(data) {
+        let modifiedPlayer = Game.players.find(
+            (player) => player.id === data.id
+        );
+        modifiedPlayer.setData(data);
+    }
     constructor() {}
 }

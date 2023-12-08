@@ -1,5 +1,6 @@
 const Player = require("./modules/Player.js");
 const Game = require("./modules/Game.js");
+const { sendMsg, getNewId } = require("./modules/utils.js");
 const webSocket = require("ws");
 
 let waitingPlayers = [];
@@ -40,47 +41,28 @@ module.exports = (server) => {
                     if (!from) return;
                     waitingPlayers.push(new Player(from, ws));
                     waitingPlayers.forEach((player) => {
-                        sendMsg(
-                            player.ws,
-                            "newPlayerConnected",
-                            waitingPlayers.length
-                        );
+                        sendMsg(player.ws, "newPlayer", waitingPlayers.length);
                     });
-                    if (waitingPlayers.length >= 3) {
-                        waitingPlayers.forEach((player) => {
-                            sendMsg(player.ws, "gameMatched", null);
-                        });
+                    if (waitingPlayers.length >= 1) {
                         let game = new Game(waitingPlayers.splice(0, 3));
+                        game.players.forEach((player) => {
+                            sendMsg(
+                                player.ws,
+                                "gameMatched",
+                                game.players.map((player) => player.id)
+                            );
+                        });
                         games.push(game);
-                        game.start();
                     }
+                    break;
             }
         });
 
         ws.on("error", (error) => {
             console.error(error);
         });
-
         ws.on("close", () => {
             console.log("클라이언트 접속 해제");
         });
     });
 };
-
-function sendMsg(ws, type, data) {
-    ws.send(
-        JSON.stringify({
-            from: "server",
-            type,
-            data,
-        })
-    );
-}
-
-function getNewId() {
-    let id = "";
-    // do {
-    id = Math.random().toString(36).substr(2, 11);
-    // } while (players.find((player) => player.id === id));
-    return id;
-}
