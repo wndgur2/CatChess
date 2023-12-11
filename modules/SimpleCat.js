@@ -26,4 +26,5 @@ class SimpleCat {
         this.delay -= this.speed;
     }
 }
+
 module.exports = SimpleCat;

@@ -28,9 +28,6 @@ export default class Socket {
                 case "gameMatched":
                     Game.init();
                     break;
-                case "newShoppingList":
-                    // setShoppingList(data);
-                    break;
                 case "playerData":
                     Game.setSinglePlayer(data);
                     break;
