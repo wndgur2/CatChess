@@ -1,50 +1,76 @@
+const SimpleCat = require("./SimpleCat");
+
 class Player {
     constructor(id, ws) {
         this.id = id;
         this.ws = ws;
 
         this.money = 0;
-        this.waits = [];
         this.board = [
+            [null, null, null, null, null],
             [null, null, null, null, null],
             [null, null, null, null, null],
             [null, null, null, null, null],
         ];
         this.level = 1;
+        this.exp = 0;
         this.maxHp = 100;
         this.hp = 100;
     }
 
-    buyCat(cat) {
-        this.money -= cat.price;
-        this.waits.push(cat);
+    buyCat(catId) {
+        let x = 5,
+            y = 4;
+        for (let i = 0; i < board[3].length; ++i) {
+            if (board[3][i] === null) {
+                x = i;
+                y = 3;
+                break;
+            }
+        }
+        if (x === 5 || y === 4) {
+            console.log("더 이상 배치할 수 없습니다.");
+            return false;
+        }
+        board[3][x] = new SimpleCat(catId, this, 1, x, y);
+        this.money -= board[3][i].price;
+
+        return true;
     }
 
     sellCat(cat) {
+        if (this.game.state !== GAME_STATE.ARRANGE && cat.y < 3) {
+            console.log("전투중인 기물은 팔 수 없습니다.");
+            return false;
+        }
         this.money += cat.price;
+        this.board[cat.y][cat.x] = null;
 
-        if (this.board.includes(cat)) {
-            if (this.game.state !== GAME_STATE.ARRANGE) {
-                console.log("전투중인 기물은 팔 수 없습니다.");
-                return;
-            }
-            this.board[this.board.indexOf(cat)] = null;
-        } else if (this.waits.includes(cat))
-            this.waits.splice(this.waits.indexOf(cat), 1);
+        return true;
     }
 
     putCat(cat, x, y) {
         if (this.game.state !== GAME_STATE.ARRANGE) {
             console.log("전투중에는 기물을 배치할 수 없습니다.");
-            return;
+            return false;
         }
-        if (!this.waits.includes(cat)) {
-            console.log("보유중인 기물이 아닙니다. ", cat);
-            return;
+        if (!this.board[3].includes(cat)) {
+            console.log("대기석에 있는 기물이 아닙니다. ", cat);
+            return false;
         }
 
-        this.board[y][x] = cat;
-        this.waits.splice(this.waits.indexOf(cat), 1);
+        if (board[y][x] === null) {
+            this.board[y][x] = cat;
+            this.board[y][x] = null;
+        } else {
+            let temp = cat;
+            this.board[cat.y][cat.x] = this.board[y][x];
+            this.board[y][x] = temp;
+        }
+        cat.x = x;
+        cat.y = y;
+
+        return true;
     }
 }
 

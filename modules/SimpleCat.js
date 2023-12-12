@@ -1,14 +1,27 @@
+const Player = require("./Player");
+
 class SimpleCat {
     static catTypes = Object.values(window.simpleCats);
-    constructor(id) {
+    /**
+     *
+     * @param {*} id
+     * @param {Player} player
+     */
+    constructor(id, player, tier, x, y = 3) {
         const type = SimpleCat.catTypes[id];
 
+        this.tier = tier;
         this.name = type.name;
-        this.ad = type.ad;
-        this.speed = type.speed;
-        this.hp = type.hp;
-        this.armor = type.armor;
-        this.price = type.price;
+        this.ad = type.ad * tier;
+        this.speed = type.speed * tier;
+        this.hp = type.hp * toer;
+        this.armor = type.armor * tier;
+        this.price = type.price * Math.pow(3, tier - 1);
+        if (tier > 1) this.price -= 1;
+
+        this.x = x;
+        this.y = y;
+        this.owner = player;
 
         this.delay = 0;
     }

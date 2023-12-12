@@ -3,6 +3,7 @@ const { sendMsg } = require("./utils.js");
 const GAME_STATE = {
     ARRANGE: "arrange",
     BATTLE: "battle",
+    CREEP: "creep",
     FINISH: "finish",
 };
 
