@@ -15,4 +15,6 @@ function getNewId() {
     return id;
 }
 
-module.exports = { sendMsg, getNewId };
+function reloadCats(level) {}
+
+module.exports = { sendMsg, getNewId, reloadCats };

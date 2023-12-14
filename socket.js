@@ -1,6 +1,6 @@
 const Player = require("./modules/Player.js");
 const Game = require("./modules/Game.js");
-const { sendMsg, getNewId } = require("./modules/utils.js");
+const { sendMsg, getNewId, reloadCats } = require("./modules/utils.js");
 const webSocket = require("ws");
 
 let waitingPlayers = [];
@@ -37,7 +37,10 @@ module.exports = (server) => {
                     }
                     sendMsg(ws, "yourIdIs", id);
                     break;
-                case "addPlayer":
+                case "getGameData":
+                    Game.getGameData();
+                    break;
+                case "startWaiting":
                     if (!from) return;
                     waitingPlayers.push(new Player(from, ws));
                     waitingPlayers.forEach((player) => {
@@ -54,6 +57,20 @@ module.exports = (server) => {
                         });
                         games.push(game);
                     }
+                    break;
+                case "buyCat":
+                    break;
+                case "putCat":
+                    break;
+                case "sellCat":
+                    break;
+                case "reload":
+                    if (!from) return;
+                    sendMsg(ws, "reloadedCats", reloadCats(data));
+                    break;
+                case "buyExp":
+                    break;
+                case "giveItem":
                     break;
             }
         });

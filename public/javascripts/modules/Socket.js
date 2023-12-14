@@ -28,8 +28,40 @@ export default class Socket {
                 case "gameMatched":
                     Game.init();
                     break;
-                case "playerData":
-                    Game.setSinglePlayer(data);
+                case "gameData":
+                    // Game.setGame(data);
+                    break;
+                case "arrangeState":
+                    Game.arrange(data);
+                    break;
+                case "battleState":
+                    Game.battle(data);
+                    break;
+                case "creep":
+                    Game.creep(data);
+                    break;
+                case "reloadedCats":
+                    Game.reloadedCats(data);
+                    break;
+                case "dropItem":
+                    break;
+                case "battle_move":
+                    break;
+                case "battle_attack":
+                    break;
+                case "battle_dead":
+                    break;
+                case "resBuyCat":
+                    break;
+                case "resPutCat":
+                    break;
+                case "resSellCat":
+                    break;
+                case "resReload":
+                    break;
+                case "resBuyExp":
+                    break;
+                case "resGiveItem":
                     break;
                 default:
                     break;

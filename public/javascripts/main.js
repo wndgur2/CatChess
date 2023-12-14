@@ -15,7 +15,7 @@ function init() {
 
 function hydrate() {
     document.getElementById("enterGame").addEventListener("click", () => {
-        Socket.sendMsg("addPlayer", "");
+        Socket.sendMsg("startWaiting", "");
         document.getElementById("home").style.display = "none";
         document.getElementById("waiting").style.display = "flex";
     });

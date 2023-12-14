@@ -1,7 +1,8 @@
 const Player = require("./Player");
+const simpleCats = require("./simpleCats");
 
 class SimpleCat {
-    static catTypes = Object.values(window.simpleCats);
+    static catTypes = Object.values(simpleCats);
     /**
      *
      * @param {*} id
