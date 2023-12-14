@@ -1,6 +1,12 @@
 const SimpleCat = require("./SimpleCat");
 
 class Player {
+    static players = [];
+
+    static getPlayer(id) {
+        return Player.players.find((player) => player.id === id);
+    }
+
     constructor(id, ws) {
         this.id = id;
         this.ws = ws;
@@ -16,59 +22,59 @@ class Player {
         this.exp = 0;
         this.maxHp = 100;
         this.hp = 100;
+        this.items = [];
     }
 
-    buyCat(catId) {
-        let x = 5,
-            y = 4;
-        for (let i = 0; i < board[3].length; ++i) {
-            if (board[3][i] === null) {
-                x = i;
+    buyCat(catType) {
+        for (let i = 0; i < this.board[3].length; ++i) {
+            if (this.board[3][i] === null) {
                 y = 3;
-                break;
+                this.board[3][i] = new SimpleCat(catType, this, x);
+                this.money -= this.board[3][i].price;
+                return true;
             }
         }
-        if (x === 5 || y === 4) {
-            console.log("더 이상 배치할 수 없습니다.");
-            return false;
-        }
-        board[3][x] = new SimpleCat(catId, this, 1, x, y);
-        this.money -= board[3][i].price;
-
-        return true;
+        console.log("대기석에 빈자리가 없습니다.");
+        return false;
     }
 
-    sellCat(cat) {
-        if (this.game.state !== GAME_STATE.ARRANGE && cat.y < 3) {
+    sellCat({ x, y }) {
+        let cat = this.board[y][x];
+        if (!cat) return false;
+        if (this.game.state !== GAME_STATE.ARRANGE && y < 3) {
             console.log("전투중인 기물은 팔 수 없습니다.");
             return false;
         }
+
         this.money += cat.price;
         this.board[cat.y][cat.x] = null;
 
         return true;
     }
 
-    putCat(cat, x, y) {
+    putCat({ befX, befY, nextX, nextY }) {
         if (this.game.state !== GAME_STATE.ARRANGE) {
             console.log("전투중에는 기물을 배치할 수 없습니다.");
             return false;
         }
-        if (!this.board[3].includes(cat)) {
-            console.log("대기석에 있는 기물이 아닙니다. ", cat);
+        if (!this.board[befY][befX]) {
+            console.log("대기석에 있는 기물이 아닙니다. ");
             return false;
         }
 
-        if (board[y][x] === null) {
-            this.board[y][x] = cat;
-            this.board[y][x] = null;
+        if (board[nextY][nextX] === null) {
+            this.board[nextY][nextX] = this.board[befY][befX];
+            this.board[befY][befX] = null;
         } else {
-            let temp = cat;
-            this.board[cat.y][cat.x] = this.board[y][x];
-            this.board[y][x] = temp;
+            let temp = this.board[befY][befX];
+            this.board[befY][befX] = this.board[y][x];
+            this.board[nextY][nextX] = temp;
+
+            this.board[befY][befX].x = befX;
+            this.board[befY][befX].y = befY;
         }
-        cat.x = x;
-        cat.y = y;
+        this.board[nextY][nextX].x = nextX;
+        this.board[nextY][nextX].y = nextY;
 
         return true;
     }

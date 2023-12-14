@@ -9,7 +9,8 @@ export default class Socket {
 
         this.socket.onopen = function (event) {
             console.log("웹 소켓 연결 성공");
-            Socket.sendMsg("init", null);
+            if (!this.id) Socket.sendMsg("getNewId", null);
+            else Socket.sendMsg("getGameData", null);
         };
 
         this.socket.onmessage = function (event) {

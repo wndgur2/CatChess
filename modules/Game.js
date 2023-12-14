@@ -10,13 +10,35 @@ const GAME_STATE = {
 Object.freeze(GAME_STATE);
 
 class Game {
+    static waitingPlayers = [];
+
+    static games = [];
+
     constructor(players) {
         this.players = players;
         console.log("game start");
         this.players.forEach((player) => {
             player.game = this;
         });
+        Game.games.push(this);
         this.arrange();
+    }
+
+    static newPlayer(from, ws) {
+        Game.waitingPlayers.push(new Player(from, ws));
+        Game.waitingPlayers.forEach((player) => {
+            sendMsg(player.ws, "newPlayer", Game.waitingPlayers.length);
+        });
+        if (Game.waitingPlayers.length >= 3) {
+            let game = new Game(Game.waitingPlayers.splice(0, 3));
+            game.players.forEach((player) => {
+                sendMsg(
+                    player.ws,
+                    "gameMatched",
+                    game.players.map((player) => player.id)
+                );
+            });
+        }
     }
 
     arrange() {

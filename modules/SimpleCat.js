@@ -5,11 +5,10 @@ class SimpleCat {
     static catTypes = Object.values(simpleCats);
     /**
      *
-     * @param {*} id
      * @param {Player} player
      */
-    constructor(id, player, tier, x, y = 3) {
-        const type = SimpleCat.catTypes[id];
+    constructor(type, player, x, y = 3, tier = 1) {
+        const type = SimpleCat.catTypes[type];
 
         this.tier = tier;
         this.name = type.name;
