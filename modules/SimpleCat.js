@@ -3,12 +3,17 @@ const simpleCats = require("./simpleCats");
 
 class SimpleCat {
     static catTypes = Object.values(simpleCats);
+
+    static getRandomCatTypeByCost(cost) {
+        let candidates = SimpleCat.catTypes.filter((cat) => cat.cost === cost);
+        return candidates[Math.floor(Math.random() * candidates.length)];
+    }
+
     /**
-     *
      * @param {Player} player
      */
     constructor(type, player, x, y = 3, tier = 1) {
-        const type = SimpleCat.catTypes[type];
+        this.type = SimpleCat.catTypes[type];
 
         this.tier = tier;
         this.name = type.name;

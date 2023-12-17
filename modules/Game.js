@@ -1,3 +1,4 @@
+const Player = require("./Player.js");
 const { sendMsg } = require("./utils.js");
 
 const GAME_STATE = {
@@ -19,6 +20,7 @@ class Game {
         console.log("game start");
         this.players.forEach((player) => {
             player.game = this;
+            player.init();
         });
         Game.games.push(this);
         this.arrange();
@@ -29,14 +31,12 @@ class Game {
         Game.waitingPlayers.forEach((player) => {
             sendMsg(player.ws, "newPlayer", Game.waitingPlayers.length);
         });
-        if (Game.waitingPlayers.length >= 3) {
+        if (Game.waitingPlayers.length >= 1) {
             let game = new Game(Game.waitingPlayers.splice(0, 3));
             game.players.forEach((player) => {
-                sendMsg(
-                    player.ws,
-                    "gameMatched",
-                    game.players.map((player) => player.id)
-                );
+                sendMsg(player.ws, "gameMatched", {
+                    players: game.players.map((player) => player.id),
+                });
             });
         }
     }
@@ -50,6 +50,12 @@ class Game {
 
     getGameData() {
         return "gamedata";
+    }
+
+    sendMsgToAll(type, data) {
+        this.players.forEach((player) => {
+            sendMsg(player.ws, type, data);
+        });
     }
 }
 

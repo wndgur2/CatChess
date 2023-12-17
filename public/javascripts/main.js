@@ -2,8 +2,6 @@ import Socket from "./modules/Socket.js";
 import Player from "./modules/Player.js";
 import Game from "./modules/Game.js";
 
-let player = new Player();
-
 window.onload = () => {
     init();
 };
@@ -19,7 +17,12 @@ function hydrate() {
         document.getElementById("home").style.display = "none";
         document.getElementById("waiting").style.display = "flex";
     });
+
     document.getElementById("reload").addEventListener("click", () => {
-        Socket.sendMsg("reload", "");
+        Socket.sendMsg("reqReload", "");
+    });
+
+    document.getElementById("buyExp").addEventListener("click", () => {
+        Socket.sendMsg("reqBuyExp", "");
     });
 }

@@ -18,7 +18,7 @@ export default class Socket {
             console.log(msg);
             const { type, data } = msg;
             switch (type) {
-                case "yourIdIs":
+                case "resNewId":
                     this.id = data;
                     localStorage.setItem("id", data);
                     break;
@@ -27,30 +27,9 @@ export default class Socket {
                     cur.innerHTML = data + "명";
                     break;
                 case "gameMatched":
-                    Game.init();
+                    Game.init(data.players);
                     break;
-                case "gameData":
-                    // Game.setGame(data);
-                    break;
-                case "arrangeState":
-                    Game.arrange(data);
-                    break;
-                case "battleState":
-                    Game.battle(data);
-                    break;
-                case "creep":
-                    Game.creep(data);
-                    break;
-                case "reloadedCats":
-                    Game.reloadedCats(data);
-                    break;
-                case "dropItem":
-                    break;
-                case "battle_move":
-                    break;
-                case "battle_attack":
-                    break;
-                case "battle_dead":
+                case "resGameData":
                     break;
                 case "resBuyCat":
                     break;
@@ -59,10 +38,59 @@ export default class Socket {
                 case "resSellCat":
                     break;
                 case "resReload":
+                    let list = document.getElementById("shoppingList");
+                    list.innerHTML = "";
+                    for (let i = 0; i < data.length; i++) {
+                        let wrapper = document.createElement("div");
+                        wrapper.style.display = "flex";
+                        wrapper.style.flexDirection = "column";
+                        wrapper.style.alignItems = "center";
+                        wrapper.style.justifyContent = "center";
+                        let cost = document.createElement("span");
+                        cost.innerHTML = data[i].cost + "코";
+                        wrapper.appendChild(cost);
+                        let name = document.createElement("span");
+                        name.innerHTML = data[i].name;
+                        wrapper.appendChild(name);
+                        list.appendChild(wrapper);
+                    }
                     break;
-                case "resBuyExp":
+                case "expUpdate":
+                    let exp = document.getElementById("curExp");
+                    exp.innerHTML = data.exp;
                     break;
+                case "levelUpdate":
+                    if (data.player === Socket.id) {
+                        let level = document.getElementById("level");
+                        level.innerHTML = data.level;
+                        let maxExp = document.getElementById("maxExp");
+                        maxExp.innerHTML = data.level * 4;
+                    }
                 case "resGiveItem":
+                    break;
+                case "arrangeState":
+                    Game.arrange(data);
+                    break;
+                case "battleState":
+                    Game.battle(data);
+                    break;
+                case "battle_move":
+                    break;
+                case "battle_attack":
+                    break;
+                case "battle_dead":
+                    break;
+                case "creep":
+                    Game.creep(data);
+                    break;
+                case "dropItem":
+                    break;
+                case "moneyUpdate":
+                    Game.getPlayerById(data.player).money = data.money;
+                    if (data.player === Socket.id) {
+                        let money = document.getElementById("money");
+                        money.innerHTML = data.money;
+                    }
                     break;
                 default:
                     break;

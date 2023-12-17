@@ -1,6 +1,6 @@
 const Player = require("./modules/Player.js");
 const Game = require("./modules/Game.js");
-const { sendMsg, getNewId, reloadCats } = require("./modules/utils.js");
+const { sendMsg, getNewId } = require("./modules/utils.js");
 const webSocket = require("ws");
 
 module.exports = (server) => {
@@ -14,10 +14,10 @@ module.exports = (server) => {
             let { from, type, data } = msg;
             console.log(msg);
             switch (type) {
-                case "getNewId":
-                    sendMsg(ws, "yourIdIs", getNewId());
+                case "reqNewId":
+                    sendMsg(ws, "resNewId", getNewId());
                     break;
-                case "getGameData":
+                case "reqGameData":
                     Game.getGameData(from);
                     break;
                 case "startWaiting":
@@ -32,9 +32,10 @@ module.exports = (server) => {
                 case "reqSellCat":
                     break;
                 case "reqReload":
-                    sendMsg(ws, "reloadedCats", reloadCats(data));
+                    Player.getPlayer(from).reload();
                     break;
                 case "reqBuyExp":
+                    Player.getPlayer(from).buyExp();
                     break;
                 case "reqGiveItem":
                     break;

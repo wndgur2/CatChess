@@ -17,15 +17,20 @@ block content
       div
         span 3명이 모이면 시작됩니다. 
     #game
-      div#levelWrapper
-        span 레벨
-        span#level 1
-      div#expWrapper
-        span 경험치
-        span#exp 0
-      div#mouseWrapper
-        span 🐭
-        span#mouse 10
+      div#levelInfo
+        button#buyExp 경험치 구매
+        div#info
+          div#levelWrapper
+            span 레벨
+            span#level 1
+          div#expWrapper
+            span 경험치
+            span#curExp 0
+            span /
+            span#maxExp 4
+          div#moneyWrapper
+            span 💰
+            span#money 20
       #shop
         button#reload 상점 새로고침
         #shoppingList
@@ -43,8 +48,6 @@ block content
                 span 3
               td
                 span 4
-              td
-                span 5
             tr
               td
                 span 0
@@ -56,8 +59,6 @@ block content
                 span 3
               td
                 span 4
-              td
-                span 5
             tr
               td
                 span 0
@@ -69,8 +70,6 @@ block content
                 span 3
               td
                 span 4
-              td
-                span 5
             tr
               td
                 span 0
@@ -82,8 +81,6 @@ block content
                 span 3
               td
                 span 4
-              td
-                span 5
             tr
               td
                 span 0
@@ -95,8 +92,6 @@ block content
                 span 3
               td
                 span 4
-              td
-                span 5
       #waits
         #wait1
         #wait2
