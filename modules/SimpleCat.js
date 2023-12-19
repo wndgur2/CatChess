@@ -2,10 +2,13 @@ const Player = require("./Player");
 const simpleCats = require("./simpleCats");
 
 class SimpleCat {
-    static catTypes = Object.values(simpleCats);
+    static catTypes = simpleCats;
+    static catTypeValues = Object.values(SimpleCat.catTypes);
 
     static getRandomCatTypeByCost(cost) {
-        let candidates = SimpleCat.catTypes.filter((cat) => cat.cost === cost);
+        let candidates = SimpleCat.catTypeValues.filter(
+            (cat) => cat.cost === cost
+        );
         return candidates[Math.floor(Math.random() * candidates.length)];
     }
 
@@ -19,14 +22,14 @@ class SimpleCat {
         this.name = type.name;
         this.ad = type.ad * tier;
         this.speed = type.speed * tier;
-        this.hp = type.hp * toer;
+        this.hp = type.hp * tier;
         this.armor = type.armor * tier;
         this.price = type.price * Math.pow(3, tier - 1);
         if (tier > 1) this.price -= 1;
 
         this.x = x;
         this.y = y;
-        this.owner = player;
+        this.owner = player.id;
 
         this.delay = 0;
     }

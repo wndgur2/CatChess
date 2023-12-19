@@ -1,25 +1,30 @@
 import Game from "./Game.js";
+import Player from "./Player.js";
 
 export default class Socket {
     static socket = null;
     static id = localStorage.getItem("id");
 
     static init() {
-        this.socket = new WebSocket("ws://localhost:3000");
+        Socket.socket = new WebSocket("ws://localhost:3000");
 
-        this.socket.onopen = function (event) {
+        Socket.socket.onopen = function (event) {
             console.log("웹 소켓 연결 성공");
-            if (!this.id) Socket.sendMsg("getNewId", null);
-            else Socket.sendMsg("getGameData", null);
+            if (!Socket.id) Socket.sendMsg("reqNewId", null);
+            else {
+                Socket.sendMsg("reqGameData", null);
+                document.getElementById("id").innerHTML = Socket.id;
+            }
         };
 
-        this.socket.onmessage = function (event) {
+        Socket.socket.onmessage = function (event) {
             const msg = JSON.parse(event.data);
             console.log(msg);
             const { type, data } = msg;
             switch (type) {
                 case "resNewId":
-                    this.id = data;
+                    Socket.id = data;
+                    document.getElementById("id").innerHTML = data;
                     localStorage.setItem("id", data);
                     break;
                 case "newPlayer":
@@ -30,6 +35,7 @@ export default class Socket {
                     Game.init(data.players);
                     break;
                 case "resGameData":
+                    Game.init(data.game.players, data.players);
                     break;
                 case "resBuyCat":
                     break;
@@ -38,33 +44,17 @@ export default class Socket {
                 case "resSellCat":
                     break;
                 case "resReload":
-                    let list = document.getElementById("shoppingList");
-                    list.innerHTML = "";
-                    for (let i = 0; i < data.length; i++) {
-                        let wrapper = document.createElement("div");
-                        wrapper.style.display = "flex";
-                        wrapper.style.flexDirection = "column";
-                        wrapper.style.alignItems = "center";
-                        wrapper.style.justifyContent = "center";
-                        let cost = document.createElement("span");
-                        cost.innerHTML = data[i].cost + "코";
-                        wrapper.appendChild(cost);
-                        let name = document.createElement("span");
-                        name.innerHTML = data[i].name;
-                        wrapper.appendChild(name);
-                        list.appendChild(wrapper);
-                    }
+                    Game.getPlayerById(data.player).shoplist = data.shoplist;
                     break;
                 case "expUpdate":
-                    let exp = document.getElementById("curExp");
-                    exp.innerHTML = data.exp;
+                    Player.player.exp = data.exp;
                     break;
                 case "levelUpdate":
                     if (data.player === Socket.id) {
-                        let level = document.getElementById("level");
-                        level.innerHTML = data.level;
-                        let maxExp = document.getElementById("maxExp");
-                        maxExp.innerHTML = data.level * 4;
+                        Player.player.level = data.level;
+                        Player.player.maxExp = data.level * 3;
+                    } else {
+                        Game.getPlayerById(data.player).level = data.level;
                     }
                 case "resGiveItem":
                     break;
@@ -92,23 +82,28 @@ export default class Socket {
                         money.innerHTML = data.money;
                     }
                     break;
+                case "boardUpdate":
+                    Game.getPlayerById(data.player).queue = data.queue.map(
+                        (cat) => JSON.parse(cat)
+                    );
+                    break;
                 default:
                     break;
             }
         };
 
-        this.socket.onclose = function (event) {
+        Socket.socket.onclose = function (event) {
             console.log("웹 소켓 연결 해제");
         };
-        this.socket.onerror = function (event) {
+        Socket.socket.onerror = function (event) {
             console.error(event);
         };
     }
 
     static sendMsg(type, data) {
-        this.socket.send(
+        Socket.socket.send(
             JSON.stringify({
-                from: this.id,
+                from: Socket.id,
                 type: type,
                 data: data,
             })

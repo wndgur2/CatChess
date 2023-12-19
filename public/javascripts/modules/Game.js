@@ -7,17 +7,21 @@ export default class Game {
     static getPlayerById(id) {
         return Game.players.find((player) => player.id === id);
     }
-    static getUserPlayer() {
-        return Game.players.find((player) => player.id === Socket.id);
-    }
 
-    static init(players) {
+    static init(players, existingPlayers) {
         document.getElementById("waiting").style.display = "none";
         document.getElementById("game").style.display = "flex";
         Game.players = [];
         Game.players = players.map((id) => new Player(id));
         Game.players.forEach((player) => {
-            player.init();
+            if (existingPlayers) {
+                Object.keys(existingPlayers).forEach((id) => {
+                    Game.getPlayerById(id).load(existingPlayers[id]);
+                });
+            } else {
+                player.init();
+                Socket.sendMsg("reqReload", "");
+            }
         });
         Game.isStarted = true;
     }

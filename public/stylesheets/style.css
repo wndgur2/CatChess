@@ -4,6 +4,7 @@ html body {
     padding: 0px;
     margin: 0px;
     color: white;
+    cursor: default;
 }
 
 #container {
@@ -113,15 +114,14 @@ td {
     color: #fff;
 }
 
-#waits {
+#queue {
     width: 720px;
     height: 100px;
     /* margin-top: 150px; */
     display: flex;
-    background-color: #555555aa;
 }
 
-#waits div {
+#queue div {
     width: 14%;
     height: 100px;
     margin: 0px;
@@ -130,4 +130,8 @@ td {
     justify-content: center;
     align-items: center;
     border: #fff 1px solid;
+}
+
+.cell:hover {
+    background-color: #555555aa;
 }

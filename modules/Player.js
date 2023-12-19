@@ -8,35 +8,63 @@ class Player {
         return Player.players.find((player) => player.id === id);
     }
 
+    static getNewId() {
+        let id = 0;
+        while (Player.getPlayer(id)) id++;
+        return id;
+    }
+
     constructor(id, ws) {
         Player.players.push(this);
 
         this.id = id;
         this.ws = ws;
-        this.init();
     }
 
     init() {
-        this.money = 20;
+        this.money = 150;
         this.board = [
             [null, null, null, null, null],
             [null, null, null, null, null],
             [null, null, null, null, null],
-            [null, null, null, null, null],
         ];
+        this.queue = [null, null, null, null, null, null, null];
         this.level = 1;
         this.exp = 0;
+        this.maxExp = 2;
         this.maxHp = 100;
         this.hp = 100;
         this.items = [];
     }
 
+    /**
+     * @param {number} newMoney
+     */
+    set _money(newMoney) {
+        sendMsg(this.ws, "moneyUpdate", {
+            player: this.id,
+            money: newMoney,
+        });
+        console.log("money: " + this.money + " -> " + newMoney);
+        this.money = parseInt(newMoney);
+    }
+
+    get _money() {
+        return this.money;
+    }
+
     buyCat(catType) {
-        for (let i = 0; i < this.board[3].length; ++i) {
-            if (this.board[3][i] === null) {
-                y = 3;
-                this.board[3][i] = new SimpleCat(catType, this, x);
-                this.money -= this.board[3][i].price;
+        let cat = SimpleCat.catTypes[catType];
+        if (!this.checkAffordable(cat.cost)) return false;
+
+        for (let i = 0; i < this.queue.length; ++i) {
+            if (this.queue[i] === null) {
+                this.queue[i] = new SimpleCat(catType, this, i);
+                this._money = this.money - cat.cost;
+                this.game.sendMsgToAll("boardUpdate", {
+                    player: this.id,
+                    queue: this.queue.map((cat) => JSON.stringify(cat)),
+                });
                 return true;
             }
         }
@@ -87,7 +115,7 @@ class Player {
 
     reload() {
         if (!this.checkAffordable(2)) return false;
-        this.money -= 2;
+        this._money = this.money - 2;
 
         let result = [];
         let possibilities = [];
@@ -111,9 +139,9 @@ class Player {
                 possibilities = [15, 25, 35, 25];
                 break;
         }
-        let random = Math.random() * 100;
 
         for (let i = 0; i < 4; ++i) {
+            let random = Math.random() * 100;
             for (let cost = 1; cost <= 4; ++cost) {
                 if (random < possibilities[cost - 1]) {
                     result.push(SimpleCat.getRandomCatTypeByCost(cost));
@@ -123,21 +151,23 @@ class Player {
             }
         }
 
-        sendMsg(this.ws, "resReload", result);
-        this.game.sendMsgToAll("moneyUpdate", {
+        this.shoplist = result;
+
+        sendMsg(this.ws, "resReload", {
             player: this.id,
-            money: this.money,
+            shoplist: result,
         });
         return true;
     }
 
     buyExp() {
         if (!this.checkAffordable(4)) return false;
-        this.money -= 4;
+        this._money -= 4;
         this.exp += 4;
-        if (this.exp >= 4 * this.level) {
-            this.exp -= 4 * this.level;
+        if (this.exp >= this.maxExp) {
+            this.exp -= this.maxExp;
             this.level++;
+            this.maxExp += 2;
             this.game.sendMsgToAll("levelUpdate", {
                 player: this.id,
                 level: this.level,

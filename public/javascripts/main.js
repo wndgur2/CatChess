@@ -1,6 +1,4 @@
 import Socket from "./modules/Socket.js";
-import Player from "./modules/Player.js";
-import Game from "./modules/Game.js";
 
 window.onload = () => {
     init();
@@ -25,4 +23,17 @@ function hydrate() {
     document.getElementById("buyExp").addEventListener("click", () => {
         Socket.sendMsg("reqBuyExp", "");
     });
+
+    // create 6 x 5 board
+    for (let i = 0; i < 6; i++) {
+        let row = document.createElement("tr");
+        row.id = `row-${i}`;
+        for (let j = 0; j < 5; j++) {
+            let cell = document.createElement("td");
+            cell.id = `cell-${i}-${j}`;
+            cell.className = "cell";
+            row.appendChild(cell);
+        }
+        document.getElementById("boardBody").appendChild(row);
+    }
 }

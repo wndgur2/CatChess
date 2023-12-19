@@ -1,6 +1,6 @@
 const Player = require("./modules/Player.js");
 const Game = require("./modules/Game.js");
-const { sendMsg, getNewId } = require("./modules/utils.js");
+const { sendMsg } = require("./modules/utils.js");
 const webSocket = require("ws");
 
 module.exports = (server) => {
@@ -15,10 +15,10 @@ module.exports = (server) => {
             console.log(msg);
             switch (type) {
                 case "reqNewId":
-                    sendMsg(ws, "resNewId", getNewId());
+                    sendMsg(ws, "resNewId", Player.getNewId());
                     break;
                 case "reqGameData":
-                    Game.getGameData(from);
+                    Game.getGameData(from, ws);
                     break;
                 case "startWaiting":
                     Game.newPlayer(from, ws);
