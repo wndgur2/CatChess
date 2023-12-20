@@ -44,17 +44,17 @@ export default class Socket {
                 case "resSellCat":
                     break;
                 case "resReload":
-                    Game.getPlayerById(data.player).shoplist = data.shoplist;
+                    Game.getPlayerById(data.player)._shoplist = data.shoplist;
                     break;
                 case "expUpdate":
-                    Player.player.exp = data.exp;
+                    Player.player._exp = data.exp;
                     break;
                 case "levelUpdate":
                     if (data.player === Socket.id) {
-                        Player.player.level = data.level;
-                        Player.player.maxExp = data.level * 3;
+                        Player.player._level = data.level;
+                        Player.player._maxExp = data.level * 3;
                     } else {
-                        Game.getPlayerById(data.player).level = data.level;
+                        Game.getPlayerById(data.player)._level = data.level;
                     }
                 case "resGiveItem":
                     break;
@@ -76,14 +76,17 @@ export default class Socket {
                 case "dropItem":
                     break;
                 case "moneyUpdate":
-                    Game.getPlayerById(data.player).money = data.money;
+                    Game.getPlayerById(data.player)._money = data.money;
                     if (data.player === Socket.id) {
                         let money = document.getElementById("money");
                         money.innerHTML = data.money;
                     }
                     break;
                 case "boardUpdate":
-                    Game.getPlayerById(data.player).queue = data.queue.map(
+                    Game.getPlayerById(data.player)._board = data.board.map(
+                        (row) => row.map((cat) => JSON.parse(cat))
+                    );
+                    Game.getPlayerById(data.player)._queue = data.queue.map(
                         (cat) => JSON.parse(cat)
                     );
                     break;

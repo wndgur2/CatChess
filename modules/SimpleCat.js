@@ -15,17 +15,18 @@ class SimpleCat {
     /**
      * @param {Player} player
      */
-    constructor(type, player, x, y = 3, tier = 1) {
-        this.type = SimpleCat.catTypes[type];
+    constructor(typeI, player, x, y = 3, tier = 1) {
+        this.type = SimpleCat.catTypes[typeI];
 
         this.tier = tier;
-        this.name = type.name;
-        this.ad = type.ad * tier;
-        this.speed = type.speed * tier;
-        this.hp = type.hp * tier;
-        this.armor = type.armor * tier;
-        this.price = type.price * Math.pow(3, tier - 1);
-        if (tier > 1) this.price -= 1;
+        this.name = this.type.name;
+        this.ad = this.type.ad * tier;
+        this.speed = this.type.speed * tier;
+        this.range = this.type.range;
+        this.hp = this.type.hp * tier;
+        this.armor = this.type.armor * tier;
+        this.cost = this.type.cost * Math.pow(3, tier - 1);
+        if (tier > 1) this.cost -= 1;
 
         this.x = x;
         this.y = y;

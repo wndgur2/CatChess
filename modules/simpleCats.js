@@ -1,7 +1,7 @@
 const simpleCats = {
-    normalCat: {
-        type: "normalCat",
-        name: "일반 고양이",
+    wildCat: {
+        type: "wildCat",
+        name: "길 고양이",
         cost: 1,
         ad: 15,
         speed: 10,
@@ -33,7 +33,7 @@ const simpleCats = {
         type: "ssepCat",
         name: "쌥쌥 고양이",
         cost: 2,
-        ad: 5,
+        ad: 10,
         speed: 20,
         hp: 100,
         armor: 2,

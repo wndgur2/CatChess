@@ -107,9 +107,11 @@ table {
 }
 
 td {
+    width: 20%;
+    height: 16%;
     border: 1px solid #fff;
     text-align: center;
-    font-size: 64px;
+    font-size: 4px;
     font-family: "Roboto", sans-serif;
     color: #fff;
 }
@@ -130,6 +132,10 @@ td {
     justify-content: center;
     align-items: center;
     border: #fff 1px solid;
+}
+
+.cell {
+    user-select: none;
 }
 
 .cell:hover {

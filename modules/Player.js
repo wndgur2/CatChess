@@ -45,7 +45,6 @@ class Player {
             player: this.id,
             money: newMoney,
         });
-        console.log("money: " + this.money + " -> " + newMoney);
         this.money = parseInt(newMoney);
     }
 
@@ -63,6 +62,9 @@ class Player {
                 this._money = this.money - cat.cost;
                 this.game.sendMsgToAll("boardUpdate", {
                     player: this.id,
+                    board: this.board.map((row) =>
+                        row.map((cat) => JSON.stringify(cat))
+                    ),
                     queue: this.queue.map((cat) => JSON.stringify(cat)),
                 });
                 return true;
@@ -75,41 +77,60 @@ class Player {
     sellCat({ x, y }) {
         let cat = this.board[y][x];
         if (!cat) return false;
-        if (this.game.state !== GAME_STATE.ARRANGE && y < 3) {
-            console.log("전투중인 기물은 팔 수 없습니다.");
-            return false;
-        }
+        // if (this.game.state !== GAME_STATE.ARRANGE && y < 3) {
+        //     console.log("전투중인 기물은 팔 수 없습니다.");
+        //     return false;
+        // }
 
-        this.money += cat.price;
+        this.money += cat.cost;
         this.board[cat.y][cat.x] = null;
 
         return true;
     }
 
     putCat({ befX, befY, nextX, nextY }) {
-        if (this.game.state !== GAME_STATE.ARRANGE) {
-            console.log("전투중에는 기물을 배치할 수 없습니다.");
-            return false;
-        }
-        if (!this.board[befY][befX]) {
-            console.log("대기석에 있는 기물이 아닙니다. ");
-            return false;
-        }
-
-        if (board[nextY][nextX] === null) {
-            this.board[nextY][nextX] = this.board[befY][befX];
-            this.board[befY][befX] = null;
+        // if (this.game.state !== GAME_STATE.ARRANGE) {
+        //     console.log("전투중에는 기물을 배치할 수 없습니다.");
+        //     return false;
+        // }
+        let tempUnit = null,
+            unitToMove;
+        if (befY === 3) {
+            unitToMove = this.queue[befX];
+            if (nextY === 3) {
+                tempUnit = this.queue[nextX];
+                this.queue[nextX] = unitToMove;
+                this.queue[befX] = tempUnit;
+            } else {
+                tempUnit = this.board[nextY][nextX];
+                this.board[nextY][nextX] = unitToMove;
+                this.queue[befX] = tempUnit;
+            }
         } else {
-            let temp = this.board[befY][befX];
-            this.board[befY][befX] = this.board[y][x];
-            this.board[nextY][nextX] = temp;
-
-            this.board[befY][befX].x = befX;
-            this.board[befY][befX].y = befY;
+            unitToMove = this.board[befY][befX];
+            if (nextY === 3) {
+                tempUnit = this.queue[nextX];
+                this.queue[nextX] = unitToMove;
+                this.board[befY][befX] = tempUnit;
+            } else {
+                tempUnit = this.board[nextY][nextX];
+                this.board[nextY][nextX] = unitToMove;
+                this.board[befY][befX] = tempUnit;
+            }
         }
-        this.board[nextY][nextX].x = nextX;
-        this.board[nextY][nextX].y = nextY;
-
+        if (tempUnit) {
+            tempUnit.x = befX;
+            tempUnit.y = befY;
+        }
+        unitToMove.x = nextX;
+        unitToMove.y = nextY;
+        this.game.sendMsgToAll("boardUpdate", {
+            player: this.id,
+            board: this.board.map((row) =>
+                row.map((cat) => JSON.stringify(cat))
+            ),
+            queue: this.queue.map((cat) => JSON.stringify(cat)),
+        });
         return true;
     }
 
@@ -183,8 +204,8 @@ class Player {
         return true;
     }
 
-    checkAffordable(price) {
-        if (this.money < price) {
+    checkAffordable(cost) {
+        if (this.money < cost) {
             console.log("돈이 부족합니다.");
             return false;
         }

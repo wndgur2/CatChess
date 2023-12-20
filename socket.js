@@ -27,7 +27,20 @@ module.exports = (server) => {
                     Player.getPlayer(from).buyCat(data);
                     break;
                 case "reqPutCat":
-                    Player.getPlayer(from).putCat(data);
+                    let befX = data.from.x;
+                    let befY = data.from.y === 3 ? data.from.y : data.from.y;
+
+                    let to = data.to.split("-");
+                    let nextY, nextX;
+                    if (to[0] === "cell") {
+                        nextY = to[1];
+                        nextX = to[2];
+                    } else {
+                        nextY = 3;
+                        nextX = to[1];
+                    }
+
+                    Player.getPlayer(from).putCat({ befX, befY, nextX, nextY });
                     break;
                 case "reqSellCat":
                     break;

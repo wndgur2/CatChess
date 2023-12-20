@@ -1,6 +1,8 @@
 import Socket from "./Socket.js";
 
 export default class Player {
+    static player = null;
+
     constructor(id) {
         this.id = id;
         if (id === Socket.id) Player.player = this;
@@ -25,59 +27,70 @@ export default class Player {
     }
 
     load(existingPlayer) {
-        this.money = existingPlayer.money;
-        this.board = existingPlayer.board;
-        this.queue = existingPlayer.queue;
-        this.level = existingPlayer.level;
-        this.exp = existingPlayer.exp;
-        this.maxExp = existingPlayer.maxExp;
-        this.maxHp = existingPlayer.maxHp;
-        this.hp = existingPlayer.hp;
-        this.items = existingPlayer.items;
-        this.shoplist = existingPlayer.shoplist;
+        this._money = existingPlayer.money;
+        this._board = existingPlayer.board;
+        this._queue = existingPlayer.queue;
+        this._level = existingPlayer.level;
+        this._exp = existingPlayer.exp;
+        this._maxExp = existingPlayer.maxExp;
+        this._maxHp = existingPlayer.maxHp;
+        this._hp = existingPlayer.hp;
+        this._items = existingPlayer.items;
+        this._shoplist = existingPlayer.shoplist;
     }
 
-    set money(newMoney) {
+    set _money(newMoney) {
+        this.money = newMoney;
         document.getElementById("money").innerHTML = newMoney;
     }
 
-    set exp(newExp) {
+    set _exp(newExp) {
+        this.exp = newExp;
         document.getElementById("curExp").innerHTML = newExp;
     }
 
-    set level(newLevel) {
+    set _level(newLevel) {
+        this.level = newLevel;
         document.getElementById("level").innerHTML = newLevel;
     }
 
-    set maxExp(newMaxExp) {
+    set _maxExp(newMaxExp) {
+        this.maxExp = newMaxExp;
         document.getElementById("maxExp").innerHTML = newMaxExp;
     }
 
-    set board(newBoard) {
+    set _board(newBoard) {
+        this.board = newBoard;
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 5; j++) {
-                let cell = document.getElementById(`cell-${i + 3}-${j}`);
+                let cell = document.getElementById(`cell-${i}-${j}`);
                 if (newBoard[i][j] === null) {
+                    cell.draggable = false;
                     cell.innerHTML = "";
                 } else {
+                    cell.draggable = true;
                     cell.innerHTML = newBoard[i][j].type.name;
                 }
             }
         }
     }
 
-    set queue(newQueue) {
+    set _queue(newQueue) {
+        this.queue = newQueue;
         for (let i = 0; i < 7; i++) {
             let cell = document.getElementById(`queue-${i}`);
             if (newQueue[i] === null) {
+                cell.draggable = false;
                 cell.innerHTML = "";
             } else {
+                cell.draggable = true;
                 cell.innerHTML = newQueue[i].type.name;
             }
         }
     }
 
-    set shoplist(newShoplist) {
+    set _shoplist(newShoplist) {
+        this.shoplist = newShoplist;
         let list = document.getElementById("shoppingList");
         list.innerHTML = "";
         for (let i = 0; i < newShoplist.length; i++) {
