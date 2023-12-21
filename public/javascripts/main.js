@@ -43,7 +43,7 @@ function hydrate() {
         row.className = "row";
         for (let j = 0; j < 5; j++) {
             let cell = document.createElement("div");
-            cell.id = `cell-${i}-${j}`;
+            cell.id = `board-${i}-${j}`;
             hydrateCell(cell);
             row.appendChild(cell);
         }
@@ -86,7 +86,7 @@ function cellDragDrop(event) {
 function getCellUnitByCellId(id) {
     // TODO: 아군 board 좌표가 0부터 시작하도록
     let position = id.split("-");
-    if (position[0] === "cell") {
+    if (position[0] === "board") {
         return Player.player.board[position[1]][position[2]];
     } else {
         return Player.player.queue[position[1]];

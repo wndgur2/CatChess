@@ -1,7 +1,8 @@
 extends layout
 
 block content
-  div#container
+  #container
+    span#id &nbsp?
     #home 
       span#title 테스트
       button#enterGame
@@ -9,22 +10,24 @@ block content
     #waiting
       h2 대기열 
       div
-        span 내 ID
-        span#id &nbsp?
-      div
         span 현재 대기자 수 :
         span#currentPlayers &nbsp1명
       div
         span 3명이 모이면 시작됩니다. 
     #game
       #topInfo
+        #state
         #stageInfo
           span 스테이지&nbsp
           span#round 1
           span &nbsp-&nbsp
           span#stage 1
+        #timerWrapper
+          span#timer
       #board
       #queue
+      #rightWrapper 
+        #players
       #bottomWrapper
         #bottomInfo
           #buyBtn

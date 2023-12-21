@@ -1,4 +1,6 @@
+import Game from "./Game.js";
 import Socket from "./Socket.js";
+import { GAME_STATE } from "./constants.js";
 
 export default class Player {
     static player = null;
@@ -59,16 +61,22 @@ export default class Player {
         document.getElementById("maxExp").innerHTML = newMaxExp;
     }
 
+    set _hp(newHp) {
+        this.hp = newHp;
+        document.getElementById(`${this.id}-hp`).innerHTML = newHp;
+    }
+
     set _board(newBoard) {
         this.board = newBoard;
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 5; j++) {
-                let cell = document.getElementById(`cell-${i}-${j}`);
+                let cell = document.getElementById(`board-${i}-${j}`);
                 if (newBoard[i][j] === null) {
                     cell.draggable = false;
                     cell.innerHTML = "";
                 } else {
-                    cell.draggable = true;
+                    if (Game.state === GAME_STATE.ARRANGE)
+                        cell.draggable = true;
                     cell.innerHTML = newBoard[i][j].type.name;
                 }
             }
@@ -99,8 +107,14 @@ export default class Player {
             wrapper.style.flexDirection = "column";
             wrapper.style.alignItems = "center";
             wrapper.style.justifyContent = "center";
+            if (newShoplist[i] === null) {
+                list.appendChild(wrapper);
+                continue;
+            }
             wrapper.onclick = function () {
-                Socket.sendMsg("reqBuyCat", newShoplist[i].type);
+                Socket.sendMsg("reqBuyCat", {
+                    index: i,
+                });
             };
 
             let cost = document.createElement("span");

@@ -14,6 +14,7 @@ class Player {
         return id;
     }
 
+    // TODO: ID 부여 시스템 다시 짜기
     constructor(id, ws) {
         Player.players.push(this);
 
@@ -52,7 +53,8 @@ class Player {
         return this.money;
     }
 
-    buyCat(catType) {
+    buyCat(index) {
+        let catType = this.shoplist[index].type;
         let cat = SimpleCat.catTypes[catType];
         if (!this.checkAffordable(cat.cost)) return false;
 
@@ -66,6 +68,11 @@ class Player {
                         row.map((cat) => JSON.stringify(cat))
                     ),
                     queue: this.queue.map((cat) => JSON.stringify(cat)),
+                });
+                this.shoplist[index] = null;
+                sendMsg(this.ws, "shoplistUpdate", {
+                    player: this.id,
+                    shoplist: this.shoplist,
                 });
                 return true;
             }
@@ -174,7 +181,7 @@ class Player {
 
         this.shoplist = result;
 
-        sendMsg(this.ws, "resReload", {
+        sendMsg(this.ws, "shoplistUpdate", {
             player: this.id,
             shoplist: result,
         });

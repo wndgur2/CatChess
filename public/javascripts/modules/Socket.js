@@ -3,18 +3,19 @@ import Player from "./Player.js";
 
 export default class Socket {
     static socket = null;
-    static id = localStorage.getItem("id");
+    // static id = localStorage.getItem("id");
 
     static init() {
         Socket.socket = new WebSocket("ws://localhost:3000");
 
         Socket.socket.onopen = function (event) {
             console.log("웹 소켓 연결 성공");
-            if (!Socket.id) Socket.sendMsg("reqNewId", null);
-            else {
-                Socket.sendMsg("reqGameData", null);
-                document.getElementById("id").innerHTML = Socket.id;
-            }
+            Socket.sendMsg("reqNewId", null);
+            // if (!Socket.id) Socket.sendMsg("reqNewId", null);
+            // else {
+            //     Socket.sendMsg("reqGameData", null);
+            //     document.getElementById("id").innerHTML = Socket.id;
+            // }
         };
 
         Socket.socket.onmessage = function (event) {
@@ -37,13 +38,7 @@ export default class Socket {
                 case "resGameData":
                     Game.init(data.game.players, data.players);
                     break;
-                case "resBuyCat":
-                    break;
-                case "resPutCat":
-                    break;
-                case "resSellCat":
-                    break;
-                case "resReload":
+                case "shoplistUpdate":
                     Game.getPlayerById(data.player)._shoplist = data.shoplist;
                     break;
                 case "expUpdate":
@@ -58,11 +53,12 @@ export default class Socket {
                     }
                 case "resGiveItem":
                     break;
-                case "arrangeState":
-                    Game.arrange(data);
+                case "stateUpdate":
+                    Game._state = data;
                     break;
-                case "battleState":
-                    Game.battle(data);
+                case "stageUpdate":
+                    Game._round = data.round;
+                    Game._stage = data.stage;
                     break;
                 case "battle_move":
                     break;
@@ -89,6 +85,11 @@ export default class Socket {
                     Game.getPlayerById(data.player)._queue = data.queue.map(
                         (cat) => JSON.parse(cat)
                     );
+                    break;
+                case "playerHpUpdate":
+                    data.players.forEach((player) => {
+                        Game.getPlayerById(player.id)._hp = player.hp;
+                    });
                     break;
                 default:
                     break;

@@ -24,15 +24,18 @@ module.exports = (server) => {
                     Game.newPlayer(from, ws);
                     break;
                 case "reqBuyCat":
-                    Player.getPlayer(from).buyCat(data);
+                    Player.getPlayer(from).buyCat(data.index);
                     break;
                 case "reqPutCat":
+                    if (!data.from) return;
                     let befX = data.from.x;
                     let befY = data.from.y === 3 ? data.from.y : data.from.y;
 
                     let to = data.to.split("-");
                     let nextY, nextX;
-                    if (to[0] === "cell") {
+                    if (to[0] === "board") {
+                        if (Player.getPlayer(from).game.state !== "arrange")
+                            return;
                         nextY = to[1];
                         nextX = to[2];
                     } else {

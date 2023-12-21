@@ -1,14 +1,8 @@
 const Player = require("./Player.js");
 const { sendMsg } = require("./utils.js");
+const { GAME_STATE } = require("./constants.js");
 
-const GAME_STATE = {
-    ARRANGE: "arrange",
-    BATTLE: "battle",
-    CREEP: "creep",
-    FINISH: "finish",
-};
-
-Object.freeze(GAME_STATE);
+const PLAYER_NUM = 3;
 
 class Game {
     static waitingPlayers = [];
@@ -19,13 +13,14 @@ class Game {
         Game.waitingPlayers.forEach((player) => {
             sendMsg(player.ws, "newPlayer", Game.waitingPlayers.length);
         });
-        if (Game.waitingPlayers.length >= 1) {
-            let game = new Game(Game.waitingPlayers.splice(0, 1));
+        if (Game.waitingPlayers.length >= PLAYER_NUM) {
+            let game = new Game(Game.waitingPlayers.splice(0, PLAYER_NUM));
         }
     }
     static getGameData(from, ws) {
         let player = Player.getPlayer(from);
         if (!player) return false;
+        if (!player.game) return false;
         player.ws = ws;
         let game = player.game;
         let gameData = {
@@ -71,14 +66,48 @@ class Game {
             });
         });
 
+        this.round = 1;
+        this.stage = 0;
         this.arrange();
     }
 
-    arrange() {
-        this.state = GAME_STATE.ARRANGE;
-        this.players.forEach((player) => {
-            sendMsg(player.ws, "gameState", this.state);
+    set _stage(newStage) {
+        if (newStage === 6) {
+            this.round++;
+            newStage = 1;
+        }
+        this.stage = newStage;
+        this.sendMsgToAll("stageUpdate", {
+            round: this.round,
+            stage: this.stage,
         });
+    }
+
+    arrange() {
+        this._stage = this.stage + 1;
+        this.state = GAME_STATE.ARRANGE;
+        this.sendMsgToAll("stateUpdate", this.state);
+        setTimeout(() => {
+            this.battle();
+        }, 10000);
+    }
+
+    battle() {
+        this.state = GAME_STATE.BATTLE;
+        this.sendMsgToAll("stateUpdate", this.state);
+        setTimeout(() => {
+            this.arrange();
+        }, 20000);
+
+        // match random two players
+        // let player1, player2;
+        // do {
+        //     player1 = Math.floor(Math.random() * 3);
+        //     player2 = Math.floor(Math.random() * 3);
+        // } while (player1 === player2);
+        // console.log(player1, player2);
+        // this.players[player1].enemy = this.players[player2];
+        // this.players[player2].enemy = this.players[player1];
     }
 
     getGameData() {
