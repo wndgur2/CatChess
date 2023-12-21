@@ -183,12 +183,13 @@ class Player {
 
     buyExp() {
         if (!this.checkAffordable(4)) return false;
+        if (this.level === 6) return false;
         this._money -= 4;
         this.exp += 4;
         if (this.exp >= this.maxExp) {
             this.exp -= this.maxExp;
             this.level++;
-            this.maxExp += 2;
+            this.maxExp += 3;
             this.game.sendMsgToAll("levelUpdate", {
                 player: this.id,
                 level: this.level,

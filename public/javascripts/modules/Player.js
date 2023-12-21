@@ -104,7 +104,7 @@ export default class Player {
             };
 
             let cost = document.createElement("span");
-            cost.innerHTML = newShoplist[i].cost + "코";
+            cost.innerHTML = newShoplist[i].cost + "💰";
             wrapper.appendChild(cost);
 
             let name = document.createElement("span");

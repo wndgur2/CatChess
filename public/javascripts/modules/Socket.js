@@ -52,7 +52,7 @@ export default class Socket {
                 case "levelUpdate":
                     if (data.player === Socket.id) {
                         Player.player._level = data.level;
-                        Player.player._maxExp = data.level * 3;
+                        Player.player._maxExp = 2 + (data.level - 1) * 3;
                     } else {
                         Game.getPlayerById(data.player)._level = data.level;
                     }

@@ -27,27 +27,27 @@ function hydrate() {
 
     // 3 x 5 enemy board
     for (let i = 0; i < 3; i++) {
-        let row = document.createElement("tr");
-        row.id = `row-${i}`;
+        let row = document.createElement("div");
+        row.className = "row";
         for (let j = 0; j < 5; j++) {
-            let cell = document.createElement("td");
+            let cell = document.createElement("div");
             cell.id = `enemy-${i}-${j}`;
             row.appendChild(cell);
         }
-        document.getElementById("boardBody").appendChild(row);
+        document.getElementById("board").appendChild(row);
     }
 
     // 3 x 5 ally board
     for (let i = 0; i < 3; i++) {
-        let row = document.createElement("tr");
-        row.id = `row-${i}`;
+        let row = document.createElement("div");
+        row.className = "row";
         for (let j = 0; j < 5; j++) {
-            let cell = document.createElement("td");
+            let cell = document.createElement("div");
             cell.id = `cell-${i}-${j}`;
             hydrateCell(cell);
             row.appendChild(cell);
         }
-        document.getElementById("boardBody").appendChild(row);
+        document.getElementById("board").appendChild(row);
     }
 
     // 1 x 7 queue
