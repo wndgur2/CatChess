@@ -17,9 +17,6 @@ module.exports = (server) => {
                 case "reqNewId":
                     sendMsg(ws, "resNewId", Player.getNewId());
                     break;
-                case "reqGameData":
-                    Game.getGameData(from, ws);
-                    break;
                 case "startWaiting":
                     Game.newPlayer(from, ws);
                     break;

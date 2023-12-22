@@ -9,9 +9,8 @@ class Player {
     }
 
     static getNewId() {
-        let id = 0;
-        while (Player.getPlayer(id)) id++;
-        return id;
+        //random 5 string
+        return Math.random().toString(36).substr(2, 6);
     }
 
     // TODO: ID 부여 시스템 다시 짜기
@@ -36,6 +35,33 @@ class Player {
         this.maxHp = 100;
         this.hp = 100;
         this.items = [];
+        this.reload();
+    }
+
+    updatePlayer() {
+        sendMsg(this.ws, "expUpdate", {
+            player: this.id,
+            exp: this.exp,
+        });
+        sendMsg(this.ws, "levelUpdate", {
+            player: this.id,
+            level: this.level,
+        });
+        sendMsg(this.ws, "shoplistUpdate", {
+            player: this.id,
+            shoplist: this.shoplist,
+        });
+        sendMsg(this.ws, "moneyUpdate", {
+            player: this.id,
+            money: this.money,
+        });
+        sendMsg(this.ws, "boardUpdate", {
+            player: this.id,
+            board: this.board.map((row) =>
+                row.map((cat) => JSON.stringify(cat))
+            ),
+            queue: this.queue.map((cat) => JSON.stringify(cat)),
+        });
     }
 
     /**

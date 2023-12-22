@@ -4,8 +4,13 @@ import { GAME_STATE } from "./constants.js";
 
 export default class Player {
     static player = null;
+    static players = [];
+    static getPlayerById(id) {
+        return Player.players.find((player) => player.id === id);
+    }
 
     constructor(id) {
+        Player.players.push(this);
         this.id = id;
         if (id === Socket.id) Player.player = this;
         this.init();
@@ -28,19 +33,6 @@ export default class Player {
         this.items = [];
     }
 
-    load(existingPlayer) {
-        this._money = existingPlayer.money;
-        this._board = existingPlayer.board;
-        this._queue = existingPlayer.queue;
-        this._level = existingPlayer.level;
-        this._exp = existingPlayer.exp;
-        this._maxExp = existingPlayer.maxExp;
-        this._maxHp = existingPlayer.maxHp;
-        this._hp = existingPlayer.hp;
-        this._items = existingPlayer.items;
-        this._shoplist = existingPlayer.shoplist;
-    }
-
     set _money(newMoney) {
         this.money = newMoney;
         document.getElementById("money").innerHTML = newMoney;
@@ -48,26 +40,31 @@ export default class Player {
 
     set _exp(newExp) {
         this.exp = newExp;
+        if (this.id !== Socket.id) return;
         document.getElementById("curExp").innerHTML = newExp;
     }
 
     set _level(newLevel) {
         this.level = newLevel;
+        if (this.id !== Socket.id) return;
         document.getElementById("level").innerHTML = newLevel;
     }
 
     set _maxExp(newMaxExp) {
         this.maxExp = newMaxExp;
+        if (this.id !== Socket.id) return;
         document.getElementById("maxExp").innerHTML = newMaxExp;
     }
 
     set _hp(newHp) {
         this.hp = newHp;
+        if (this.id !== Socket.id) return;
         document.getElementById(`${this.id}-hp`).innerHTML = newHp;
     }
 
     set _board(newBoard) {
         this.board = newBoard;
+        if (this.id !== Socket.id) return;
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 5; j++) {
                 let cell = document.getElementById(`board-${i}-${j}`);
@@ -83,8 +80,24 @@ export default class Player {
         }
     }
 
+    set _enemyBoard(newEnemyBoard) {
+        console.log(newEnemyBoard);
+        this.enemyBoard = newEnemyBoard;
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 5; j++) {
+                let cell = document.getElementById(`enemy-${i}-${j}`);
+                if (newEnemyBoard[i][j] === null) {
+                    cell.innerHTML = "";
+                } else {
+                    cell.innerHTML = newEnemyBoard[i][j].type.name;
+                }
+            }
+        }
+    }
+
     set _queue(newQueue) {
         this.queue = newQueue;
+        if (this.id !== Socket.id) return;
         for (let i = 0; i < 7; i++) {
             let cell = document.getElementById(`queue-${i}`);
             if (newQueue[i] === null) {
@@ -99,6 +112,7 @@ export default class Player {
 
     set _shoplist(newShoplist) {
         this.shoplist = newShoplist;
+        if (this.id !== Socket.id) return;
         let list = document.getElementById("shoppingList");
         list.innerHTML = "";
         for (let i = 0; i < newShoplist.length; i++) {

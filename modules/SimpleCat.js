@@ -30,7 +30,7 @@ class SimpleCat {
 
         this.x = x;
         this.y = y;
-        this.owner = player.id;
+        this.owner = player?.id;
 
         this.delay = 0;
     }

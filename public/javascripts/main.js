@@ -84,7 +84,6 @@ function cellDragDrop(event) {
 }
 
 function getCellUnitByCellId(id) {
-    // TODO: 아군 board 좌표가 0부터 시작하도록
     let position = id.split("-");
     if (position[0] === "board") {
         return Player.player.board[position[1]][position[2]];
