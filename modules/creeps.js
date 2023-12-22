@@ -24,4 +24,4 @@ const creeps = {
     },
 };
 
-module.exports = simpleCats;
+module.exports = creeps;

@@ -1,6 +1,6 @@
-const Player = require("./modules/Player.js");
-const Game = require("./modules/Game.js");
-const { sendMsg } = require("./modules/utils.js");
+const Player = require("./Player.js");
+const Game = require("./Game.js");
+const { sendMsg } = require("./utils.js");
 const webSocket = require("ws");
 
 module.exports = (server) => {

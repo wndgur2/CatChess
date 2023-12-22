@@ -2,7 +2,7 @@ const Player = require("./Player.js");
 const { sendMsg } = require("./utils.js");
 const { GAME_STATE } = require("./constants.js");
 
-const PLAYER_NUM = 3;
+const PLAYER_NUM = 1;
 
 class Game {
     static waitingPlayers = [];
@@ -88,8 +88,16 @@ class Game {
         this.state = GAME_STATE.ARRANGE;
         this.sendMsgToAll("stateUpdate", this.state);
         setTimeout(() => {
+            this.wait();
+        }, 20000);
+    }
+
+    wait() {
+        this.state = GAME_STATE.WAIT;
+        this.sendMsgToAll("stateUpdate", this.state);
+        setTimeout(() => {
             this.battle();
-        }, 10000);
+        }, 3000);
     }
 
     battle() {
@@ -97,17 +105,7 @@ class Game {
         this.sendMsgToAll("stateUpdate", this.state);
         setTimeout(() => {
             this.arrange();
-        }, 20000);
-
-        // match random two players
-        // let player1, player2;
-        // do {
-        //     player1 = Math.floor(Math.random() * 3);
-        //     player2 = Math.floor(Math.random() * 3);
-        // } while (player1 === player2);
-        // console.log(player1, player2);
-        // this.players[player1].enemy = this.players[player2];
-        // this.players[player2].enemy = this.players[player1];
+        }, 30000);
     }
 
     getGameData() {

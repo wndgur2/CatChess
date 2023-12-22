@@ -1,7 +1,7 @@
 const GAME_STATE = {
     ARRANGE: "arrange",
     BATTLE: "battle",
-    CREEP: "creep",
+    WAIT: "wait",
     FINISH: "finish",
 };
 

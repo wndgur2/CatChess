@@ -3,19 +3,19 @@ import Player from "./Player.js";
 
 export default class Socket {
     static socket = null;
-    // static id = localStorage.getItem("id");
+    static id = localStorage.getItem("id");
 
     static init() {
         Socket.socket = new WebSocket("ws://localhost:3000");
 
         Socket.socket.onopen = function (event) {
             console.log("웹 소켓 연결 성공");
-            Socket.sendMsg("reqNewId", null);
-            // if (!Socket.id) Socket.sendMsg("reqNewId", null);
-            // else {
-            //     Socket.sendMsg("reqGameData", null);
-            //     document.getElementById("id").innerHTML = Socket.id;
-            // }
+            // Socket.sendMsg("reqNewId", null);
+            if (!Socket.id) Socket.sendMsg("reqNewId", null);
+            else {
+                Socket.sendMsg("reqGameData", null);
+                document.getElementById("id").innerHTML = Socket.id;
+            }
         };
 
         Socket.socket.onmessage = function (event) {

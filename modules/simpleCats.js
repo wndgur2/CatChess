@@ -80,12 +80,4 @@ const simpleCats = {
         range: 1,
     },
 };
-
-if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-    module.exports = simpleCats;
-}
-
-// ES6 Modules (browser)
-if (typeof window !== "undefined") {
-    window.simpleCats = simpleCats;
-}
+module.exports = simpleCats;
