@@ -30,7 +30,7 @@ module.exports = (server) => {
 
                     let to = data.to.split("-");
                     let nextY, nextX;
-                    if (to[0] === "board") {
+                    if (to[0] === "ally") {
                         if (Player.getPlayer(from).game.state !== "arrange")
                             return;
                         nextY = to[1];

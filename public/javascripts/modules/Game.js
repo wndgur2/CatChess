@@ -36,7 +36,7 @@ export default class Game {
                 document.getElementById("game").style.backgroundColor = "#333";
                 let cells = document.getElementsByClassName("cell");
                 for (let i = 0; i < cells.length; i++) {
-                    if (cells[i].id.split("-")[0] === "board") {
+                    if (cells[i].id.split("-")[0] === "ally") {
                         cells[i].draggable = true;
                     }
                 }
@@ -56,7 +56,7 @@ export default class Game {
                     "#334233";
                 let cells = document.getElementsByClassName("cell");
                 for (let i = 0; i < cells.length; i++) {
-                    if (cells[i].id.split("-")[0] === "board") {
+                    if (cells[i].id.split("-")[0] === "ally") {
                         cells[i].draggable = false;
                     }
                 }

@@ -67,7 +67,7 @@ export default class Player {
         if (this.id !== Socket.id) return;
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 5; j++) {
-                let cell = document.getElementById(`board-${i}-${j}`);
+                let cell = document.getElementById(`ally-${i}-${j}`);
                 if (newBoard[i][j] === null) {
                     cell.draggable = false;
                     cell.innerHTML = "";

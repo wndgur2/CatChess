@@ -3,6 +3,7 @@ const { sendMsg } = require("./utils.js");
 const { GAME_STATE } = require("./constants.js");
 const creeps = require("./creeps.js");
 const SimpleCat = require("./SimpleCat.js");
+const Battle = require("./Battle.js");
 
 const PLAYER_NUM = 2;
 
@@ -91,14 +92,14 @@ class Game {
     arrange() {
         this._stage = this.stage + 1;
         this.state = GAME_STATE.ARRANGE;
-        this.time = 15;
+        this.time = 5;
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
             time: this.time,
         });
         setTimeout(() => {
             this.wait();
-        }, 15000);
+        }, 5000);
     }
 
     wait() {
@@ -112,10 +113,10 @@ class Game {
             this.battle();
         }, 3000);
 
-        // 각 플레이어에게 상대 플레이어의 보드를 전송
-        // TODO 전장 변수 필요
+        // TODO 아군과 적을 포함한 전장을 만들어 Game 필드에 저장
+        // 각 플레이어에 맞는 방향으로, 클라에게 보내기
         let opponent;
-        if (this.stage === 1) {
+        if (this.stage === 0) {
             opponent = [
                 [null, null, null, null, null],
                 [null, null, null, null, null],
@@ -130,18 +131,10 @@ class Game {
                 board: opponent,
             });
         } else {
+            let battle = new Battle(this.players[0], this.players[1]);
             this.players.forEach((player) => {
-                let opponentPlayer = this.players.filter(
-                    (p) => p !== player
-                )[0];
-                let opponentBoard = opponentPlayer.board.map((row) =>
-                    row.map((cat) => JSON.stringify(cat))
-                );
-                //flip board
-                opponentBoard = opponentBoard.reverse();
-                opponentBoard.forEach((row) => row.reverse());
                 sendMsg(player.ws, "battleStart", {
-                    board: opponentBoard,
+                    board: battle.getBoard(player),
                 });
             });
         }

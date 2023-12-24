@@ -43,7 +43,7 @@ function hydrate() {
         row.className = "row";
         for (let j = 0; j < 5; j++) {
             let cell = document.createElement("div");
-            cell.id = `board-${i}-${j}`;
+            cell.id = `ally-${i}-${j}`;
             hydrateCell(cell);
             row.appendChild(cell);
         }
@@ -85,7 +85,7 @@ function cellDragDrop(event) {
 
 function getCellUnitByCellId(id) {
     let position = id.split("-");
-    if (position[0] === "board") {
+    if (position[0] === "ally") {
         return Player.player.board[position[1]][position[2]];
     } else {
         return Player.player.queue[position[1]];
