@@ -1,5 +1,7 @@
+import Battle from "./Battle.js";
 import Game from "./Game.js";
 import Player from "./Player.js";
+import SimpleCat from "./SimpleCat.js";
 
 export default class Socket {
     static socket = null;
@@ -10,7 +12,7 @@ export default class Socket {
 
         Socket.socket.onopen = function (event) {
             console.log("웹 소켓 연결 성공");
-            // Socket.sendMsg("reqNewId", null);
+
             if (!Socket.id) Socket.sendMsg("reqNewId", null);
             else {
                 document.getElementById("id").innerHTML = Socket.id;
@@ -76,31 +78,26 @@ export default class Socket {
                     }
                     break;
                 case "boardUpdate":
-                    if (data.player === Socket.id) {
-                        Player.getPlayerById(data.player)._board =
-                            data.board.map((row) =>
-                                row.map((cat) => JSON.parse(cat))
-                            );
-                        Player.getPlayerById(data.player)._queue =
-                            data.queue.map((cat) => JSON.parse(cat));
-                    } else {
-                        Player.getPlayerById(data.player).board =
-                            data.board.map((row) =>
-                                row.map((cat) => JSON.parse(cat))
-                            );
-                        Player.getPlayerById(data.player).queue =
-                            data.queue.map((cat) => JSON.parse(cat));
-                    }
+                    Player.getPlayerById(data.player)._board = data.board.map(
+                        (row) => row.map((cat) => JSON.parse(cat))
+                    );
+                    Player.getPlayerById(data.player)._queue = data.queue.map(
+                        (cat) => JSON.parse(cat)
+                    );
                     break;
                 case "playerHpUpdate":
                     data.players.forEach((player) => {
                         Player.getPlayerById(player.id)._hp = player.hp;
                     });
                     break;
-                case "battleStart":
-                    Player.player._enemyBoard = data.board.map((row) =>
-                        row.map((cat) => JSON.parse(cat))
+                case "battleUpdate":
+                    Battle.board = data.board.map((row) =>
+                        row.map((cat) => {
+                            if (cat) return new SimpleCat(cat);
+                            else return null;
+                        })
                     );
+                    Battle.displayBoard();
                     break;
                 case "timeUpdate":
                     Game._time = data.time;

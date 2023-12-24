@@ -1,4 +1,4 @@
-const simpleCats = {
+const CATS = {
     wildCat: {
         type: "wildCat",
         name: "길 고양이",
@@ -80,4 +80,4 @@ const simpleCats = {
         range: 1,
     },
 };
-module.exports = simpleCats;
+module.exports = CATS;

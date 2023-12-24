@@ -31,6 +31,7 @@ function hydrate() {
         row.className = "row";
         for (let j = 0; j < 5; j++) {
             let cell = document.createElement("div");
+            cell.className = "cell";
             cell.id = `enemy-${i}-${j}`;
             row.appendChild(cell);
         }

@@ -1,6 +1,6 @@
 import Game from "./Game.js";
 import Socket from "./Socket.js";
-import { GAME_STATE } from "./constants.js";
+import { GAME_STATES } from "./constants.js";
 
 export default class Player {
     static player = null;
@@ -35,6 +35,7 @@ export default class Player {
 
     set _money(newMoney) {
         this.money = newMoney;
+        if (this.id !== Socket.id) return;
         document.getElementById("money").innerHTML = newMoney;
     }
 
@@ -65,19 +66,20 @@ export default class Player {
     set _board(newBoard) {
         this.board = newBoard;
         if (this.id !== Socket.id) return;
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 5; j++) {
-                let cell = document.getElementById(`ally-${i}-${j}`);
-                if (newBoard[i][j] === null) {
-                    cell.draggable = false;
-                    cell.innerHTML = "";
-                } else {
-                    if (Game.state === GAME_STATE.ARRANGE)
-                        cell.draggable = true;
-                    cell.innerHTML = newBoard[i][j].type.name;
+        if (Game.state === GAME_STATES.ARRANGE)
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 5; j++) {
+                    let cell = document.getElementById(`ally-${i}-${j}`);
+                    if (newBoard[i][j] === null) {
+                        cell.draggable = false;
+                        cell.innerHTML = "";
+                    } else {
+                        if (Game.state === GAME_STATES.ARRANGE)
+                            cell.draggable = true;
+                        cell.innerHTML = newBoard[i][j].type.name;
+                    }
                 }
             }
-        }
     }
 
     set _enemyBoard(newEnemyBoard) {

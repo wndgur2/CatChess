@@ -102,7 +102,7 @@ html body {
     margin-right: 10%;
 }
 
-.row div {
+.cell {
     display: flex;
     width: 17.5%;
     height: 100%;
@@ -113,6 +113,11 @@ html body {
     text-align: center;
     font-size: 16px;
     color: #fff;
+    user-select: none;
+}
+
+.cell:hover {
+    background-color: #555555aa;
 }
 
 #queue {
@@ -134,12 +139,17 @@ html body {
     border: #fff 1px solid;
 }
 
-.cell {
-    user-select: none;
+.cat {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.cell:hover {
-    background-color: #555555aa;
+.catName {
+    width: 100%;
 }
 
 #rightWrapper {

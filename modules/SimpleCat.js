@@ -1,8 +1,8 @@
 const Player = require("./Player");
-const simpleCats = require("./simpleCats");
+const CATS = require("./constants/CATS");
 
 class SimpleCat {
-    static catTypes = simpleCats;
+    static catTypes = CATS;
     static catTypeValues = Object.values(SimpleCat.catTypes);
 
     static getRandomCatTypeByCost(cost) {
@@ -23,7 +23,8 @@ class SimpleCat {
         this.ad = this.type.ad * tier;
         this.speed = this.type.speed * tier;
         this.range = this.type.range;
-        this.hp = this.type.hp * tier;
+        this.maxHp = this.type.hp * tier;
+        this.hp = this.maxHp;
         this.armor = this.type.armor * tier;
         this.cost = this.type.cost * Math.pow(3, tier - 1);
         if (tier > 1) this.cost -= 1;

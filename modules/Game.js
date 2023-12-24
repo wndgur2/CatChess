@@ -1,8 +1,6 @@
 const Player = require("./Player.js");
 const { sendMsg } = require("./utils.js");
-const { GAME_STATE } = require("./constants.js");
-const creeps = require("./creeps.js");
-const SimpleCat = require("./SimpleCat.js");
+const { GAME_STATES } = require("./constants/GAME_STATES.js");
 const Battle = require("./Battle.js");
 
 const PLAYER_NUM = 2;
@@ -15,7 +13,7 @@ class Game {
             Player.getPlayer(from).ws = ws;
             // 게임 데이터 전송
             let game = Player.getPlayer(from).game;
-            if (game && game.state !== GAME_STATE.FINISH) {
+            if (game && game.state !== GAME_STATES.FINISH) {
                 sendMsg(ws, "gameMatched", {
                     players: game.players.map((player) => player.id),
                 });
@@ -53,7 +51,7 @@ class Game {
 
         this.round = 1;
         this.stage = 0;
-        this.arrange();
+        this.arrangeState();
         setInterval(() => {
             if (this.time <= 0) return;
             this.time = this.time - 1;
@@ -74,6 +72,9 @@ class Game {
             round: this.round,
             stage: this.stage,
         });
+        if (this.state === GAME_STATES.BATTLE) {
+            this.battle.battleUpdate();
+        }
         player.updatePlayer();
     }
 
@@ -89,71 +90,44 @@ class Game {
         });
     }
 
-    arrange() {
+    arrangeState() {
         this._stage = this.stage + 1;
-        this.state = GAME_STATE.ARRANGE;
+        this.state = GAME_STATES.ARRANGE;
         this.time = 5;
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
             time: this.time,
         });
         setTimeout(() => {
-            this.wait();
+            this.waitState();
         }, 5000);
     }
 
-    wait() {
-        this.state = GAME_STATE.WAIT;
+    waitState() {
+        this.state = GAME_STATES.WAIT;
         this.time = 3;
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
             time: this.time,
         });
         setTimeout(() => {
-            this.battle();
+            this.battleState();
         }, 3000);
 
-        // TODO 아군과 적을 포함한 전장을 만들어 Game 필드에 저장
-        // 각 플레이어에 맞는 방향으로, 클라에게 보내기
-        let opponent;
-        if (this.stage === 0) {
-            opponent = [
-                [null, null, null, null, null],
-                [null, null, null, null, null],
-                [null, null, null, null, null],
-            ];
-            creeps[this.round].cats.forEach((cat) => {
-                opponent[cat.y][cat.x] = JSON.stringify(
-                    new SimpleCat(cat.name, null, cat.x, cat.y)
-                );
-            });
-            this.sendMsgToAll("battleStart", {
-                board: opponent,
-            });
-        } else {
-            let battle = new Battle(this.players[0], this.players[1]);
-            this.players.forEach((player) => {
-                sendMsg(player.ws, "battleStart", {
-                    board: battle.getBoard(player),
-                });
-            });
-        }
+        this.battle = new Battle(this.players[0], this.players[1]);
+        this.battle.battleUpdate();
     }
 
-    battle() {
-        this.state = GAME_STATE.BATTLE;
+    battleState() {
+        this.state = GAME_STATES.BATTLE;
         this.time = 20;
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
             time: this.time,
         });
         setTimeout(() => {
-            this.arrange();
+            this.arrangeState();
         }, 20000);
-    }
-
-    getGameData() {
-        return "gamedata";
     }
 
     sendMsgToAll(type, data) {

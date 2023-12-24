@@ -1,6 +1,6 @@
 import Player from "./Player.js";
 import Socket from "./Socket.js";
-import { GAME_STATE } from "./constants.js";
+import { GAME_STATES } from "./constants.js";
 
 export default class Game {
     static init(players) {
@@ -12,6 +12,7 @@ export default class Game {
     }
 
     static displayPlayersInfo() {
+        let playersEl = document.createElement("div");
         Game.players.forEach((player) => {
             let playerDiv = document.createElement("div");
             playerDiv.id = `player-${player.id}`;
@@ -22,17 +23,25 @@ export default class Game {
             playerHp.className = "hp";
             playerHp.innerHTML = player.hp;
             playerDiv.appendChild(playerHp);
-            document.getElementById("players").appendChild(playerDiv);
+            playersEl.appendChild(playerDiv);
         });
+        let rightWrapper = document.getElementById("rightWrapper");
+        rightWrapper.innerHTML = "";
+        rightWrapper.appendChild(playersEl);
     }
 
-    constructor() {}
+    static displayCatInfo(cat) {
+        let catInfo = document.createElement("div");
+        catInfo.id = "catInfo";
+        catInfo.innerHTML = cat.info();
+        document.getElementById("rightWrapper").appendChild(catInfo);
+    }
 
     static set _state(newState) {
         this.state = newState;
 
         switch (newState) {
-            case GAME_STATE.ARRANGE: {
+            case GAME_STATES.ARRANGE: {
                 document.getElementById("game").style.backgroundColor = "#333";
                 let cells = document.getElementsByClassName("cell");
                 for (let i = 0; i < cells.length; i++) {
@@ -51,7 +60,7 @@ export default class Game {
 
                 break;
             }
-            case GAME_STATE.WAIT: {
+            case GAME_STATES.WAIT: {
                 document.getElementById("game").style.backgroundColor =
                     "#334233";
                 let cells = document.getElementsByClassName("cell");
@@ -63,7 +72,7 @@ export default class Game {
 
                 break;
             }
-            case GAME_STATE.BATTLE: {
+            case GAME_STATES.BATTLE: {
                 document.getElementById("game").style.backgroundColor =
                     "#423333";
                 break;
