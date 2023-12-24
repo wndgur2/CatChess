@@ -1,6 +1,5 @@
 export default class SimpleCat {
     constructor(data) {
-        console.log(data);
         this.tier = data.tier;
         this.name = data.name;
         this.ad = data.ad;

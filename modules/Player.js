@@ -13,7 +13,6 @@ class Player {
         return Math.random().toString(36).substr(2, 6);
     }
 
-    // TODO: ID 부여 시스템 다시 짜기
     constructor(id, ws) {
         Player.players.push(this);
 
@@ -80,14 +79,14 @@ class Player {
     }
 
     buyCat(index) {
-        let catType = this.shoplist[index].type;
-        let cat = SimpleCat.catTypes[catType];
-        if (!this.checkAffordable(cat.cost)) return false;
+        let catId = this.shoplist[index].id;
+        let catProto = SimpleCat.prototypes[catId];
+        if (!this.checkAffordable(catProto.cost)) return false;
 
         for (let i = 0; i < this.queue.length; ++i) {
             if (this.queue[i] === null) {
-                this.queue[i] = new SimpleCat(catType, this, i);
-                this._money = this.money - cat.cost;
+                this.queue[i] = new SimpleCat(catId, this, i);
+                this._money = this.money - catProto.cost;
                 this.game.sendMsgToAll("boardUpdate", {
                     player: this.id,
                     board: this.board.map((row) =>
@@ -110,11 +109,6 @@ class Player {
     sellCat({ x, y }) {
         let cat = this.board[y][x];
         if (!cat) return false;
-        // if (this.game.state !== GAME_STATE.ARRANGE && y < 3) {
-        //     console.log("전투중인 기물은 팔 수 없습니다.");
-        //     return false;
-        // }
-
         this.money += cat.cost;
         this.board[cat.y][cat.x] = null;
 
@@ -122,10 +116,6 @@ class Player {
     }
 
     putCat({ befX, befY, nextX, nextY }) {
-        // if (this.game.state !== GAME_STATE.ARRANGE) {
-        //     console.log("전투중에는 기물을 배치할 수 없습니다.");
-        //     return false;
-        // }
         let tempUnit = null,
             unitToMove;
         if (befY === 3) {

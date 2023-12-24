@@ -72,7 +72,7 @@ class Game {
             round: this.round,
             stage: this.stage,
         });
-        if (this.state === GAME_STATES.BATTLE) {
+        if (this.state !== GAME_STATES.ARRANGE) {
             this.battle.battleUpdate();
         }
         player.updatePlayer();
@@ -93,14 +93,14 @@ class Game {
     arrangeState() {
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 5;
+        this.time = 15;
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
             time: this.time,
         });
         setTimeout(() => {
             this.waitState();
-        }, 5000);
+        }, 15000);
     }
 
     waitState() {

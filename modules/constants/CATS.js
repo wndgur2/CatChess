@@ -1,6 +1,6 @@
 const CATS = {
     wildCat: {
-        type: "wildCat",
+        id: "wildCat",
         name: "길 고양이",
         cost: 1,
         ad: 15,
@@ -10,7 +10,7 @@ const CATS = {
         range: 1,
     },
     fastCat: {
-        type: "fastCat",
+        id: "fastCat",
         name: "빠른 고양이",
         cost: 1,
         ad: 15,
@@ -20,7 +20,7 @@ const CATS = {
         range: 1,
     },
     strongCat: {
-        type: "strongCat",
+        id: "strongCat",
         name: "강한 고양이",
         cost: 2,
         ad: 30,
@@ -30,7 +30,7 @@ const CATS = {
         range: 1,
     },
     ssepCat: {
-        type: "ssepCat",
+        id: "ssepCat",
         name: "쌥쌥 고양이",
         cost: 2,
         ad: 10,
@@ -40,7 +40,7 @@ const CATS = {
         range: 3,
     },
     tankCat: {
-        type: "tankCat",
+        id: "tankCat",
         name: "탱크 고양이",
         cost: 3,
         ad: 15,
@@ -50,7 +50,7 @@ const CATS = {
         range: 2,
     },
     adCat: {
-        type: "adCat",
+        id: "adCat",
         name: "원딜 고양이",
         cost: 3,
         ad: 10,
@@ -60,7 +60,7 @@ const CATS = {
         range: 4,
     },
     assasinCat: {
-        type: "assasinCat",
+        id: "assasinCat",
         name: "암살자 고양이",
         cost: 4,
         ad: 100,
@@ -70,7 +70,7 @@ const CATS = {
         range: 1,
     },
     armorCat: {
-        type: "armorCat",
+        id: "armorCat",
         name: "철갑 고양이",
         cost: 4,
         ad: 5,

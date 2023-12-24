@@ -1,4 +1,5 @@
 import Game from "./Game.js";
+import SimpleCat from "./SimpleCat.js";
 import Socket from "./Socket.js";
 import { GAME_STATES } from "./constants.js";
 
@@ -64,50 +65,43 @@ export default class Player {
     }
 
     set _board(newBoard) {
-        this.board = newBoard;
+        this.board = newBoard.map((row) =>
+            row.map((cat) => {
+                if (cat) return new SimpleCat(cat);
+                else return null;
+            })
+        );
         if (this.id !== Socket.id) return;
         if (Game.state === GAME_STATES.ARRANGE)
             for (let i = 0; i < 3; i++) {
                 for (let j = 0; j < 5; j++) {
                     let cell = document.getElementById(`ally-${i}-${j}`);
-                    if (newBoard[i][j] === null) {
+                    if (this.board[i][j] === null) {
                         cell.draggable = false;
                         cell.innerHTML = "";
                     } else {
                         if (Game.state === GAME_STATES.ARRANGE)
                             cell.draggable = true;
-                        cell.innerHTML = newBoard[i][j].type.name;
+                        cell.innerHTML = this.board[i][j].display();
                     }
                 }
             }
     }
 
-    set _enemyBoard(newEnemyBoard) {
-        console.log(newEnemyBoard);
-        this.enemyBoard = newEnemyBoard;
-        for (let i = 0; i < 3; i++) {
-            for (let j = 0; j < 5; j++) {
-                let cell = document.getElementById(`enemy-${i}-${j}`);
-                if (newEnemyBoard[i][j] === null) {
-                    cell.innerHTML = "";
-                } else {
-                    cell.innerHTML = newEnemyBoard[i][j].type.name;
-                }
-            }
-        }
-    }
-
     set _queue(newQueue) {
-        this.queue = newQueue;
+        this.queue = newQueue.map((cat) => {
+            if (cat) return new SimpleCat(cat);
+            else return null;
+        });
         if (this.id !== Socket.id) return;
         for (let i = 0; i < 7; i++) {
             let cell = document.getElementById(`queue-${i}`);
-            if (newQueue[i] === null) {
+            if (this.queue[i] === null) {
                 cell.draggable = false;
                 cell.innerHTML = "";
             } else {
                 cell.draggable = true;
-                cell.innerHTML = newQueue[i].type.name;
+                cell.innerHTML = this.queue[i].display();
             }
         }
     }

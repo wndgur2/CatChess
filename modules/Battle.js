@@ -9,7 +9,17 @@ class Battle {
             ...player2.board.map((row) => row.reverse()).reverse(),
             ...player1.board,
         ];
+        console.log(this.board);
         this.time = 0;
+    }
+
+    getBoard(player) {
+        if (player === this.player1) {
+            return this.board;
+        } else if (player === this.player2) {
+            let boardCopy = this.board.map((row) => row.slice());
+            return boardCopy.map((row) => row.reverse()).reverse();
+        }
     }
 
     battleUpdate() {
@@ -18,14 +28,6 @@ class Battle {
                 board: this.getBoard(player),
             });
         });
-    }
-
-    getBoard(player) {
-        if (player === this.player1) {
-            return this.board;
-        } else if (player === this.player2) {
-            return this.board.map((row) => row.reverse()).reverse();
-        }
     }
 }
 
