@@ -24,4 +24,6 @@ const creeps = {
     },
 };
 
+Object.freeze(creeps);
+
 module.exports = creeps;

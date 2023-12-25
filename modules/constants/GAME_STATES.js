@@ -1,7 +1,7 @@
 const GAME_STATES = {
     ARRANGE: "arrange",
     BATTLE: "battle",
-    WAIT: "wait",
+    READY: "ready",
     FINISH: "finish",
 };
 

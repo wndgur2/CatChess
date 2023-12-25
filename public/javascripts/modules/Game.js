@@ -60,7 +60,7 @@ export default class Game {
 
                 break;
             }
-            case GAME_STATES.WAIT: {
+            case GAME_STATES.READY: {
                 document.getElementById("game").style.backgroundColor =
                     "#334233";
                 let cells = document.getElementsByClassName("cell");

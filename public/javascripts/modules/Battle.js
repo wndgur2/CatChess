@@ -1,6 +1,8 @@
 class Battle {
     static board = [];
-    static displayBoard() {
+    static displayBoard(reversed) {
+        if (reversed)
+            Battle.board = Battle.board.map((row) => row.reverse()).reverse();
         let rows = document.getElementsByClassName("row");
         for (let i = 0; i < rows.length; i++) {
             let cells = rows[i].getElementsByClassName("cell");

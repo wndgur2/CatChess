@@ -93,18 +93,18 @@ class Game {
     arrangeState() {
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 15;
+        this.time = 10;
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
             time: this.time,
         });
         setTimeout(() => {
-            this.waitState();
-        }, 15000);
+            this.readyState();
+        }, this.time * 1000);
     }
 
-    waitState() {
-        this.state = GAME_STATES.WAIT;
+    readyState() {
+        this.state = GAME_STATES.READY;
         this.time = 3;
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
@@ -112,22 +112,36 @@ class Game {
         });
         setTimeout(() => {
             this.battleState();
-        }, 3000);
+        }, this.time * 1000);
 
         this.battle = new Battle(this.players[0], this.players[1]);
-        this.battle.battleUpdate();
     }
 
     battleState() {
         this.state = GAME_STATES.BATTLE;
-        this.time = 20;
+        this.battle.initBattle();
+        this.time = 30;
+        this.sendMsgToAll("stateUpdate", {
+            state: this.state,
+            time: this.time,
+        });
+        setTimeout(() => {
+            this.finishState();
+        }, this.time * 1000);
+    }
+
+    finishState() {
+        this.battle.finish();
+
+        this.state = GAME_STATES.FINISH;
+        this.time = 3;
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
             time: this.time,
         });
         setTimeout(() => {
             this.arrangeState();
-        }, 20000);
+        }, this.time * 1000);
     }
 
     sendMsgToAll(type, data) {

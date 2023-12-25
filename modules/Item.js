@@ -1,5 +1,3 @@
-const { sendMsg } = require("./utils.js");
-
 class Item {
     constructor() {}
 }

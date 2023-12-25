@@ -80,4 +80,5 @@ const CATS = {
         range: 1,
     },
 };
+Object.freeze(CATS);
 module.exports = CATS;

@@ -97,7 +97,9 @@ export default class Socket {
                             else return null;
                         })
                     );
-                    Battle.displayBoard();
+                    Battle.displayBoard(data.reversed);
+                    break;
+                case "battleResult":
                     break;
                 case "timeUpdate":
                     Game._time = data.time;

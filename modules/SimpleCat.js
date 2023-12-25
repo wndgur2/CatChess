@@ -31,21 +31,58 @@ class SimpleCat {
         this.x = x;
         this.y = y;
         this.owner = player?.id;
+        this.die = false;
 
         this.delay = 0;
     }
 
-    /**
-     * @param {SimpleCat} target
-     */
-    attack(target) {
-        if (this.delay > 0) this.prepAttack();
-        target.hp -= this.ad - target.armor;
+    attack() {
+        if (!this.target) return;
+        if (this.delay > 0) {
+            this.delay -= this.speed;
+            return;
+        }
+        this.target.hp -= this.ad - this.target.armor;
+        if (this.target.hp <= 0) {
+            this.target.die = true;
+            return;
+        }
         this.delay = 100;
     }
 
-    prepAttack() {
-        this.delay -= this.speed;
+    move(board) {
+        if (this.delay > 0) {
+            this.delay -= this.speed / 2;
+            return;
+        }
+        if (!this.target) return;
+        // move toward this.target
+        let nextX = this.x,
+            nextY = this.y;
+        let dx = this.target.x - this.x;
+        let dy = this.target.y - this.y;
+        if (dx === 0 && dy === 0) return;
+        if (dx < 0 && dy < 0) {
+            nextX -= 1;
+            nextY -= 1;
+        } else if (dx < 0 && dy > 0) {
+            nextX -= 1;
+            nextY += 1;
+        } else {
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            nextX += Math.round(dx / dist);
+            nextY += Math.round(dy / dist);
+        }
+        if (nextX < 0) nextX = 0;
+        if (nextY < 0) nextY = 0;
+        if (nextX > 4) nextX = 4;
+        if (nextY > 5) nextY = 5;
+        if (board[nextY][nextX]) return;
+        board[this.y][this.x] = null;
+        this.x = nextX;
+        this.y = nextY;
+        board[this.y][this.x] = this;
+        this.delay = 100;
     }
 }
 
