@@ -100,6 +100,10 @@ export default class Socket {
                     Battle.displayBoard(data.reversed);
                     break;
                 case "battleResult":
+                    data.players.forEach(([player, hp]) => {
+                        console.log(player, hp);
+                        Player.getPlayerById(player)._hp = hp;
+                    });
                     break;
                 case "timeUpdate":
                     Game._time = data.time;

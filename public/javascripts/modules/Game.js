@@ -49,6 +49,20 @@ export default class Game {
                         cells[i].draggable = true;
                     }
                 }
+                // display player's board
+                let player = Player.player;
+                for (let i = 0; i < 3; i++) {
+                    for (let j = 0; j < 5; j++) {
+                        let cell = document.getElementById(`ally-${i}-${j}`);
+                        if (player.board[i][j] === null) {
+                            cell.draggable = false;
+                            cell.innerHTML = "";
+                        } else {
+                            cell.draggable = true;
+                            cell.innerHTML = player.board[i][j].display();
+                        }
+                    }
+                }
 
                 // empty enemy boards
                 for (let i = 0; i < 3; i++) {
@@ -75,6 +89,10 @@ export default class Game {
             case GAME_STATES.BATTLE: {
                 document.getElementById("game").style.backgroundColor =
                     "#423333";
+                break;
+            }
+            case GAME_STATES.FINISH: {
+                document.getElementById("game").style.backgroundColor = "#666";
                 break;
             }
         }

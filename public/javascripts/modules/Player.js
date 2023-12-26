@@ -60,7 +60,6 @@ export default class Player {
 
     set _hp(newHp) {
         this.hp = newHp;
-        if (this.id !== Socket.id) return;
         document.getElementById(`${this.id}-hp`).innerHTML = newHp;
     }
 

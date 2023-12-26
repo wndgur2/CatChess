@@ -52,7 +52,7 @@ class SimpleCat {
 
     move(board) {
         if (this.delay > 0) {
-            this.delay -= this.speed / 2;
+            this.delay -= this.speed;
             return;
         }
         if (!this.target) return;
@@ -83,6 +83,10 @@ class SimpleCat {
         this.y = nextY;
         board[this.y][this.x] = this;
         this.delay = 100;
+    }
+
+    clone() {
+        return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
     }
 }
 

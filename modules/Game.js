@@ -52,6 +52,7 @@ class Game {
         this.round = 1;
         this.stage = 0;
         this.arrangeState();
+        this.battles = [];
         setInterval(() => {
             if (this.time <= 0) return;
             this.time = this.time - 1;
@@ -73,7 +74,7 @@ class Game {
             stage: this.stage,
         });
         if (this.state !== GAME_STATES.ARRANGE) {
-            this.battle.battleUpdate();
+            this.battles.battleUpdate();
         }
         player.updatePlayer();
     }
@@ -91,6 +92,8 @@ class Game {
     }
 
     arrangeState() {
+        clearTimeout(this.timeout);
+
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
         this.time = 10;
@@ -98,40 +101,53 @@ class Game {
             state: this.state,
             time: this.time,
         });
-        setTimeout(() => {
+
+        this.timeout = setTimeout(() => {
             this.readyState();
         }, this.time * 1000);
     }
 
     readyState() {
+        clearTimeout(this.timeout);
+
         this.state = GAME_STATES.READY;
         this.time = 3;
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
             time: this.time,
         });
-        setTimeout(() => {
+
+        this.timeout = setTimeout(() => {
             this.battleState();
         }, this.time * 1000);
 
-        this.battle = new Battle(this.players[0], this.players[1]);
+        this.battles.push(new Battle(this.players[0], this.players[1]));
     }
 
     battleState() {
+        clearTimeout(this.timeout);
+
         this.state = GAME_STATES.BATTLE;
-        this.battle.initBattle();
+        this.battles.forEach((battle) => {
+            battle.initBattle();
+        });
         this.time = 30;
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
             time: this.time,
         });
-        setTimeout(() => {
+
+        this.timeout = setTimeout(() => {
             this.finishState();
         }, this.time * 1000);
     }
 
     finishState() {
-        this.battle.finish();
+        clearTimeout(this.timeout);
+
+        this.battles.forEach((battle) => {
+            battle.finish();
+        });
 
         this.state = GAME_STATES.FINISH;
         this.time = 3;
@@ -139,7 +155,8 @@ class Game {
             state: this.state,
             time: this.time,
         });
-        setTimeout(() => {
+
+        this.timeout = setTimeout(() => {
             this.arrangeState();
         }, this.time * 1000);
     }

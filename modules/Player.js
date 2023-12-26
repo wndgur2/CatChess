@@ -116,37 +116,53 @@ class Player {
     }
 
     putCat({ befX, befY, nextX, nextY }) {
-        let tempUnit = null,
-            unitToMove;
-        if (befY === 3) {
+        let unitToMove, unitToSwap;
+        const IN_QUEUE = 3;
+
+        if (befY === IN_QUEUE) {
+            // from queue
             unitToMove = this.queue[befX];
-            if (nextY === 3) {
-                tempUnit = this.queue[nextX];
+            if (nextY === IN_QUEUE) {
+                // to queue
+                unitToSwap = this.queue[nextX];
                 this.queue[nextX] = unitToMove;
-                this.queue[befX] = tempUnit;
+                this.queue[befX] = unitToSwap;
             } else {
-                tempUnit = this.board[nextY][nextX];
+                // to board
+                let amount = 0;
+                this.board.forEach((row) => {
+                    row.forEach((cat) => {
+                        if (cat) amount++;
+                    });
+                });
+                if (amount == this.level) return false;
+
+                unitToSwap = this.board[nextY][nextX];
                 this.board[nextY][nextX] = unitToMove;
-                this.queue[befX] = tempUnit;
+                this.queue[befX] = unitToSwap;
             }
         } else {
+            // from board
             unitToMove = this.board[befY][befX];
-            if (nextY === 3) {
-                tempUnit = this.queue[nextX];
+            if (nextY === IN_QUEUE) {
+                // to queue
+                unitToSwap = this.queue[nextX];
                 this.queue[nextX] = unitToMove;
-                this.board[befY][befX] = tempUnit;
+                this.board[befY][befX] = unitToSwap;
             } else {
-                tempUnit = this.board[nextY][nextX];
+                // to board
+                unitToSwap = this.board[nextY][nextX];
                 this.board[nextY][nextX] = unitToMove;
-                this.board[befY][befX] = tempUnit;
+                this.board[befY][befX] = unitToSwap;
             }
         }
-        if (tempUnit) {
-            tempUnit.x = befX;
-            tempUnit.y = befY;
+        if (unitToSwap) {
+            unitToSwap.x = befX;
+            unitToSwap.y = befY;
         }
         unitToMove.x = nextX;
         unitToMove.y = nextY;
+
         this.game.sendMsgToAll("boardUpdate", {
             player: this.id,
             board: this.board.map((row) =>

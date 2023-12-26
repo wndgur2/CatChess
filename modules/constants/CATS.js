@@ -9,9 +9,9 @@ const CATS = {
         armor: 3,
         range: 1,
     },
-    fastCat: {
-        id: "fastCat",
-        name: "빠른 고양이",
+    thiefCat: {
+        id: "thiefCat",
+        name: "도둑 고양이",
         cost: 1,
         ad: 15,
         speed: 20,
