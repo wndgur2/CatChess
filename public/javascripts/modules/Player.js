@@ -105,36 +105,36 @@ export default class Player {
         }
     }
 
-    set _shoplist(newShoplist) {
-        this.shoplist = newShoplist;
+    set _shop(newShop) {
+        this.shop = newShop;
         if (this.id !== Socket.id) return;
-        let list = document.getElementById("shoppingList");
-        list.innerHTML = "";
-        for (let i = 0; i < newShoplist.length; i++) {
-            let wrapper = document.createElement("button");
-            wrapper.style.display = "flex";
-            wrapper.style.flexDirection = "column";
-            wrapper.style.alignItems = "center";
-            wrapper.style.justifyContent = "center";
-            if (newShoplist[i] === null) {
-                list.appendChild(wrapper);
+        let shop = document.getElementById("shop");
+        shop.innerHTML = "";
+        for (let i = 0; i < newShop.length; i++) {
+            let unit = document.createElement("button");
+            unit.style.display = "flex";
+            unit.style.flexDirection = "column";
+            unit.style.alignItems = "center";
+            unit.style.justifyContent = "center";
+            if (newShop[i] === null) {
+                shop.appendChild(unit);
                 continue;
             }
-            wrapper.onclick = function () {
+            unit.onclick = function () {
                 Socket.sendMsg("reqBuyCat", {
                     index: i,
                 });
             };
 
             let cost = document.createElement("span");
-            cost.innerHTML = newShoplist[i].cost + "💰";
-            wrapper.appendChild(cost);
+            cost.innerHTML = newShop[i].cost + "💰";
+            unit.appendChild(cost);
 
             let name = document.createElement("span");
-            name.innerHTML = newShoplist[i].name;
+            name.innerHTML = newShop[i].name;
 
-            wrapper.appendChild(name);
-            list.appendChild(wrapper);
+            unit.appendChild(name);
+            shop.appendChild(unit);
         }
     }
 }

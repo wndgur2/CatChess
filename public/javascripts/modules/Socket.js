@@ -36,8 +36,8 @@ export default class Socket {
                 case "gameMatched":
                     Game.init(data.players);
                     break;
-                case "shoplistUpdate":
-                    Player.getPlayerById(data.player)._shoplist = data.shoplist;
+                case "shopUpdate":
+                    Player.getPlayerById(data.player)._shop = data.shop;
                     break;
                 case "expUpdate":
                     Player.player._exp = data.exp;

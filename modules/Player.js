@@ -46,9 +46,9 @@ class Player {
             player: this.id,
             level: this.level,
         });
-        sendMsg(this.ws, "shoplistUpdate", {
+        sendMsg(this.ws, "shopUpdate", {
             player: this.id,
-            shoplist: this.shoplist,
+            shop: this.shop,
         });
         sendMsg(this.ws, "moneyUpdate", {
             player: this.id,
@@ -79,7 +79,7 @@ class Player {
     }
 
     buyCat(index) {
-        let catId = this.shoplist[index].id;
+        let catId = this.shop[index].id;
         let catProto = SimpleCat.prototypes[catId];
         if (!this.checkAffordable(catProto.cost)) return false;
 
@@ -94,10 +94,10 @@ class Player {
                     ),
                     queue: this.queue.map((cat) => JSON.stringify(cat)),
                 });
-                this.shoplist[index] = null;
-                sendMsg(this.ws, "shoplistUpdate", {
+                this.shop[index] = null;
+                sendMsg(this.ws, "shopUpdate", {
                     player: this.id,
-                    shoplist: this.shoplist,
+                    shop: this.shop,
                 });
                 return true;
             }
@@ -211,11 +211,11 @@ class Player {
             }
         }
 
-        this.shoplist = result;
+        this.shop = result;
 
-        sendMsg(this.ws, "shoplistUpdate", {
+        sendMsg(this.ws, "shopUpdate", {
             player: this.id,
-            shoplist: result,
+            shop: result,
         });
         return true;
     }

@@ -198,7 +198,7 @@ html body {
     width: 100%;
 }
 
-#shoppingList {
+#shop {
     height: 12vh;
     width: 60%;
     display: flex;
@@ -206,7 +206,7 @@ html body {
     gap: 4vw;
     align-items: center;
 }
-#shoppingList button {
+#shop button {
     height: 100%;
     width: 25%;
 }

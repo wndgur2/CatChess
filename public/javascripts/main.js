@@ -25,6 +25,10 @@ function hydrate() {
         Socket.sendMsg("reqBuyExp", "");
     });
 
+    // TODO 리스트 살리기. 샵 위에 팔기 이벤트용 엘리먼트 생성?
+    document.getElementById("shop").addEventListener("drop", reqSellCat);
+    document.getElementById("shop").addEventListener("dragover", showSellCat);
+
     // 3 x 5 enemy board
     for (let i = 0; i < 3; i++) {
         let row = document.createElement("div");
@@ -82,6 +86,18 @@ function cellDragDrop(event) {
         from: Player.player.dragging,
         to: event.target.id,
     });
+}
+
+function showSellCat(event) {
+    event.preventDefault();
+    event.target.innerHTML = `고양이 판매하기<br/>💰${Player.player.dragging.cost}`;
+}
+
+function reqSellCat(event) {
+    Socket.sendMsg("reqSellCat", {
+        cat: Player.player.dragging,
+    });
+    Player.player._shop = Player.player.shop;
 }
 
 function getCellUnitByCellId(id) {

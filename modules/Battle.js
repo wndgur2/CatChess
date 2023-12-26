@@ -26,7 +26,6 @@ class Battle {
             .reverse();
 
         this.board = [...board2, ...board1];
-        console.log(this.board);
 
         this.board.forEach((row, i) => {
             row.forEach((cat, j) => {
@@ -120,7 +119,6 @@ class Battle {
                  */
                 let cat = this.board[i][j];
                 if (cat) {
-                    console.log(cat);
                     if (cat.owner === this.player1.id) isPlayer1Alive = true;
                     else isPlayer2Alive = true;
                     cat.target = this.getNearestEnemy(i, j, cat.owner);
