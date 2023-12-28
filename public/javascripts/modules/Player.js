@@ -116,6 +116,7 @@ export default class Player {
             unit.style.flexDirection = "column";
             unit.style.alignItems = "center";
             unit.style.justifyContent = "center";
+
             if (newShop[i] === null) {
                 shop.appendChild(unit);
                 continue;

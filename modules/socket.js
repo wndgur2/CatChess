@@ -43,6 +43,7 @@ module.exports = (server) => {
                     Player.getPlayer(from).putCat({ befX, befY, nextX, nextY });
                     break;
                 case "reqSellCat":
+                    Player.getPlayer(from).sellCat(data.cat);
                     break;
                 case "reqReload":
                     Player.getPlayer(from).reload();

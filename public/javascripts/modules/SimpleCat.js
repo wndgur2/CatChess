@@ -16,6 +16,7 @@ export default class SimpleCat {
 
     display() {
         return `<div class="cat">
+        <div class="catTier">🌟${this.tier}</div>
         <div class="catHp">♥️${this.hp}</div>
         <div class="catName">${this.name}</div>
         </div>`;

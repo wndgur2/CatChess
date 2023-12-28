@@ -74,7 +74,9 @@ class Game {
             stage: this.stage,
         });
         if (this.state !== GAME_STATES.ARRANGE) {
-            this.battles.battleUpdate();
+            this.battles.forEach((battle) => {
+                battle.battleUpdate();
+            });
         }
         player.updatePlayer();
     }

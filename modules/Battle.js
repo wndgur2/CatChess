@@ -1,13 +1,15 @@
 const SimpleCat = require("./SimpleCat");
 const { sendMsg } = require("./utils");
 
+const TIME_STEP = 50; // ms
+
 class Battle {
     constructor(player1, player2) {
         this.game = player1.game;
         this.player1 = player1;
         this.player2 = player2;
         this.players = [player1, player2];
-        // copy player2's board
+
         let board1 = player1.board.map((row) =>
             row.map((cat) => {
                 if (cat) return cat.clone();
@@ -43,7 +45,7 @@ class Battle {
     initBattle() {
         this.battleInterval = setInterval(() => {
             this.updateBattle();
-        }, 25);
+        }, TIME_STEP);
     }
 
     finish() {

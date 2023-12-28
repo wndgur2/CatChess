@@ -71,11 +71,7 @@ export default class Socket {
                 case "dropItem":
                     break;
                 case "moneyUpdate":
-                    if (data.player === Socket.id) {
-                        Player.getPlayerById(data.player)._money = data.money;
-                    } else {
-                        Player.getPlayerById(data.player).money = data.money;
-                    }
+                    Player.getPlayerById(data.player)._money = data.money;
                     break;
                 case "boardUpdate":
                     Player.getPlayerById(data.player)._board = data.board.map(

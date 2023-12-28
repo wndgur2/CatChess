@@ -15,6 +15,7 @@ class SimpleCat {
      * @param {Player} player
      */
     constructor(id, player, x, y = 3, tier = 1) {
+        this.id = id;
         this.proto = SimpleCat.prototypes[id];
 
         this.tier = tier;

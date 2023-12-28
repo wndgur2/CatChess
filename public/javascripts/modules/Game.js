@@ -12,6 +12,7 @@ export default class Game {
     }
 
     static displayPlayersInfo() {
+        console.log("displayPlayersInfo");
         let playersEl = document.createElement("div");
         Game.players.forEach((player) => {
             let playerDiv = document.createElement("div");

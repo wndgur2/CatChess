@@ -38,67 +38,35 @@ class Player {
     }
 
     updatePlayer() {
-        sendMsg(this.ws, "expUpdate", {
-            player: this.id,
-            exp: this.exp,
-        });
-        sendMsg(this.ws, "levelUpdate", {
-            player: this.id,
-            level: this.level,
-        });
-        sendMsg(this.ws, "shopUpdate", {
-            player: this.id,
-            shop: this.shop,
-        });
-        sendMsg(this.ws, "moneyUpdate", {
-            player: this.id,
-            money: this.money,
-        });
-        sendMsg(this.ws, "boardUpdate", {
-            player: this.id,
-            board: this.board.map((row) =>
-                row.map((cat) => JSON.stringify(cat))
-            ),
-            queue: this.queue.map((cat) => JSON.stringify(cat)),
-        });
+        this.updateExp();
+        this.updateLevel();
+        this.updateShop();
+        this.updateMoney();
+        this.updateBoard();
     }
 
     /**
      * @param {number} newMoney
      */
     set _money(newMoney) {
-        sendMsg(this.ws, "moneyUpdate", {
-            player: this.id,
-            money: newMoney,
-        });
         this.money = parseInt(newMoney);
-    }
-
-    get _money() {
-        return this.money;
+        this.updateMoney();
     }
 
     buyCat(index) {
+        if (!this.shop[index]) return false;
         let catId = this.shop[index].id;
         let catProto = SimpleCat.prototypes[catId];
-        if (!this.checkAffordable(catProto.cost)) return false;
+        if (this.money < catProto.cost) return false;
 
         for (let i = 0; i < this.queue.length; ++i) {
             if (this.queue[i] === null) {
                 this.queue[i] = new SimpleCat(catId, this, i);
                 this._money = this.money - catProto.cost;
-                this.game.sendMsgToAll("boardUpdate", {
-                    player: this.id,
-                    board: this.board.map((row) =>
-                        row.map((cat) => JSON.stringify(cat))
-                    ),
-                    queue: this.queue.map((cat) => JSON.stringify(cat)),
-                });
                 this.shop[index] = null;
-                sendMsg(this.ws, "shopUpdate", {
-                    player: this.id,
-                    shop: this.shop,
-                });
+                this.checkUpgrade();
+                this.updateBoard();
+                this.updateShop();
                 return true;
             }
         }
@@ -106,11 +74,83 @@ class Player {
         return false;
     }
 
-    sellCat({ x, y }) {
-        let cat = this.board[y][x];
+    checkUpgrade() {
+        let tier_species_amount = {};
+        [...this.board, this.queue].forEach((row) => {
+            row.forEach((cat) => {
+                if (!cat) return;
+                if (!tier_species_amount[cat.id]) {
+                    tier_species_amount[cat.id] = {};
+                    if (!tier_species_amount[cat.id][cat.tier])
+                        tier_species_amount[cat.id][cat.tier] = 0;
+                }
+                tier_species_amount[cat.id][cat.tier]++;
+            });
+        });
+
+        while (true) {
+            let upgrade = false;
+            for (let id in tier_species_amount) {
+                let species = tier_species_amount[id];
+                for (let tier in species) {
+                    if (species[tier] >= 3) {
+                        console.log("need Upgrade");
+                        species[tier] -= 3;
+                        species[parseInt(tier) + 1] += 1;
+                        upgrade = true;
+
+                        let cat;
+                        [...this.board, this.queue].forEach((row) => {
+                            cat = row.find((c) => {
+                                if (!c) return false;
+                                console.log(c.id, c.tier);
+                                return c.id === id && c.tier == tier;
+                            });
+                        });
+
+                        let newCat = new SimpleCat(
+                            id,
+                            this,
+                            cat.x,
+                            cat.y,
+                            parseInt(tier) + 1
+                        );
+
+                        if (cat.y === 3) this.queue[cat.x] = newCat;
+                        else this.board[cat.y][cat.x] = newCat;
+
+                        let amountToDelete = 2;
+                        [...this.board, this.queue].forEach((row) => {
+                            row.forEach((tempCat) => {
+                                if (
+                                    tempCat &&
+                                    tempCat.id === id &&
+                                    tempCat.tier == tier &&
+                                    amountToDelete > 0
+                                ) {
+                                    if (tempCat.y == 3)
+                                        this.queue[tempCat.x] = null;
+                                    else
+                                        this.board[tempCat.y][tempCat.x] = null;
+                                    amountToDelete--;
+                                    console.log(amountToDelete);
+                                }
+                            });
+                        });
+                    }
+                }
+            }
+            if (!upgrade) break;
+        }
+    }
+
+    sellCat(cat) {
         if (!cat) return false;
         this.money += cat.cost;
-        this.board[cat.y][cat.x] = null;
+        if (cat.y === 3) this.queue[cat.x] = null;
+        else this.board[cat.y][cat.x] = null;
+        this.updateBoard();
+        this.updateMoney();
 
         return true;
     }
@@ -163,18 +203,12 @@ class Player {
         unitToMove.x = nextX;
         unitToMove.y = nextY;
 
-        this.game.sendMsgToAll("boardUpdate", {
-            player: this.id,
-            board: this.board.map((row) =>
-                row.map((cat) => JSON.stringify(cat))
-            ),
-            queue: this.queue.map((cat) => JSON.stringify(cat)),
-        });
+        this.updateBoard();
         return true;
     }
 
     reload() {
-        if (!this.checkAffordable(2)) return false;
+        if (this.money < 2) return false;
         this._money = this.money - 2;
 
         let result = [];
@@ -213,15 +247,12 @@ class Player {
 
         this.shop = result;
 
-        sendMsg(this.ws, "shopUpdate", {
-            player: this.id,
-            shop: result,
-        });
+        this.updateShop();
         return true;
     }
 
     buyExp() {
-        if (!this.checkAffordable(4)) return false;
+        if (this.money < 4) return false;
         if (this.level === 6) return false;
         this._money -= 4;
         this.exp += 4;
@@ -229,27 +260,50 @@ class Player {
             this.exp -= this.maxExp;
             this.level++;
             this.maxExp += 3;
-            this.game.sendMsgToAll("levelUpdate", {
-                player: this.id,
-                level: this.level,
-            });
+            this.updateLevel();
         }
+        this.updateMoney();
+        this.updateExp();
+        return true;
+    }
+
+    // update messages
+    updateShop() {
+        sendMsg(this.ws, "shopUpdate", {
+            player: this.id,
+            shop: this.shop,
+        });
+    }
+
+    updateMoney() {
         this.game.sendMsgToAll("moneyUpdate", {
             player: this.id,
             money: this.money,
         });
-        sendMsg(this.ws, "expUpdate", {
-            exp: this.exp,
-        });
-        return true;
     }
 
-    checkAffordable(cost) {
-        if (this.money < cost) {
-            console.log("돈이 부족합니다.");
-            return false;
-        }
-        return true;
+    updateBoard() {
+        this.game.sendMsgToAll("boardUpdate", {
+            player: this.id,
+            board: this.board.map((row) =>
+                row.map((cat) => JSON.stringify(cat))
+            ),
+            queue: this.queue.map((cat) => JSON.stringify(cat)),
+        });
+    }
+
+    updateLevel() {
+        this.game.sendMsgToAll("levelUpdate", {
+            player: this.id,
+            level: this.level,
+        });
+    }
+
+    updateExp() {
+        sendMsg(this.ws, "expUpdate", {
+            player: this.id,
+            exp: this.exp,
+        });
     }
 }
 

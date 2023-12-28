@@ -1,5 +1,7 @@
 import Socket from "./modules/Socket.js";
 import Player from "./modules/Player.js";
+import Game from "./modules/Game.js";
+import SimpleCat from "./modules/SimpleCat.js";
 
 window.onload = () => {
     init();
@@ -25,9 +27,11 @@ function hydrate() {
         Socket.sendMsg("reqBuyExp", "");
     });
 
-    // TODO 리스트 살리기. 샵 위에 팔기 이벤트용 엘리먼트 생성?
-    document.getElementById("shop").addEventListener("drop", reqSellCat);
-    document.getElementById("shop").addEventListener("dragover", showSellCat);
+    // TODO 리스트 살리기. 샵 위에 팔기 이벤트용 엘리먼트 생성
+    let shopEl = document.getElementById("shop");
+    shopEl.addEventListener("drop", shopDragDrop);
+    shopEl.addEventListener("dragover", shopDragOver);
+    shopEl.addEventListener("dragleave", shopDragLeave);
 
     // 3 x 5 enemy board
     for (let i = 0; i < 3; i++) {
@@ -35,8 +39,10 @@ function hydrate() {
         row.className = "row";
         for (let j = 0; j < 5; j++) {
             let cell = document.createElement("div");
-            cell.className = "cell";
             cell.id = `enemy-${i}-${j}`;
+            cell.className = "cell";
+            cell.addEventListener("click", cellClick);
+            cell.draggable = false;
             row.appendChild(cell);
         }
         document.getElementById("board").appendChild(row);
@@ -49,7 +55,13 @@ function hydrate() {
         for (let j = 0; j < 5; j++) {
             let cell = document.createElement("div");
             cell.id = `ally-${i}-${j}`;
-            hydrateCell(cell);
+
+            cell.className = "cell";
+            cell.addEventListener("dragstart", cellDragStart);
+            cell.addEventListener("dragover", cellDragOver);
+            cell.addEventListener("drop", cellDragDrop);
+            cell.addEventListener("click", cellClick);
+            cell.draggable = false;
             row.appendChild(cell);
         }
         document.getElementById("board").appendChild(row);
@@ -59,7 +71,13 @@ function hydrate() {
     for (let i = 0; i < 7; i++) {
         let cell = document.createElement("div");
         cell.id = `queue-${i}`;
-        hydrateCell(cell);
+
+        cell.className = "cell";
+        cell.addEventListener("dragstart", cellDragStart);
+        cell.addEventListener("dragover", cellDragOver);
+        cell.addEventListener("drop", cellDragDrop);
+        cell.addEventListener("click", cellClick);
+        cell.draggable = false;
         document.getElementById("queue").appendChild(cell);
     }
 }
@@ -69,6 +87,7 @@ function hydrateCell(cell) {
     cell.addEventListener("dragstart", cellDragStart);
     cell.addEventListener("dragover", cellDragOver);
     cell.addEventListener("drop", cellDragDrop);
+    cell.addEventListener("click", cellClick);
     cell.draggable = false;
 }
 
@@ -88,15 +107,50 @@ function cellDragDrop(event) {
     });
 }
 
-function showSellCat(event) {
-    event.preventDefault();
-    event.target.innerHTML = `고양이 판매하기<br/>💰${Player.player.dragging.cost}`;
+function cellClick(event) {
+    let unit = getCellUnitByCellId(event.target.id);
+    if (!unit) return;
+    displayUnitInfo(unit);
+
+    // 이것도 실행되는듯.
+    setTimeout(() => {
+        Game.clickEvent = document
+            .getElementById("game")
+            .addEventListener("click", gameClick, true);
+    }, 500);
 }
 
-function reqSellCat(event) {
+/**
+ *
+ * @param {SimpleCat} unit
+ */
+function displayUnitInfo(unit) {
+    let rightWrapper = document.getElementById("rightWrapper");
+    rightWrapper.innerHTML = unit.info();
+}
+
+function gameClick(event) {
+    Game.displayPlayersInfo();
+    document
+        .getElementById("game")
+        .removeEventListener("click", gameClick, true);
+}
+
+function shopDragOver(event) {
+    event.preventDefault();
+    let shopEl = document.getElementById("shop");
+    //TODO How to overlay perfectly on the shop?
+    shopEl.innerHTML = `고양이 판매하기<br/>💰${Player.player.dragging.cost}`;
+}
+
+function shopDragDrop(event) {
     Socket.sendMsg("reqSellCat", {
         cat: Player.player.dragging,
     });
+    Player.player._shop = Player.player.shop;
+}
+
+function shopDragLeave(event) {
     Player.player._shop = Player.player.shop;
 }
 

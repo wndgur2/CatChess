@@ -136,18 +136,15 @@ html body {
     justify-content: center;
     align-items: center;
     pointer-events: none;
-}
-
-.catName {
-    width: 100%;
+    background-color: #212121;
 }
 
 #rightWrapper {
     position: absolute;
-    top: 20dvh;
-    left: 92vw;
-    width: 6vw;
-    height: 20dvh;
+    top: 24dvh;
+    left: 84vw;
+    width: 16vw;
+    height: 26dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
