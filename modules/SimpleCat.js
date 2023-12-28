@@ -19,13 +19,15 @@ class SimpleCat {
         this.proto = SimpleCat.prototypes[id];
 
         this.tier = tier;
+        this.magnyfier = Math.sqrt(this.tier).toPrecision(2);
+
         this.name = this.proto.name;
-        this.ad = this.proto.ad * tier;
-        this.speed = this.proto.speed * tier;
+        this.ad = parseInt(this.proto.ad * this.magnyfier);
+        this.speed = parseInt(this.proto.speed * this.magnyfier);
         this.range = this.proto.range;
-        this.maxHp = this.proto.hp * tier;
+        this.maxHp = parseInt(this.proto.hp * this.magnyfier);
         this.hp = this.maxHp;
-        this.armor = this.proto.armor * tier;
+        this.armor = parseInt(this.proto.armor * this.magnyfier);
         this.cost = this.proto.cost * Math.pow(3, tier - 1);
         if (tier > 1) this.cost -= 1;
 
@@ -38,7 +40,10 @@ class SimpleCat {
     }
 
     attack() {
-        if (!this.target) return;
+        if (!this.target) {
+            console.log("no target");
+            return;
+        }
         if (this.delay > 0) {
             this.delay -= this.speed;
             return;

@@ -104,6 +104,14 @@ export default class Socket {
                 case "timeUpdate":
                     Game._time = data.time;
                     break;
+
+                case "winningUpdate":
+                    Player.getPlayerById(data.player)._winning = data.winning;
+                    break;
+
+                case "losingUpdate":
+                    Player.getPlayerById(data.player)._losing = data.losing;
+                    break;
                 default:
                     break;
             }

@@ -1,6 +1,8 @@
 const SimpleCat = require("./SimpleCat");
 const { sendMsg } = require("./utils");
 
+const IN_QUEUE = 3;
+
 class Player {
     static players = [];
 
@@ -21,20 +23,23 @@ class Player {
     }
 
     init() {
+        this.level = 1;
+        this.exp = 0;
         this.money = 150;
+        this.maxExp = 2;
+        this.maxHp = 100;
+        this.hp = 100;
+
         this.board = [
             [null, null, null, null, null],
             [null, null, null, null, null],
             [null, null, null, null, null],
         ];
         this.queue = [null, null, null, null, null, null, null];
-        this.level = 1;
-        this.exp = 0;
-        this.maxExp = 2;
-        this.maxHp = 100;
-        this.hp = 100;
         this.items = [];
-        this.reload();
+
+        this.winning = 0;
+        this.losing = 0;
     }
 
     updatePlayer() {
@@ -51,6 +56,43 @@ class Player {
     set _money(newMoney) {
         this.money = parseInt(newMoney);
         this.updateMoney();
+    }
+
+    get _money() {
+        return this.money;
+    }
+
+    set _exp(newExp) {
+        this.exp = parseInt(newExp);
+        if (this.exp >= this.maxExp) {
+            this.exp -= this.maxExp;
+            this.level++;
+            this.maxExp += 3;
+            this.updateLevel();
+        }
+        this.updateExp();
+    }
+
+    get _exp() {
+        return this.exp;
+    }
+
+    set _winning(newWinning) {
+        this.winning = parseInt(newWinning);
+        this.updateWinning();
+    }
+
+    get _winning() {
+        return this.winning;
+    }
+
+    set _losing(newLosing) {
+        this.losing = parseInt(newLosing);
+        this.updateLosing();
+    }
+
+    get _losing() {
+        return this.losing;
     }
 
     buyCat(index) {
@@ -75,6 +117,7 @@ class Player {
     }
 
     checkUpgrade() {
+        // count cats
         let tier_species_amount = {};
         [...this.board, this.queue].forEach((row) => {
             row.forEach((cat) => {
@@ -88,66 +131,64 @@ class Player {
             });
         });
 
+        // upgrade cats
         while (true) {
-            let upgrade = false;
+            let isUpgraded = false;
             for (let id in tier_species_amount) {
-                let species = tier_species_amount[id];
-                for (let tier in species) {
-                    if (species[tier] >= 3) {
-                        console.log("need Upgrade");
-                        species[tier] -= 3;
-                        species[parseInt(tier) + 1] += 1;
-                        upgrade = true;
+                let species_amount = tier_species_amount[id];
+                for (let tier in species_amount) {
+                    if (species_amount[tier] < 3) continue;
 
-                        let cat;
-                        [...this.board, this.queue].forEach((row) => {
-                            cat = row.find((c) => {
-                                if (!c) return false;
-                                console.log(c.id, c.tier);
-                                return c.id === id && c.tier == tier;
-                            });
+                    isUpgraded = true;
+                    species_amount[tier] -= 3;
+                    if (!species_amount[parseInt(tier) + 1])
+                        species_amount[parseInt(tier) + 1] = 0;
+                    species_amount[parseInt(tier) + 1] += 1;
+
+                    let oldCat;
+                    [...this.board, this.queue].forEach((row) => {
+                        oldCat = row.find((c) => {
+                            if (!c) return false;
+                            return c.id === id && c.tier == tier;
                         });
+                    });
 
-                        let newCat = new SimpleCat(
-                            id,
-                            this,
-                            cat.x,
-                            cat.y,
-                            parseInt(tier) + 1
-                        );
+                    let newCat = new SimpleCat(
+                        id,
+                        this,
+                        oldCat.x,
+                        oldCat.y,
+                        parseInt(tier) + 1
+                    );
 
-                        if (cat.y === 3) this.queue[cat.x] = newCat;
-                        else this.board[cat.y][cat.x] = newCat;
+                    if (oldCat.y == IN_QUEUE) this.queue[oldCat.x] = newCat;
+                    else this.board[oldCat.y][oldCat.x] = newCat;
 
-                        let amountToDelete = 2;
-                        [...this.board, this.queue].forEach((row) => {
-                            row.forEach((tempCat) => {
-                                if (
-                                    tempCat &&
-                                    tempCat.id === id &&
-                                    tempCat.tier == tier &&
-                                    amountToDelete > 0
-                                ) {
-                                    if (tempCat.y == 3)
-                                        this.queue[tempCat.x] = null;
-                                    else
-                                        this.board[tempCat.y][tempCat.x] = null;
-                                    amountToDelete--;
-                                    console.log(amountToDelete);
-                                }
-                            });
+                    let amountToDelete = 2;
+                    [...this.board, this.queue].forEach((row) => {
+                        row.forEach((c) => {
+                            if (
+                                c &&
+                                c.id === id &&
+                                c.tier == tier &&
+                                amountToDelete
+                            ) {
+                                if (c.y == IN_QUEUE) this.queue[c.x] = null;
+                                else this.board[c.y][c.x] = null;
+                                amountToDelete--;
+                            }
                         });
-                    }
+                    });
                 }
             }
-            if (!upgrade) break;
+            if (!isUpgraded) break;
         }
     }
 
     sellCat(cat) {
         if (!cat) return false;
         this.money += cat.cost;
-        if (cat.y === 3) this.queue[cat.x] = null;
+        if (cat.y === IN_QUEUE) this.queue[cat.x] = null;
         else this.board[cat.y][cat.x] = null;
         this.updateBoard();
         this.updateMoney();
@@ -157,7 +198,6 @@ class Player {
 
     putCat({ befX, befY, nextX, nextY }) {
         let unitToMove, unitToSwap;
-        const IN_QUEUE = 3;
 
         if (befY === IN_QUEUE) {
             // from queue
@@ -207,9 +247,11 @@ class Player {
         return true;
     }
 
-    reload() {
-        if (this.money < 2) return false;
-        this._money = this.money - 2;
+    reload(freeReload = false) {
+        if (!freeReload) {
+            if (this.money < 2) return false;
+            this._money = this.money - 2;
+        }
 
         let result = [];
         let possibilities = [];
@@ -255,13 +297,7 @@ class Player {
         if (this.money < 4) return false;
         if (this.level === 6) return false;
         this._money -= 4;
-        this.exp += 4;
-        if (this.exp >= this.maxExp) {
-            this.exp -= this.maxExp;
-            this.level++;
-            this.maxExp += 3;
-            this.updateLevel();
-        }
+        this._exp += 4;
         this.updateMoney();
         this.updateExp();
         return true;
@@ -303,6 +339,20 @@ class Player {
         sendMsg(this.ws, "expUpdate", {
             player: this.id,
             exp: this.exp,
+        });
+    }
+
+    updateWinning() {
+        this.game.sendMsgToAll("winningUpdate", {
+            player: this.id,
+            winning: this.winning,
+        });
+    }
+
+    updateLosing() {
+        this.game.sendMsgToAll("losingUpdate", {
+            player: this.id,
+            losing: this.losing,
         });
     }
 }

@@ -32,6 +32,10 @@ class Game {
         }
     }
 
+    /**
+     *
+     * @param {[Player]} players
+     */
     constructor(players) {
         this.players = players;
         console.log("game start");
@@ -52,6 +56,9 @@ class Game {
         this.round = 1;
         this.stage = 0;
         this.arrangeState();
+        /**
+         * @type {Battle[]}
+         */
         this.battles = [];
         setInterval(() => {
             if (this.time <= 0) return;
@@ -75,7 +82,7 @@ class Game {
         });
         if (this.state !== GAME_STATES.ARRANGE) {
             this.battles.forEach((battle) => {
-                battle.battleUpdate();
+                battle.updateBattle();
             });
         }
         player.updatePlayer();
@@ -99,14 +106,21 @@ class Game {
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
         this.time = 10;
-        this.sendMsgToAll("stateUpdate", {
-            state: this.state,
-            time: this.time,
-        });
-
+        this.updateState();
         this.timeout = setTimeout(() => {
             this.readyState();
         }, this.time * 1000);
+
+        // 결과 지급, 리로드
+        this.players.forEach((player) => {
+            player.reload(true);
+            let income = 5;
+            income += player.winning > 1 ? player.winning : 0;
+            income += player.losing > 1 ? player.losing * 2 : 0;
+            income += Math.min(parseInt(player.money / 10), 5);
+            player._money = player.money + income;
+            player._exp += 2;
+        });
     }
 
     readyState() {
@@ -114,11 +128,7 @@ class Game {
 
         this.state = GAME_STATES.READY;
         this.time = 3;
-        this.sendMsgToAll("stateUpdate", {
-            state: this.state,
-            time: this.time,
-        });
-
+        this.updateState();
         this.timeout = setTimeout(() => {
             this.battleState();
         }, this.time * 1000);
@@ -134,11 +144,7 @@ class Game {
             battle.initBattle();
         });
         this.time = 30;
-        this.sendMsgToAll("stateUpdate", {
-            state: this.state,
-            time: this.time,
-        });
-
+        this.updateState();
         this.timeout = setTimeout(() => {
             this.finishState();
         }, this.time * 1000);
@@ -148,16 +154,13 @@ class Game {
         clearTimeout(this.timeout);
 
         this.battles.forEach((battle) => {
+            // 이미 실행된 배틀은 제거됨.
             battle.finish();
         });
 
         this.state = GAME_STATES.FINISH;
         this.time = 3;
-        this.sendMsgToAll("stateUpdate", {
-            state: this.state,
-            time: this.time,
-        });
-
+        this.updateState();
         this.timeout = setTimeout(() => {
             this.arrangeState();
         }, this.time * 1000);
@@ -166,6 +169,13 @@ class Game {
     sendMsgToAll(type, data) {
         this.players.forEach((player) => {
             sendMsg(player.ws, type, data);
+        });
+    }
+
+    updateState() {
+        this.sendMsgToAll("stateUpdate", {
+            state: this.state,
+            time: this.time,
         });
     }
 }

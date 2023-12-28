@@ -6,6 +6,11 @@ import { GAME_STATES } from "./constants.js";
 export default class Player {
     static player = null;
     static players = [];
+    /**
+     *
+     * @param {String} id
+     * @returns {Player}
+     */
     static getPlayerById(id) {
         return Player.players.find((player) => player.id === id);
     }
@@ -32,6 +37,8 @@ export default class Player {
         this.maxHp = 100;
         this.hp = 100;
         this.items = [];
+        this.winning = 0;
+        this.losing = 0;
     }
 
     set _money(newMoney) {
@@ -137,5 +144,29 @@ export default class Player {
             unit.appendChild(name);
             shop.appendChild(unit);
         }
+    }
+
+    set _winning(newWinning) {
+        this.winning = parseInt(newWinning);
+        if (this.id !== Socket.id) return;
+        if (newWinning === 0) return;
+        let streakEl = document.getElementById("streak");
+        streakEl.innerHTML = `🔥${newWinning}`;
+    }
+
+    get _winning() {
+        return this.winning;
+    }
+
+    set _losing(newLosing) {
+        this.losing = parseInt(newLosing);
+        if (this.id !== Socket.id) return;
+        if (newLosing === 0) return;
+        let streakEl = document.getElementById("streak");
+        streakEl.innerHTML = `😭${newLosing}`;
+    }
+
+    get _losing() {
+        return this.losing;
     }
 }
