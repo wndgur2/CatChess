@@ -7,4 +7,4 @@ const GAME_STATES = {
 
 Object.freeze(GAME_STATES);
 
-module.exports = { GAME_STATES };
+module.exports = GAME_STATES;

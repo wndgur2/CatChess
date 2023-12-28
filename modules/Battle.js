@@ -82,7 +82,7 @@ class Battle {
             this.player2._losing++;
             this.player2._winning = 0;
 
-            this.player2.hp -= p1Units - p2Units;
+            this.player2.hp -= p1Units - p2Units + this.player1.level;
 
             winner = this.player1;
         } else if (p1Units < p2Units) {
@@ -91,7 +91,7 @@ class Battle {
             this.player2._losing++;
             this.player2._winning = 0;
 
-            this.player1.hp -= p2Units - p1Units;
+            this.player1.hp -= p2Units - p1Units + this.player2.level;
 
             winner = this.player2;
         } else {
@@ -104,6 +104,7 @@ class Battle {
         }
 
         this.players.forEach((player) => {
+            if (!player.ws) return;
             sendMsg(player.ws, "battleResult", {
                 winner: winner?.id,
                 players: this.players.map((player) => [player.id, player.hp]),
@@ -175,6 +176,7 @@ class Battle {
 
     sendBattle() {
         this.players.forEach((player) => {
+            if (!player.ws) return;
             sendMsg(player.ws, "battleUpdate", {
                 board: this.board,
                 reversed: player === this.player2,

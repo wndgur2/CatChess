@@ -118,16 +118,15 @@ class Player {
 
     checkUpgrade() {
         // count cats
+        //TODO : 업글 시 티어 계산 불가: tier 타입 문제
         let tier_species_amount = {};
         [...this.board, this.queue].forEach((row) => {
             row.forEach((cat) => {
                 if (!cat) return;
                 if (!tier_species_amount[cat.id]) {
-                    tier_species_amount[cat.id] = {};
-                    if (!tier_species_amount[cat.id][cat.tier])
-                        tier_species_amount[cat.id][cat.tier] = 0;
+                    tier_species_amount[cat.id] = [0, 0, 0];
                 }
-                tier_species_amount[cat.id][cat.tier]++;
+                tier_species_amount[cat.id][cat.tier - 1]++;
             });
         });
 
@@ -136,20 +135,17 @@ class Player {
             let isUpgraded = false;
             for (let id in tier_species_amount) {
                 let species_amount = tier_species_amount[id];
-                for (let tier in species_amount) {
+                for (let tier = 0; tier < 2; ++tier) {
                     if (species_amount[tier] < 3) continue;
-
                     isUpgraded = true;
                     species_amount[tier] -= 3;
-                    if (!species_amount[parseInt(tier) + 1])
-                        species_amount[parseInt(tier) + 1] = 0;
-                    species_amount[parseInt(tier) + 1] += 1;
+                    species_amount[tier + 1] += 1;
 
                     let oldCat;
                     [...this.board, this.queue].forEach((row) => {
                         oldCat = row.find((c) => {
                             if (!c) return false;
-                            return c.id === id && c.tier == tier;
+                            return c.id === id && c.tier == tier + 1;
                         });
                     });
 
@@ -158,7 +154,7 @@ class Player {
                         this,
                         oldCat.x,
                         oldCat.y,
-                        parseInt(tier) + 1
+                        tier + 2
                     );
 
                     if (oldCat.y == IN_QUEUE) this.queue[oldCat.x] = newCat;
@@ -170,7 +166,7 @@ class Player {
                             if (
                                 c &&
                                 c.id === id &&
-                                c.tier == tier &&
+                                c.tier == tier + 1 &&
                                 amountToDelete
                             ) {
                                 if (c.y == IN_QUEUE) this.queue[c.x] = null;

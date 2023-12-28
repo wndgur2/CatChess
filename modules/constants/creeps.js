@@ -1,25 +1,26 @@
+const SimpleCat = require("../SimpleCat.js");
+
 const creeps = {
     1: {
-        cats: [
-            {
-                x: 2,
-                y: 2,
-                name: "wildCat",
-            },
+        id: "creep1",
+        board: [
+            [null, null, null, null, null],
+            [null, null, new SimpleCat("wildCat", null, 2, 1), null, null],
+            [null, null, null, null, null],
         ],
     },
     2: {
-        cats: [
-            {
-                x: 1,
-                y: 2,
-                name: "fastCat",
-            },
-            {
-                x: 3,
-                y: 2,
-                name: "fastCat",
-            },
+        id: "creep2",
+        board: [
+            [null, null, null, null, null],
+            [
+                null,
+                new SimpleCat("wildCat", null, 2, 1),
+                null,
+                new SimpleCat("wildCat", null, 2, 1),
+                null,
+            ],
+            [null, null, null, null, null],
         ],
     },
 };

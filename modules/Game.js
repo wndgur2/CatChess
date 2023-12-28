@@ -1,6 +1,7 @@
 const Player = require("./Player.js");
 const { sendMsg } = require("./utils.js");
-const { GAME_STATES } = require("./constants/GAME_STATES.js");
+const GAME_STATES = require("./constants/GAME_STATES.js");
+const creeps = require("./constants/creeps.js");
 const Battle = require("./Battle.js");
 
 const PLAYER_NUM = 2;
@@ -133,7 +134,13 @@ class Game {
             this.battleState();
         }, this.time * 1000);
 
-        this.battles.push(new Battle(this.players[0], this.players[1]));
+        if (this.stage == 1) {
+            this.players.forEach((player) => {
+                this.battles.push(
+                    new Battle(player, { ...creeps[this.round] })
+                );
+            });
+        } else this.battles.push(new Battle(this.players[0], this.players[1]));
     }
 
     battleState() {
