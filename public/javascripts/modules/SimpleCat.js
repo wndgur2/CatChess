@@ -1,3 +1,5 @@
+import Player from "./Player.js";
+
 export default class SimpleCat {
     constructor(data) {
         this.tier = data.tier;
@@ -9,16 +11,19 @@ export default class SimpleCat {
         this.hp = data.hp;
         this.armor = data.armor;
         this.cost = data.cost;
+        this.owner = data.owner;
 
         this.x = data.x;
         this.y = data.y;
     }
 
     display() {
-        return `<div class="cat">
-        <div class="catTier">🌟${this.tier}</div>
-        <div class="catHp">♥️${this.hp}</div>
-        <div class="catName">${this.name}</div>
+        return `<div class="cat ${
+            this.owner == Player.player.id ? "ally" : "enemy"
+        }">
+            <div class="catTier">🌟${this.tier}</div>
+            <div class="catHp">♥️${this.hp}</div>
+            <div class="catName">${this.name}</div>
         </div>`;
     }
 

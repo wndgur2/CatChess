@@ -1,3 +1,4 @@
+const Board = require("./Board");
 const Player = require("./Player");
 const CATS = require("./constants/CATS");
 
@@ -19,15 +20,15 @@ class SimpleCat {
         this.proto = SimpleCat.prototypes[id];
 
         this.tier = tier;
-        this.magnyfier = Math.sqrt(this.tier).toPrecision(2);
+        this.magnifier = Math.sqrt(this.tier).toPrecision(2);
 
         this.name = this.proto.name;
-        this.ad = parseInt(this.proto.ad * this.magnyfier);
-        this.speed = parseInt(this.proto.speed * this.magnyfier);
+        this.ad = parseInt(this.proto.ad * this.magnifier);
+        this.speed = parseInt(this.proto.speed * this.magnifier);
         this.range = this.proto.range;
-        this.maxHp = parseInt(this.proto.hp * this.magnyfier);
+        this.maxHp = parseInt(this.proto.hp * this.magnifier);
         this.hp = this.maxHp;
-        this.armor = parseInt(this.proto.armor * this.magnyfier);
+        this.armor = parseInt(this.proto.armor * this.magnifier);
         this.cost = this.proto.cost * Math.pow(3, tier - 1);
         if (tier > 1) this.cost -= 1;
 
@@ -35,59 +36,46 @@ class SimpleCat {
         this.y = y;
         this.owner = player?.id;
         this.die = false;
+        /**
+         * @type {Board}
+         */
+        this.board = null;
 
         this.delay = 0;
     }
 
-    attack() {
-        if (!this.target) {
-            console.log("no target");
-            return;
-        }
+    action() {
+        if (this.die) return;
+        let { dist, target } = this.board.getNearestEnemy(this);
+        if (dist <= this.range) this.attack(target);
+        else this.move(this.board.getNextMove(this, target));
+    }
+
+    attack(target) {
         if (this.delay > 0) {
             this.delay -= this.speed;
             return;
         }
-        this.target.hp -= this.ad - this.target.armor;
-        if (this.target.hp <= 0) {
-            this.target.die = true;
+        if (this.ad - target.armor > 0) target.hp -= this.ad - target.armor;
+        if (target.hp <= 0) {
+            target.die = true;
+            this.board.board[target.y][target.x] = null;
             return;
         }
         this.delay = 100;
     }
 
-    move(board) {
+    move(nextMove) {
+        let y = nextMove[0],
+            x = nextMove[1];
         if (this.delay > 0) {
-            this.delay -= this.speed;
+            this.delay -= this.speed / 2;
             return;
         }
-        if (!this.target) return;
-        // move toward this.target
-        let nextX = this.x,
-            nextY = this.y;
-        let dx = this.target.x - this.x;
-        let dy = this.target.y - this.y;
-        if (dx === 0 && dy === 0) return;
-        if (dx < 0 && dy < 0) {
-            nextX -= 1;
-            nextY -= 1;
-        } else if (dx < 0 && dy > 0) {
-            nextX -= 1;
-            nextY += 1;
-        } else {
-            let dist = Math.sqrt(dx * dx + dy * dy);
-            nextX += Math.round(dx / dist);
-            nextY += Math.round(dy / dist);
-        }
-        if (nextX < 0) nextX = 0;
-        if (nextY < 0) nextY = 0;
-        if (nextX > 4) nextX = 4;
-        if (nextY > 5) nextY = 5;
-        if (board[nextY][nextX]) return;
-        board[this.y][this.x] = null;
-        this.x = nextX;
-        this.y = nextY;
-        board[this.y][this.x] = this;
+        this.board.board[this.y][this.x] = null;
+        this.board.board[y][x] = this;
+        this.y = y;
+        this.x = x;
         this.delay = 100;
     }
 

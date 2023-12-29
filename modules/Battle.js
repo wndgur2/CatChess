@@ -1,9 +1,9 @@
+const Board = require("./Board");
 const Game = require("./Game");
 const Player = require("./Player");
-const SimpleCat = require("./SimpleCat");
 const { sendMsg } = require("./utils");
 
-const TIME_STEP = 50; // ms
+const TIME_STEP = 60; // ms
 
 class Battle {
     /**
@@ -11,7 +11,7 @@ class Battle {
      * @param {Player} player1
      * @param {Player} player2
      */
-    constructor(player1, player2) {
+    constructor(player1, player2, isCreep = false) {
         /**
          * @type {Game}
          */
@@ -19,6 +19,7 @@ class Battle {
         this.player1 = player1;
         this.player2 = player2;
         this.players = [player1, player2];
+        this.isCreep = isCreep;
 
         let board1 = player1.board.map((row) =>
             row.map((cat) => {
@@ -37,18 +38,7 @@ class Battle {
             )
             .reverse();
 
-        this.board = [...board2, ...board1];
-
-        this.board.forEach((row, i) => {
-            row.forEach((cat, j) => {
-                if (cat) {
-                    cat.y = i;
-                    cat.x = j;
-                    cat.hp = cat.maxHp;
-                    cat.delay = 0;
-                }
-            });
-        });
+        this.board = new Board([...board2, ...board1]);
         this.sendBattle();
     }
 
@@ -62,34 +52,28 @@ class Battle {
         clearInterval(this.battleInterval);
 
         let winner,
-            p1Units = 0,
-            p2Units = 0;
-        this.board.forEach((row) => {
-            row.forEach((cat) => {
-                if (cat) {
-                    if (cat.owner === this.player1.id) {
-                        p1Units++;
-                    } else {
-                        p2Units++;
-                    }
-                }
-            });
-        });
+            p1Units = this.board.getCats(this.player1.id).length,
+            p2Units = this.board.getCats(this.player2.id).length;
+
         if (p1Units > p2Units) {
-            this.player1._money = this.player1.money + 1;
-            this.player1._winning++;
-            this.player1._losing = 0;
-            this.player2._losing++;
-            this.player2._winning = 0;
+            if (!this.isCreep) {
+                this.player1._money = this.player1.money + 1;
+                this.player1._winning++;
+                this.player1._losing = 0;
+                this.player2._losing++;
+                this.player2._winning = 0;
+            }
 
             this.player2.hp -= p1Units - p2Units + this.player1.level;
 
             winner = this.player1;
         } else if (p1Units < p2Units) {
-            this.player1._winning++;
-            this.player1._losing = 0;
-            this.player2._losing++;
-            this.player2._winning = 0;
+            if (!this.isCreep) {
+                this.player2._winning++;
+                this.player2._losing = 0;
+                this.player1._losing++;
+                this.player1._winning = 0;
+            }
 
             this.player1.hp -= p2Units - p1Units + this.player2.level;
 
@@ -104,11 +88,11 @@ class Battle {
         }
 
         this.players.forEach((player) => {
-            if (!player.ws) return;
-            sendMsg(player.ws, "battleResult", {
-                winner: winner?.id,
-                players: this.players.map((player) => [player.id, player.hp]),
-            });
+            if (player.id !== "creep")
+                this.game.sendMsgToAll("hpUpdate", {
+                    player: player.id,
+                    hp: player.hp,
+                });
         });
 
         this.game.battles = this.game.battles.filter(
@@ -120,73 +104,32 @@ class Battle {
         }
     }
 
-    getNearestEnemy(y, x, team) {
-        let minDist = Infinity;
-        let minCat = null;
-        this.board.forEach((row, i) => {
-            row.forEach((cat, j) => {
-                if (cat === null || cat.owner === team) return;
-                let dist = getDistance(cat.x, cat.y, x, y);
-                if (dist < minDist) {
-                    minDist = dist;
-                    minCat = cat;
-                }
-            });
-        });
-        return minCat;
-    }
-
     updateBattle() {
-        // update battle status
-        let isPlayer1Alive = false;
-        let isPlayer2Alive = false;
-        for (let i = 0; i < 6; i++) {
-            for (let j = 0; j < 5; j++) {
-                /**
-                 * @type {SimpleCat}
-                 */
-                let cat = this.board[i][j];
-                if (cat) {
-                    if (cat.owner === this.player1.id) isPlayer1Alive = true;
-                    else isPlayer2Alive = true;
-                    cat.target = this.getNearestEnemy(i, j, cat.owner);
-                    if (!cat.target) break;
-                    if (
-                        getDistance(j, i, cat.target.x, cat.target.y) <=
-                        cat.range
-                    ) {
-                        cat.attack();
-                        if (cat.target.die) {
-                            this.board[cat.target.y][cat.target.x] = null;
-                        }
-                    } else {
-                        cat.move(this.board);
-                    }
-                    cat.target = null;
-                }
-            }
-        }
-        this.sendBattle();
-
-        // TODO : Finish if there's no cat of one player
-        if (!isPlayer1Alive || !isPlayer2Alive) {
+        let p1Cats = this.board.getCats(this.player1.id);
+        let p2Cats = this.board.getCats(this.player2.id);
+        if (p1Cats.length > 0 && p2Cats.length > 0) {
+            [...p1Cats, ...p2Cats].forEach((c) => c.action());
+            this.sendBattle();
+        } else {
             this.finish();
         }
     }
 
     sendBattle() {
+        // => board update in Board?
         this.players.forEach((player) => {
             if (!player.ws) return;
             sendMsg(player.ws, "battleUpdate", {
-                board: this.board,
+                board: this.board.board.map((row) =>
+                    row.map((cat) => {
+                        if (cat) return { ...cat, board: null };
+                        else return null;
+                    })
+                ),
                 reversed: player === this.player2,
             });
         });
     }
-}
-
-function getDistance(x1, y1, x2, y2) {
-    return Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
 }
 
 module.exports = Battle;

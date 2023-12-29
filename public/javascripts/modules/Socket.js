@@ -29,10 +29,6 @@ export default class Socket {
                     document.getElementById("id").innerHTML = data;
                     localStorage.setItem("id", data);
                     break;
-                case "newPlayer":
-                    let cur = document.getElementById("currentPlayers");
-                    cur.innerHTML = data + "명";
-                    break;
                 case "gameMatched":
                     Game.init(data.players);
                     break;
@@ -81,10 +77,8 @@ export default class Socket {
                         (cat) => JSON.parse(cat)
                     );
                     break;
-                case "playerHpUpdate":
-                    data.players.forEach((player) => {
-                        Player.getPlayerById(player.id)._hp = player.hp;
-                    });
+                case "hpUpdate":
+                    Player.getPlayerById(data.player)._hp = data.hp;
                     break;
                 case "battleUpdate":
                     Battle.board = data.board.map((row) =>
@@ -97,8 +91,8 @@ export default class Socket {
                     break;
                 case "battleResult":
                     data.players.forEach(([player, hp]) => {
-                        console.log(player, hp);
-                        Player.getPlayerById(player)._hp = hp;
+                        let p = Player.getPlayerById(player);
+                        if (p) p._hp = hp;
                     });
                     break;
                 case "timeUpdate":

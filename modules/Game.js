@@ -8,10 +8,14 @@ const PLAYER_NUM = 2;
 
 class Game {
     static waitingPlayers = [];
+    /**
+     * @type {Game[]} games
+     */
     static games = [];
     static newPlayer(from, ws) {
         if (Player.getPlayer(from)) {
             Player.getPlayer(from).ws = ws;
+
             // 게임 데이터 전송
             let game = Player.getPlayer(from).game;
             if (game && game.state !== GAME_STATES.FINISH) {
@@ -23,9 +27,6 @@ class Game {
             }
         }
         Game.waitingPlayers.push(new Player(from, ws));
-        Game.waitingPlayers.forEach((player) => {
-            sendMsg(player.ws, "newPlayer", Game.waitingPlayers.length);
-        });
         if (Game.waitingPlayers.length >= PLAYER_NUM) {
             Game.games.push(
                 new Game(Game.waitingPlayers.splice(0, PLAYER_NUM))
@@ -34,7 +35,6 @@ class Game {
     }
 
     /**
-     *
      * @param {[Player]} players
      */
     constructor(players) {
@@ -81,6 +81,13 @@ class Game {
             round: this.round,
             stage: this.stage,
         });
+        this.players.forEach((player) => {
+            sendMsg(ws, "hpUpdate", {
+                player: player.id,
+                hp: player.hp,
+            });
+        });
+
         if (this.state !== GAME_STATES.ARRANGE) {
             this.battles.forEach((battle) => {
                 battle.updateBattle();
@@ -106,7 +113,7 @@ class Game {
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 10;
+        this.time = 7;
         this.updateState();
         this.timeout = setTimeout(() => {
             this.readyState();
@@ -137,7 +144,7 @@ class Game {
         if (this.stage == 1) {
             this.players.forEach((player) => {
                 this.battles.push(
-                    new Battle(player, { ...creeps[this.round] })
+                    new Battle(player, { ...creeps[this.round] }, true)
                 );
             });
         } else this.battles.push(new Battle(this.players[0], this.players[1]));

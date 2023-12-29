@@ -6,6 +6,9 @@ const IN_QUEUE = 3;
 class Player {
     static players = [];
 
+    /**
+     * @returns {Player}
+     */
     static getPlayer(id) {
         return Player.players.find((player) => player.id === id);
     }
@@ -48,6 +51,8 @@ class Player {
         this.updateShop();
         this.updateMoney();
         this.updateBoard();
+        this.updateWinning();
+        this.updateLosing();
     }
 
     /**
@@ -118,7 +123,6 @@ class Player {
 
     checkUpgrade() {
         // count cats
-        //TODO : 업글 시 티어 계산 불가: tier 타입 문제
         let tier_species_amount = {};
         [...this.board, this.queue].forEach((row) => {
             row.forEach((cat) => {
@@ -335,6 +339,13 @@ class Player {
         sendMsg(this.ws, "expUpdate", {
             player: this.id,
             exp: this.exp,
+        });
+    }
+
+    updateHp() {
+        this.game.sendMsgToAll("hpUpdate", {
+            player: this.id,
+            hp: this.hp,
         });
     }
 

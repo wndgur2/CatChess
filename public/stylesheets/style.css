@@ -139,6 +139,14 @@ html body {
     background-color: #212121;
 }
 
+.ally {
+    background-color: #23407d44;
+}
+
+.enemy {
+    background-color: #7d232344;
+}
+
 #rightWrapper {
     position: absolute;
     top: 24dvh;
@@ -152,10 +160,11 @@ html body {
 
 #bottomWrapper {
     position: absolute;
-    top: 85dvh;
+    top: 82dvh;
     width: 100vw;
-    height: 15dvh;
+    height: 18dvh;
     display: flex;
+    flex-direction: column;
     align-items: center;
     background-color: #212121;
 }
@@ -167,7 +176,7 @@ html body {
     align-items: center;
     background-color: #212121;
     width: 100%;
-    height: 24px;
+    height: 3dvh;
     color: #eee;
 }
 

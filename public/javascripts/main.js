@@ -27,7 +27,6 @@ function hydrate() {
         Socket.sendMsg("reqBuyExp", "");
     });
 
-    // TODO 리스트 살리기. 샵 위에 팔기 이벤트용 엘리먼트 생성
     let shopEl = document.getElementById("shop");
     shopEl.addEventListener("drop", shopDragDrop);
     shopEl.addEventListener("dragover", shopDragOver);
@@ -139,7 +138,6 @@ function gameClick(event) {
 function shopDragOver(event) {
     event.preventDefault();
     let shopEl = document.getElementById("shop");
-    //TODO How to overlay perfectly on the shop?
     shopEl.innerHTML = `고양이 판매하기<br/>💰${Player.player.dragging.cost}`;
 }
 
