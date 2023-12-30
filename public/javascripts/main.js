@@ -81,15 +81,6 @@ function hydrate() {
     }
 }
 
-function hydrateCell(cell) {
-    cell.className = "cell";
-    cell.addEventListener("dragstart", cellDragStart);
-    cell.addEventListener("dragover", cellDragOver);
-    cell.addEventListener("drop", cellDragDrop);
-    cell.addEventListener("click", cellClick);
-    cell.draggable = false;
-}
-
 function cellDragStart(event) {
     let unit = getCellUnitByCellId(event.target.id);
     Player.player.dragging = unit;

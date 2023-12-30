@@ -37,7 +37,6 @@ class Board {
     }
 
     getNextMove(cat, target) {
-        // TODO FIX this returns undefined
         // search fastest path from cat to target. other ally cats are obstacles.
         let visited = [];
         this.board.forEach((row) => {
@@ -85,6 +84,8 @@ class Board {
                 queue.push([ny, nx, dist + 1]);
             });
         }
+
+        console.log("no enemy left.");
     }
 
     getCats(playerId = null) {

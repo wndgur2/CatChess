@@ -1,5 +1,4 @@
 import Player from "./Player.js";
-import Socket from "./Socket.js";
 import { GAME_STATES } from "./constants.js";
 
 export default class Game {

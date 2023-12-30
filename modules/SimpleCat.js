@@ -46,7 +46,9 @@ class SimpleCat {
 
     action() {
         if (this.die) return;
-        let { dist, target } = this.board.getNearestEnemy(this);
+        let res = this.board.getNearestEnemy(this);
+        if (!res) return;
+        let { dist, target } = res;
         if (dist <= this.range) this.attack(target);
         else this.move(this.board.getNextMove(this, target));
     }

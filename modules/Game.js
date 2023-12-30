@@ -1,10 +1,8 @@
-const Player = require("./Player.js");
 const { sendMsg } = require("./utils.js");
-const GAME_STATES = require("./constants/GAME_STATES.js");
+const { GAME_STATES, PLAYER_NUM } = require("./constants/consts.js");
 const creeps = require("./constants/creeps.js");
 const Battle = require("./Battle.js");
-
-const PLAYER_NUM = 2;
+const Player = require("./Player.js");
 
 class Game {
     static waitingPlayers = [];
@@ -121,6 +119,7 @@ class Game {
 
         // 결과 지급, 리로드
         this.players.forEach((player) => {
+            player.checkUpgrade();
             player.reload(true);
             let income = 5;
             income += player.winning > 1 ? player.winning : 0;

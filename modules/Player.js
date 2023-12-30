@@ -112,7 +112,6 @@ class Player {
                 this._money = this.money - catProto.cost;
                 this.shop[index] = null;
                 this.checkUpgrade();
-                this.updateBoard();
                 this.updateShop();
                 return true;
             }
@@ -123,8 +122,14 @@ class Player {
 
     checkUpgrade() {
         // count cats
-        let tier_species_amount = {};
-        [...this.board, this.queue].forEach((row) => {
+        let tier_species_amount = {},
+            boardToCount;
+        if (this.game.state === "arrange") {
+            boardToCount = [...this.board, this.queue];
+        } else {
+            boardToCount = [this.queue];
+        }
+        boardToCount.forEach((row) => {
             row.forEach((cat) => {
                 if (!cat) return;
                 if (!tier_species_amount[cat.id]) {
@@ -183,6 +188,7 @@ class Player {
             }
             if (!isUpgraded) break;
         }
+        this.updateBoard();
     }
 
     sellCat(cat) {

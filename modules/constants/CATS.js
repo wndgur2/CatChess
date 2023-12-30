@@ -1,4 +1,5 @@
 const CATS = {
+    // => UNITS = { CATS, CREEPS, ... }
     wildCat: {
         id: "wildCat",
         name: "길 고양이",

@@ -2,8 +2,7 @@ const Board = require("./Board");
 const Game = require("./Game");
 const Player = require("./Player");
 const { sendMsg } = require("./utils");
-
-const TIME_STEP = 60; // ms
+const { TIME_STEP } = require("./constants/consts.js");
 
 class Battle {
     /**
@@ -46,6 +45,34 @@ class Battle {
         this.battleInterval = setInterval(() => {
             this.updateBattle();
         }, TIME_STEP);
+    }
+
+    updateBattle() {
+        let p1Cats = this.board.getCats(this.player1.id);
+        let p2Cats = this.board.getCats(this.player2.id);
+        if (p1Cats.length > 0 && p2Cats.length > 0) {
+            // 죽일때마다 줄어서 확인해야함
+            [...p1Cats, ...p2Cats].forEach((c) => c.action());
+            this.sendBattle();
+        } else {
+            this.finish();
+        }
+    }
+
+    sendBattle() {
+        // => board update in Board?
+        this.players.forEach((player) => {
+            if (!player.ws) return;
+            sendMsg(player.ws, "battleUpdate", {
+                board: this.board.board.map((row) =>
+                    row.map((cat) => {
+                        if (cat) return { ...cat, board: null };
+                        else return null;
+                    })
+                ),
+                reversed: player === this.player2,
+            });
+        });
     }
 
     finish() {
@@ -102,33 +129,6 @@ class Battle {
         if (this.game.battles.length === 0) {
             this.game.finishState();
         }
-    }
-
-    updateBattle() {
-        let p1Cats = this.board.getCats(this.player1.id);
-        let p2Cats = this.board.getCats(this.player2.id);
-        if (p1Cats.length > 0 && p2Cats.length > 0) {
-            [...p1Cats, ...p2Cats].forEach((c) => c.action());
-            this.sendBattle();
-        } else {
-            this.finish();
-        }
-    }
-
-    sendBattle() {
-        // => board update in Board?
-        this.players.forEach((player) => {
-            if (!player.ws) return;
-            sendMsg(player.ws, "battleUpdate", {
-                board: this.board.board.map((row) =>
-                    row.map((cat) => {
-                        if (cat) return { ...cat, board: null };
-                        else return null;
-                    })
-                ),
-                reversed: player === this.player2,
-            });
-        });
     }
 }
 
