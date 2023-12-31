@@ -63,20 +63,16 @@ export default class Socket {
                     Game._stage = data.stage;
                     break;
                 }
-                case "battle_move": {
-                    break;
-                }
                 case "battle_attack": {
+                    // TODO
                     break;
                 }
                 case "battle_dead": {
+                    // TODO
                     break;
                 }
-                case "creep": {
-                    Game.creep(data);
-                    break;
-                }
-                case "dropItem": {
+                case "itemUpdate": {
+                    Player.getPlayerById(data.player)._items = data.items;
                     break;
                 }
                 case "moneyUpdate": {

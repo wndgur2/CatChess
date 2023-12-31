@@ -1,25 +1,16 @@
 const SimpleCat = require("./SimpleCat");
-const { sendMsg } = require("./utils");
+const { sendMsg, addPlayer } = require("./utils");
 
 const IN_QUEUE = 3;
 
 class Player {
-    static players = [];
-
-    /**
-     * @returns {Player}
-     */
-    static getPlayer(id) {
-        return Player.players.find((player) => player.id === id);
-    }
-
     static getNewId() {
         //random 5 string
         return Math.random().toString(36).substr(2, 6);
     }
 
     constructor(id, ws) {
-        Player.players.push(this);
+        addPlayer(this);
 
         this.id = id;
         this.ws = ws;
@@ -366,6 +357,13 @@ class Player {
         this.game.sendMsgToAll("losingUpdate", {
             player: this.id,
             losing: this.losing,
+        });
+    }
+
+    updateItem() {
+        this.game.sendMsgToAll("itemUpdate", {
+            player: this.id,
+            items: this.items,
         });
     }
 }

@@ -1,25 +1,6 @@
-class Board {
-    static dir = [
-        [
-            // 짝수 y
-            [1, 0],
-            [-1, 0],
-            [0, 1],
-            [0, -1],
-            [-1, 1],
-            [-1, -1],
-        ],
-        [
-            // 홀수 y
-            [1, 0],
-            [-1, 0],
-            [0, 1],
-            [0, -1],
-            [1, -1],
-            [1, 1],
-        ],
-    ];
+const { DIRS } = require("./constants/consts");
 
+class Board {
     constructor(board) {
         this.board = board;
         this.catsOfPlayer = {};
@@ -50,7 +31,7 @@ class Board {
             if (y === target.y && x === target.x) {
                 return path[1];
             }
-            Board.dir[y % 2].forEach(([dy, dx]) => {
+            DIRS[y % 2].forEach(([dy, dx]) => {
                 let ny = y + dy,
                     nx = x + dx;
                 if (ny < 0 || ny >= 6 || nx < 0 || nx >= 5) return;
@@ -75,7 +56,7 @@ class Board {
             if (this.board[y][x] && this.board[y][x].owner !== cat.owner) {
                 return { dist, target: this.board[y][x] };
             }
-            Board.dir[y % 2].forEach(([dy, dx]) => {
+            DIRS[y % 2].forEach(([dy, dx]) => {
                 let ny = y + dy,
                     nx = x + dx;
                 if (ny < 0 || ny >= 6 || nx < 0 || nx >= 5) return;

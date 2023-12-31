@@ -1,6 +1,6 @@
 const Player = require("./Player.js");
 const Game = require("./Game.js");
-const { sendMsg } = require("./utils.js");
+const { sendMsg, getPlayer } = require("./utils.js");
 const webSocket = require("ws");
 
 module.exports = (server) => {
@@ -23,7 +23,7 @@ module.exports = (server) => {
                     break;
                 }
                 case "reqBuyCat": {
-                    Player.getPlayer(from).buyCat(data.index);
+                    getPlayer(from).buyCat(data.index);
                     break;
                 }
                 case "reqPutCat": {
@@ -34,8 +34,7 @@ module.exports = (server) => {
                     let to = data.to.split("-");
                     let nextY, nextX;
                     if (to[0] === "ally") {
-                        if (Player.getPlayer(from).game.state !== "arrange")
-                            return;
+                        if (getPlayer(from).game.state !== "arrange") return;
                         nextY = to[1];
                         nextX = to[2];
                     } else {
@@ -43,19 +42,19 @@ module.exports = (server) => {
                         nextX = to[1];
                     }
 
-                    Player.getPlayer(from).putCat({ befX, befY, nextX, nextY });
+                    getPlayer(from).putCat({ befX, befY, nextX, nextY });
                     break;
                 }
                 case "reqSellCat": {
-                    Player.getPlayer(from).sellCat(data.cat);
+                    getPlayer(from).sellCat(data.cat);
                     break;
                 }
                 case "reqReload": {
-                    Player.getPlayer(from).reload();
+                    getPlayer(from).reload();
                     break;
                 }
                 case "reqBuyExp": {
-                    Player.getPlayer(from).buyExp();
+                    getPlayer(from).buyExp();
                     break;
                 }
                 case "reqGiveItem": {

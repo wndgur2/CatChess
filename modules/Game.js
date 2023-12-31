@@ -1,4 +1,4 @@
-const { sendMsg } = require("./utils.js");
+const { sendMsg, getPlayer } = require("./utils.js");
 const { GAME_STATES, PLAYER_NUM } = require("./constants/consts.js");
 const CREEP_ROUNDS = require("./constants/CREEP_ROUNDS.js");
 const Battle = require("./Battle.js");
@@ -11,11 +11,11 @@ class Game {
      */
     static games = [];
     static newPlayer(from, ws) {
-        if (Player.getPlayer(from)) {
-            Player.getPlayer(from).ws = ws;
+        if (getPlayer(from)) {
+            getPlayer(from).ws = ws;
 
             // 게임 데이터 전송
-            let game = Player.getPlayer(from).game;
+            let game = getPlayer(from).game;
             if (game && game.state !== GAME_STATES.FINISH) {
                 sendMsg(ws, "gameMatched", {
                     players: game.players.map((player) => player.id),
@@ -69,7 +69,7 @@ class Game {
     }
 
     sendGameData(from) {
-        let player = Player.getPlayer(from);
+        let player = getPlayer(from);
         let ws = player.ws;
         sendMsg(ws, "stateUpdate", {
             state: this.state,
@@ -139,6 +139,8 @@ class Game {
         this.timeout = setTimeout(() => {
             this.battleState();
         }, this.time * 1000);
+
+        //TODO : 남는 자리 있을 시 자동 배치
 
         if (this.stage == 1) {
             this.players.forEach((player) => {

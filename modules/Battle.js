@@ -6,7 +6,6 @@ const { TIME_STEP } = require("./constants/consts.js");
 
 class Battle {
     /**
-     *
      * @param {Player} player1
      * @param {Player} player2
      */
@@ -21,20 +20,10 @@ class Battle {
         this.isCreep = isCreep;
 
         let board1 = player1.board.map((row) =>
-            row.map((cat) => {
-                if (cat) return cat.clone();
-                else return null;
-            })
+            row.map((c) => (c ? c.clone() : null))
         );
         let board2 = player2.board
-            .map((row) =>
-                row
-                    .map((cat) => {
-                        if (cat) return cat.clone();
-                        else return null;
-                    })
-                    .reverse()
-            )
+            .map((row) => row.map((c) => (c ? c.clone() : null)).reverse())
             .reverse();
 
         this.board = new Board([...board2, ...board1]);
@@ -54,9 +43,7 @@ class Battle {
             // 죽일때마다 줄어서 확인해야함
             [...p1Cats, ...p2Cats].forEach((c) => c.action());
             this.sendBattle();
-        } else {
-            this.finish();
-        }
+        } else this.finish();
     }
 
     sendBattle() {
@@ -65,10 +52,7 @@ class Battle {
             if (!player.ws) return;
             sendMsg(player.ws, "battleUpdate", {
                 board: this.board.board.map((row) =>
-                    row.map((cat) => {
-                        if (cat) return { ...cat, board: null };
-                        else return null;
-                    })
+                    row.map((c) => (c ? { ...c, board: null } : null))
                 ),
                 reversed: player === this.player2,
             });

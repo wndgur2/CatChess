@@ -102,7 +102,6 @@ function cellClick(event) {
     if (!unit) return;
     displayUnitInfo(unit);
 
-    // 이것도 실행되는듯.
     setTimeout(() => {
         Game.clickEvent = document
             .getElementById("game")
@@ -144,6 +143,7 @@ function shopDragLeave(event) {
 }
 
 function getCellUnitByCellId(id) {
+    // TODO : enemy도 가능하게
     let position = id.split("-");
     if (position[0] === "ally") {
         return Player.player.board[position[1]][position[2]];

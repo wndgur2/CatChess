@@ -1,4 +1,5 @@
 import Game from "./Game.js";
+import Item from "./Item.js";
 import SimpleCat from "./SimpleCat.js";
 import Socket from "./Socket.js";
 import { GAME_STATES } from "./constants.js";
@@ -168,5 +169,38 @@ export default class Player {
 
     get _losing() {
         return this.losing;
+    }
+
+    set _items(newItems) {
+        this.items = newItems.map((item) => {
+            if (item) return new Item(item);
+            else return null;
+        });
+        if (this.id !== Socket.id) return;
+        let itemsEl = document.getElementById("items");
+        itemsEl.innerHTML = "";
+        for (let i = 0; i < newItems.length; i++) {
+            let item = document.createElement("button");
+            item.style.display = "flex";
+            item.style.flexDirection = "column";
+            item.style.alignItems = "center";
+            item.style.justifyContent = "center";
+
+            if (newItems[i] === null) {
+                itemsEl.appendChild(item);
+                continue;
+            }
+            item.onclick = function () {
+                Socket.sendMsg("reqEquipItem", {
+                    index: i,
+                });
+            };
+
+            let name = document.createElement("span");
+            name.innerHTML = newItems[i].name;
+            item.appendChild(name);
+
+            itemsEl.appendChild(item);
+        }
     }
 }

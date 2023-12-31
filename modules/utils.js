@@ -1,3 +1,5 @@
+let players = [];
+
 function sendMsg(ws, type, data) {
     ws.send(
         JSON.stringify({
@@ -7,4 +9,12 @@ function sendMsg(ws, type, data) {
     );
 }
 
-module.exports = { sendMsg };
+function addPlayer(player) {
+    players.push(player);
+}
+
+function getPlayer(id) {
+    return players.find((player) => player.id === id);
+}
+
+module.exports = { sendMsg, addPlayer, getPlayer };

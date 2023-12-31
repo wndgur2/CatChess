@@ -1,7 +1,9 @@
 const Board = require("./Board");
+const Item = require("./Item");
+const { getPlayer } = require("./utils");
 
 class Unit {
-    constructor(proto, playerId, x, y = 3, tier = 1) {
+    constructor(proto, playerId, x, y, tier) {
         this.proto = proto;
         this.id = proto.id;
         this.tier = tier;
@@ -47,7 +49,10 @@ class Unit {
         if (target.hp <= 0) {
             target.die = true;
             this.board.board[target.y][target.x] = null;
-            return;
+            if (target.owner == "creep") {
+                getPlayer(this.owner).items.push(Item.getRandomItem());
+                getPlayer(this.owner).updateItem();
+            }
         }
         this.delay = 100;
     }
