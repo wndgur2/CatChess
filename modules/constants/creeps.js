@@ -1,40 +1,25 @@
-const SimpleCat = require("../SimpleCat.js");
-
-const creep = {
-    id: "creep",
-    level: 1,
-    hp: 100,
-};
-
-const creeps = {
-    1: {
-        id: "creep",
-        level: 1,
-        hp: 100,
-        board: [
-            [null, null, null, null, null],
-            [null, null, new SimpleCat("wildCat", creep, 2, 1), null, null],
-            [null, null, null, null, null],
-        ],
+const CREEPS = {
+    eel: {
+        id: "eel",
+        name: "뱀장어",
+        cost: 1,
+        ad: 10,
+        speed: 10,
+        hp: 50,
+        armor: 3,
+        range: 2,
     },
-    2: {
-        id: "creep",
-        level: 2,
-        hp: 100,
-        board: [
-            [null, null, null, null, null],
-            [
-                null,
-                new SimpleCat("wildCat", creep, 2, 1),
-                null,
-                new SimpleCat("thiefCat", creep, 2, 1),
-                null,
-            ],
-            [null, null, null, null, null],
-        ],
+    crab: {
+        id: "crab",
+        name: "게",
+        cost: 2,
+        ad: 20,
+        speed: 20,
+        hp: 90,
+        armor: 5,
+        range: 1,
     },
 };
 
-Object.freeze(creeps);
-
-module.exports = creeps;
+Object.freeze(CREEPS);
+module.exports = CREEPS;

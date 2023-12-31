@@ -14,16 +14,19 @@ module.exports = (server) => {
             let { from, type, data } = msg;
             console.log(msg);
             switch (type) {
-                case "reqNewId":
+                case "reqNewId": {
                     sendMsg(ws, "resNewId", Player.getNewId());
                     break;
-                case "startWaiting":
+                }
+                case "startWaiting": {
                     Game.newPlayer(from, ws);
                     break;
-                case "reqBuyCat":
+                }
+                case "reqBuyCat": {
                     Player.getPlayer(from).buyCat(data.index);
                     break;
-                case "reqPutCat":
+                }
+                case "reqPutCat": {
                     if (!data.from) return;
                     let befX = data.from.x;
                     let befY = data.from.y === 3 ? data.from.y : data.from.y;
@@ -42,17 +45,22 @@ module.exports = (server) => {
 
                     Player.getPlayer(from).putCat({ befX, befY, nextX, nextY });
                     break;
-                case "reqSellCat":
+                }
+                case "reqSellCat": {
                     Player.getPlayer(from).sellCat(data.cat);
                     break;
-                case "reqReload":
+                }
+                case "reqReload": {
                     Player.getPlayer(from).reload();
                     break;
-                case "reqBuyExp":
+                }
+                case "reqBuyExp": {
                     Player.getPlayer(from).buyExp();
                     break;
-                case "reqGiveItem":
+                }
+                case "reqGiveItem": {
                     break;
+                }
             }
         });
 

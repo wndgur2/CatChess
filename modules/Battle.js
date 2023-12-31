@@ -78,8 +78,7 @@ class Battle {
     finish() {
         clearInterval(this.battleInterval);
 
-        let winner,
-            p1Units = this.board.getCats(this.player1.id).length,
+        let p1Units = this.board.getCats(this.player1.id).length,
             p2Units = this.board.getCats(this.player2.id).length;
 
         if (p1Units > p2Units) {
@@ -92,8 +91,6 @@ class Battle {
             }
 
             this.player2.hp -= p1Units - p2Units + this.player1.level;
-
-            winner = this.player1;
         } else if (p1Units < p2Units) {
             if (!this.isCreep) {
                 this.player2._winning++;
@@ -103,19 +100,18 @@ class Battle {
             }
 
             this.player1.hp -= p2Units - p1Units + this.player2.level;
-
-            winner = this.player2;
         } else {
-            winner = null;
             this.players.forEach((player) => {
-                player.winning = 0;
-                player.losing++;
-                player.hp -= 3;
+                if (player.id) {
+                    player.winning = 0;
+                    player.losing++;
+                    player.hp -= 3;
+                }
             });
         }
 
         this.players.forEach((player) => {
-            if (player.id !== "creep")
+            if (player.id)
                 this.game.sendMsgToAll("hpUpdate", {
                     player: player.id,
                     hp: player.hp,

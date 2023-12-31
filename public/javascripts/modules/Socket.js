@@ -24,52 +24,66 @@ export default class Socket {
             const { type, data } = msg;
             if (type !== "timeUpdate") console.log(msg);
             switch (type) {
-                case "resNewId":
+                case "resNewId": {
                     Socket.id = data;
                     document.getElementById("id").innerHTML = data;
                     localStorage.setItem("id", data);
                     break;
-                case "gameMatched":
+                }
+                case "gameMatched": {
                     Game.init(data.players);
                     break;
-                case "shopUpdate":
+                }
+                case "shopUpdate": {
                     Player.getPlayerById(data.player)._shop = data.shop;
                     break;
-                case "expUpdate":
+                }
+                case "expUpdate": {
                     Player.player._exp = data.exp;
                     break;
-                case "levelUpdate":
+                }
+                case "levelUpdate": {
                     if (data.player === Socket.id) {
                         Player.player._level = data.level;
                         Player.player._maxExp = 2 + (data.level - 1) * 3;
                     } else {
                         Player.getPlayerById(data.player)._level = data.level;
                     }
-                case "resGiveItem":
+                }
+                case "resGiveItem": {
                     break;
-                case "stateUpdate":
+                }
+                case "stateUpdate": {
                     Game._state = data.state;
                     Game._time = data.time;
                     break;
-                case "stageUpdate":
+                }
+                case "stageUpdate": {
                     Game._round = data.round;
                     Game._stage = data.stage;
                     break;
-                case "battle_move":
+                }
+                case "battle_move": {
                     break;
-                case "battle_attack":
+                }
+                case "battle_attack": {
                     break;
-                case "battle_dead":
+                }
+                case "battle_dead": {
                     break;
-                case "creep":
+                }
+                case "creep": {
                     Game.creep(data);
                     break;
-                case "dropItem":
+                }
+                case "dropItem": {
                     break;
-                case "moneyUpdate":
+                }
+                case "moneyUpdate": {
                     Player.getPlayerById(data.player)._money = data.money;
                     break;
-                case "boardUpdate":
+                }
+                case "boardUpdate": {
                     Player.getPlayerById(data.player)._board = data.board.map(
                         (row) => row.map((cat) => JSON.parse(cat))
                     );
@@ -77,10 +91,13 @@ export default class Socket {
                         (cat) => JSON.parse(cat)
                     );
                     break;
-                case "hpUpdate":
-                    Player.getPlayerById(data.player)._hp = data.hp;
+                }
+                case "hpUpdate": {
+                    let p = Player.getPlayerById(data.player);
+                    if (p) p._hp = data.hp;
                     break;
-                case "battleUpdate":
+                }
+                case "battleUpdate": {
                     Battle.board = data.board.map((row) =>
                         row.map((cat) => {
                             if (cat) return new SimpleCat(cat);
@@ -89,25 +106,26 @@ export default class Socket {
                     );
                     Battle.displayBoard(data.reversed);
                     break;
-                case "battleResult":
+                }
+                case "battleResult": {
                     data.players.forEach(([player, hp]) => {
                         let p = Player.getPlayerById(player);
                         if (p) p._hp = hp;
                     });
                     break;
-                case "timeUpdate":
+                }
+                case "timeUpdate": {
                     Game._time = data.time;
                     break;
-
-                case "winningUpdate":
+                }
+                case "winningUpdate": {
                     Player.getPlayerById(data.player)._winning = data.winning;
                     break;
-
-                case "losingUpdate":
+                }
+                case "losingUpdate": {
                     Player.getPlayerById(data.player)._losing = data.losing;
                     break;
-                default:
-                    break;
+                }
             }
         };
 

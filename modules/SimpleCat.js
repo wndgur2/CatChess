@@ -1,8 +1,7 @@
-const Board = require("./Board");
-const Player = require("./Player");
+const Unit = require("./Unit");
 const CATS = require("./constants/CATS");
 
-class SimpleCat {
+class SimpleCat extends Unit {
     static prototypes = CATS;
 
     static getRandomCatTypeByCost(cost) {
@@ -12,77 +11,8 @@ class SimpleCat {
         return candidates[Math.floor(Math.random() * candidates.length)];
     }
 
-    /**
-     * @param {Player} player
-     */
     constructor(id, player, x, y = 3, tier = 1) {
-        this.id = id;
-        this.proto = SimpleCat.prototypes[id];
-
-        this.tier = tier;
-        this.magnifier = Math.sqrt(this.tier).toPrecision(2);
-
-        this.name = this.proto.name;
-        this.ad = parseInt(this.proto.ad * this.magnifier);
-        this.speed = parseInt(this.proto.speed * this.magnifier);
-        this.range = this.proto.range;
-        this.maxHp = parseInt(this.proto.hp * this.magnifier);
-        this.hp = this.maxHp;
-        this.armor = parseInt(this.proto.armor * this.magnifier);
-        this.cost = this.proto.cost * Math.pow(3, tier - 1);
-        if (tier > 1) this.cost -= 1;
-
-        this.x = x;
-        this.y = y;
-        this.owner = player?.id;
-        this.die = false;
-        /**
-         * @type {Board}
-         */
-        this.board = null;
-
-        this.delay = 0;
-    }
-
-    action() {
-        if (this.die) return;
-        let res = this.board.getNearestEnemy(this);
-        if (!res) return;
-        let { dist, target } = res;
-        if (dist <= this.range) this.attack(target);
-        else this.move(this.board.getNextMove(this, target));
-    }
-
-    attack(target) {
-        if (this.delay > 0) {
-            this.delay -= this.speed;
-            return;
-        }
-        if (this.ad - target.armor > 0) target.hp -= this.ad - target.armor;
-        if (target.hp <= 0) {
-            target.die = true;
-            this.board.board[target.y][target.x] = null;
-            return;
-        }
-        this.delay = 100;
-    }
-
-    move(nextMove) {
-        let y = nextMove[0],
-            x = nextMove[1];
-        if (this.delay > 0) {
-            this.delay -= this.speed / 2;
-            return;
-        }
-        this.board.board[this.y][this.x] = null;
-        this.board.board[y][x] = this;
-        this.y = y;
-        this.x = x;
-        this.delay = 100;
-    }
-
-    clone() {
-        return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+        super(SimpleCat.prototypes[id], player.id, x, y, tier);
     }
 }
 
