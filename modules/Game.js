@@ -140,7 +140,37 @@ class Game {
             this.battleState();
         }, this.time * 1000);
 
-        //TODO : 남는 자리 있을 시 자동 배치
+        this.players.forEach((player) => {
+            // count cats
+            let catN = 0;
+            player.board.forEach((row) => {
+                row.forEach((cell) => {
+                    if (cell) catN++;
+                });
+            });
+            while (catN < player.level) {
+                let c = player.queue.find((cat) => cat != null);
+                if (!c) break;
+                let randomBoardPosition;
+                do {
+                    randomBoardPosition = [
+                        Math.floor(Math.random() * 3),
+                        Math.floor(Math.random() * 5),
+                    ];
+                } while (
+                    player.board[randomBoardPosition[0]][
+                        randomBoardPosition[1]
+                    ] != null
+                );
+                player.putCat({
+                    befX: c.x,
+                    befY: c.y,
+                    nextX: randomBoardPosition[1],
+                    nextY: randomBoardPosition[0],
+                });
+                catN++;
+            }
+        });
 
         if (this.stage == 1) {
             this.players.forEach((player) => {

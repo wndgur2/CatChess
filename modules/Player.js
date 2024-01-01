@@ -142,6 +142,7 @@ class Player {
                     species_amount[tier + 1] += 1;
 
                     let oldCat;
+                    // TODO: oldCat에 첫 발견 고양이를 리턴하도록
                     [...this.board, this.queue].forEach((row) => {
                         oldCat = row.find((c) => {
                             if (!c) return false;

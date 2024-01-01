@@ -181,10 +181,7 @@ export default class Player {
         itemsEl.innerHTML = "";
         for (let i = 0; i < newItems.length; i++) {
             let item = document.createElement("button");
-            item.style.display = "flex";
-            item.style.flexDirection = "column";
-            item.style.alignItems = "center";
-            item.style.justifyContent = "center";
+            item.className = "item";
 
             if (newItems[i] === null) {
                 itemsEl.appendChild(item);

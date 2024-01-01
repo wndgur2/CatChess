@@ -29,7 +29,7 @@ module.exports = (server) => {
                 case "reqPutCat": {
                     if (!data.from) return;
                     let befX = data.from.x;
-                    let befY = data.from.y === 3 ? data.from.y : data.from.y;
+                    let befY = data.from.y;
 
                     let to = data.to.split("-");
                     let nextY, nextX;
