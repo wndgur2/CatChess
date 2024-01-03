@@ -37,7 +37,7 @@ export default class Player {
         this.maxExp = 2;
         this.maxHp = 100;
         this.hp = 100;
-        this.items = [];
+        this.items = [null, null, null, null, null, null];
         this.winning = 0;
         this.losing = 0;
     }
@@ -172,32 +172,19 @@ export default class Player {
     }
 
     set _items(newItems) {
-        this.items = newItems.map((item) => {
-            if (item) return new Item(item);
-            else return null;
-        });
+        this.items = newItems;
         if (this.id !== Socket.id) return;
-        let itemsEl = document.getElementById("items");
-        itemsEl.innerHTML = "";
         for (let i = 0; i < newItems.length; i++) {
-            let item = document.createElement("button");
-            item.className = "item";
-
-            if (newItems[i] === null) {
-                itemsEl.appendChild(item);
+            let itemEl = document.getElementById(
+                `inventory-${parseInt(i / 2)}-${i % 2}`
+            );
+            if (!newItems[i]) {
+                itemEl.innerHTML = "";
+                itemEl.draggable = false;
                 continue;
             }
-            item.onclick = function () {
-                Socket.sendMsg("reqEquipItem", {
-                    index: i,
-                });
-            };
-
-            let name = document.createElement("span");
-            name.innerHTML = newItems[i].name;
-            item.appendChild(name);
-
-            itemsEl.appendChild(item);
+            itemEl.draggable = true;
+            itemEl.innerHTML = newItems[i].display();
         }
     }
 }

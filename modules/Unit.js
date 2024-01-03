@@ -50,8 +50,7 @@ class Unit {
             target.die = true;
             this.board.board[target.y][target.x] = null;
             if (target.owner == "creep") {
-                getPlayer(this.owner).items.push(Item.getRandomItem());
-                getPlayer(this.owner).updateItem();
+                getPlayer(this.owner).pushItem(Item.getRandomItem());
             }
         }
         this.delay = 100;

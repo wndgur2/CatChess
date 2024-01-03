@@ -58,6 +58,7 @@ module.exports = (server) => {
                     break;
                 }
                 case "reqGiveItem": {
+                    getPlayer(from).giveItem(data);
                     break;
                 }
             }

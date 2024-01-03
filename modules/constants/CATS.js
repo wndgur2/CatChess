@@ -16,7 +16,7 @@ const CATS = {
         cost: 1,
         ad: 10,
         speed: 20,
-        hp: 70,
+        hp: 75,
         armor: 1,
         range: 1,
     },

@@ -3,6 +3,8 @@ import Player from "./modules/Player.js";
 import Game from "./modules/Game.js";
 import SimpleCat from "./modules/SimpleCat.js";
 
+let dragging = null;
+
 window.onload = () => {
     init();
 };
@@ -79,11 +81,51 @@ function hydrate() {
         cell.draggable = false;
         document.getElementById("queue").appendChild(cell);
     }
+
+    // 2 x 3 inventory
+    for (let i = 0; i < 3; i++) {
+        let row = document.createElement("div");
+        row.className = "row";
+        for (let j = 0; j < 2; j++) {
+            let item = document.createElement("div");
+            item.id = `inventory-${i}-${j}`;
+
+            item.className = "item";
+            item.addEventListener("dragstart", itemDragStart);
+            item.addEventListener("dragover", itemDragOver);
+            item.addEventListener("click", itemClick);
+            item.draggable = false;
+            row.appendChild(item);
+        }
+        document.getElementById("inventory").appendChild(row);
+    }
+}
+
+// TODO 드래깅 시작 -> 드래깅 끝 -> 서버 전송 체계 짜기.
+// idea: type(unit, item), 출발 position, 도착 position만 주면 된다.
+
+function itemDragStart(event) {
+    dragging = event.target.id;
+}
+
+function itemDragOver(event) {
+    event.preventDefault();
+}
+
+function itemClick(event) {
+    let item = getItemByCellId(event.target.id);
+    if (!item) return;
+    displayItemInfo(item);
+
+    setTimeout(() => {
+        Game.clickEvent = document
+            .getElementById("game")
+            .addEventListener("click", gameClick, true);
+    }, 500);
 }
 
 function cellDragStart(event) {
-    let unit = getCellUnitByCellId(event.target.id);
-    Player.player.dragging = unit;
+    dragging = getCellUnitByCellId(event.target.id);
 }
 
 function cellDragOver(event) {
@@ -91,10 +133,17 @@ function cellDragOver(event) {
 }
 
 function cellDragDrop(event) {
-    Socket.sendMsg("reqPutCat", {
-        from: Player.player.dragging,
-        to: event.target.id,
-    });
+    if (dragging.tier) {
+        Socket.sendMsg("reqPutCat", {
+            from: dragging,
+            to: event.target.id,
+        });
+    } else {
+        Socket.sendMsg("reqGiveItem", {
+            item: dragging,
+            to: event.target.id,
+        });
+    }
 }
 
 function cellClick(event) {
@@ -110,7 +159,6 @@ function cellClick(event) {
 }
 
 /**
- *
  * @param {SimpleCat} unit
  */
 function displayUnitInfo(unit) {
@@ -128,12 +176,12 @@ function gameClick(event) {
 function shopDragOver(event) {
     event.preventDefault();
     let shopEl = document.getElementById("shop");
-    shopEl.innerHTML = `고양이 판매하기<br/>💰${Player.player.dragging.cost}`;
+    shopEl.innerHTML = `고양이 판매하기<br/>💰${dragging.cost}`;
 }
 
 function shopDragDrop(event) {
     Socket.sendMsg("reqSellCat", {
-        cat: Player.player.dragging,
+        cat: dragging,
     });
     Player.player._shop = Player.player.shop;
 }
@@ -150,4 +198,9 @@ function getCellUnitByCellId(id) {
     } else {
         return Player.player.queue[position[1]];
     }
+}
+
+function displayItemInfo(item) {
+    let rightWrapper = document.getElementById("rightWrapper");
+    rightWrapper.innerHTML = item.info();
 }

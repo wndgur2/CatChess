@@ -30,7 +30,7 @@ class Player {
             [null, null, null, null, null],
         ];
         this.queue = [null, null, null, null, null, null, null];
-        this.items = [];
+        this.items = [null, null, null, null, null, null];
 
         this.winning = 0;
         this.losing = 0;
@@ -137,6 +137,9 @@ class Player {
                 let species_amount = tier_species_amount[id];
                 for (let tier = 0; tier < 2; ++tier) {
                     if (species_amount[tier] < 3) continue;
+                    // 업그레이드
+
+                    //TODO 아이템 그대로 갖고있기
                     isUpgraded = true;
                     species_amount[tier] -= 3;
                     species_amount[tier + 1] += 1;
@@ -301,6 +304,38 @@ class Player {
         return true;
     }
 
+    pushItem(item) {
+        for (let i = 0; i < this.items.length; ++i) {
+            if (this.items[i] === null) {
+                this.items[i] = item;
+                this.updateItems();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    giveItem({ item, to }) {
+        // 들어온 아이템 객체로 선별하기
+
+        let catPos = to.split("-"),
+            itemPos = item.split("-");
+
+        let cat;
+        let curItem =
+            this.items[parseInt(itemPos[1]) * 2 + parseInt(itemPos[2])];
+
+        if (catPos[0] === "ally") cat = this.board[catPos[1]][catPos[2]];
+        else cat = this.queue[catPos[1]];
+
+        if (cat.items.length >= 3) return false;
+        if (cat.equip(curItem)) {
+            this.items = this.items.filter((i) => i != curItem);
+            this.updateItems();
+        }
+        return true;
+    }
+
     // update messages
     updateShop() {
         sendMsg(this.ws, "shopUpdate", {
@@ -361,7 +396,7 @@ class Player {
         });
     }
 
-    updateItem() {
+    updateItems() {
         this.game.sendMsgToAll("itemUpdate", {
             player: this.id,
             items: this.items,

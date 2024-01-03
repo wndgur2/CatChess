@@ -1,5 +1,6 @@
 import Battle from "./Battle.js";
 import Game from "./Game.js";
+import Item from "./Item.js";
 import Player from "./Player.js";
 import SimpleCat from "./SimpleCat.js";
 
@@ -72,7 +73,9 @@ export default class Socket {
                     break;
                 }
                 case "itemUpdate": {
-                    Player.getPlayerById(data.player)._items = data.items;
+                    Player.getPlayerById(data.player)._items = data.items.map(
+                        (item) => (item ? new Item(item) : null)
+                    );
                     break;
                 }
                 case "moneyUpdate": {
@@ -84,7 +87,7 @@ export default class Socket {
                         (row) => row.map((cat) => JSON.parse(cat))
                     );
                     Player.getPlayerById(data.player)._queue = data.queue.map(
-                        (cat) => JSON.parse(cat)
+                        (cat) => JSON.parse(cat) //TODO: new Simple cat으로 바꾸기
                     );
                     break;
                 }

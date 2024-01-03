@@ -6,4 +6,9 @@ const GAME_STATES = {
 };
 Object.freeze(GAME_STATES);
 
-export { GAME_STATES };
+const DRAGGING_OBJECTS = {
+    ITEM: "item",
+    UNIT: "unit",
+};
+
+export { GAME_STATES, DRAGGING_OBJECTS };
