@@ -2,6 +2,7 @@ import Socket from "./modules/Socket.js";
 import Player from "./modules/Player.js";
 import Game from "./modules/Game.js";
 import SimpleCat from "./modules/SimpleCat.js";
+import Battle from "./modules/Battle.js";
 
 let dragging = null;
 
@@ -191,12 +192,17 @@ function shopDragLeave(event) {
 }
 
 function getCellUnitByCellId(id) {
-    // TODO : enemy도 선택 가능하게
     let position = id.split("-");
-    if (position[0] === "ally") {
-        return Player.player.board[position[1]][position[2]];
-    } else {
-        return Player.player.queue[position[1]];
+    console.log(position);
+    switch (Game.state) {
+        case "arrange":
+            if (position[0] === "ally")
+                return Player.player.board[position[1]][position[2]];
+            else return Player.player.queue[position[1]];
+        default:
+            if (position[0] === "ally")
+                return Battle.board[parseInt(position[1]) + 3][position[2]];
+            else return Battle.board[position[1]][position[2]];
     }
 }
 

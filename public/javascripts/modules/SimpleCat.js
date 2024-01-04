@@ -26,7 +26,7 @@ export default class SimpleCat {
             ${
                 this.items
                     ? `<div class="items">${this.items.map(
-                          (item) => item.name
+                          (item) => item.img
                       )}</div>`
                     : `<div />`
             }
@@ -46,7 +46,14 @@ export default class SimpleCat {
         return `<div class="cat">
         <div class="catTier">🌟${this.tier}</div>
         <div class="catHp">♥️${this.hp}/${this.maxHp}</div>
-        <div class="items">${this.items.map((item) => item.name)}</div>
+        
+        ${
+            this.items
+                ? `<div class="items">${this.items.map(
+                      (item) => item.img + item.name
+                  )}</div>`
+                : `<div />`
+        }
         <div class="catName">${this.name}</div>
         <div class="catCost">💰${this.cost}</div>
         <div class="catAd">⚔️${this.ad}</div>

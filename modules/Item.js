@@ -13,6 +13,7 @@ class Item {
         this.id = id;
         this.name = proto.name;
         this.desc = proto.desc;
+        this.img = proto.img;
 
         this.ad = proto.ad ? proto.ad : 0;
         this.hp = proto.hp ? proto.hp : 0;

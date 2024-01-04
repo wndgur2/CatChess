@@ -140,19 +140,26 @@ class Player {
                     if (species_amount[tier] < 3) continue;
                     // 업그레이드
 
-                    //TODO 아이템 그대로 갖고있기
                     isUpgraded = true;
                     species_amount[tier] -= 3;
                     species_amount[tier + 1] += 1;
 
-                    // TODO: oldCat에 첫 발견(맨 앞) 고양이를 리턴하도록
                     let oldCat;
-                    [...this.board, this.queue].forEach((row) => {
-                        oldCat = row.find((c) => {
-                            if (!c) return false;
-                            return c.id === id && c.tier == tier + 1;
-                        });
-                    });
+                    for (let i = 0; i < 3; ++i)
+                        for (let j = 0; j < 5; ++j) {
+                            if (
+                                this.board[i][j] &&
+                                this.board[i][j].id === id &&
+                                this.board[i][j].tier == tier + 1
+                            ) {
+                                oldCat = this.board[i][j];
+                                break;
+                            }
+                        }
+                    if (!oldCat)
+                        oldCat = this.queue.find(
+                            (c) => c && c.id === id && c.tier == tier + 1
+                        );
 
                     let newCat = new SimpleCat(
                         id,
@@ -161,6 +168,8 @@ class Player {
                         oldCat.y,
                         tier + 2
                     );
+
+                    let items = oldCat.items;
 
                     if (oldCat.y == IN_QUEUE) this.queue[oldCat.x] = newCat;
                     else this.board[oldCat.y][oldCat.x] = newCat;
@@ -176,10 +185,13 @@ class Player {
                             ) {
                                 if (c.y == IN_QUEUE) this.queue[c.x] = null;
                                 else this.board[c.y][c.x] = null;
+                                items.push(...c.items);
                                 amountToDelete--;
                             }
                         });
                     });
+
+                    newCat.items = items.length > 3 ? items.slice(0, 3) : items;
                 }
             }
             if (!isUpgraded) break;

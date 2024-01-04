@@ -68,7 +68,8 @@ export default class Player {
 
     set _hp(newHp) {
         this.hp = newHp;
-        document.getElementById(`${this.id}-hp`).innerHTML = newHp;
+        let el = document.getElementById(`${this.id}-hp`);
+        if (el) el.innerHTML = newHp;
     }
 
     set _board(newBoard) {

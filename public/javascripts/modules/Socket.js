@@ -68,6 +68,10 @@ export default class Socket {
                     // TODO
                     break;
                 }
+                case "battle_move": {
+                    // TODO
+                    break;
+                }
                 case "battle_dead": {
                     // TODO
                     break;
