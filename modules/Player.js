@@ -44,6 +44,7 @@ class Player {
         this.updateBoard();
         this.updateWinning();
         this.updateLosing();
+        this.updateItems();
     }
 
     /**
@@ -144,8 +145,8 @@ class Player {
                     species_amount[tier] -= 3;
                     species_amount[tier + 1] += 1;
 
+                    // TODO: oldCat에 첫 발견(맨 앞) 고양이를 리턴하도록
                     let oldCat;
-                    // TODO: oldCat에 첫 발견 고양이를 리턴하도록
                     [...this.board, this.queue].forEach((row) => {
                         oldCat = row.find((c) => {
                             if (!c) return false;
@@ -189,8 +190,19 @@ class Player {
     sellCat(cat) {
         if (!cat) return false;
         this.money += cat.cost;
-        if (cat.y === IN_QUEUE) this.queue[cat.x] = null;
-        else this.board[cat.y][cat.x] = null;
+
+        let c;
+        if (cat.y === IN_QUEUE) {
+            c = this.queue[cat.x];
+            this.queue[cat.x] = null;
+        } else {
+            c = this.board[cat.y][cat.x];
+            this.board[cat.y][cat.x] = null;
+        }
+        c.items.forEach((item) => {
+            this.pushItem(item);
+        });
+
         this.updateBoard();
         this.updateMoney();
 
@@ -316,14 +328,13 @@ class Player {
     }
 
     giveItem({ item, to }) {
-        // 들어온 아이템 객체로 선별하기
-
         let catPos = to.split("-"),
             itemPos = item.split("-");
 
         let cat;
         let curItem =
             this.items[parseInt(itemPos[1]) * 2 + parseInt(itemPos[2])];
+        if (!curItem) return false;
 
         if (catPos[0] === "ally") cat = this.board[catPos[1]][catPos[2]];
         else cat = this.queue[catPos[1]];
@@ -332,6 +343,7 @@ class Player {
         if (cat.equip(curItem)) {
             this.items = this.items.filter((i) => i != curItem);
             this.updateItems();
+            this.updateBoard();
         }
         return true;
     }
@@ -354,10 +366,8 @@ class Player {
     updateBoard() {
         this.game.sendMsgToAll("boardUpdate", {
             player: this.id,
-            board: this.board.map((row) =>
-                row.map((cat) => JSON.stringify(cat))
-            ),
-            queue: this.queue.map((cat) => JSON.stringify(cat)),
+            board: this.board,
+            queue: this.queue,
         });
     }
 

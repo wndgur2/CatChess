@@ -90,7 +90,7 @@ function hydrate() {
             let item = document.createElement("div");
             item.id = `inventory-${i}-${j}`;
 
-            item.className = "item";
+            item.className = "cell";
             item.addEventListener("dragstart", itemDragStart);
             item.addEventListener("dragover", itemDragOver);
             item.addEventListener("click", itemClick);
@@ -191,7 +191,7 @@ function shopDragLeave(event) {
 }
 
 function getCellUnitByCellId(id) {
-    // TODO : enemy도 가능하게
+    // TODO : enemy도 선택 가능하게
     let position = id.split("-");
     if (position[0] === "ally") {
         return Player.player.board[position[1]][position[2]];

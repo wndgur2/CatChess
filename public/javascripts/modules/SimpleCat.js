@@ -12,6 +12,7 @@ export default class SimpleCat {
         this.armor = data.armor;
         this.cost = data.cost;
         this.owner = data.owner;
+        this.items = data.items;
 
         this.x = data.x;
         this.y = data.y;
@@ -22,6 +23,13 @@ export default class SimpleCat {
             this.owner == Player.player.id ? "ally" : "enemy"
         }">
             <div class="catTier">🌟${this.tier}</div>
+            ${
+                this.items
+                    ? `<div class="items">${this.items.map(
+                          (item) => item.name
+                      )}</div>`
+                    : `<div />`
+            }
             <div class="catHp">♥️${this.hp}</div>
             <div class="catName">${this.name}</div>
         </div>`;
@@ -38,12 +46,13 @@ export default class SimpleCat {
         return `<div class="cat">
         <div class="catTier">🌟${this.tier}</div>
         <div class="catHp">♥️${this.hp}/${this.maxHp}</div>
+        <div class="items">${this.items.map((item) => item.name)}</div>
         <div class="catName">${this.name}</div>
-        <div class="catHp">💰${this.cost}</div>
-        <div class="catHp">⚔️${this.ad}</div>
-        <div class="catHp">🛡${this.armor}</div>
-        <div class="catHp">🏃${this.speed}</div>
-        <div class="catHp">🎯${this.range}</div>
+        <div class="catCost">💰${this.cost}</div>
+        <div class="catAd">⚔️${this.ad}</div>
+        <div class="catArmor">🛡${this.armor}</div>
+        <div class="catSpeed">🏃${this.speed}</div>
+        <div class="catRange">🎯${this.range}</div>
         </div>`;
     }
 }

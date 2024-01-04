@@ -23,14 +23,14 @@ const CREEP_ROUNDS = {
             [
                 new Creep("frog", 0, 1),
                 new Creep("frog", 1, 1),
-                new Creep("eel", 2, 1),
+                new Creep("frog", 2, 1),
                 new Creep("frog", 3, 1),
                 new Creep("frog", 4, 1),
             ],
             [
                 new Creep("frog", 0, 2),
                 new Creep("frog", 1, 2),
-                new Creep("crab", 2, 2),
+                new Creep("frog", 2, 2),
                 new Creep("frog", 3, 2),
                 new Creep("frog", 4, 2),
             ],

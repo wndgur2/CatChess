@@ -15,7 +15,7 @@ const ITEMS = {
         id: "helmet",
         name: "🪖방탄모",
         desc: "단단한 헬멧이다.",
-        armor: 8,
+        armor: 6,
     },
     recurveBow: {
         id: "recurveBow",

@@ -83,12 +83,8 @@ export default class Socket {
                     break;
                 }
                 case "boardUpdate": {
-                    Player.getPlayerById(data.player)._board = data.board.map(
-                        (row) => row.map((cat) => JSON.parse(cat))
-                    );
-                    Player.getPlayerById(data.player)._queue = data.queue.map(
-                        (cat) => JSON.parse(cat) //TODO: new Simple cat으로 바꾸기
-                    );
+                    Player.getPlayerById(data.player)._board = data.board;
+                    Player.getPlayerById(data.player)._queue = data.queue;
                     break;
                 }
                 case "hpUpdate": {

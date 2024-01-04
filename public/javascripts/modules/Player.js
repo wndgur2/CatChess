@@ -184,7 +184,7 @@ export default class Player {
                 continue;
             }
             itemEl.draggable = true;
-            itemEl.innerHTML = newItems[i].display();
+            itemEl.innerHTML = newItems[i].info();
         }
     }
 }

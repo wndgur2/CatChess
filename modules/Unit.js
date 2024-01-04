@@ -49,25 +49,25 @@ class Unit {
         if (target.hp <= 0) {
             target.die = true;
             this.board.board[target.y][target.x] = null;
-            if (target.owner == "creep") {
+            if (target.owner == "creep")
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
-            }
         }
-        this.delay = 100;
+        this.delay += 100;
     }
 
     move(nextMove) {
-        let y = nextMove[0],
-            x = nextMove[1];
         if (this.delay > 0) {
             this.delay -= this.speed / 2;
             return;
         }
+        if (!nextMove) return;
+        let y = nextMove[0],
+            x = nextMove[1];
         this.board.board[this.y][this.x] = null;
         this.board.board[y][x] = this;
         this.y = y;
         this.x = x;
-        this.delay = 100;
+        this.delay += 100;
     }
 
     clone() {
