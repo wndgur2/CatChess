@@ -45,6 +45,7 @@ class Unit {
             this.delay -= this.speed;
             return;
         }
+        // client에 공격 메시지 보내기
         if (this.ad - target.armor > 0) target.hp -= this.ad - target.armor;
         if (target.hp <= 0) {
             target.die = true;
@@ -61,6 +62,8 @@ class Unit {
             return;
         }
         if (!nextMove) return;
+
+        // client에 이동 메시지 보내기
         let y = nextMove[0],
             x = nextMove[1];
         this.board.board[this.y][this.x] = null;

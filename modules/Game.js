@@ -1,4 +1,4 @@
-const { sendMsg, getPlayer } = require("./utils.js");
+const { sendMsg, getPlayer, removePlayer } = require("./utils.js");
 const { GAME_STATES, PLAYER_NUM } = require("./constants/consts.js");
 const CREEP_ROUNDS = require("./constants/CREEP_ROUNDS.js");
 const Battle = require("./Battle.js");
@@ -59,7 +59,7 @@ class Game {
          * @type {Battle[]}
          */
         this.battles = [];
-        setInterval(() => {
+        this.timer = setInterval(() => {
             if (this.time <= 0) return;
             this.time = this.time - 1;
             this.sendMsgToAll("timeUpdate", {
@@ -199,16 +199,47 @@ class Game {
         clearTimeout(this.timeout);
 
         this.battles.forEach((battle) => {
-            // 이미 실행된 배틀은 제거됨.
+            // 이미 끝난 배틀은 끝난 시점에 제거됨.
             battle.finish();
         });
 
         this.state = GAME_STATES.FINISH;
         this.time = 3;
         this.updateState();
-        this.timeout = setTimeout(() => {
-            this.arrangeState();
-        }, this.time * 1000);
+
+        let isEnd = false;
+        this.players.forEach((player) => {
+            if (player.hp <= 0) isEnd = true;
+        });
+
+        if (isEnd) {
+            this.timeout = setTimeout(() => {
+                this.endState();
+            }, this.time * 1000);
+        } else {
+            this.timeout = setTimeout(() => {
+                this.arrangeState();
+            }, this.time * 1000);
+        }
+    }
+
+    endState() {
+        clearTimeout(this.timeout);
+
+        this.players.forEach((player) => {
+            removePlayer(player.id);
+        });
+
+        clearInterval(this.timer);
+
+        this.sendMsgToAll("gameEnd", {
+            winner:
+                this.players[0].hp > 0
+                    ? this.players[0].id
+                    : this.players[1].id,
+        });
+
+        Game.games.splice(Game.games.indexOf(this), 1);
     }
 
     sendMsgToAll(type, data) {

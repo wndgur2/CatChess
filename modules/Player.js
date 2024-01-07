@@ -60,6 +60,7 @@ class Player {
     }
 
     set _exp(newExp) {
+        if (this.level === 6) return;
         this.exp = parseInt(newExp);
         if (this.exp >= this.maxExp) {
             this.exp -= this.maxExp;

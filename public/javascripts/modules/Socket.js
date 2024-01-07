@@ -125,6 +125,12 @@ export default class Socket {
                     Player.getPlayerById(data.player)._losing = data.losing;
                     break;
                 }
+                case "gameEnd": {
+                    if (data.winner === Socket.id) alert("승리!");
+                    else alert("패배!");
+                    window.location.reload();
+                    break;
+                }
             }
         };
 

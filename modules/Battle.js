@@ -47,7 +47,7 @@ class Battle {
     }
 
     sendBattle() {
-        // => board update in Board?
+        // 없애고 통신 type 쪼개기(move, attack)
         this.players.forEach((player) => {
             if (!player.ws) return;
             sendMsg(player.ws, "battleUpdate", {
@@ -63,7 +63,8 @@ class Battle {
         clearInterval(this.battleInterval);
 
         let p1Units = this.board.getCats(this.player1.id).length,
-            p2Units = this.board.getCats(this.player2.id).length;
+            p2Units = this.board.getCats(this.player2.id).length,
+            damage;
 
         if (p1Units > p2Units) {
             if (!this.isCreep) {
@@ -73,8 +74,8 @@ class Battle {
                 this.player2._losing++;
                 this.player2._winning = 0;
             }
-
-            this.player2.hp -= p1Units - p2Units + this.player1.level;
+            damage = p1Units - p2Units + this.player1.level;
+            this.player2.hp -= damage * 5;
         } else if (p1Units < p2Units) {
             if (!this.isCreep) {
                 this.player2._winning++;
@@ -82,8 +83,8 @@ class Battle {
                 this.player1._losing++;
                 this.player1._winning = 0;
             }
-
-            this.player1.hp -= p2Units - p1Units + this.player2.level;
+            damage = p2Units - p1Units + this.player2.level;
+            this.player1.hp -= damage * 5;
         } else {
             this.players.forEach((player) => {
                 if (player.id) {

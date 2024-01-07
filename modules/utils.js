@@ -17,4 +17,8 @@ function getPlayer(id) {
     return players.find((player) => player.id === id);
 }
 
-module.exports = { sendMsg, addPlayer, getPlayer };
+function removePlayer(id) {
+    players = players.filter((player) => player.id !== id);
+}
+
+module.exports = { sendMsg, addPlayer, getPlayer, removePlayer };
