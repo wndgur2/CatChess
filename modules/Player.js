@@ -192,7 +192,10 @@ class Player {
                         });
                     });
 
-                    newCat.items = items.length > 3 ? items.slice(0, 3) : items;
+                    items = items.length > 3 ? items.slice(0, 3) : items;
+                    items.forEach((item) => {
+                        newCat.equip(item);
+                    });
                 }
             }
             if (!isUpgraded) break;

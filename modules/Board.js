@@ -1,4 +1,4 @@
-const { DIRS } = require("./constants/consts");
+const { DIRS } = require("./constants/CONSTS.js");
 
 class Board {
     constructor(board) {

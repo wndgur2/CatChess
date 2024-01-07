@@ -11,7 +11,7 @@ const ITEMS = {
         name: "루비 수정",
         img: "🔮",
         desc: "단단한 수정이다.",
-        hp: 50,
+        hp: 70,
     },
     helmet: {
         id: "helmet",

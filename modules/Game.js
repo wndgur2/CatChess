@@ -1,5 +1,5 @@
 const { sendMsg, getPlayer, removePlayer } = require("./utils.js");
-const { GAME_STATES, PLAYER_NUM } = require("./constants/consts.js");
+const { GAME_STATES, PLAYER_NUM } = require("./constants/CONSTS.js");
 const CREEP_ROUNDS = require("./constants/CREEP_ROUNDS.js");
 const Battle = require("./Battle.js");
 const Player = require("./Player.js");
@@ -11,6 +11,7 @@ class Game {
      */
     static games = [];
     static newPlayer(from, ws) {
+        if (Game.waitingPlayers.find((player) => player.id === from)) return;
         if (getPlayer(from)) {
             getPlayer(from).ws = ws;
 
@@ -52,6 +53,8 @@ class Game {
             player.init();
         });
 
+        this.creep = new Player("creep"); // players에 creep이 여러명임
+        this.creep.init();
         this.round = 1;
         this.stage = 0;
         this.arrangeState();
@@ -173,10 +176,10 @@ class Game {
         });
 
         if (this.stage == 1) {
+            this.creep.level = CREEP_ROUNDS[this.round].level;
+            this.creep.board = CREEP_ROUNDS[this.round].board;
             this.players.forEach((player) => {
-                this.battles.push(
-                    new Battle(player, CREEP_ROUNDS[this.round], true)
-                );
+                this.battles.push(new Battle(player, this.creep, true));
             });
         } else this.battles.push(new Battle(this.players[0], this.players[1]));
     }

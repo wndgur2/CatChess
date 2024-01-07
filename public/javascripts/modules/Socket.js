@@ -65,11 +65,13 @@ export default class Socket {
                     break;
                 }
                 case "battle_attack": {
-                    // TODO
+                    let { attacker, target, damage, reversed } = data;
+                    Battle.attack(attacker, target, damage, reversed);
                     break;
                 }
                 case "battle_move": {
-                    // TODO
+                    let { befX, befY, nextX, nextY, reversed } = data;
+                    Battle.move(befX, befY, nextX, nextY, reversed);
                     break;
                 }
                 case "battle_dead": {
@@ -103,6 +105,7 @@ export default class Socket {
                             else return null;
                         })
                     );
+                    Battle.initBattle(data.reversed);
                     Battle.displayBoard(data.reversed);
                     break;
                 }

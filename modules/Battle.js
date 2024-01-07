@@ -2,7 +2,7 @@ const Board = require("./Board");
 const Game = require("./Game");
 const Player = require("./Player");
 const { sendMsg } = require("./utils");
-const { TIME_STEP } = require("./constants/consts.js");
+const { TIME_STEP } = require("./constants/CONSTS.js");
 
 class Battle {
     /**
@@ -27,7 +27,16 @@ class Battle {
             .reverse();
 
         this.board = new Board([...board2, ...board1]);
-        this.sendBattle();
+
+        this.players.forEach((player) => {
+            if (!player.ws) return;
+            sendMsg(player.ws, "battleUpdate", {
+                board: this.board.board.map((row) =>
+                    row.map((c) => (c ? { ...c, board: null } : null))
+                ),
+                reversed: player === this.player2,
+            });
+        });
     }
 
     initBattle() {
@@ -40,23 +49,17 @@ class Battle {
         let p1Cats = this.board.getCats(this.player1.id);
         let p2Cats = this.board.getCats(this.player2.id);
         if (p1Cats.length > 0 && p2Cats.length > 0) {
-            // 죽일때마다 줄어서 확인해야함
-            [...p1Cats, ...p2Cats].forEach((c) => c.action());
-            this.sendBattle();
-        } else this.finish();
-    }
+            [...p1Cats, ...p2Cats].forEach((c) => {
+                let res = c.action();
+                if (!res) return;
 
-    sendBattle() {
-        // 없애고 통신 type 쪼개기(move, attack)
-        this.players.forEach((player) => {
-            if (!player.ws) return;
-            sendMsg(player.ws, "battleUpdate", {
-                board: this.board.board.map((row) =>
-                    row.map((c) => (c ? { ...c, board: null } : null))
-                ),
-                reversed: player === this.player2,
+                this.players.forEach((p) => {
+                    if (!p.ws) return;
+                    res.data.reversed = p === this.player2;
+                    sendMsg(p.ws, res.type, res.data);
+                });
             });
-        });
+        } else this.finish();
     }
 
     finish() {

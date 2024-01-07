@@ -1,4 +1,3 @@
-const Board = require("./Board");
 const Item = require("./Item");
 const { getPlayer } = require("./utils");
 
@@ -23,11 +22,7 @@ class Unit {
         this.y = y;
         this.owner = playerId;
         this.die = false;
-        /**
-         * @type {Board}
-         */
         this.board = null;
-
         this.delay = 0;
     }
 
@@ -36,8 +31,8 @@ class Unit {
         let res = this.board.getNearestEnemy(this);
         if (!res) return;
         let { dist, target } = res;
-        if (dist <= this.range) this.attack(target);
-        else this.move(this.board.getNextMove(this, target));
+        if (dist <= this.range) return this.attack(target);
+        else return this.move(this.board.getNextMove(this, target));
     }
 
     attack(target) {
@@ -45,7 +40,6 @@ class Unit {
             this.delay -= this.speed;
             return;
         }
-        // client에 공격 메시지 보내기
         if (this.ad - target.armor > 0) target.hp -= this.ad - target.armor;
         if (target.hp <= 0) {
             target.die = true;
@@ -53,7 +47,24 @@ class Unit {
             if (target.owner == "creep")
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
         }
+
+        // client에 공격 메시지 보내기 >> 여기서 보내기엔, Game 정보가 없다. reversed인지. >> action의 리턴값 이용
         this.delay += 100;
+        return {
+            type: "battle_attack",
+            data: {
+                attacker: {
+                    x: this.x,
+                    y: this.y,
+                },
+                target: {
+                    x: target.x,
+                    y: target.y,
+                    hp: target.hp,
+                },
+                damage: this.ad - target.armor > 0 ? this.ad - target.armor : 0,
+            },
+        };
     }
 
     move(nextMove) {
@@ -64,13 +75,26 @@ class Unit {
         if (!nextMove) return;
 
         // client에 이동 메시지 보내기
+
         let y = nextMove[0],
-            x = nextMove[1];
+            x = nextMove[1],
+            befX = this.x,
+            befY = this.y;
         this.board.board[this.y][this.x] = null;
         this.board.board[y][x] = this;
         this.y = y;
         this.x = x;
         this.delay += 100;
+
+        return {
+            type: "battle_move",
+            data: {
+                befX,
+                befY,
+                nextX: x,
+                nextY: y,
+            },
+        };
     }
 
     clone() {
