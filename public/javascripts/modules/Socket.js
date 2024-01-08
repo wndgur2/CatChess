@@ -9,7 +9,7 @@ export default class Socket {
     static id = localStorage.getItem("id");
 
     static init() {
-        Socket.socket = new WebSocket("ws://localhost:3000");
+        Socket.socket = new WebSocket("ws://localhost:4000");
 
         Socket.socket.onopen = function (event) {
             console.log("웹 소켓 연결 성공");
@@ -45,11 +45,8 @@ export default class Socket {
                     break;
                 }
                 case "levelUpdate": {
-                    if (data.player === Socket.id) {
-                        Player.player._level = data.level;
-                        Player.player._maxExp = 2 + (data.level - 1) * 3;
-                    } else
-                        Player.getPlayerById(data.player)._level = data.level;
+                    Player.getPlayerById(data.player)._level = data.level;
+                    break;
                 }
                 case "stateUpdate": {
                     Game._state = data.state;

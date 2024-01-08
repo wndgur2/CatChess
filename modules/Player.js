@@ -232,9 +232,9 @@ class Player {
                         if (cat) amount++;
                     });
                 });
-                if (amount == this.level) return false;
 
                 unitToSwap = this.board[nextY][nextX];
+                if (amount == this.level && !unitToSwap) return false;
                 this.board[nextY][nextX] = unitToMove;
                 this.queue[befX] = unitToSwap;
             }

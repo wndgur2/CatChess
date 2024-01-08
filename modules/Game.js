@@ -113,20 +113,18 @@ class Game {
 
     arrangeState() {
         clearTimeout(this.timeout);
-
-        this._stage = this.stage + 1;
-        this.state = GAME_STATES.ARRANGE;
-        this.updateState();
-
-        this.time = 7;
-        this.timeout = setTimeout(() => {
-            this.readyState();
-        }, this.time * 1000);
-
         // 결과 지급, 리로드
         this.players.forEach((player) => {
             player.reward();
         });
+
+        this._stage = this.stage + 1;
+        this.state = GAME_STATES.ARRANGE;
+        this.time = 7;
+        this.updateState();
+        this.timeout = setTimeout(() => {
+            this.readyState();
+        }, this.time * 1000);
     }
 
     readyState() {

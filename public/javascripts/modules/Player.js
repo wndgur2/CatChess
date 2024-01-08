@@ -66,21 +66,22 @@ export default class Player {
                 else return null;
             })
         );
+
         if (this.id !== Socket.id) return;
-        if (Game.state === GAME_STATES.ARRANGE)
-            for (let i = 0; i < 3; i++) {
-                for (let j = 0; j < 5; j++) {
-                    let cell = document.getElementById(`ally-${i}-${j}`);
-                    if (this.board[i][j] === null) {
-                        cell.draggable = false;
-                        cell.innerHTML = "";
-                    } else {
-                        if (Game.state === GAME_STATES.ARRANGE)
-                            cell.draggable = true;
-                        cell.innerHTML = this.board[i][j].display();
-                    }
+        if (Game.state != GAME_STATES.ARRANGE) return;
+
+        for (let i = 0; i < 3; i++) {
+            for (let j = 0; j < 5; j++) {
+                let cell = document.getElementById(`ally-${i}-${j}`);
+                if (this.board[i][j] === null) {
+                    cell.draggable = false;
+                    cell.innerHTML = "";
+                } else {
+                    cell.draggable = true;
+                    cell.innerHTML = this.board[i][j].display();
                 }
             }
+        }
     }
 
     set _queue(newQueue) {

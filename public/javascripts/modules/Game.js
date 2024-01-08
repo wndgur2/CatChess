@@ -43,11 +43,9 @@ export default class Game {
             case GAME_STATES.ARRANGE: {
                 document.getElementById("game").style.backgroundColor = "#333";
                 let cells = document.getElementsByClassName("cell");
-                for (let i = 0; i < cells.length; i++) {
-                    if (cells[i].id.split("-")[0] === "ally") {
+                for (let i = 0; i < cells.length; i++)
+                    if (cells[i].id.split("-")[0] === "ally")
                         cells[i].draggable = true;
-                    }
-                }
                 // display player's board
                 let player = Player.player;
                 for (let i = 0; i < 3; i++) {
