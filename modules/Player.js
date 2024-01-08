@@ -1,4 +1,5 @@
 const SimpleCat = require("./SimpleCat");
+const { MAX_LEVEL } = require("./constants/CONSTS");
 const { sendMsg, addPlayer } = require("./utils");
 
 const IN_QUEUE = 3;
@@ -18,9 +19,9 @@ class Player {
 
     init() {
         this.level = 1;
-        this.exp = 0;
-        this.money = 150;
-        this.maxExp = 2;
+        this.exp = -2;
+        this.money = 0;
+        this.maxExp = 4;
         this.maxHp = 100;
         this.hp = 100;
 
@@ -37,6 +38,7 @@ class Player {
     }
 
     updatePlayer() {
+        this.updateHp();
         this.updateExp();
         this.updateLevel();
         this.updateShop();
@@ -60,7 +62,7 @@ class Player {
     }
 
     set _exp(newExp) {
-        if (this.level === 6) return;
+        if (this.level === MAX_LEVEL) return;
         this.exp = parseInt(newExp);
         if (this.exp >= this.maxExp) {
             this.exp -= this.maxExp;
@@ -100,14 +102,14 @@ class Player {
         if (this.money < catProto.cost) return false;
 
         for (let i = 0; i < this.queue.length; ++i) {
-            if (this.queue[i] === null) {
-                this.queue[i] = new SimpleCat(catId, this, i);
-                this._money = this.money - catProto.cost;
-                this.shop[index] = null;
-                this.checkUpgrade();
-                this.updateShop();
-                return true;
-            }
+            if (this.queue[i]) continue;
+
+            this.queue[i] = new SimpleCat(catId, this, i);
+            this._money = this.money - catProto.cost;
+            this.shop[index] = null;
+            this.checkUpgrade();
+            this.updateShop();
+            return true;
         }
         console.log("대기석에 빈자리가 없습니다.");
         return false;
@@ -117,17 +119,15 @@ class Player {
         // count cats
         let tier_species_amount = {},
             boardToCount;
-        if (this.game.state === "arrange") {
+        if (this.game.state === "arrange")
             boardToCount = [...this.board, this.queue];
-        } else {
-            boardToCount = [this.queue];
-        }
+        else boardToCount = [this.queue];
+
         boardToCount.forEach((row) => {
             row.forEach((cat) => {
                 if (!cat) return;
-                if (!tier_species_amount[cat.id]) {
+                if (!tier_species_amount[cat.id])
                     tier_species_amount[cat.id] = [0, 0, 0];
-                }
                 tier_species_amount[cat.id][cat.tier - 1]++;
             });
         });
@@ -139,68 +139,56 @@ class Player {
                 let species_amount = tier_species_amount[id];
                 for (let tier = 0; tier < 2; ++tier) {
                     if (species_amount[tier] < 3) continue;
-                    // 업그레이드
-
                     isUpgraded = true;
                     species_amount[tier] -= 3;
                     species_amount[tier + 1] += 1;
-
-                    let oldCat;
-                    for (let i = 0; i < 3; ++i)
-                        for (let j = 0; j < 5; ++j) {
-                            if (
-                                this.board[i][j] &&
-                                this.board[i][j].id === id &&
-                                this.board[i][j].tier == tier + 1
-                            ) {
-                                oldCat = this.board[i][j];
-                                break;
-                            }
-                        }
-                    if (!oldCat)
-                        oldCat = this.queue.find(
-                            (c) => c && c.id === id && c.tier == tier + 1
-                        );
-
-                    let newCat = new SimpleCat(
-                        id,
-                        this,
-                        oldCat.x,
-                        oldCat.y,
-                        tier + 2
-                    );
-
-                    let items = oldCat.items;
-
-                    if (oldCat.y == IN_QUEUE) this.queue[oldCat.x] = newCat;
-                    else this.board[oldCat.y][oldCat.x] = newCat;
-
-                    let amountToDelete = 2;
-                    [...this.board, this.queue].forEach((row) => {
-                        row.forEach((c) => {
-                            if (
-                                c &&
-                                c.id === id &&
-                                c.tier == tier + 1 &&
-                                amountToDelete
-                            ) {
-                                if (c.y == IN_QUEUE) this.queue[c.x] = null;
-                                else this.board[c.y][c.x] = null;
-                                items.push(...c.items);
-                                amountToDelete--;
-                            }
-                        });
-                    });
-
-                    items = items.length > 3 ? items.slice(0, 3) : items;
-                    items.forEach((item) => {
-                        newCat.equip(item);
-                    });
+                    this.upgradeCat(id, tier + 1);
                 }
             }
             if (!isUpgraded) break;
         }
         this.updateBoard();
+    }
+
+    upgradeCat(id, tier) {
+        let oldCat;
+        for (let i = 0; i < 3; ++i)
+            for (let j = 0; j < 5; ++j) {
+                if (
+                    this.board[i][j] &&
+                    this.board[i][j].id === id &&
+                    this.board[i][j].tier == tier
+                ) {
+                    oldCat = this.board[i][j];
+                    break;
+                }
+            }
+        if (!oldCat)
+            oldCat = this.queue.find((c) => c && c.id === id && c.tier == tier);
+
+        let newCat = new SimpleCat(id, this, oldCat.x, oldCat.y, tier + 1);
+
+        let items = oldCat.items;
+
+        if (oldCat.y == IN_QUEUE) this.queue[oldCat.x] = newCat;
+        else this.board[oldCat.y][oldCat.x] = newCat;
+
+        let amountToDelete = 2;
+        [...this.board, this.queue].forEach((row) => {
+            row.forEach((c) => {
+                if (c && c.id === id && c.tier == tier && amountToDelete) {
+                    if (c.y == IN_QUEUE) this.queue[c.x] = null;
+                    else this.board[c.y][c.x] = null;
+                    items.push(...c.items);
+                    amountToDelete--;
+                }
+            });
+        });
+
+        items = items.length > 3 ? items.slice(0, 3) : items;
+        items.forEach((item) => {
+            newCat.equip(item);
+        });
     }
 
     sellCat(cat) {
@@ -354,7 +342,7 @@ class Player {
 
         if (catPos[0] === "ally") cat = this.board[catPos[1]][catPos[2]];
         else cat = this.queue[catPos[1]];
-
+        if (!cat) return false;
         if (cat.items.length >= 3) return false;
         if (cat.equip(curItem)) {
             this.items = this.items.filter((i) => i != curItem);
@@ -362,6 +350,18 @@ class Player {
             this.updateBoard();
         }
         return true;
+    }
+
+    reward() {
+        this.checkUpgrade();
+        this.reload(true);
+
+        let income = 5;
+        income += this.winning > 1 ? this.winning : 0;
+        income += this.losing > 1 ? this.losing * 2 : 0;
+        income += Math.min(parseInt(this.money / 10), 5);
+        this._money = this.money + income;
+        this._exp += 2;
     }
 
     // update messages
@@ -398,6 +398,7 @@ class Player {
         sendMsg(this.ws, "expUpdate", {
             player: this.id,
             exp: this.exp,
+            maxExp: this.maxExp,
         });
     }
 

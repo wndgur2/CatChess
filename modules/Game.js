@@ -12,25 +12,23 @@ class Game {
     static games = [];
     static newPlayer(from, ws) {
         if (Game.waitingPlayers.find((player) => player.id === from)) return;
-        if (getPlayer(from)) {
-            getPlayer(from).ws = ws;
+        let player = getPlayer(from);
+        if (player) {
+            player.ws = ws;
 
             // 게임 데이터 전송
-            let game = getPlayer(from).game;
+            let game = player.game;
             if (game && game.state !== GAME_STATES.FINISH) {
                 sendMsg(ws, "gameMatched", {
-                    players: game.players.map((player) => player.id),
+                    players: game.players.map((p) => p.id),
                 });
                 game.sendGameData(from);
                 return;
             }
         }
         Game.waitingPlayers.push(new Player(from, ws));
-        if (Game.waitingPlayers.length >= PLAYER_NUM) {
-            Game.games.push(
-                new Game(Game.waitingPlayers.splice(0, PLAYER_NUM))
-            );
-        }
+        if (Game.waitingPlayers.length === PLAYER_NUM)
+            new Game(Game.waitingPlayers.splice(0, PLAYER_NUM));
     }
 
     /**
@@ -48,9 +46,11 @@ class Game {
                 players: this.players.map((player) => player.id),
             });
         });
+
         this.players.forEach((player) => {
             player.game = this;
             player.init();
+            player.updateHp();
         });
 
         this.creep = new Player("creep"); // players에 creep이 여러명임
@@ -109,27 +109,23 @@ class Game {
         });
     }
 
+    // 게임 진행 로직: arrange -> ready -> battle -> finish -> arrange
+
     arrangeState() {
         clearTimeout(this.timeout);
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 7;
         this.updateState();
+
+        this.time = 7;
         this.timeout = setTimeout(() => {
             this.readyState();
         }, this.time * 1000);
 
         // 결과 지급, 리로드
         this.players.forEach((player) => {
-            player.checkUpgrade();
-            player.reload(true);
-            let income = 5;
-            income += player.winning > 1 ? player.winning : 0;
-            income += player.losing > 1 ? player.losing * 2 : 0;
-            income += Math.min(parseInt(player.money / 10), 5);
-            player._money = player.money + income;
-            player._exp += 2;
+            player.reward();
         });
     }
 
@@ -228,12 +224,11 @@ class Game {
 
     endState() {
         clearTimeout(this.timeout);
+        clearInterval(this.timer);
 
         this.players.forEach((player) => {
             removePlayer(player.id);
         });
-
-        clearInterval(this.timer);
 
         this.sendMsgToAll("gameEnd", {
             winner:

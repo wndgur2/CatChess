@@ -20,26 +20,13 @@ export default class Player {
         Player.players.push(this);
         this.id = id;
         if (id === Socket.id) Player.player = this;
-        this.init();
-    }
-
-    init() {
-        console.log("init", this.id);
-        this.money = 20;
         this.board = [
             [null, null, null, null, null],
             [null, null, null, null, null],
             [null, null, null, null, null],
         ];
         this.queue = [null, null, null, null, null, null, null];
-        this.level = 1;
-        this.exp = 0;
-        this.maxExp = 2;
-        this.maxHp = 100;
-        this.hp = 100;
         this.items = [null, null, null, null, null, null];
-        this.winning = 0;
-        this.losing = 0;
     }
 
     set _money(newMoney) {

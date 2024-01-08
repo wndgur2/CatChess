@@ -43,7 +43,6 @@ class Board {
     }
 
     getNearestEnemy(cat) {
-        // find nearest enemy and return {dist, cat}
         let visited = [];
         this.board.forEach((row) => {
             visited.push(row.map((_) => false));
@@ -53,9 +52,8 @@ class Board {
         visited[cat.y][cat.x] = true;
         while (queue.length > 0) {
             let [y, x, dist] = queue.shift();
-            if (this.board[y][x] && this.board[y][x].owner !== cat.owner) {
+            if (this.board[y][x] && this.board[y][x].owner !== cat.owner)
                 return { dist, target: this.board[y][x] };
-            }
             DIRS[y % 2].forEach(([dy, dx]) => {
                 let ny = y + dy,
                     nx = x + dx;
@@ -78,13 +76,12 @@ class Board {
                 });
             });
             return res;
-        } else {
-            this.board.forEach((row) => {
-                row.forEach((cat) => {
-                    if (cat && cat.owner === playerId) res.push(cat);
-                });
-            });
         }
+        this.board.forEach((row) => {
+            row.forEach((cat) => {
+                if (cat && cat.owner === playerId) res.push(cat);
+            });
+        });
         return res;
     }
 }

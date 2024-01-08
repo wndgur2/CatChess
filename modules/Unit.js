@@ -48,7 +48,6 @@ class Unit {
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
         }
 
-        // client에 공격 메시지 보내기 >> 여기서 보내기엔, Game 정보가 없다. reversed인지. >> action의 리턴값 이용
         this.delay += 100;
         return {
             type: "battle_attack",

@@ -41,18 +41,15 @@ export default class Socket {
                 }
                 case "expUpdate": {
                     Player.player._exp = data.exp;
+                    Player.player._maxExp = data.maxExp;
                     break;
                 }
                 case "levelUpdate": {
                     if (data.player === Socket.id) {
                         Player.player._level = data.level;
                         Player.player._maxExp = 2 + (data.level - 1) * 3;
-                    } else {
+                    } else
                         Player.getPlayerById(data.player)._level = data.level;
-                    }
-                }
-                case "resGiveItem": {
-                    break;
                 }
                 case "stateUpdate": {
                     Game._state = data.state;
@@ -72,10 +69,6 @@ export default class Socket {
                 case "battle_move": {
                     let { befX, befY, nextX, nextY, reversed } = data;
                     Battle.move(befX, befY, nextX, nextY, reversed);
-                    break;
-                }
-                case "battle_dead": {
-                    // TODO
                     break;
                 }
                 case "itemUpdate": {

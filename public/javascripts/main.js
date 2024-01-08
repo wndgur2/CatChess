@@ -202,7 +202,9 @@ function getCellUnitByCellId(id) {
         default:
             if (position[0] === "ally")
                 return Battle.board[parseInt(position[1]) + 3][position[2]];
-            else return Battle.board[position[1]][position[2]];
+            else if (position[0] === "enemy")
+                return Battle.board[position[1]][position[2]];
+            else return Player.player.queue[position[1]];
     }
 }
 
