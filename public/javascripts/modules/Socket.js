@@ -3,10 +3,11 @@ import Game from "./Game.js";
 import Item from "./Item.js";
 import Player from "./Player.js";
 import SimpleCat from "./SimpleCat.js";
+import { CATCHESS_ID } from "./constants.js";
 
 export default class Socket {
     static socket = null;
-    static id = localStorage.getItem("id");
+    static id = localStorage.getItem(CATCHESS_ID);
 
     static init() {
         Socket.socket = new WebSocket("ws://localhost:4000");
@@ -15,20 +16,19 @@ export default class Socket {
             console.log("웹 소켓 연결 성공");
 
             if (!Socket.id) Socket.sendMsg("reqNewId", null);
-            else {
-                document.getElementById("id").innerHTML = Socket.id;
-            }
+            else document.getElementById(CATCHESS_ID).innerHTML = Socket.id;
         };
 
         Socket.socket.onmessage = function (event) {
-            const msg = JSON.parse(event.data);
-            const { type, data } = msg;
-            if (type !== "timeUpdate") console.log(msg);
+            const { type, data } = JSON.parse(event.data);
+
+            if (type !== "timeUpdate") console.log(type, data);
+
             switch (type) {
                 case "resNewId": {
                     Socket.id = data;
-                    document.getElementById("id").innerHTML = data;
-                    localStorage.setItem("id", data);
+                    document.getElementById(CATCHESS_ID).innerHTML = data;
+                    localStorage.setItem(CATCHESS_ID, data);
                     break;
                 }
                 case "gameMatched": {

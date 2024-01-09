@@ -1,5 +1,4 @@
 import Game from "./Game.js";
-import Item from "./Item.js";
 import SimpleCat from "./SimpleCat.js";
 import Socket from "./Socket.js";
 import { GAME_STATES } from "./constants.js";
@@ -8,7 +7,6 @@ export default class Player {
     static player = null;
     static players = [];
     /**
-     *
      * @param {String} id
      * @returns {Player}
      */

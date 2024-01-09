@@ -23,7 +23,7 @@ const CREEPS = {
         id: "frog",
         name: "개구리",
         cost: 1,
-        ad: 7,
+        ad: 12,
         speed: 40,
         hp: 10,
         armor: 0,
