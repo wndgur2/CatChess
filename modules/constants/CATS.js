@@ -1,5 +1,4 @@
 const CATS = {
-    // => UNITS = { CATS, CREEPS, ... }
     wildCat: {
         id: "wildCat",
         name: "길 고양이",
@@ -20,19 +19,39 @@ const CATS = {
         armor: 1,
         range: 1,
     },
+    houseCat: {
+        id: "houseCat",
+        name: "집 고양이",
+        cost: 1,
+        ad: 10,
+        speed: 8,
+        hp: 150,
+        armor: 3,
+        range: 1,
+    },
+    fatCat: {
+        id: "fatCat",
+        name: "비만 고양이",
+        cost: 2,
+        ad: 25,
+        speed: 6,
+        hp: 250,
+        armor: 2,
+        range: 1,
+    },
     strongCat: {
         id: "strongCat",
         name: "강한 고양이",
         cost: 2,
         ad: 25,
-        speed: 8,
-        hp: 150,
-        armor: 4,
+        speed: 12,
+        hp: 130,
+        armor: 3,
         range: 1,
     },
-    ssepCat: {
-        id: "ssepCat",
-        name: "쌥쌥 고양이",
+    longCat: {
+        id: "longCat",
+        name: "롱다리 고양이",
         cost: 2,
         ad: 10,
         speed: 35,

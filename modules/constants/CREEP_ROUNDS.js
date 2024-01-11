@@ -5,7 +5,7 @@ const CREEP_ROUNDS = {
         level: 1,
         board: [
             [null, null, null, null, null],
-            [null, null, new Creep("crab", 2, 1), null, null],
+            [null, null, new Creep("crab"), null, null],
             [null, null, null, null, null],
         ],
     },
@@ -13,9 +13,9 @@ const CREEP_ROUNDS = {
         id: "creep",
         level: 2,
         board: [
+            [null, new Creep("eel"), null, new Creep("eel"), null],
             [null, null, null, null, null],
-            [null, null, new Creep("eel", 2, 1), null, null],
-            [null, null, new Creep("crab", 2, 1), null, null],
+            [null, new Creep("crab"), null, new Creep("crab"), null],
         ],
     },
     3: {
@@ -23,19 +23,37 @@ const CREEP_ROUNDS = {
         level: 3,
         board: [
             [
-                new Creep("frog", 0, 0),
-                new Creep("frog", 1, 0),
-                new Creep("frog", 2, 0),
-                new Creep("frog", 3, 0),
-                new Creep("frog", 4, 0),
+                new Creep("frog"),
+                new Creep("frog"),
+                new Creep("frog"),
+                new Creep("frog"),
+                new Creep("frog"),
             ],
             [
-                new Creep("frog", 0, 1),
-                new Creep("frog", 1, 1),
-                new Creep("frog", 2, 1),
-                new Creep("frog", 3, 1),
-                new Creep("frog", 4, 1),
+                new Creep("frog"),
+                new Creep("frog"),
+                new Creep("frog"),
+                new Creep("frog"),
+                new Creep("frog"),
             ],
+            [null, null, null, null, null],
+        ],
+    },
+    4: {
+        id: "creep",
+        level: 4,
+        board: [
+            [new Creep("eel"), null, new Creep("eel"), null, new Creep("eel")],
+            [null, null, null, null, null],
+            [null, new Creep("crab"), null, new Creep("crab"), null],
+        ],
+    },
+    5: {
+        id: "creep",
+        level: 5,
+        board: [
+            [null, null, null, null, null],
+            [null, null, new Creep("zara"), null, null],
             [null, null, null, null, null],
         ],
     },

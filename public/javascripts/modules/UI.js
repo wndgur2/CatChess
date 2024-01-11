@@ -102,15 +102,14 @@ export default class UI {
     }
 
     static itemClick(event) {
-        let item = UI.getItemByCellId(event.target.id);
-        if (!item) return;
-        UI.displayItemInfo(item);
-
-        setTimeout(() => {
-            Game.clickEvent = document
-                .getElementById("game")
-                .addEventListener("click", UI.gameClick, true);
-        }, 500);
+        // let item = UI.getItemByCellId(event.target.id);
+        // if (!item) return;
+        // UI.displayItemInfo(item);
+        // setTimeout(() => {
+        //     Game.clickEvent = document
+        //         .getElementById("game")
+        //         .addEventListener("click", UI.gameClick, true);
+        // }, 500);
     }
 
     static cellDragStart(event) {
