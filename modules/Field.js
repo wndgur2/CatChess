@@ -1,18 +1,17 @@
 const { DIRS } = require("./constants/CONSTS.js");
 
-class Board {
+class Field {
     constructor(board) {
         this.board = board;
         this.catsOfPlayer = {};
         this.board.forEach((row, i) => {
-            row.forEach((c, j) => {
-                if (c) {
-                    c.board = this;
-                    c.y = i;
-                    c.x = j;
-                    c.hp = c.maxHp;
-                    c.delay = 0;
-                }
+            row.forEach((cell, j) => {
+                if (cell == null) return;
+                cell.field = this;
+                cell.y = i;
+                cell.x = j;
+                cell.hp = cell.maxHp;
+                cell.delay = 0;
             });
         });
     }
@@ -86,4 +85,4 @@ class Board {
     }
 }
 
-module.exports = Board;
+module.exports = Field;

@@ -22,17 +22,17 @@ class Unit {
         this.y = y;
         this.owner = playerId;
         this.die = false;
-        this.board = null;
+        this.field = null;
         this.delay = 0;
     }
 
     action() {
         if (this.die) return;
-        let res = this.board.getNearestEnemy(this);
+        let res = this.field.getNearestEnemy(this);
         if (!res) return;
         let { dist, target } = res;
         if (dist <= this.range) return this.attack(target);
-        else return this.move(this.board.getNextMove(this, target));
+        else return this.move(this.field.getNextMove(this, target));
     }
 
     attack(target) {
@@ -43,7 +43,7 @@ class Unit {
         if (this.ad - target.armor > 0) target.hp -= this.ad - target.armor;
         if (target.hp <= 0) {
             target.die = true;
-            this.board.board[target.y][target.x] = null;
+            this.field.board[target.y][target.x] = null;
             if (target.owner == "creep")
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
         }
@@ -79,8 +79,8 @@ class Unit {
             x = nextMove[1],
             befX = this.x,
             befY = this.y;
-        this.board.board[this.y][this.x] = null;
-        this.board.board[y][x] = this;
+        this.field.board[this.y][this.x] = null;
+        this.field.board[y][x] = this;
         this.y = y;
         this.x = x;
         this.delay += 100;

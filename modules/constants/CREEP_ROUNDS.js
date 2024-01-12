@@ -13,9 +13,9 @@ const CREEP_ROUNDS = {
         id: "creep",
         level: 2,
         board: [
-            [null, new Creep("eel"), null, new Creep("eel"), null],
-            [null, null, null, null, null],
             [null, new Creep("crab"), null, new Creep("crab"), null],
+            [null, null, null, null, null],
+            [null, new Creep("eel"), null, new Creep("eel"), null],
         ],
     },
     3: {
@@ -43,9 +43,9 @@ const CREEP_ROUNDS = {
         id: "creep",
         level: 4,
         board: [
-            [new Creep("eel"), null, new Creep("eel"), null, new Creep("eel")],
-            [null, null, null, null, null],
             [null, new Creep("crab"), null, new Creep("crab"), null],
+            [null, null, null, null, null],
+            [new Creep("eel"), null, new Creep("eel"), null, new Creep("eel")],
         ],
     },
     5: {

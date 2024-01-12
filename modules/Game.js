@@ -115,6 +115,7 @@ class Game {
         clearTimeout(this.timeout);
         // 결과 지급, 리로드
         this.players.forEach((player) => {
+            player.checkUpgrade();
             player.reward();
         });
 
@@ -148,22 +149,16 @@ class Game {
             while (catN < player.level) {
                 let c = player.queue.find((cat) => cat != null);
                 if (!c) break;
-                let randomBoardPosition;
+                let nextX, nextY;
                 do {
-                    randomBoardPosition = [
-                        Math.floor(Math.random() * 3),
-                        Math.floor(Math.random() * 5),
-                    ];
-                } while (
-                    player.board[randomBoardPosition[0]][
-                        randomBoardPosition[1]
-                    ] != null
-                );
+                    nextX = Math.floor(Math.random() * 5);
+                    nextY = Math.floor(Math.random() * 3);
+                } while (player.board[nextY][nextX] != null);
                 player.putCat({
                     befX: c.x,
                     befY: c.y,
-                    nextX: randomBoardPosition[1],
-                    nextY: randomBoardPosition[0],
+                    nextY,
+                    nextX,
                 });
                 catN++;
             }

@@ -235,6 +235,7 @@ class Player {
 
                 unitToSwap = this.board[nextY][nextX];
                 if (amount == this.level && !unitToSwap) return false;
+
                 this.board[nextY][nextX] = unitToMove;
                 this.queue[befX] = unitToSwap;
             }
@@ -353,7 +354,6 @@ class Player {
     }
 
     reward() {
-        this.checkUpgrade();
         this.reload(true);
 
         let income = 5;
