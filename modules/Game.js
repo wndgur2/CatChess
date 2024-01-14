@@ -155,8 +155,8 @@ class Game {
                     nextY = Math.floor(Math.random() * 3);
                 } while (player.board[nextY][nextX] != null);
                 player.putCat({
-                    befX: c.x,
-                    befY: c.y,
+                    beforeX: c.x,
+                    beforeY: c.y,
                     nextY,
                     nextX,
                 });

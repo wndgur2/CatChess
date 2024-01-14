@@ -1,6 +1,6 @@
 import Player from "./Player.js";
 
-export default class SimpleCat {
+export default class Unit {
     constructor(data) {
         this.tier = data.tier;
         this.name = data.name;

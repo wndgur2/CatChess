@@ -6,7 +6,6 @@ const IN_QUEUE = 3;
 
 class Player {
     static getNewId() {
-        //random 5 string
         return Math.random().toString(36).substr(2, 6);
     }
 
@@ -213,17 +212,17 @@ class Player {
         return true;
     }
 
-    putCat({ befX, befY, nextX, nextY }) {
+    putCat({ beforeX, beforeY, nextX, nextY }) {
         let unitToMove, unitToSwap;
 
-        if (befY === IN_QUEUE) {
+        if (beforeY === IN_QUEUE) {
             // from queue
-            unitToMove = this.queue[befX];
+            unitToMove = this.queue[beforeX];
             if (nextY === IN_QUEUE) {
                 // to queue
                 unitToSwap = this.queue[nextX];
                 this.queue[nextX] = unitToMove;
-                this.queue[befX] = unitToSwap;
+                this.queue[beforeX] = unitToSwap;
             } else {
                 // to board
                 let amount = 0;
@@ -237,30 +236,29 @@ class Player {
                 if (amount == this.level && !unitToSwap) return false;
 
                 this.board[nextY][nextX] = unitToMove;
-                this.queue[befX] = unitToSwap;
+                this.queue[beforeX] = unitToSwap;
             }
         } else {
             // from board
-            unitToMove = this.board[befY][befX];
+            unitToMove = this.board[beforeY][beforeX];
             if (nextY === IN_QUEUE) {
                 // to queue
                 unitToSwap = this.queue[nextX];
                 this.queue[nextX] = unitToMove;
-                this.board[befY][befX] = unitToSwap;
+                this.board[beforeY][beforeX] = unitToSwap;
             } else {
                 // to board
                 unitToSwap = this.board[nextY][nextX];
                 this.board[nextY][nextX] = unitToMove;
-                this.board[befY][befX] = unitToSwap;
+                this.board[beforeY][beforeX] = unitToSwap;
             }
         }
         if (unitToSwap) {
-            unitToSwap.x = befX;
-            unitToSwap.y = befY;
+            unitToSwap.x = beforeX;
+            unitToSwap.y = beforeY;
         }
         unitToMove.x = nextX;
         unitToMove.y = nextY;
-
         this.updateBoard();
         return true;
     }

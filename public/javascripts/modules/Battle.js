@@ -4,6 +4,7 @@ class Battle {
     static initBattle(reversed) {
         if (reversed)
             Battle.board = Battle.board.map((row) => row.reverse()).reverse();
+        Battle.displayBoard();
     }
 
     static displayBoard() {
@@ -35,15 +36,15 @@ class Battle {
         Battle.displayBoard();
     }
 
-    static move(befX, befY, nextX, nextY, reversed) {
+    static move(beforeX, beforeY, nextX, nextY, reversed) {
         if (reversed) {
-            befX = 4 - befX;
-            befY = 5 - befY;
+            beforeX = 4 - beforeX;
+            beforeY = 5 - beforeY;
             nextX = 4 - nextX;
             nextY = 5 - nextY;
         }
-        let cat = Battle.board[befY][befX];
-        Battle.board[befY][befX] = null;
+        let cat = Battle.board[beforeY][beforeX];
+        Battle.board[beforeY][beforeX] = null;
         Battle.board[nextY][nextX] = cat;
         cat.x = nextX;
         cat.y = nextY;

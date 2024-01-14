@@ -63,7 +63,7 @@ class Field {
             });
         }
 
-        console.log("no enemy left.");
+        console.log("getNearestEnemy(cat): no enemy left.");
     }
 
     getCats(playerId = null) {

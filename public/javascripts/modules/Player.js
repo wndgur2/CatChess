@@ -1,5 +1,5 @@
 import Game from "./Game.js";
-import SimpleCat from "./SimpleCat.js";
+import Unit from "./Unit.js";
 import Socket from "./Socket.js";
 import { GAME_STATES } from "./constants.js";
 
@@ -60,7 +60,7 @@ export default class Player {
     set _board(newBoard) {
         this.board = newBoard.map((row) =>
             row.map((cat) => {
-                if (cat) return new SimpleCat(cat);
+                if (cat) return new Unit(cat);
                 else return null;
             })
         );
@@ -84,7 +84,7 @@ export default class Player {
 
     set _queue(newQueue) {
         this.queue = newQueue.map((cat) => {
-            if (cat) return new SimpleCat(cat);
+            if (cat) return new Unit(cat);
             else return null;
         });
         if (this.id !== Socket.id) return;

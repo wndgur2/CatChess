@@ -77,8 +77,8 @@ class Unit {
 
         let y = nextMove[0],
             x = nextMove[1],
-            befX = this.x,
-            befY = this.y;
+            beforeX = this.x,
+            beforeY = this.y;
         this.field.board[this.y][this.x] = null;
         this.field.board[y][x] = this;
         this.y = y;
@@ -88,8 +88,8 @@ class Unit {
         return {
             type: "battle_move",
             data: {
-                befX,
-                befY,
+                beforeX,
+                beforeY,
                 nextX: x,
                 nextY: y,
             },

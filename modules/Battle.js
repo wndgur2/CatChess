@@ -16,19 +16,19 @@ class Battle {
         this.game = player1.game;
         this.player1 = player1;
         this.player2 = player2;
-        this.players = [player1, player2];
         this.isCreep = isCreep;
 
         let board1 = player1.board.map((row) =>
             row.map((c) => (c ? c.clone() : null))
         );
+
         let board2 = player2.board
             .map((row) => row.map((c) => (c ? c.clone() : null)).reverse())
             .reverse();
 
         this.field = new Field([...board2, ...board1]);
 
-        this.players.forEach((player) => {
+        [this.player1, this.player2].forEach((player) => {
             if (!player.ws) return;
             sendMsg(player.ws, "battleUpdate", {
                 board: this.field.board.map((row) =>
@@ -53,7 +53,7 @@ class Battle {
                 let res = c.action();
                 if (!res) return;
 
-                this.players.forEach((p) => {
+                [this.player1, this.player2].forEach((p) => {
                     if (!p.ws) return;
                     res.data.reversed = p === this.player2;
                     sendMsg(p.ws, res.type, res.data);
@@ -89,7 +89,7 @@ class Battle {
             damage = p2Units - p1Units + this.player2.level;
             this.player1.hp -= damage * 5;
         } else {
-            this.players.forEach((player) => {
+            [this.player1, this.player2].forEach((player) => {
                 if (player.id) {
                     player.winning = 0;
                     player.losing++;
@@ -98,7 +98,7 @@ class Battle {
             });
         }
 
-        this.players.forEach((player) => {
+        [this.player1, this.player2].forEach((player) => {
             if (player.id)
                 this.game.sendMsgToAll("hpUpdate", {
                     player: player.id,

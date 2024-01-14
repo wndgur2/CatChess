@@ -2,7 +2,7 @@ import Battle from "./Battle.js";
 import Game from "./Game.js";
 import Item from "./Item.js";
 import Player from "./Player.js";
-import SimpleCat from "./SimpleCat.js";
+import Unit from "./Unit.js";
 import { CATCHESS_ID } from "./constants.js";
 
 export default class Socket {
@@ -10,7 +10,7 @@ export default class Socket {
     static id = localStorage.getItem(CATCHESS_ID);
 
     static init() {
-        Socket.socket = new WebSocket("ws://localhost:4000");
+        Socket.socket = new WebSocket("ws://localhost:3000");
 
         Socket.socket.onopen = function (event) {
             console.log("웹 소켓 연결 성공");
@@ -22,7 +22,8 @@ export default class Socket {
         Socket.socket.onmessage = function (event) {
             const { type, data } = JSON.parse(event.data);
 
-            if (type !== "timeUpdate") console.log(type, data);
+            if (type !== "timeUpdate")
+                console.log(type, JSON.parse(JSON.stringify(data)));
 
             switch (type) {
                 case "resNewId": {
@@ -64,8 +65,8 @@ export default class Socket {
                     break;
                 }
                 case "battle_move": {
-                    let { befX, befY, nextX, nextY, reversed } = data;
-                    Battle.move(befX, befY, nextX, nextY, reversed);
+                    let { beforeX, beforeY, nextX, nextY, reversed } = data;
+                    Battle.move(beforeX, beforeY, nextX, nextY, reversed);
                     break;
                 }
                 case "itemUpdate": {
@@ -91,12 +92,11 @@ export default class Socket {
                 case "battleUpdate": {
                     Battle.board = data.board.map((row) =>
                         row.map((cat) => {
-                            if (cat) return new SimpleCat(cat);
-                            else return null;
+                            if (!cat) return null;
+                            return new Unit(cat);
                         })
                     );
                     Battle.initBattle(data.reversed);
-                    Battle.displayBoard(data.reversed);
                     break;
                 }
                 case "battleResult": {

@@ -28,8 +28,8 @@ module.exports = (server) => {
                 }
                 case "reqPutCat": {
                     if (!data.from) return;
-                    let befX = data.from.x;
-                    let befY = data.from.y;
+                    let beforeX = data.from.x;
+                    let beforeY = data.from.y;
 
                     let to = data.to.split("-");
                     let nextY, nextX;
@@ -42,7 +42,7 @@ module.exports = (server) => {
                         nextX = to[1];
                     }
 
-                    getPlayer(from).putCat({ befX, befY, nextX, nextY });
+                    getPlayer(from).putCat({ beforeX, beforeY, nextX, nextY });
                     break;
                 }
                 case "reqSellCat": {

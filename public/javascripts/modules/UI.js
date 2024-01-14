@@ -2,6 +2,7 @@ import Battle from "./Battle.js";
 import Game from "./Game.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
+import Unit from "./Unit.js";
 
 export default class UI {
     static dragging;
@@ -147,7 +148,7 @@ export default class UI {
     }
 
     /**
-     * @param {SimpleCat} unit
+     * @param {Unit} unit
      */
     static displayUnitInfo(unit) {
         let rightWrapper = document.getElementById("rightWrapper");
