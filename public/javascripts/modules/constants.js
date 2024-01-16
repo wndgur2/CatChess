@@ -6,11 +6,11 @@ const GAME_STATES = {
 };
 Object.freeze(GAME_STATES);
 
-const DRAGGING_OBJECTS = {
+const DRAGGING_TYPES = {
     ITEM: "item",
     UNIT: "unit",
 };
 
 const CATCHESS_ID = "CATCHESS_ID";
 
-export { GAME_STATES, DRAGGING_OBJECTS, CATCHESS_ID };
+export { GAME_STATES, DRAGGING_TYPES, CATCHESS_ID };

@@ -76,6 +76,7 @@ class Player {
     }
 
     set _winning(newWinning) {
+        if (newWinning > this._winning) this._losing = 0;
         this.winning = parseInt(newWinning);
         this.updateWinning();
     }
@@ -84,6 +85,7 @@ class Player {
     }
 
     set _losing(newLosing) {
+        if (newLosing > this._losing) this._winning = 0;
         this.losing = parseInt(newLosing);
         this.updateLosing();
     }
@@ -196,15 +198,14 @@ class Player {
         if (cat.y === IN_QUEUE) {
             c = this.queue[cat.x];
             this.queue[cat.x] = null;
+            this.updateQueue();
         } else {
             c = this.board[cat.y][cat.x];
             this.board[cat.y][cat.x] = null;
+            this.updateBoard();
         }
-        c.items.forEach((item) => {
-            this.pushItem(item);
-        });
+        c.items.forEach((item) => this.pushItem(item));
 
-        this.updateBoard();
         return true;
     }
 
@@ -223,9 +224,7 @@ class Player {
                 // to board
                 let amount = 0;
                 this.board.forEach((row) => {
-                    row.forEach((cat) => {
-                        if (cat) amount++;
-                    });
+                    row.forEach((cat) => (cat ? amount++ : null));
                 });
 
                 unitToSwap = this.board[next.y][next.x];
@@ -265,20 +264,20 @@ class Player {
     reload(freeReload = false) {
         if (!freeReload) {
             if (this.money < 2) return false;
-            this._money = this.money - 2;
+            this._money -= 2;
         }
 
         let result = [];
         let possibilities = SHOP_POSSIBILITIES[this.level - 1];
 
         for (let i = 0; i < 4; ++i) {
-            let random = Math.random() * 100;
+            let randomValue = Math.random() * 100;
             for (let cost = 1; cost <= 4; ++cost) {
-                if (random <= possibilities[cost - 1]) {
+                if (randomValue <= possibilities[cost - 1]) {
                     result.push(SimpleCat.getRandomCatTypeByCost(cost));
                     break;
                 }
-                random -= possibilities[cost - 1];
+                randomValue -= possibilities[cost - 1];
             }
         }
 
@@ -295,29 +294,26 @@ class Player {
     }
 
     pushItem(item) {
-        for (let i = 0; i < this.items.length; ++i) {
+        for (let i = 0; i < this.items.length; ++i)
             if (this.items[i] === null) {
                 this.items[i] = item;
                 this.updateItems();
                 return true;
             }
-        }
         return false;
     }
 
-    giveItem({ item, to }) {
-        let catPos = to.split("-"),
-            itemPos = item.split("-");
-
+    giveItem(item, to) {
         let cat;
-        let curItem =
-            this.items[parseInt(itemPos[1]) * 2 + parseInt(itemPos[2])];
+        let curItem = this.items[item.y * 2 + item.x];
         if (!curItem) return false;
 
-        if (catPos[0] === "ally") cat = this.board[catPos[1]][catPos[2]];
-        else cat = this.queue[catPos[1]];
+        if (to.y === 3) cat = this.queue[to.x];
+        else cat = this.board[to.y][to.x];
         if (!cat) return false;
+
         if (cat.items.length >= 3) return false;
+
         if (cat.equip(curItem)) {
             this.items = this.items.filter((i) => i != curItem);
             this.updateItems();

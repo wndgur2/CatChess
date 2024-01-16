@@ -16,7 +16,7 @@ export default class Socket {
             console.log("웹 소켓 연결 성공");
 
             if (!Socket.id) Socket.sendMsg("reqNewId", null);
-            else document.getElementById(CATCHESS_ID).innerHTML = Socket.id;
+            else document.getElementById("id").innerHTML = Socket.id;
         };
 
         Socket.socket.onmessage = function (event) {

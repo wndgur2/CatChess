@@ -1,4 +1,4 @@
-const { DIRS } = require("./constants/CONSTS.js");
+const { DIRECTIONS } = require("./constants/CONSTS.js");
 
 class BattleField {
     constructor(board) {
@@ -17,20 +17,20 @@ class BattleField {
     }
 
     getNextMove(cat, target) {
-        // search fastest path from cat to target. other ally cats are obstacles.
         let visited = [];
-        this.board.forEach((row) => {
-            visited.push(row.map((c) => c !== null && c.owner === cat.owner));
-        });
+        this.board.forEach((row) =>
+            visited.push(row.map((c) => c !== null && c.owner === cat.owner))
+        );
         let queue = [];
         queue.push([cat.y, cat.x, [(cat.y, cat.x)]]);
         visited[cat.y][cat.x] = true;
+
         while (queue.length > 0) {
             let [y, x, path] = queue.shift();
-            if (y === target.y && x === target.x) {
-                return path[1];
-            }
-            DIRS[y % 2].forEach(([dy, dx]) => {
+
+            if (y === target.y && x === target.x) return path[1];
+
+            DIRECTIONS[y % 2].forEach(([dy, dx]) => {
                 let ny = y + dy,
                     nx = x + dx;
                 if (ny < 0 || ny >= 6 || nx < 0 || nx >= 5) return;
@@ -49,11 +49,12 @@ class BattleField {
         let queue = [];
         queue.push([cat.y, cat.x, 0]);
         visited[cat.y][cat.x] = true;
+
         while (queue.length > 0) {
             let [y, x, dist] = queue.shift();
             if (this.board[y][x] && this.board[y][x].owner !== cat.owner)
                 return { dist, target: this.board[y][x] };
-            DIRS[y % 2].forEach(([dy, dx]) => {
+            DIRECTIONS[y % 2].forEach(([dy, dx]) => {
                 let ny = y + dy,
                     nx = x + dx;
                 if (ny < 0 || ny >= 6 || nx < 0 || nx >= 5) return;
@@ -76,6 +77,7 @@ class BattleField {
             });
             return res;
         }
+
         this.board.forEach((row) => {
             row.forEach((cat) => {
                 if (cat && cat.owner === playerId) res.push(cat);

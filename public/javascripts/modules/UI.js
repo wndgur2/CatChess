@@ -3,9 +3,11 @@ import Game from "./Game.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
 import Unit from "./Unit.js";
+import { DRAGGING_TYPES } from "./constants.js";
 
 export default class UI {
-    static dragging;
+    static draggingId;
+    static draggingType;
 
     static hydrate() {
         document.getElementById("enterGame").addEventListener("click", () => {
@@ -95,7 +97,9 @@ export default class UI {
     }
 
     static itemDragStart(event) {
-        UI.dragging = event.target.id;
+        //TODO dragging 변수에 담는게 unit dragstart이랑 다름
+        UI.draggingId = event.target.id;
+        UI.draggingType = DRAGGING_TYPES.ITEM;
     }
 
     static itemDragOver(event) {
@@ -114,7 +118,8 @@ export default class UI {
     }
 
     static cellDragStart(event) {
-        UI.dragging = UI.getCellUnitByCellId(event.target.id);
+        UI.draggingId = event.target.id;
+        UI.draggingType = DRAGGING_TYPES.UNIT;
     }
 
     static cellDragOver(event) {
@@ -122,25 +127,31 @@ export default class UI {
     }
 
     static cellDragDrop(event) {
-        if (UI.dragging.tier) {
-            Socket.sendMsg("reqPutCat", {
-                before: {
-                    x: UI.dragging.x,
-                    y: UI.dragging.y,
-                },
-                next: {
-                    x: parseInt(event.target.id.split("-")[2]),
-                    y: parseInt(event.target.id.split("-")[1]),
-                },
-            });
-        } else {
-            Socket.sendMsg("reqGiveItem", {
-                item: UI.dragging,
-                to: {
-                    x: parseInt(event.target.id.split("-")[2]),
-                    y: parseInt(event.target.id.split("-")[1]),
-                },
-            });
+        switch (UI.draggingType) {
+            case DRAGGING_TYPES.UNIT:
+                Socket.sendMsg("reqPutCat", {
+                    before: {
+                        x: parseInt(UI.draggingId.split("-")[2]),
+                        y: parseInt(UI.draggingId.split("-")[1]),
+                    },
+                    next: {
+                        x: parseInt(event.target.id.split("-")[2]),
+                        y: parseInt(event.target.id.split("-")[1]),
+                    },
+                });
+                break;
+            case DRAGGING_TYPES.ITEM:
+                Socket.sendMsg("reqGiveItem", {
+                    item: {
+                        x: parseInt(UI.draggingId.split("-")[2]),
+                        y: parseInt(UI.draggingId.split("-")[1]),
+                    },
+                    to: {
+                        x: parseInt(event.target.id.split("-")[2]),
+                        y: parseInt(event.target.id.split("-")[1]),
+                    },
+                });
+                break;
         }
     }
 
@@ -174,12 +185,12 @@ export default class UI {
     static shopDragOver(event) {
         event.preventDefault();
         let shopEl = document.getElementById("shop");
-        shopEl.innerHTML = `고양이 판매하기<br/>💰${UI.dragging.cost}`;
+        shopEl.innerHTML = `고양이 판매하기<br/>💰${UI.draggingId.cost}`;
     }
 
     static shopDragDrop(event) {
         Socket.sendMsg("reqSellCat", {
-            cat: UI.dragging,
+            cat: UI.draggingId,
         });
         Player.player._shop = Player.player.shop;
     }

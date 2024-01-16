@@ -168,9 +168,9 @@ class Game {
         if (this.stage == 1) {
             this.creep.level = CREEP_ROUNDS[this.round].level;
             this.creep.board = CREEP_ROUNDS[this.round].board;
-            this.players.forEach((player) => {
-                this.battles.push(new Battle(player, this.creep, true));
-            });
+            this.players.forEach((player) =>
+                this.battles.push(new Battle(player, this.creep, true))
+            );
         } else this.battles.push(new Battle(this.players[0], this.players[1]));
     }
 
@@ -178,23 +178,16 @@ class Game {
         clearTimeout(this.timeout);
 
         this.state = GAME_STATES.BATTLE;
-        this.battles.forEach((battle) => {
-            battle.initBattle();
-        });
+        this.battles.forEach((battle) => battle.initBattle());
         this.time = 30;
         this.updateState();
-        this.timeout = setTimeout(() => {
-            this.finishState();
-        }, this.time * 1000);
+        this.timeout = setTimeout(() => this.finishState(), this.time * 1000);
     }
 
     finishState() {
         clearTimeout(this.timeout);
 
-        this.battles.forEach((battle) => {
-            // 이미 끝난 배틀은 끝난 시점에 제거됨.
-            battle.finish();
-        });
+        this.battles.forEach((battle) => battle.finish());
 
         this.state = GAME_STATES.FINISH;
         this.time = 3;
@@ -205,15 +198,13 @@ class Game {
             if (player.hp <= 0) isEnd = true;
         });
 
-        if (isEnd) {
-            this.timeout = setTimeout(() => {
-                this.endState();
-            }, this.time * 1000);
-        } else {
-            this.timeout = setTimeout(() => {
-                this.arrangeState();
-            }, this.time * 1000);
-        }
+        if (isEnd)
+            this.timeout = setTimeout(() => this.endState(), this.time * 1000);
+        else
+            this.timeout = setTimeout(
+                () => this.arrangeState(),
+                this.time * 1000
+            );
     }
 
     endState() {

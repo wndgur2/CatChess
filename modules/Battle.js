@@ -40,15 +40,13 @@ class Battle {
     }
 
     initBattle() {
-        this.battleInterval = setInterval(() => {
-            this.updateBattle();
-        }, TIME_STEP);
+        this.battleInterval = setInterval(() => this.updateBattle(), TIME_STEP);
     }
 
     updateBattle() {
         let p1Cats = this.battleField.getCats(this.player1.id);
         let p2Cats = this.battleField.getCats(this.player2.id);
-        if (p1Cats.length > 0 && p2Cats.length > 0) {
+        if (p1Cats.length > 0 && p2Cats.length > 0)
             [...p1Cats, ...p2Cats].forEach((c) => {
                 let res = c.action();
                 if (!res) return;
@@ -59,7 +57,7 @@ class Battle {
                     sendMsg(p.ws, res.type, res.data);
                 });
             });
-        } else this.finish();
+        else this.finish();
     }
 
     finish() {
@@ -71,48 +69,39 @@ class Battle {
 
         if (p1Units > p2Units) {
             if (!this.isCreep) {
-                this.player1._money = this.player1.money + 1;
+                this.player1._money++;
                 this.player1._winning++;
-                this.player1._losing = 0;
                 this.player2._losing++;
-                this.player2._winning = 0;
             }
             damage = p1Units - p2Units + this.player1.level;
-            this.player2.hp -= damage * 5;
+            this.player2.hp -= damage;
         } else if (p1Units < p2Units) {
             if (!this.isCreep) {
+                this.player2._money++;
                 this.player2._winning++;
-                this.player2._losing = 0;
                 this.player1._losing++;
-                this.player1._winning = 0;
             }
             damage = p2Units - p1Units + this.player2.level;
-            this.player1.hp -= damage * 5;
+            this.player1.hp -= damage;
         } else {
-            [this.player1, this.player2].forEach((player) => {
-                if (player.id) {
-                    player.winning = 0;
-                    player.losing++;
-                    player.hp -= 3;
-                }
-            });
+            this.player1._losing++;
+            this.player2._losing++;
+            this.player2.hp -= this.player1.level;
+            this.player1.hp -= this.player2.level;
         }
 
         [this.player1, this.player2].forEach((player) => {
-            if (player.id)
-                this.game.sendMsgToAll("hpUpdate", {
-                    player: player.id,
-                    hp: player.hp,
-                });
+            this.game.sendMsgToAll("hpUpdate", {
+                player: player.id,
+                hp: player.hp,
+            });
         });
 
         this.game.battles = this.game.battles.filter(
             (battle) => battle !== this
         );
 
-        if (this.game.battles.length === 0) {
-            this.game.finishState();
-        }
+        if (this.game.battles.length === 0) this.game.finishState();
     }
 }
 
