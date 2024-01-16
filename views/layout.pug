@@ -4,6 +4,14 @@ html
     title= title
     link(rel="icon" href="/images/favicon.ico")
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(type='importmap')
+      | {
+      |   "imports": {
+      |     "three": "https://unpkg.com/three@latest/build/three.module.js",
+      |     "three/addons/": "https://unpkg.com/three@latest/examples/jsm/",
+      |     "three/nodes": "https://unpkg.com/three@latest/examples/jsm/nodes/Nodes.js"
+      |   }
+      | }
     script(src='/javascripts/main.js' type='module')
   body
     block content

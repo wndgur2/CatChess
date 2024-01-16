@@ -7,5 +7,5 @@ window.onload = () => {
 
 function init() {
     Socket.init();
-    UI.hydrate();
+    UI.init();
 }

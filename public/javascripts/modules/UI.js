@@ -2,6 +2,7 @@ import Battle from "./Battle.js";
 import Game from "./Game.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
+import ThreeManager from "./ThreeManager.js";
 import Unit from "./Unit.js";
 import { DRAGGING_TYPES } from "./constants.js";
 
@@ -9,10 +10,16 @@ export default class UI {
     static draggingId;
     static draggingType;
 
+    static init() {
+        ThreeManager.initScene();
+        UI.hydrate();
+    }
+
     static hydrate() {
         document.getElementById("enterGame").addEventListener("click", () => {
             Socket.sendMsg("startWaiting", "");
             document.getElementById("home").style.display = "none";
+            document.getElementById("game").style.display = "none";
             document.getElementById("waiting").style.display = "flex";
         });
 
@@ -96,8 +103,15 @@ export default class UI {
         }
     }
 
+    static gameStart() {
+        document.getElementById("home").style.display = "none";
+        document.getElementById("waiting").style.display = "none";
+        document.getElementById("game").style.display = "flex";
+
+        ThreeManager.animate();
+    }
+
     static itemDragStart(event) {
-        //TODO dragging 변수에 담는게 unit dragstart이랑 다름
         UI.draggingId = event.target.id;
         UI.draggingType = DRAGGING_TYPES.ITEM;
     }

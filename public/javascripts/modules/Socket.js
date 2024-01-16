@@ -2,6 +2,7 @@ import Battle from "./Battle.js";
 import Game from "./Game.js";
 import Item from "./Item.js";
 import Player from "./Player.js";
+import UI from "./UI.js";
 import Unit from "./Unit.js";
 import { CATCHESS_ID } from "./constants.js";
 
@@ -28,12 +29,13 @@ export default class Socket {
             switch (type) {
                 case "resNewId": {
                     Socket.id = data;
-                    document.getElementById(CATCHESS_ID).innerHTML = data;
+                    document.getElementById("id").innerHTML = data;
                     localStorage.setItem(CATCHESS_ID, data);
                     break;
                 }
                 case "gameMatched": {
                     // three
+                    UI.gameStart();
                     Game.init(data.players);
                     break;
                 }

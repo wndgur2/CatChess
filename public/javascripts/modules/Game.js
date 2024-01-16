@@ -3,9 +3,6 @@ import { GAME_STATES } from "./constants.js";
 
 export default class Game {
     static init(players) {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("waiting").style.display = "none";
-        document.getElementById("game").style.display = "flex";
         Game.players = players.map((id) => new Player(id));
         Game.displayPlayersInfo();
     }
@@ -41,7 +38,7 @@ export default class Game {
 
         switch (newState) {
             case GAME_STATES.ARRANGE: {
-                document.getElementById("game").style.backgroundColor = "#333";
+                // document.getElementById("game").style.backgroundColor = "#333";
                 let cells = document.getElementsByClassName("cell");
                 for (let i = 0; i < cells.length; i++)
                     if (cells[i].id.split("-")[0] === "ally")
@@ -72,8 +69,8 @@ export default class Game {
                 break;
             }
             case GAME_STATES.READY: {
-                document.getElementById("game").style.backgroundColor =
-                    "#334233";
+                // document.getElementById("game").style.backgroundColor =
+                // "#334233";
                 let cells = document.getElementsByClassName("cell");
                 for (let i = 0; i < cells.length; i++) {
                     if (cells[i].id.split("-")[0] === "ally") {
@@ -84,12 +81,12 @@ export default class Game {
                 break;
             }
             case GAME_STATES.BATTLE: {
-                document.getElementById("game").style.backgroundColor =
-                    "#423333";
+                // document.getElementById("game").style.backgroundColor =
+                // "#423333";
                 break;
             }
             case GAME_STATES.FINISH: {
-                document.getElementById("game").style.backgroundColor = "#666";
+                // document.getElementById("game").style.backgroundColor = "#666";
                 break;
             }
         }
