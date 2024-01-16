@@ -64,7 +64,7 @@ export default class UI {
         // 1 x 7 queue
         for (let i = 0; i < 7; i++) {
             let cell = document.createElement("div");
-            cell.id = `queue-${i}`;
+            cell.id = `queue-3-${i}`;
 
             cell.className = "cell";
             cell.addEventListener("dragstart", UI.cellDragStart);
@@ -124,13 +124,22 @@ export default class UI {
     static cellDragDrop(event) {
         if (UI.dragging.tier) {
             Socket.sendMsg("reqPutCat", {
-                from: UI.dragging,
-                to: event.target.id,
+                before: {
+                    x: UI.dragging.x,
+                    y: UI.dragging.y,
+                },
+                next: {
+                    x: parseInt(event.target.id.split("-")[2]),
+                    y: parseInt(event.target.id.split("-")[1]),
+                },
             });
         } else {
             Socket.sendMsg("reqGiveItem", {
                 item: UI.dragging,
-                to: event.target.id,
+                to: {
+                    x: parseInt(event.target.id.split("-")[2]),
+                    y: parseInt(event.target.id.split("-")[1]),
+                },
             });
         }
     }
@@ -181,18 +190,18 @@ export default class UI {
 
     static getCellUnitByCellId(id) {
         let position = id.split("-");
-        console.log(position);
+
         switch (Game.state) {
             case "arrange":
                 if (position[0] === "ally")
                     return Player.player.board[position[1]][position[2]];
-                else return Player.player.queue[position[1]];
+                else return Player.player.queue[position[2]];
             default:
                 if (position[0] === "ally")
                     return Battle.board[parseInt(position[1]) + 3][position[2]];
                 else if (position[0] === "enemy")
                     return Battle.board[position[1]][position[2]];
-                else return Player.player.queue[position[1]];
+                else return Player.player.queue[position[2]];
         }
     }
 

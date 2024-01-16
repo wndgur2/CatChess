@@ -68,7 +68,7 @@ export default class Player {
         if (this.id !== Socket.id) return;
         if (Game.state != GAME_STATES.ARRANGE) return;
 
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 3; i++)
             for (let j = 0; j < 5; j++) {
                 let cell = document.getElementById(`ally-${i}-${j}`);
                 if (this.board[i][j] === null) {
@@ -79,7 +79,6 @@ export default class Player {
                     cell.innerHTML = this.board[i][j].display();
                 }
             }
-        }
     }
 
     set _queue(newQueue) {
@@ -89,7 +88,7 @@ export default class Player {
         });
         if (this.id !== Socket.id) return;
         for (let i = 0; i < 7; i++) {
-            let cell = document.getElementById(`queue-${i}`);
+            let cell = document.getElementById(`queue-3-${i}`);
             if (this.queue[i] === null) {
                 cell.draggable = false;
                 cell.innerHTML = "";

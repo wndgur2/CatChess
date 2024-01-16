@@ -1,4 +1,4 @@
-const Field = require("./Field");
+const BattleField = require("./BattleField");
 const Game = require("./Game");
 const Player = require("./Player");
 const { sendMsg } = require("./utils");
@@ -26,13 +26,13 @@ class Battle {
             .map((row) => row.map((c) => (c ? c.clone() : null)).reverse())
             .reverse();
 
-        this.field = new Field([...board2, ...board1]);
+        this.battleField = new BattleField([...board2, ...board1]);
 
         [this.player1, this.player2].forEach((player) => {
             if (!player.ws) return;
-            sendMsg(player.ws, "battleUpdate", {
-                board: this.field.board.map((row) =>
-                    row.map((c) => (c ? { ...c, field: null } : null))
+            sendMsg(player.ws, "battleInit", {
+                board: this.battleField.board.map((row) =>
+                    row.map((c) => (c ? { ...c, battleField: null } : null))
                 ),
                 reversed: player === this.player2,
             });
@@ -46,8 +46,8 @@ class Battle {
     }
 
     updateBattle() {
-        let p1Cats = this.field.getCats(this.player1.id);
-        let p2Cats = this.field.getCats(this.player2.id);
+        let p1Cats = this.battleField.getCats(this.player1.id);
+        let p2Cats = this.battleField.getCats(this.player2.id);
         if (p1Cats.length > 0 && p2Cats.length > 0) {
             [...p1Cats, ...p2Cats].forEach((c) => {
                 let res = c.action();
@@ -65,8 +65,8 @@ class Battle {
     finish() {
         clearInterval(this.battleInterval);
 
-        let p1Units = this.field.getCats(this.player1.id).length,
-            p2Units = this.field.getCats(this.player2.id).length,
+        let p1Units = this.battleField.getCats(this.player1.id).length,
+            p2Units = this.battleField.getCats(this.player2.id).length,
             damage;
 
         if (p1Units > p2Units) {

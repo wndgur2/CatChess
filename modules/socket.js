@@ -27,22 +27,14 @@ module.exports = (server) => {
                     break;
                 }
                 case "reqPutCat": {
-                    if (!data.from) return;
-                    let beforeX = data.from.x;
-                    let beforeY = data.from.y;
+                    if (!data.before) return;
+                    let player = getPlayer(from);
+                    console.log(data);
 
-                    let to = data.to.split("-");
-                    let nextY, nextX;
-                    if (to[0] === "ally") {
-                        if (getPlayer(from).game.state !== "arrange") return;
-                        nextY = to[1];
-                        nextX = to[2];
-                    } else {
-                        nextY = 3;
-                        nextX = to[1];
-                    }
+                    if (data.next.y <= 2 && player.game.state !== "arrange")
+                        return;
 
-                    getPlayer(from).putCat({ beforeX, beforeY, nextX, nextY });
+                    player.putCat(data.before, data.next);
                     break;
                 }
                 case "reqSellCat": {

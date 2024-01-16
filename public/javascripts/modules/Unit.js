@@ -20,7 +20,7 @@ export default class Unit {
 
     display() {
         return `<div class="cat ${
-            this.owner == Player.player.id ? "ally" : "enemy"
+            this.owner === Player.player.id ? "ally" : "enemy"
         }">
             <div class="catTier">🌟${this.tier}</div>
             ${

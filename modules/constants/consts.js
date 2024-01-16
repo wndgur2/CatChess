@@ -25,5 +25,20 @@ const GAME_STATES = {
     READY: "ready",
     FINISH: "finish",
 };
+const SHOP_POSSIBILITIES = [
+    [100, 0, 0, 0],
+    [100, 0, 0, 0],
+    [75, 25, 0, 0],
+    [50, 30, 20, 0],
+    [30, 40, 25, 5],
+    [15, 25, 35, 25],
+];
 
-module.exports = { GAME_STATES, TIME_STEP, PLAYER_NUM, DIRS, MAX_LEVEL };
+module.exports = {
+    GAME_STATES,
+    TIME_STEP,
+    PLAYER_NUM,
+    DIRS,
+    MAX_LEVEL,
+    SHOP_POSSIBILITIES,
+};

@@ -1,13 +1,13 @@
 const { DIRS } = require("./constants/CONSTS.js");
 
-class Field {
+class BattleField {
     constructor(board) {
         this.board = board;
         this.catsOfPlayer = {};
         this.board.forEach((row, i) => {
             row.forEach((cell, j) => {
                 if (cell == null) return;
-                cell.field = this;
+                cell.battleField = this;
                 cell.y = i;
                 cell.x = j;
                 cell.hp = cell.maxHp;
@@ -85,4 +85,4 @@ class Field {
     }
 }
 
-module.exports = Field;
+module.exports = BattleField;

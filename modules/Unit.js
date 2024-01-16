@@ -5,34 +5,37 @@ class Unit {
     constructor(proto, playerId, x, y, tier) {
         this.proto = proto;
         this.id = proto.id;
+
         this.tier = tier;
-        this.magnifier = Math.sqrt(this.tier).toPrecision(2);
+        const magnifier = Math.sqrt(this.tier).toPrecision(2);
 
         this.name = this.proto.name;
-        this.ad = parseInt(this.proto.ad * this.magnifier);
-        this.speed = parseInt(this.proto.speed * this.magnifier);
+        this.ad = parseInt(this.proto.ad * magnifier);
+        this.speed = parseInt(this.proto.speed * magnifier);
         this.range = this.proto.range;
-        this.maxHp = parseInt(this.proto.hp * this.magnifier);
+        this.maxHp = parseInt(this.proto.hp * magnifier);
         this.hp = this.maxHp;
-        this.armor = parseInt(this.proto.armor * this.magnifier);
+        this.armor = parseInt(this.proto.armor * magnifier);
         this.cost = this.proto.cost * Math.pow(3, tier - 1);
         if (tier > 1) this.cost -= 1;
+
+        this.items = [];
 
         this.x = x;
         this.y = y;
         this.owner = playerId;
         this.die = false;
-        this.field = null;
+        this.battleField = null;
         this.delay = 0;
     }
 
     action() {
         if (this.die) return;
-        let res = this.field.getNearestEnemy(this);
+        let res = this.battleField.getNearestEnemy(this);
         if (!res) return;
         let { dist, target } = res;
         if (dist <= this.range) return this.attack(target);
-        else return this.move(this.field.getNextMove(this, target));
+        else return this.move(this.battleField.getNextMove(this, target));
     }
 
     attack(target) {
@@ -43,7 +46,7 @@ class Unit {
         if (this.ad - target.armor > 0) target.hp -= this.ad - target.armor;
         if (target.hp <= 0) {
             target.die = true;
-            this.field.board[target.y][target.x] = null;
+            this.battleField.board[target.y][target.x] = null;
             if (target.owner == "creep")
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
         }
@@ -73,14 +76,13 @@ class Unit {
         }
         if (!nextMove) return;
 
-        // client에 이동 메시지 보내기
-
         let y = nextMove[0],
             x = nextMove[1],
             beforeX = this.x,
             beforeY = this.y;
-        this.field.board[this.y][this.x] = null;
-        this.field.board[y][x] = this;
+
+        this.battleField.board[this.y][this.x] = null;
+        this.battleField.board[y][x] = this;
         this.y = y;
         this.x = x;
         this.delay += 100;
@@ -94,6 +96,17 @@ class Unit {
                 nextY: y,
             },
         };
+    }
+
+    equip(item) {
+        if (this.items.length >= 3) return false;
+        this.items.push(item);
+        this.ad += item.ad;
+        this.hp += item.hp;
+        this.maxHp += item.hp;
+        this.armor += item.armor;
+        this.range += item.range;
+        return true;
     }
 
     clone() {

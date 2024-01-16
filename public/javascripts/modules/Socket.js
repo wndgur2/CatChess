@@ -33,11 +33,32 @@ export default class Socket {
                     break;
                 }
                 case "gameMatched": {
+                    // three
                     Game.init(data.players);
                     break;
                 }
-                case "shopUpdate": {
-                    Player.getPlayerById(data.player)._shop = data.shop;
+                case "timeUpdate": {
+                    Game._time = data.time;
+                    break;
+                }
+                case "stageUpdate": {
+                    Game._round = data.round;
+                    Game._stage = data.stage;
+                    break;
+                }
+                case "stateUpdate": {
+                    Game._state = data.state;
+                    Game._time = data.time;
+                    break;
+                }
+                case "boardUpdate": {
+                    // three
+                    Player.getPlayerById(data.player)._board = data.board;
+                    break;
+                }
+                case "queueUpdate": {
+                    // three
+                    Player.getPlayerById(data.player)._queue = data.queue;
                     break;
                 }
                 case "expUpdate": {
@@ -49,24 +70,12 @@ export default class Socket {
                     Player.getPlayerById(data.player)._level = data.level;
                     break;
                 }
-                case "stateUpdate": {
-                    Game._state = data.state;
-                    Game._time = data.time;
+                case "moneyUpdate": {
+                    Player.getPlayerById(data.player)._money = data.money;
                     break;
                 }
-                case "stageUpdate": {
-                    Game._round = data.round;
-                    Game._stage = data.stage;
-                    break;
-                }
-                case "battle_attack": {
-                    let { attacker, target, damage, reversed } = data;
-                    Battle.attack(attacker, target, damage, reversed);
-                    break;
-                }
-                case "battle_move": {
-                    let { beforeX, beforeY, nextX, nextY, reversed } = data;
-                    Battle.move(beforeX, beforeY, nextX, nextY, reversed);
+                case "shopUpdate": {
+                    Player.getPlayerById(data.player)._shop = data.shop;
                     break;
                 }
                 case "itemUpdate": {
@@ -75,21 +84,13 @@ export default class Socket {
                     );
                     break;
                 }
-                case "moneyUpdate": {
-                    Player.getPlayerById(data.player)._money = data.money;
-                    break;
-                }
-                case "boardUpdate": {
-                    Player.getPlayerById(data.player)._board = data.board;
-                    Player.getPlayerById(data.player)._queue = data.queue;
-                    break;
-                }
                 case "hpUpdate": {
                     let p = Player.getPlayerById(data.player);
                     if (p) p._hp = data.hp;
                     break;
                 }
-                case "battleUpdate": {
+                case "battleInit": {
+                    // three
                     Battle.board = data.board.map((row) =>
                         row.map((cat) => {
                             if (!cat) return null;
@@ -99,15 +100,23 @@ export default class Socket {
                     Battle.initBattle(data.reversed);
                     break;
                 }
+                case "battle_attack": {
+                    // three
+                    let { attacker, target, damage, reversed } = data;
+                    Battle.attack(attacker, target, damage, reversed);
+                    break;
+                }
+                case "battle_move": {
+                    // three
+                    let { beforeX, beforeY, nextX, nextY, reversed } = data;
+                    Battle.move(beforeX, beforeY, nextX, nextY, reversed);
+                    break;
+                }
                 case "battleResult": {
                     data.players.forEach(([player, hp]) => {
                         let p = Player.getPlayerById(player);
                         if (p) p._hp = hp;
                     });
-                    break;
-                }
-                case "timeUpdate": {
-                    Game._time = data.time;
                     break;
                 }
                 case "winningUpdate": {
@@ -121,7 +130,6 @@ export default class Socket {
                 case "gameEnd": {
                     if (data.winner === Socket.id) alert("승리!");
                     else alert("패배!");
-                    window.location.reload();
                     break;
                 }
             }

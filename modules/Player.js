@@ -1,5 +1,5 @@
 const SimpleCat = require("./SimpleCat");
-const { MAX_LEVEL } = require("./constants/CONSTS");
+const { MAX_LEVEL, SHOP_POSSIBILITIES } = require("./constants/CONSTS");
 const { sendMsg, addPlayer } = require("./utils");
 
 const IN_QUEUE = 3;
@@ -19,7 +19,7 @@ class Player {
     init() {
         this.level = 1;
         this.exp = -2;
-        this.money = 0;
+        this.money = -3;
         this.maxExp = 4;
         this.maxHp = 100;
         this.hp = 100;
@@ -43,6 +43,7 @@ class Player {
         this.updateShop();
         this.updateMoney();
         this.updateBoard();
+        this.updateQueue();
         this.updateWinning();
         this.updateLosing();
         this.updateItems();
@@ -55,7 +56,6 @@ class Player {
         this.money = parseInt(newMoney);
         this.updateMoney();
     }
-
     get _money() {
         return this.money;
     }
@@ -71,7 +71,6 @@ class Player {
         }
         this.updateExp();
     }
-
     get _exp() {
         return this.exp;
     }
@@ -80,7 +79,6 @@ class Player {
         this.winning = parseInt(newWinning);
         this.updateWinning();
     }
-
     get _winning() {
         return this.winning;
     }
@@ -89,9 +87,13 @@ class Player {
         this.losing = parseInt(newLosing);
         this.updateLosing();
     }
-
     get _losing() {
         return this.losing;
+    }
+
+    set _shop(newShop) {
+        this.shop = newShop;
+        this.updateShop();
     }
 
     buyCat(index) {
@@ -103,7 +105,7 @@ class Player {
         for (let i = 0; i < this.queue.length; ++i) {
             if (this.queue[i]) continue;
 
-            this.queue[i] = new SimpleCat(catId, this, i);
+            this.queue[i] = new SimpleCat(catId, this, i, 3);
             this._money = this.money - catProto.cost;
             this.shop[index] = null;
             this.checkUpgrade();
@@ -116,42 +118,41 @@ class Player {
 
     checkUpgrade() {
         // count cats
-        let tier_species_amount = {},
-            boardToCount;
+        let catIdTierAmount = {},
+            checkingArea;
         if (this.game.state === "arrange")
-            boardToCount = [...this.board, this.queue];
-        else boardToCount = [this.queue];
+            checkingArea = [...this.board, this.queue];
+        else checkingArea = [this.queue];
 
-        boardToCount.forEach((row) => {
+        checkingArea.forEach((row) => {
             row.forEach((cat) => {
                 if (!cat) return;
-                if (!tier_species_amount[cat.id])
-                    tier_species_amount[cat.id] = [0, 0, 0];
-                tier_species_amount[cat.id][cat.tier - 1]++;
+                if (!catIdTierAmount[cat.id])
+                    catIdTierAmount[cat.id] = [0, 0, 0];
+                catIdTierAmount[cat.id][cat.tier - 1]++;
             });
         });
 
         // upgrade cats
         while (true) {
             let isUpgraded = false;
-            for (let id in tier_species_amount) {
-                let species_amount = tier_species_amount[id];
+            for (let id in catIdTierAmount)
                 for (let tier = 0; tier < 2; ++tier) {
-                    if (species_amount[tier] < 3) continue;
+                    if (catIdTierAmount[id][tier] < 3) continue;
                     isUpgraded = true;
-                    species_amount[tier] -= 3;
-                    species_amount[tier + 1] += 1;
+                    catIdTierAmount[id][tier] -= 3;
+                    catIdTierAmount[id][tier + 1] += 1;
                     this.upgradeCat(id, tier + 1);
                 }
-            }
             if (!isUpgraded) break;
         }
         this.updateBoard();
+        this.updateQueue();
     }
 
     upgradeCat(id, tier) {
         let oldCat;
-        for (let i = 0; i < 3; ++i)
+        for (let i = 0; i < 3 && !oldCat; ++i)
             for (let j = 0; j < 5; ++j) {
                 if (
                     this.board[i][j] &&
@@ -167,32 +168,29 @@ class Player {
 
         let newCat = new SimpleCat(id, this, oldCat.x, oldCat.y, tier + 1);
 
-        let items = oldCat.items;
-
         if (oldCat.y == IN_QUEUE) this.queue[oldCat.x] = newCat;
         else this.board[oldCat.y][oldCat.x] = newCat;
 
-        let amountToDelete = 2;
+        let items = oldCat.items;
+        let toDelete = 2;
         [...this.board, this.queue].forEach((row) => {
             row.forEach((c) => {
-                if (c && c.id === id && c.tier == tier && amountToDelete) {
+                if (c && c.id === id && c.tier == tier && toDelete) {
                     if (c.y == IN_QUEUE) this.queue[c.x] = null;
                     else this.board[c.y][c.x] = null;
                     items.push(...c.items);
-                    amountToDelete--;
+                    toDelete--;
                 }
             });
         });
 
         items = items.length > 3 ? items.slice(0, 3) : items;
-        items.forEach((item) => {
-            newCat.equip(item);
-        });
+        items.forEach((item) => newCat.equip(item));
     }
 
     sellCat(cat) {
         if (!cat) return false;
-        this.money += cat.cost;
+        this._money += cat.cost;
 
         let c;
         if (cat.y === IN_QUEUE) {
@@ -207,22 +205,20 @@ class Player {
         });
 
         this.updateBoard();
-        this.updateMoney();
-
         return true;
     }
 
-    putCat({ beforeX, beforeY, nextX, nextY }) {
+    putCat(before, next) {
         let unitToMove, unitToSwap;
 
-        if (beforeY === IN_QUEUE) {
+        if (before.y === IN_QUEUE) {
             // from queue
-            unitToMove = this.queue[beforeX];
-            if (nextY === IN_QUEUE) {
+            unitToMove = this.queue[before.x];
+            if (next.y === IN_QUEUE) {
                 // to queue
-                unitToSwap = this.queue[nextX];
-                this.queue[nextX] = unitToMove;
-                this.queue[beforeX] = unitToSwap;
+                unitToSwap = this.queue[next.x];
+                this.queue[next.x] = unitToMove;
+                this.queue[before.x] = unitToSwap;
             } else {
                 // to board
                 let amount = 0;
@@ -232,34 +228,37 @@ class Player {
                     });
                 });
 
-                unitToSwap = this.board[nextY][nextX];
+                unitToSwap = this.board[next.y][next.x];
                 if (amount == this.level && !unitToSwap) return false;
 
-                this.board[nextY][nextX] = unitToMove;
-                this.queue[beforeX] = unitToSwap;
+                this.board[next.y][next.x] = unitToMove;
+                this.queue[before.x] = unitToSwap;
             }
         } else {
             // from board
-            unitToMove = this.board[beforeY][beforeX];
-            if (nextY === IN_QUEUE) {
+            unitToMove = this.board[before.y][before.x];
+            if (next.y === IN_QUEUE) {
                 // to queue
-                unitToSwap = this.queue[nextX];
-                this.queue[nextX] = unitToMove;
-                this.board[beforeY][beforeX] = unitToSwap;
+                unitToSwap = this.queue[next.x];
+                this.queue[next.x] = unitToMove;
+                this.board[before.y][before.x] = unitToSwap;
             } else {
                 // to board
-                unitToSwap = this.board[nextY][nextX];
-                this.board[nextY][nextX] = unitToMove;
-                this.board[beforeY][beforeX] = unitToSwap;
+                unitToSwap = this.board[next.y][next.x];
+                this.board[next.y][next.x] = unitToMove;
+                this.board[before.y][before.x] = unitToSwap;
             }
         }
+
         if (unitToSwap) {
-            unitToSwap.x = beforeX;
-            unitToSwap.y = beforeY;
+            unitToSwap.x = before.x;
+            unitToSwap.y = before.y;
         }
-        unitToMove.x = nextX;
-        unitToMove.y = nextY;
+
+        unitToMove.x = next.x;
+        unitToMove.y = next.y;
         this.updateBoard();
+        this.updateQueue();
         return true;
     }
 
@@ -270,32 +269,12 @@ class Player {
         }
 
         let result = [];
-        let possibilities = [];
-        switch (this.level) {
-            case 1:
-                possibilities = [100, 0, 0, 0];
-                break;
-            case 2:
-                possibilities = [100, 0, 0, 0];
-                break;
-            case 3:
-                possibilities = [75, 25, 0, 0];
-                break;
-            case 4:
-                possibilities = [50, 30, 20, 0];
-                break;
-            case 5:
-                possibilities = [30, 40, 25, 5];
-                break;
-            case 6:
-                possibilities = [15, 25, 35, 25];
-                break;
-        }
+        let possibilities = SHOP_POSSIBILITIES[this.level - 1];
 
         for (let i = 0; i < 4; ++i) {
             let random = Math.random() * 100;
             for (let cost = 1; cost <= 4; ++cost) {
-                if (random < possibilities[cost - 1]) {
+                if (random <= possibilities[cost - 1]) {
                     result.push(SimpleCat.getRandomCatTypeByCost(cost));
                     break;
                 }
@@ -303,9 +282,7 @@ class Player {
             }
         }
 
-        this.shop = result;
-
-        this.updateShop();
+        this._shop = result;
         return true;
     }
 
@@ -314,8 +291,6 @@ class Player {
         if (this.level === 6) return false;
         this._money -= 4;
         this._exp += 4;
-        this.updateMoney();
-        this.updateExp();
         return true;
     }
 
@@ -381,6 +356,12 @@ class Player {
         this.game.sendMsgToAll("boardUpdate", {
             player: this.id,
             board: this.board,
+        });
+    }
+
+    updateQueue() {
+        this.game.sendMsgToAll("queueUpdate", {
+            player: this.id,
             queue: this.queue,
         });
     }
