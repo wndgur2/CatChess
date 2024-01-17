@@ -1,3 +1,5 @@
+import Painter from "./Painter.js";
+
 class Battle {
     static board = [];
 
@@ -9,17 +11,7 @@ class Battle {
     }
 
     static displayBoard() {
-        let rows = document
-            .getElementById("board")
-            .getElementsByClassName("row");
-        for (let i = 0; i < rows.length; i++) {
-            let cells = rows[i].getElementsByClassName("cell");
-            for (let j = 0; j < cells.length; j++) {
-                if (Battle.board[i][j])
-                    cells[j].innerHTML = Battle.board[i][j].display();
-                else cells[j].innerHTML = "";
-            }
-        }
+        Painter._board = Battle.board.map((row) => [...row]);
     }
 
     static attack(attacker, target, damage, reversed) {
@@ -47,8 +39,8 @@ class Battle {
         let cat = Battle.board[beforeY][beforeX];
         Battle.board[beforeY][beforeX] = null;
         Battle.board[nextY][nextX] = cat;
-        cat.x = nextX;
-        cat.y = nextY;
+        cat.x = reversed ? 4 - nextX : nextX;
+        cat.y = reversed ? 5 - nextY : nextY;
         Battle.displayBoard();
     }
 }

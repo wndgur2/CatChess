@@ -2,6 +2,7 @@ import Game from "./Game.js";
 import Unit from "./Unit.js";
 import Socket from "./Socket.js";
 import { GAME_STATES } from "./constants.js";
+import Painter from "./Painter.js";
 
 export default class Player {
     static player = null;
@@ -68,17 +69,12 @@ export default class Player {
         if (this.id !== Socket.id) return;
         if (Game.state != GAME_STATES.ARRANGE) return;
 
-        for (let i = 0; i < 3; i++)
-            for (let j = 0; j < 5; j++) {
-                let cell = document.getElementById(`ally-${i}-${j}`);
-                if (this.board[i][j] === null) {
-                    cell.draggable = false;
-                    cell.innerHTML = "";
-                } else {
-                    cell.draggable = true;
-                    cell.innerHTML = this.board[i][j].display();
-                }
-            }
+        Painter._board = [
+            [null, null, null, null, null],
+            [null, null, null, null, null],
+            [null, null, null, null, null],
+            ...this.board.map((row) => [...row]),
+        ];
     }
 
     set _queue(newQueue) {
@@ -87,16 +83,7 @@ export default class Player {
             else return null;
         });
         if (this.id !== Socket.id) return;
-        for (let i = 0; i < 7; i++) {
-            let cell = document.getElementById(`queue-3-${i}`);
-            if (this.queue[i] === null) {
-                cell.draggable = false;
-                cell.innerHTML = "";
-            } else {
-                cell.draggable = true;
-                cell.innerHTML = this.queue[i].display();
-            }
-        }
+        Painter._allyQueue = this.queue;
     }
 
     set _shop(newShop) {

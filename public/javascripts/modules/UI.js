@@ -144,11 +144,11 @@ export default class UI {
         switch (UI.draggingType) {
             case DRAGGING_TYPES.UNIT:
                 Socket.sendMsg("reqPutCat", {
-                    before: {
+                    from: {
                         x: parseInt(UI.draggingId.split("-")[2]),
                         y: parseInt(UI.draggingId.split("-")[1]),
                     },
-                    next: {
+                    to: {
                         x: parseInt(event.target.id.split("-")[2]),
                         y: parseInt(event.target.id.split("-")[1]),
                     },

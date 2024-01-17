@@ -92,7 +92,6 @@ export default class Socket {
                     break;
                 }
                 case "battleInit": {
-                    // three
                     Battle.board = data.board.map((row) =>
                         row.map((cat) => {
                             if (!cat) return null;

@@ -31,7 +31,7 @@ for (let i = 5; i >= 0; i--) {
         coord[2] =
             i * (PLATE_DEPTH + PLATE_GAP) - (5 * (PLATE_DEPTH + PLATE_GAP)) / 2;
         coord[1] = -PLATE_HEIGHT / 2;
-        if (i % 2 != 0) coord[0] += (PLATE_WIDTH + PLATE_GAP) / 2;
+        if (i % 2 == 0) coord[0] += (PLATE_WIDTH + PLATE_GAP) / 2;
         COORDINATES.BOARD[5 - i].push(coord);
     }
 }

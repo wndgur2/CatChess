@@ -27,14 +27,14 @@ module.exports = (server) => {
                     break;
                 }
                 case "reqPutCat": {
-                    if (!data.before) return;
+                    if (!data.from) return;
                     let player = getPlayer(from);
                     console.log(data);
 
-                    if (data.next.y <= 2 && player.game.state !== "arrange")
+                    if (data.to.y <= 2 && player.game.state !== "arrange")
                         return;
 
-                    player.putCat(data.before, data.next);
+                    player.putCat(data.from, data.to);
                     break;
                 }
                 case "reqSellCat": {

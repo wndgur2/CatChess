@@ -10,8 +10,20 @@ import {
 } from "./constants.js";
 import Game from "./Game.js";
 import Battle from "./Battle.js";
+import Player from "./Player.js";
 
 export default class Painter {
+    static board = [
+        [null, null, null, null, null],
+        [null, null, null, null, null],
+        [null, null, null, null, null],
+        [null, null, null, null, null],
+        [null, null, null, null, null],
+        [null, null, null, null, null],
+    ];
+    static allyQueue = [null, null, null, null, null, null, null];
+    static enemyQueue = [null, null, null, null, null, null, null];
+
     static initScene() {
         this.scene = new THREE.Scene();
 
@@ -105,24 +117,63 @@ export default class Painter {
             cube.translateZ(coord[2]);
             this.scene.add(cube);
         });
-
-        Game._state = GAME_STATES.BATTLE;
-        this.drawUnit({ x: 0, y: 0 });
     }
 
-    static drawUnit(unit) {
+    static set _board(newBoard) {
+        // TODO: old mesh가 안지워짐. object 관리 필요
+        this.board.forEach((row, i) => {
+            row.forEach((unit, j) => {
+                if (unit) this.scene.remove(unit.mesh); // mesh도 복사되서 이 mesh가 그 mesh가 아니다?
+            });
+        });
+
+        this.board = newBoard;
+
+        this.board.forEach((row, i) => {
+            row.forEach((unit, j) => {
+                if (unit) this.drawUnitOnBoard(unit);
+            });
+        });
+    }
+
+    static drawUnitOnBoard(unit) {
         const geometry = new THREE.BoxGeometry(10, 10, 10);
         const material = new THREE.MeshLambertMaterial({ color: 0x000000 });
         const cube = new THREE.Mesh(geometry, material);
-        const coords = getCoords(unit.x, unit.y);
+        const coords = getBoardCoords(unit.x, unit.y);
         cube.translateX(coords[0]);
         cube.translateY(coords[1] + BOX_HEIGHT / 2 + 5);
         cube.translateZ(coords[2]);
         this.scene.add(cube);
+        unit.mesh = cube;
+    }
+
+    static set _allyQueue(newQueue) {
+        this.allyQueue.forEach((unit, i) => {
+            if (unit) this.scene.remove(unit.mesh);
+        });
+
+        this.allyQueue = newQueue;
+
+        this.allyQueue.forEach((unit, i) => {
+            if (unit) this.drawUnitOnQueue(unit);
+        });
+    }
+
+    static drawUnitOnQueue(unit) {
+        const geometry = new THREE.BoxGeometry(10, 10, 10);
+        const material = new THREE.MeshLambertMaterial({ color: 0x000000 });
+        const cube = new THREE.Mesh(geometry, material);
+        const coords = getQueueCoords(unit.x, unit.owner === Player.player.id);
+        cube.translateX(coords[0]);
+        cube.translateY(coords[1] + BOX_HEIGHT / 2 + 5);
+        cube.translateZ(coords[2]);
+        this.scene.add(cube);
+        unit.mesh = cube;
     }
 }
 
-function getCoords(x, y) {
+function getBoardCoords(x, y) {
     switch (Game.state) {
         case GAME_STATES.ARRANGE:
             if (y === 3) return [...COORDINATES.ALLY_QUEUE[x]];
@@ -131,7 +182,16 @@ function getCoords(x, y) {
             return Battle.reversed
                 ? [...COORDINATES.BOARD[5 - y][4 - x]]
                 : [...COORDINATES.BOARD[y][x]];
+        case GAME_STATES.READY:
+            return Battle.reversed
+                ? [...COORDINATES.BOARD[5 - y][4 - x]]
+                : [...COORDINATES.BOARD[y][x]];
         default:
             return [0, 0, 0];
     }
+}
+
+function getQueueCoords(x, isAlly) {
+    if (isAlly) return [...COORDINATES.ALLY_QUEUE[x]];
+    return [...COORDINATES.ENEMY_QUEUE[x]];
 }

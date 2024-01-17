@@ -209,17 +209,17 @@ class Player {
         return true;
     }
 
-    putCat(before, next) {
+    putCat(from, to) {
         let unitToMove, unitToSwap;
 
-        if (before.y === IN_QUEUE) {
+        if (from.y === IN_QUEUE) {
             // from queue
-            unitToMove = this.queue[before.x];
-            if (next.y === IN_QUEUE) {
+            unitToMove = this.queue[from.x];
+            if (to.y === IN_QUEUE) {
                 // to queue
-                unitToSwap = this.queue[next.x];
-                this.queue[next.x] = unitToMove;
-                this.queue[before.x] = unitToSwap;
+                unitToSwap = this.queue[to.x];
+                this.queue[to.x] = unitToMove;
+                this.queue[from.x] = unitToSwap;
             } else {
                 // to board
                 let amount = 0;
@@ -227,35 +227,35 @@ class Player {
                     row.forEach((cat) => (cat ? amount++ : null));
                 });
 
-                unitToSwap = this.board[next.y][next.x];
+                unitToSwap = this.board[to.y][to.x];
                 if (amount == this.level && !unitToSwap) return false;
 
-                this.board[next.y][next.x] = unitToMove;
-                this.queue[before.x] = unitToSwap;
+                this.board[to.y][to.x] = unitToMove;
+                this.queue[from.x] = unitToSwap;
             }
         } else {
             // from board
-            unitToMove = this.board[before.y][before.x];
-            if (next.y === IN_QUEUE) {
+            unitToMove = this.board[from.y][from.x];
+            if (to.y === IN_QUEUE) {
                 // to queue
-                unitToSwap = this.queue[next.x];
-                this.queue[next.x] = unitToMove;
-                this.board[before.y][before.x] = unitToSwap;
+                unitToSwap = this.queue[to.x];
+                this.queue[to.x] = unitToMove;
+                this.board[from.y][from.x] = unitToSwap;
             } else {
                 // to board
-                unitToSwap = this.board[next.y][next.x];
-                this.board[next.y][next.x] = unitToMove;
-                this.board[before.y][before.x] = unitToSwap;
+                unitToSwap = this.board[to.y][to.x];
+                this.board[to.y][to.x] = unitToMove;
+                this.board[from.y][from.x] = unitToSwap;
             }
         }
 
         if (unitToSwap) {
-            unitToSwap.x = before.x;
-            unitToSwap.y = before.y;
+            unitToSwap.x = from.x;
+            unitToSwap.y = from.y;
         }
 
-        unitToMove.x = next.x;
-        unitToMove.y = next.y;
+        unitToMove.x = to.x;
+        unitToMove.y = to.y;
         this.updateBoard();
         this.updateQueue();
         return true;
