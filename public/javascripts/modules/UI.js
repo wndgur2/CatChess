@@ -2,7 +2,7 @@ import Battle from "./Battle.js";
 import Game from "./Game.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
-import ThreeManager from "./ThreeManager.js";
+import Painter from "./Painter.js";
 import Unit from "./Unit.js";
 import { DRAGGING_TYPES } from "./constants.js";
 
@@ -11,7 +11,7 @@ export default class UI {
     static draggingType;
 
     static init() {
-        ThreeManager.initScene();
+        Painter.initScene();
         UI.hydrate();
     }
 
@@ -108,7 +108,7 @@ export default class UI {
         document.getElementById("waiting").style.display = "none";
         document.getElementById("game").style.display = "flex";
 
-        ThreeManager.animate();
+        Painter.animate();
     }
 
     static itemDragStart(event) {

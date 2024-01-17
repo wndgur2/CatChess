@@ -39,32 +39,32 @@ export default class Game {
         switch (newState) {
             case GAME_STATES.ARRANGE: {
                 // document.getElementById("game").style.backgroundColor = "#333";
-                let cells = document.getElementsByClassName("cell");
-                for (let i = 0; i < cells.length; i++)
-                    if (cells[i].id.split("-")[0] === "ally")
-                        cells[i].draggable = true;
-                // display player's board
-                let player = Player.player;
-                for (let i = 0; i < 3; i++) {
-                    for (let j = 0; j < 5; j++) {
-                        let cell = document.getElementById(`ally-${i}-${j}`);
-                        if (player.board[i][j] === null) {
-                            cell.draggable = false;
-                            cell.innerHTML = "";
-                        } else {
-                            cell.draggable = true;
-                            cell.innerHTML = player.board[i][j].display();
-                        }
-                    }
-                }
+                // let cells = document.getElementsByClassName("cell");
+                // for (let i = 0; i < cells.length; i++)
+                //     if (cells[i].id.split("-")[0] === "ally")
+                //         cells[i].draggable = true;
+                // // display player's board
+                // let player = Player.player;
+                // for (let i = 0; i < 3; i++) {
+                //     for (let j = 0; j < 5; j++) {
+                //         let cell = document.getElementById(`ally-${i}-${j}`);
+                //         if (player.board[i][j] === null) {
+                //             cell.draggable = false;
+                //             cell.innerHTML = "";
+                //         } else {
+                //             cell.draggable = true;
+                //             cell.innerHTML = player.board[i][j].display();
+                //         }
+                //     }
+                // }
 
-                // empty enemy boards
-                for (let i = 0; i < 3; i++) {
-                    for (let j = 0; j < 5; j++) {
-                        let cell = document.getElementById(`enemy-${i}-${j}`);
-                        cell.innerHTML = "";
-                    }
-                }
+                // // empty enemy boards
+                // for (let i = 0; i < 3; i++) {
+                //     for (let j = 0; j < 5; j++) {
+                //         let cell = document.getElementById(`enemy-${i}-${j}`);
+                //         cell.innerHTML = "";
+                //     }
+                // }
 
                 break;
             }

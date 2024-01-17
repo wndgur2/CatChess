@@ -2,6 +2,7 @@ class Battle {
     static board = [];
 
     static initBattle(reversed) {
+        this.reversed = reversed;
         if (reversed)
             Battle.board = Battle.board.map((row) => row.reverse()).reverse();
         Battle.displayBoard();
