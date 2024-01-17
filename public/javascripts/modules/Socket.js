@@ -1,6 +1,7 @@
 import Battle from "./Battle.js";
 import Game from "./Game.js";
 import Item from "./Item.js";
+import Painter from "./Painter.js";
 import Player from "./Player.js";
 import UI from "./UI.js";
 import Unit from "./Unit.js";
@@ -54,8 +55,15 @@ export default class Socket {
                     break;
                 }
                 case "boardUpdate": {
-                    // three
                     Player.getPlayerById(data.player)._board = data.board;
+
+                    if (data.player !== Socket.id) break;
+                    Painter._board = [
+                        [null, null, null, null, null],
+                        [null, null, null, null, null],
+                        [null, null, null, null, null],
+                        ...data.board.map((row) => [...row]),
+                    ];
                     break;
                 }
                 case "queueUpdate": {

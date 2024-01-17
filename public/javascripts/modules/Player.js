@@ -68,13 +68,6 @@ export default class Player {
 
         if (this.id !== Socket.id) return;
         if (Game.state != GAME_STATES.ARRANGE) return;
-
-        Painter._board = [
-            [null, null, null, null, null],
-            [null, null, null, null, null],
-            [null, null, null, null, null],
-            ...this.board.map((row) => [...row]),
-        ];
     }
 
     set _queue(newQueue) {

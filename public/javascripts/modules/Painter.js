@@ -120,10 +120,9 @@ export default class Painter {
     }
 
     static set _board(newBoard) {
-        // TODO: old mesh가 안지워짐. object 관리 필요
         this.board.forEach((row, i) => {
             row.forEach((unit, j) => {
-                if (unit) this.scene.remove(unit.mesh); // mesh도 복사되서 이 mesh가 그 mesh가 아니다?
+                if (unit) this.scene.remove(unit.mesh);
             });
         });
 
@@ -131,21 +130,9 @@ export default class Painter {
 
         this.board.forEach((row, i) => {
             row.forEach((unit, j) => {
-                if (unit) this.drawUnitOnBoard(unit);
+                if (unit) this.drawUnit(unit, true);
             });
         });
-    }
-
-    static drawUnitOnBoard(unit) {
-        const geometry = new THREE.BoxGeometry(10, 10, 10);
-        const material = new THREE.MeshLambertMaterial({ color: 0x000000 });
-        const cube = new THREE.Mesh(geometry, material);
-        const coords = getBoardCoords(unit.x, unit.y);
-        cube.translateX(coords[0]);
-        cube.translateY(coords[1] + BOX_HEIGHT / 2 + 5);
-        cube.translateZ(coords[2]);
-        this.scene.add(cube);
-        unit.mesh = cube;
     }
 
     static set _allyQueue(newQueue) {
@@ -156,27 +143,33 @@ export default class Painter {
         this.allyQueue = newQueue;
 
         this.allyQueue.forEach((unit, i) => {
-            if (unit) this.drawUnitOnQueue(unit);
+            if (unit) this.drawUnit(unit, false);
         });
     }
 
-    static drawUnitOnQueue(unit) {
+    static drawUnit(unit, onBoard) {
+        // TODO: 매번 Mesh를 생성할게 아니라, Unit의 field에 한 Mesh를 저장.
         const geometry = new THREE.BoxGeometry(10, 10, 10);
         const material = new THREE.MeshLambertMaterial({ color: 0x000000 });
-        const cube = new THREE.Mesh(geometry, material);
-        const coords = getQueueCoords(unit.x, unit.owner === Player.player.id);
-        cube.translateX(coords[0]);
-        cube.translateY(coords[1] + BOX_HEIGHT / 2 + 5);
-        cube.translateZ(coords[2]);
-        this.scene.add(cube);
-        unit.mesh = cube;
+        const unitMesh = new THREE.Mesh(geometry, material);
+        const coords = onBoard
+            ? getBoardCoords(unit.x, unit.y)
+            : getQueueCoords(unit.x, unit.owner === Player.player.id);
+        unitMesh.position.set(
+            coords[0],
+            coords[1] + BOX_HEIGHT / 2 + 5,
+            coords[2]
+        );
+        unit.mesh = unitMesh;
+        this.scene.add(unitMesh);
     }
 }
 
 function getBoardCoords(x, y) {
     switch (Game.state) {
         case GAME_STATES.ARRANGE:
-            if (y === 3) return [...COORDINATES.ALLY_QUEUE[x]];
+            return [...COORDINATES.BOARD[y + 3][x]];
+        case GAME_STATES.FINISH:
             return [...COORDINATES.BOARD[y + 3][x]];
         case GAME_STATES.BATTLE:
             return Battle.reversed

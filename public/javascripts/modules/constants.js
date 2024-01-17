@@ -55,6 +55,8 @@ for (let i = 6; i >= 0; i--) {
     COORDINATES.ENEMY_QUEUE.push(coord);
 }
 
+Object.freeze(COORDINATES);
+
 export {
     GAME_STATES,
     DRAGGING_TYPES,
