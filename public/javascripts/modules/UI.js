@@ -36,54 +36,6 @@ export default class UI {
         shopEl.addEventListener("dragover", UI.shopDragOver);
         shopEl.addEventListener("dragleave", UI.shopDragLeave);
 
-        // 3 x 5 enemy board
-        for (let i = 0; i < 3; i++) {
-            let row = document.createElement("div");
-            row.className = "row";
-            for (let j = 0; j < 5; j++) {
-                let cell = document.createElement("div");
-                cell.id = `enemy-${i}-${j}`;
-                cell.className = "cell";
-                cell.addEventListener("click", UI.cellClick);
-                cell.draggable = false;
-                row.appendChild(cell);
-            }
-            document.getElementById("board").appendChild(row);
-        }
-
-        // 3 x 5 ally board
-        for (let i = 0; i < 3; i++) {
-            let row = document.createElement("div");
-            row.className = "row";
-            for (let j = 0; j < 5; j++) {
-                let cell = document.createElement("div");
-                cell.id = `ally-${i}-${j}`;
-
-                cell.className = "cell";
-                cell.addEventListener("dragstart", UI.cellDragStart);
-                cell.addEventListener("dragover", UI.cellDragOver);
-                cell.addEventListener("drop", UI.cellDragDrop);
-                cell.addEventListener("click", UI.cellClick);
-                cell.draggable = false;
-                row.appendChild(cell);
-            }
-            document.getElementById("board").appendChild(row);
-        }
-
-        // 1 x 7 queue
-        for (let i = 0; i < 7; i++) {
-            let cell = document.createElement("div");
-            cell.id = `queue-3-${i}`;
-
-            cell.className = "cell";
-            cell.addEventListener("dragstart", UI.cellDragStart);
-            cell.addEventListener("dragover", UI.cellDragOver);
-            cell.addEventListener("drop", UI.cellDragDrop);
-            cell.addEventListener("click", UI.cellClick);
-            cell.draggable = false;
-            document.getElementById("queue").appendChild(cell);
-        }
-
         // 2 x 3 inventory
         for (let i = 0; i < 3; i++) {
             let row = document.createElement("div");

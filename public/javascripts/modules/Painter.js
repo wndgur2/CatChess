@@ -175,13 +175,13 @@ export default class Painter {
         healthBarBackgroundMesh.position.set(0, 30, 0);
         unit.mesh.add(healthBarBackgroundMesh);
 
-        const healthBarDamagedHealthMesh = new THREE.Mesh(
+        const damagedHealthMesh = new THREE.Mesh(
             new THREE.BoxGeometry(30, 8, 1),
             new THREE.MeshLambertMaterial({ color: 0xcc0000 })
         );
-        healthBarDamagedHealthMesh.name = "healthBarDamagedHealth";
-        healthBarDamagedHealthMesh.position.set(0, 30, 0);
-        unit.mesh.add(healthBarDamagedHealthMesh);
+        damagedHealthMesh.name = "damagedHealth";
+        damagedHealthMesh.position.set(0, 30, 0);
+        unit.mesh.add(damagedHealthMesh);
 
         const healthBarMesh = new THREE.Mesh(
             new THREE.BoxGeometry(30, 8, 1),
@@ -211,19 +211,17 @@ export default class Painter {
         healthBarMesh.scale.x = unit.hp / unit.maxHp;
         healthBarMesh.position.x = (1 - unit.hp / unit.maxHp) * 15;
 
-        const healthBarDamagedHealthMesh = unit.mesh.getObjectByName(
-            "healthBarDamagedHealth"
-        );
+        const damagedHealthMesh = unit.mesh.getObjectByName("damagedHealth");
         function animateHealthDamage() {
-            if (healthBarDamagedHealthMesh.scale.x > healthBarMesh.scale.x) {
-                healthBarDamagedHealthMesh.scale.x -= 0.01;
-                healthBarDamagedHealthMesh.position.x =
-                    (1 - healthBarDamagedHealthMesh.scale.x) * 15;
+            if (damagedHealthMesh.scale.x > healthBarMesh.scale.x) {
+                damagedHealthMesh.scale.x -= 0.01;
+                damagedHealthMesh.position.x =
+                    (1 - damagedHealthMesh.scale.x) * 15;
                 requestAnimationFrame(animateHealthDamage);
             } else {
-                healthBarDamagedHealthMesh.scale.x = healthBarMesh.scale.x;
-                healthBarDamagedHealthMesh.position.x =
-                    (1 - healthBarDamagedHealthMesh.scale.x) * 15;
+                damagedHealthMesh.scale.x = healthBarMesh.scale.x;
+                damagedHealthMesh.position.x =
+                    (1 - damagedHealthMesh.scale.x) * 15;
             }
         }
         animateHealthDamage();
