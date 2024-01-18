@@ -56,18 +56,9 @@ export default class Socket {
                 }
                 case "boardUpdate": {
                     Player.getPlayerById(data.player)._board = data.board;
-
-                    if (data.player !== Socket.id) break;
-                    Painter._board = [
-                        [null, null, null, null, null],
-                        [null, null, null, null, null],
-                        [null, null, null, null, null],
-                        ...data.board.map((row) => [...row]),
-                    ];
                     break;
                 }
                 case "queueUpdate": {
-                    // three
                     Player.getPlayerById(data.player)._queue = data.queue;
                     break;
                 }
@@ -101,10 +92,7 @@ export default class Socket {
                 }
                 case "battleInit": {
                     Battle.board = data.board.map((row) =>
-                        row.map((cat) => {
-                            if (!cat) return null;
-                            return new Unit(cat);
-                        })
+                        row.map((cat) => (cat ? new Unit(cat) : null))
                     );
                     Battle.initBattle(data.reversed);
                     break;
