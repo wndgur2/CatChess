@@ -1,3 +1,4 @@
+import Painter from "./Painter.js";
 import Player from "./Player.js";
 
 export default class Unit {
@@ -16,6 +17,8 @@ export default class Unit {
 
         this.x = data.x;
         this.y = data.y;
+
+        Painter.createUnitMesh(this);
     }
 
     display() {
