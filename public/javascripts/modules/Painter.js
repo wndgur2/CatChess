@@ -69,6 +69,19 @@ export default class Painter {
     }
 
     static drawPlates() {
+        // floor
+        const floorGeometry = new THREE.PlaneGeometry(1000, 1000);
+        const floorMaterial = new THREE.MeshLambertMaterial({
+            color: 0x000000,
+            side: THREE.DoubleSide,
+        });
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotateX(Math.PI / 2);
+        floor.position.set(0, 0, 0);
+        floor.visible = false;
+        floor.name = "floor";
+        this.scene.add(floor);
+
         // board
         let plateGeometry = new THREE.CylinderGeometry(
             PLATE_RADIUS,
@@ -294,6 +307,31 @@ function onPointerMove(event) {
         Painter.scene.children,
         false
     );
+    console.log(intersects);
+    for (let i = 0; i < intersects.length; ++i) {
+        const object = intersects[i].object;
+        if (object.name === "floor") {
+            Painter.draggingObject.position.set(
+                intersects[i].point.x,
+                5,
+                intersects[i].point.z
+            );
+            break;
+        }
+    }
+}
+
+function onPointerUp(event) {
+    if (!Painter.isDragging) return;
+
+    Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
+    const intersects = Painter.raycaster.intersectObjects(
+        Painter.scene.children,
+        false
+    );
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
         if (object.name === "plate") {
@@ -305,10 +343,6 @@ function onPointerMove(event) {
             break;
         }
     }
-}
-
-function onPointerUp(event) {
-    if (!Painter.isDragging) return;
 
     Painter.isDragging = false;
 }
