@@ -120,16 +120,16 @@ export default class Painter {
     }
 
     static set _board(newBoard) {
-        this.board.forEach((row, i) => {
-            row.forEach((unit, j) => {
+        this.board.forEach((row) => {
+            row.forEach((unit) => {
                 if (unit) this.scene.remove(unit.mesh);
             });
         });
 
         this.board = newBoard;
 
-        this.board.forEach((row, i) => {
-            row.forEach((unit, j) => {
+        this.board.forEach((row) => {
+            row.forEach((unit) => {
                 if (unit) this.drawUnit(unit, true);
             });
         });
@@ -148,20 +148,21 @@ export default class Painter {
     }
 
     static drawUnit(unit, onBoard) {
-        // TODO: 매번 Mesh를 생성할게 아니라, Unit의 field에 한 Mesh를 저장.
-        const geometry = new THREE.BoxGeometry(10, 10, 10);
-        const material = new THREE.MeshLambertMaterial({ color: 0x000000 });
-        const unitMesh = new THREE.Mesh(geometry, material);
         const coords = onBoard
             ? getBoardCoords(unit.x, unit.y)
             : getQueueCoords(unit.x, unit.owner === Player.player.id);
-        unitMesh.position.set(
+        unit.mesh.position.set(
             coords[0],
             coords[1] + BOX_HEIGHT / 2 + 5,
             coords[2]
         );
-        unit.mesh = unitMesh;
-        this.scene.add(unitMesh);
+        this.scene.add(unit.mesh);
+    }
+
+    static createUnitMesh(unit) {
+        const geometry = new THREE.BoxGeometry(10, 10, 10);
+        const material = new THREE.MeshLambertMaterial({ color: 0x000000 });
+        unit.mesh = new THREE.Mesh(geometry, material);
     }
 }
 
@@ -180,6 +181,7 @@ function getBoardCoords(x, y) {
                 ? [...COORDINATES.BOARD[5 - y][4 - x]]
                 : [...COORDINATES.BOARD[y][x]];
         default:
+            console.log("getBoardCoords: invalid state");
             return [0, 0, 0];
     }
 }
