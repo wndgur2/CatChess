@@ -60,21 +60,22 @@ export default class Player {
 
     set _board(newBoard) {
         this.board = newBoard.map((row) =>
-            row.map((cat) => {
-                if (cat) return new Unit(cat);
-                else return null;
-            })
+            row.map((cat) => (cat ? new Unit(cat) : null))
         );
 
         if (this.id !== Socket.id) return;
         if (Game.state != GAME_STATES.ARRANGE) return;
+        Painter._board = [
+            [null, null, null, null, null],
+            [null, null, null, null, null],
+            [null, null, null, null, null],
+            ...this.board,
+        ];
     }
 
     set _queue(newQueue) {
-        this.queue = newQueue.map((cat) => {
-            if (cat) return new Unit(cat);
-            else return null;
-        });
+        this.queue = newQueue.map((cat) => (cat ? new Unit(cat) : null));
+
         if (this.id !== Socket.id) return;
         Painter._allyQueue = this.queue;
     }
