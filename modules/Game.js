@@ -113,16 +113,18 @@ class Game {
 
     arrangeState() {
         clearTimeout(this.timeout);
+
+        this._stage = this.stage + 1;
+        this.state = GAME_STATES.ARRANGE;
+        this.time = 7;
+        this.updateState();
+
         // 결과 지급, 리로드
         this.players.forEach((player) => {
             player.checkUpgrade();
             player.reward();
         });
 
-        this._stage = this.stage + 1;
-        this.state = GAME_STATES.ARRANGE;
-        this.time = 7;
-        this.updateState();
         this.timeout = setTimeout(() => {
             this.readyState();
         }, this.time * 1000);
@@ -134,6 +136,7 @@ class Game {
         this.state = GAME_STATES.READY;
         this.time = 3;
         this.updateState();
+
         this.timeout = setTimeout(() => {
             this.battleState();
         }, this.time * 1000);
@@ -178,20 +181,21 @@ class Game {
         clearTimeout(this.timeout);
 
         this.state = GAME_STATES.BATTLE;
-        this.battles.forEach((battle) => battle.initBattle());
         this.time = 30;
         this.updateState();
+
+        this.battles.forEach((battle) => battle.initBattle());
         this.timeout = setTimeout(() => this.finishState(), this.time * 1000);
     }
 
     finishState() {
         clearTimeout(this.timeout);
 
-        this.battles.forEach((battle) => battle.finish());
-
         this.state = GAME_STATES.FINISH;
         this.time = 3;
         this.updateState();
+
+        this.battles.forEach((battle) => battle.finish());
 
         let isEnd = false;
         this.players.forEach((player) => {
