@@ -1,13 +1,13 @@
 import * as THREE from "three";
+import { GAME_STATES } from "./constants/CONSTS.js";
 import {
     BOX_DEPTH,
     BOX_HEIGHT,
     BOX_WIDTH,
     COORDINATES,
-    GAME_STATES,
     PLATE_HEIGHT,
     PLATE_RADIUS,
-} from "./constants.js";
+} from "./constants/THREE_CONSTS.js";
 import Game from "./Game.js";
 import Battle from "./Battle.js";
 import Player from "./Player.js";
@@ -156,13 +156,77 @@ export default class Painter {
             coords[1] + BOX_HEIGHT / 2 + 5,
             coords[2]
         );
+        this.updateUnitMesh(unit);
         this.scene.add(unit.mesh);
     }
 
     static createUnitMesh(unit) {
-        const geometry = new THREE.BoxGeometry(10, 10, 10);
-        const material = new THREE.MeshLambertMaterial({ color: 0x000000 });
-        unit.mesh = new THREE.Mesh(geometry, material);
+        //body
+        unit.mesh = new THREE.Mesh(
+            new THREE.BoxGeometry(10, 10, 10),
+            new THREE.MeshLambertMaterial({ color: 0x000000 })
+        );
+
+        const healthBarBackgroundMesh = new THREE.Mesh(
+            new THREE.BoxGeometry(30, 8, 1),
+            new THREE.MeshLambertMaterial({ color: 0x00000 })
+        );
+        healthBarBackgroundMesh.name = "healthBarBackground";
+        healthBarBackgroundMesh.position.set(0, 30, 0);
+        unit.mesh.add(healthBarBackgroundMesh);
+
+        const healthBarDamagedHealthMesh = new THREE.Mesh(
+            new THREE.BoxGeometry(30, 8, 1),
+            new THREE.MeshLambertMaterial({ color: 0xcc0000 })
+        );
+        healthBarDamagedHealthMesh.name = "healthBarDamagedHealth";
+        healthBarDamagedHealthMesh.position.set(0, 30, 0);
+        unit.mesh.add(healthBarDamagedHealthMesh);
+
+        const healthBarMesh = new THREE.Mesh(
+            new THREE.BoxGeometry(30, 8, 1),
+            new THREE.MeshLambertMaterial({ color: 0x00cc00 })
+        );
+        healthBarMesh.name = "healthBar";
+        healthBarMesh.position.set(0, 30, 0);
+        unit.mesh.add(healthBarMesh);
+
+        // items
+        const itemMesh = new THREE.Mesh(
+            new THREE.BoxGeometry(9, 9, 1),
+            new THREE.MeshLambertMaterial({ color: 0x000000 })
+        );
+        itemMesh.material.visible = false;
+        const itemMeshes = [];
+        for (let i = 0; i < 3; ++i) {
+            const item = itemMesh.clone();
+            item.position.set(i * 10 - 10, 20, 0);
+            itemMeshes.push(item);
+            unit.mesh.add(item);
+        }
+    }
+
+    static updateUnitMesh(unit) {
+        const healthBarMesh = unit.mesh.getObjectByName("healthBar");
+        healthBarMesh.scale.x = unit.hp / unit.maxHp;
+        healthBarMesh.position.x = (1 - unit.hp / unit.maxHp) * 15;
+
+        const healthBarDamagedHealthMesh = unit.mesh.getObjectByName(
+            "healthBarDamagedHealth"
+        );
+        function animateHealthDamage() {
+            if (healthBarDamagedHealthMesh.scale.x > healthBarMesh.scale.x) {
+                healthBarDamagedHealthMesh.scale.x -= 0.01;
+                healthBarDamagedHealthMesh.position.x =
+                    (1 - healthBarDamagedHealthMesh.scale.x) * 15;
+                requestAnimationFrame(animateHealthDamage);
+            } else {
+                healthBarDamagedHealthMesh.scale.x = healthBarMesh.scale.x;
+                healthBarDamagedHealthMesh.position.x =
+                    (1 - healthBarDamagedHealthMesh.scale.x) * 15;
+            }
+        }
+        animateHealthDamage();
     }
 }
 

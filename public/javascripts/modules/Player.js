@@ -1,7 +1,7 @@
 import Game from "./Game.js";
 import Unit from "./Unit.js";
 import Socket from "./Socket.js";
-import { GAME_STATES } from "./constants.js";
+import { GAME_STATES } from "./constants/CONSTS.js";
 import Painter from "./Painter.js";
 
 export default class Player {

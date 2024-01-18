@@ -1,15 +1,3 @@
-const GAME_STATES = {
-    ARRANGE: "arrange",
-    BATTLE: "battle",
-    READY: "ready",
-    FINISH: "finish",
-};
-const DRAGGING_TYPES = {
-    ITEM: "item",
-    UNIT: "unit",
-};
-const CATCHESS_ID = "CATCHESS_ID";
-
 const COORDINATES = {
     BOARD: [],
     ALLY_QUEUE: [],
@@ -58,9 +46,6 @@ for (let i = 6; i >= 0; i--) {
 Object.freeze(COORDINATES);
 
 export {
-    GAME_STATES,
-    DRAGGING_TYPES,
-    CATCHESS_ID,
     COORDINATES,
     PLATE_RADIUS,
     PLATE_WIDTH,

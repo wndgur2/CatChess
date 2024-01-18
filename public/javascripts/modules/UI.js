@@ -4,7 +4,7 @@ import Player from "./Player.js";
 import Socket from "./Socket.js";
 import Painter from "./Painter.js";
 import Unit from "./Unit.js";
-import { DRAGGING_TYPES } from "./constants.js";
+import { DRAGGING_TYPES } from "./constants/CONSTS.js";
 
 export default class UI {
     static draggingId;

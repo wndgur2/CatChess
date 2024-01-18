@@ -25,8 +25,12 @@ class Battle {
             targetCat = Battle.board[target.y][target.x];
         }
         targetCat.hp = parseInt(target.hp);
-        if (targetCat.hp <= 0) Battle.board[targetCat.y][targetCat.x] = null;
-        Battle.displayBoard();
+        if (targetCat.hp <= 0) {
+            Battle.board[targetCat.y][targetCat.x].die();
+            Battle.board[targetCat.y][targetCat.x] = null;
+        }
+
+        Painter.updateUnitMesh(targetCat);
     }
 
     static move(beforeX, beforeY, nextX, nextY, reversed) {

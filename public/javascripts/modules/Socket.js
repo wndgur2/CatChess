@@ -5,7 +5,7 @@ import Painter from "./Painter.js";
 import Player from "./Player.js";
 import UI from "./UI.js";
 import Unit from "./Unit.js";
-import { CATCHESS_ID } from "./constants.js";
+import { CATCHESS_ID } from "./constants/CONSTS.js";
 
 export default class Socket {
     static socket = null;

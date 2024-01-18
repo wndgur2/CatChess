@@ -38,12 +38,7 @@ export default class Unit {
         </div>`;
     }
 
-    die() {
-        return `<div class="cat">
-        <div class="catHp">💀</div>
-        <div class="catName">${this.name}</div>
-        </div>`;
-    }
+    die() {}
 
     info() {
         return `<div class="cat">
@@ -64,5 +59,9 @@ export default class Unit {
         <div class="catSpeed">🏃${this.speed}</div>
         <div class="catRange">🎯${this.range}</div>
         </div>`;
+    }
+
+    updateMesh() {
+        Painter.updateUnitMesh(this);
     }
 }
