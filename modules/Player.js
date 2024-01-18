@@ -1,5 +1,9 @@
 const SimpleCat = require("./SimpleCat");
-const { MAX_LEVEL, SHOP_POSSIBILITIES } = require("./constants/CONSTS");
+const {
+    MAX_LEVEL,
+    SHOP_POSSIBILITIES,
+    GAME_STATES,
+} = require("./constants/CONSTS");
 const { sendMsg, addPlayer } = require("./utils");
 
 const IN_QUEUE = 3;
@@ -122,7 +126,7 @@ class Player {
         // count cats
         let catIdTierAmount = {},
             checkingArea;
-        if (this.game.state === "arrange")
+        if (this.game.state === GAME_STATES.ARRANGE)
             checkingArea = [...this.board, this.queue];
         else checkingArea = [this.queue];
 
