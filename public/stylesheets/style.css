@@ -29,14 +29,12 @@ body {
     font-size: 24px;
     font-family: "Roboto", sans-serif;
     color: #fff;
-    z-index: 1;
 }
 
 #scene {
     position: absolute;
     top: 0px;
     left: 0px;
-    z-index: -1;
 }
 
 #home {
@@ -78,7 +76,8 @@ body {
     align-items: center;
 }
 
-#topInfo {
+#topWrapper {
+    z-index: 1;
     position: absolute;
     top: 0dvh;
     display: flex;
@@ -118,15 +117,8 @@ body {
     background-color: #212121;
 }
 
-.ally {
-    background-color: #23407d44;
-}
-
-.enemy {
-    background-color: #7d232344;
-}
-
 #leftWrapper {
+    z-index: 1;
     position: absolute;
     top: 30dvh;
     left: 0vw;
@@ -162,6 +154,7 @@ body {
 }
 
 #rightWrapper {
+    z-index: 1;
     position: absolute;
     top: 24dvh;
     left: 84vw;
@@ -173,6 +166,7 @@ body {
 }
 
 #bottomWrapper {
+    z-index: 1;
     position: absolute;
     bottom: 0px;
     width: 100vw;

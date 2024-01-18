@@ -66,9 +66,7 @@ export default class Player {
         if (this.id !== Socket.id) return;
         if (Game.state != GAME_STATES.ARRANGE) return;
         Painter._board = [
-            [null, null, null, null, null],
-            [null, null, null, null, null],
-            [null, null, null, null, null],
+            ...new Array(3).fill(null).map(() => new Array(5).fill(null)),
             ...this.board,
         ];
     }

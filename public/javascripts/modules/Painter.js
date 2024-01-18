@@ -13,16 +13,11 @@ import Battle from "./Battle.js";
 import Player from "./Player.js";
 
 export default class Painter {
-    static board = [
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-        [null, null, null, null, null],
-    ];
-    static allyQueue = [null, null, null, null, null, null, null];
-    static enemyQueue = [null, null, null, null, null, null, null];
+    static board = new Array(6).fill(null).map(() => new Array(5).fill(null));
+    static allyQueue = new Array(7).fill(null);
+    static enemyQueue = new Array(7).fill(null);
+    static isDragging = false;
+    static draggingObject = null;
 
     static initScene() {
         this.scene = new THREE.Scene();
@@ -54,15 +49,18 @@ export default class Painter {
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.domElement.id = "scene";
         this.renderer.setClearColor(0x81ecec, 0.5);
-        document.body.appendChild(this.renderer.domElement);
+        document.getElementById("game").appendChild(this.renderer.domElement);
         this.renderer.render(this.scene, this.camera);
         this.animate();
 
-        window.onresize = () => {
-            Painter.camera.aspect = window.innerWidth / window.innerHeight;
-            Painter.camera.updateProjectionMatrix();
-            Painter.renderer.setSize(window.innerWidth, window.innerHeight);
-        };
+        // interaction
+        this.mouse = new THREE.Vector2();
+        this.raycaster = new THREE.Raycaster();
+
+        window.addEventListener("resize", onResize);
+        window.addEventListener("pointerdown", onPointerDown);
+        window.addEventListener("pointermove", onPointerMove);
+        window.addEventListener("pointerup", onPointerUp);
     }
 
     static animate() {
@@ -71,6 +69,7 @@ export default class Painter {
     }
 
     static drawPlates() {
+        // board
         let plateGeometry = new THREE.CylinderGeometry(
             PLATE_RADIUS,
             PLATE_RADIUS,
@@ -79,18 +78,18 @@ export default class Painter {
         );
         let material = new THREE.MeshLambertMaterial({ color: 0x914461 });
 
-        COORDINATES.BOARD.forEach((row) => {
+        COORDINATES.BOARD.forEach((row, i) => {
             row.forEach((coord) => {
                 const plate = new THREE.Mesh(plateGeometry, material);
                 plate.translateX(coord[0]);
                 plate.translateY(coord[1]);
                 plate.translateZ(coord[2]);
+                if (i >= 3) plate.name = "plate";
                 this.scene.add(plate);
             });
         });
 
         // queue
-
         const boxGeometry = new THREE.BoxGeometry(
             BOX_WIDTH,
             BOX_HEIGHT,
@@ -105,6 +104,7 @@ export default class Painter {
             cube.translateX(coord[0]);
             cube.translateY(coord[1]);
             cube.translateZ(coord[2]);
+            cube.name = "plate";
             this.scene.add(cube);
         });
 
@@ -166,7 +166,9 @@ export default class Painter {
             new THREE.BoxGeometry(10, 10, 10),
             new THREE.MeshLambertMaterial({ color: 0x000000 })
         );
+        unit.mesh.name = "unit";
 
+        // health bar
         const healthBarBackgroundMesh = new THREE.Mesh(
             new THREE.BoxGeometry(30, 8, 1),
             new THREE.MeshLambertMaterial({ color: 0x00000 })
@@ -197,6 +199,7 @@ export default class Painter {
             new THREE.MeshLambertMaterial({ color: 0x000000 })
         );
         itemMesh.material.visible = false;
+        itemMesh.name = "item";
         const itemMeshes = [];
         for (let i = 0; i < 3; ++i) {
             const item = itemMesh.clone();
@@ -212,6 +215,7 @@ export default class Painter {
         healthBarMesh.position.x = (1 - unit.hp / unit.maxHp) * 15;
 
         const damagedHealthMesh = unit.mesh.getObjectByName("damagedHealth");
+
         function animateHealthDamage() {
             if (damagedHealthMesh.scale.x > healthBarMesh.scale.x) {
                 damagedHealthMesh.scale.x -= 0.01;
@@ -224,6 +228,7 @@ export default class Painter {
                     (1 - damagedHealthMesh.scale.x) * 15;
             }
         }
+
         animateHealthDamage();
     }
 }
@@ -251,4 +256,59 @@ function getBoardCoords(x, y) {
 function getQueueCoords(x, isAlly) {
     if (isAlly) return [...COORDINATES.ALLY_QUEUE[x]];
     return [...COORDINATES.ENEMY_QUEUE[x]];
+}
+
+function onResize() {
+    Painter.camera.aspect = window.innerWidth / window.innerHeight;
+    Painter.camera.updateProjectionMatrix();
+    Painter.renderer.setSize(window.innerWidth, window.innerHeight);
+}
+
+function onPointerDown(event) {
+    Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
+    const intersects = Painter.raycaster.intersectObjects(
+        Painter.scene.children,
+        false
+    );
+    if (intersects.length > 0) {
+        const object = intersects[0].object;
+        if (object.name === "unit") {
+            Painter.isDragging = true;
+            Painter.draggingObject = object;
+        }
+    }
+}
+
+function onPointerMove(event) {
+    // 보이지 않는 보드 위 판을 만들어서 거기에 raycast된 좌표로 이동
+    if (!Painter.isDragging) return;
+
+    Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
+    const intersects = Painter.raycaster.intersectObjects(
+        Painter.scene.children,
+        false
+    );
+    for (let i = 0; i < intersects.length; ++i) {
+        const object = intersects[i].object;
+        if (object.name === "plate") {
+            Painter.draggingObject.position.set(
+                object.position.x,
+                5,
+                object.position.z
+            );
+            break;
+        }
+    }
+}
+
+function onPointerUp(event) {
+    if (!Painter.isDragging) return;
+
+    Painter.isDragging = false;
 }

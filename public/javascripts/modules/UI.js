@@ -9,6 +9,7 @@ import { DRAGGING_TYPES } from "./constants/CONSTS.js";
 export default class UI {
     static draggingId;
     static draggingType;
+    static isDragging = false;
 
     static init() {
         Painter.initScene();
