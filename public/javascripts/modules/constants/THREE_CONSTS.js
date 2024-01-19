@@ -45,6 +45,8 @@ for (let i = 6; i >= 0; i--) {
 
 Object.freeze(COORDINATES);
 
+const CAT_HEIGHT = 10;
+
 export {
     COORDINATES,
     PLATE_RADIUS,
@@ -53,4 +55,5 @@ export {
     BOX_WIDTH,
     BOX_DEPTH,
     BOX_HEIGHT,
+    CAT_HEIGHT,
 };

@@ -9,6 +9,7 @@ import {
     COORDINATES,
     PLATE_HEIGHT,
     PLATE_RADIUS,
+    CAT_HEIGHT,
 } from "./constants/THREE_CONSTS.js";
 import Game from "./Game.js";
 import Battle from "./Battle.js";
@@ -20,10 +21,10 @@ import blood from "./effect/blood.js";
 
 export default class Painter {
     static board = new Array(6).fill(null).map(() => new Array(5).fill(null));
-    static allyQueue = new Array(7).fill(null);
     static enemyQueue = new Array(7).fill(null);
-    static isDragging = false;
+    static allyQueue = new Array(7).fill(null);
     static draggingObject = null;
+    static isDragging = false;
 
     static initScene() {
         this.scene = new THREE.Scene();
@@ -76,7 +77,7 @@ export default class Painter {
         this.renderer.domElement.addEventListener("drop", onDrop);
 
         //effect
-        this.hitObjectPool = new objectPool(new blood(), 20);
+        this.hitObjectPool = new objectPool(blood, 30);
     }
 
     static startRendering() {
@@ -85,8 +86,6 @@ export default class Painter {
 
     static animate() {
         requestAnimationFrame(Painter.animate);
-        // Painter.renderer.render(Painter.scene, Painter.camera);
-
         const dt = Painter.clock.getDelta();
         Painter.hitObjectPool.Update(dt);
         Painter.composer.render();
@@ -200,7 +199,7 @@ export default class Painter {
             : getQueueCoords(unit.x, unit.owner === Player.player.id);
         unit.mesh.position.set(
             coords[0],
-            coords[1] + BOX_HEIGHT / 2 + 5,
+            coords[1] + BOX_HEIGHT / 2 + CAT_HEIGHT,
             coords[2]
         );
         this.updateUnitMesh(unit);
@@ -213,7 +212,6 @@ export default class Painter {
             new THREE.BoxGeometry(10, 10, 10),
             new THREE.MeshLambertMaterial({ color: 0x000000 })
         );
-        // unit.mesh.rotateY(Math.PI);
         unit.mesh.name = "unit";
         unit.mesh.unit = unit;
 
@@ -361,7 +359,7 @@ function onPointerMove(event) {
         if (object.name === "floor") {
             Painter.draggingObject.position.set(
                 intersects[i].point.x,
-                5,
+                CAT_HEIGHT,
                 intersects[i].point.z
             );
             break;
@@ -370,7 +368,6 @@ function onPointerMove(event) {
 }
 
 function checkMouseHover(event) {
-    console.log("checkMouseHover");
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -380,7 +377,6 @@ function checkMouseHover(event) {
     );
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
-        console.log(intersects[i].object.name);
         if (object.name === "item") {
             console.log("Item hovered");
             UI.displayItemInfo(object.item);

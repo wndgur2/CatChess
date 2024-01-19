@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const SCALE = 8;
+const SCALE = 5;
 const numParticles = 40 * SCALE;
 const gravity = -9.8 * SCALE;
 const groundHeight = new THREE.Vector3(0, 0, 0);
@@ -20,14 +20,15 @@ export default class blood {
     particleInitSize = 0.3 * SCALE;
     localGroundHeight;
 
-    constructor() {
+    constructor(objectPool) {
         this.#init();
         this.SetActive(false);
+        this.objectPool = objectPool;
     }
 
-    Instantiate() {
-        return new blood();
-    }
+    // Instantiate() {
+    //     return new blood();
+    // }
 
     #init() {
         this.velocity = new Float32Array(numParticles * 3);
@@ -168,6 +169,7 @@ export default class blood {
 
         this.timeElapse = 0;
         this.object.geometry.attributes.position.needsUpdate = true;
+        this.objectPool.die();
     }
 }
 

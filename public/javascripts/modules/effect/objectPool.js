@@ -9,11 +9,12 @@ class objectPool {
         this.prefab = prefab;
         this.count = count;
         this.Init();
+        this.activeCount = 0;
     }
 
     Init() {
         for (let i = 0; i < this.count; ++i)
-            this.pool.push(this.prefab.Instantiate());
+            this.pool.push(new this.prefab(this));
     }
 
     GetObject(position) {
@@ -22,13 +23,24 @@ class objectPool {
 
             this.pool[i].SetPosition(position);
             this.pool[i].SetActive(true);
+            this.activeCount++;
+            console.log("GETOBJECT:", this.activeCount);
+
             return this.pool[i];
         }
 
         return null;
     }
 
+    die() {
+        console.log(this);
+        this.activeCount--;
+        console.log("die", this.activeCount);
+    }
+
     Update(dt) {
+        if (this.activeCount == 0) return;
+        // console.log("activeCount: " + this.activeCount);
         let cnt = 0;
         for (let i = 0; i < this.count; ++i) {
             this.pool[i].Update(dt);

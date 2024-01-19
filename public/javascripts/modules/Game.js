@@ -1,6 +1,4 @@
-import Painter from "./Painter.js";
 import Player from "./Player.js";
-import { GAME_STATES } from "./constants/CONSTS.js";
 
 export default class Game {
     static init(players) {

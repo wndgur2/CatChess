@@ -1,7 +1,6 @@
 import Battle from "./Battle.js";
 import Game from "./Game.js";
 import Item from "./Item.js";
-import Painter from "./Painter.js";
 import Player from "./Player.js";
 import UI from "./UI.js";
 import Unit from "./Unit.js";
@@ -15,8 +14,7 @@ export default class Socket {
         Socket.socket = new WebSocket("ws://localhost:3000");
 
         Socket.socket.onopen = function (event) {
-            console.log("웹 소켓 연결 성공");
-
+            console.log("web socket connected.");
             if (!Socket.id) Socket.sendMsg("reqNewId", null);
             else document.getElementById("id").innerHTML = Socket.id;
         };
@@ -98,13 +96,11 @@ export default class Socket {
                     break;
                 }
                 case "battle_attack": {
-                    // three
                     let { attacker, target, damage, reversed } = data;
                     Battle.attack(attacker, target, damage, reversed);
                     break;
                 }
                 case "battle_move": {
-                    // three
                     let { beforeX, beforeY, nextX, nextY, reversed } = data;
                     Battle.move(beforeX, beforeY, nextX, nextY, reversed);
                     break;
