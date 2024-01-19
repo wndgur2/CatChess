@@ -1,8 +1,8 @@
 import * as THREE from "three";
 
 const SCALE = 8;
-const numParticles = 30 * SCALE;
-const gravity = -9.8;
+const numParticles = 40 * SCALE;
+const gravity = -9.8 * SCALE;
 const groundHeight = new THREE.Vector3(0, 0, 0);
 
 export default class blood {
@@ -104,21 +104,13 @@ export default class blood {
         let target;
         target = this.object.worldToLocal(groundHeight);
         this.localGroundHeight = target.y;
-        console.log("target . y", target.y);
-        console.log("local ground height : ", this.localGroundHeight);
     }
 
     SetActive(active) {
         this.active = active;
 
-        if (active) {
-            console.log("set active true", this.active);
-            this.object.visible = true;
-            console.log("object position : ", this.object.position);
-        } else {
-            console.log("set active false", this.active);
-            this.object.visible = false;
-        }
+        if (active) this.object.visible = true;
+        else this.object.visible = false;
     }
     GetActive() {
         return this.active;
