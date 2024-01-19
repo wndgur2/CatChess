@@ -232,7 +232,11 @@ class Player {
                 });
 
                 unitToSwap = this.board[to.y][to.x];
-                if (amount == this.level && !unitToSwap) return false;
+                if (amount == this.level && !unitToSwap) {
+                    this.updateBoard();
+                    this.updateQueue();
+                    return false;
+                }
 
                 this.board[to.y][to.x] = unitToMove;
                 this.queue[from.x] = unitToSwap;

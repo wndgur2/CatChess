@@ -11,6 +11,7 @@ import {
 import Game from "./Game.js";
 import Battle from "./Battle.js";
 import Player from "./Player.js";
+import Socket from "./Socket.js";
 
 export default class Painter {
     static board = new Array(6).fill(null).map(() => new Array(5).fill(null));
@@ -92,11 +93,15 @@ export default class Painter {
         let material = new THREE.MeshLambertMaterial({ color: 0x914461 });
 
         COORDINATES.BOARD.forEach((row, i) => {
-            row.forEach((coord) => {
+            row.forEach((coord, j) => {
                 const plate = new THREE.Mesh(plateGeometry, material);
                 plate.translateX(coord[0]);
                 plate.translateY(coord[1]);
                 plate.translateZ(coord[2]);
+                plate.boardCoords = {
+                    y: i,
+                    x: j,
+                };
                 if (i >= 3) plate.name = "plate";
                 this.scene.add(plate);
             });
@@ -112,18 +117,22 @@ export default class Painter {
         // 1 x 7 ally queue
         material = new THREE.MeshLambertMaterial({ color: 0x489462 });
 
-        COORDINATES.ALLY_QUEUE.forEach((coord) => {
+        COORDINATES.ALLY_QUEUE.forEach((coord, i) => {
             const cube = new THREE.Mesh(boxGeometry, material);
             cube.translateX(coord[0]);
             cube.translateY(coord[1]);
             cube.translateZ(coord[2]);
             cube.name = "plate";
+            cube.boardCoords = {
+                y: 6,
+                x: i,
+            };
             this.scene.add(cube);
         });
 
         // 1 x 7 enemy queue
         material = new THREE.MeshLambertMaterial({ color: 0x734742 });
-        COORDINATES.ENEMY_QUEUE.forEach((coord) => {
+        COORDINATES.ENEMY_QUEUE.forEach((coord, i) => {
             const cube = new THREE.Mesh(boxGeometry, material);
             cube.translateX(coord[0]);
             cube.translateY(coord[1]);
@@ -180,6 +189,8 @@ export default class Painter {
             new THREE.MeshLambertMaterial({ color: 0x000000 })
         );
         unit.mesh.name = "unit";
+
+        unit.mesh.unit = unit;
 
         // health bar
         const healthBarBackgroundMesh = new THREE.Mesh(
@@ -307,7 +318,6 @@ function onPointerMove(event) {
         Painter.scene.children,
         false
     );
-    console.log(intersects);
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
         if (object.name === "floor") {
@@ -335,11 +345,22 @@ function onPointerUp(event) {
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
         if (object.name === "plate") {
-            Painter.draggingObject.position.set(
-                object.position.x,
-                5,
-                object.position.z
-            );
+            // Painter.draggingObject.position.set(
+            //     object.position.x,
+            //     5,
+            //     object.position.z
+            // );
+            // send putCat message to server
+            Socket.sendMsg("reqPutCat", {
+                from: {
+                    x: Painter.draggingObject.unit.x,
+                    y: Painter.draggingObject.unit.y,
+                },
+                to: {
+                    x: object.boardCoords.x,
+                    y: object.boardCoords.y - 3,
+                },
+            });
             break;
         }
     }
