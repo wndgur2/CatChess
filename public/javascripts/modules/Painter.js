@@ -126,6 +126,7 @@ export default class Painter {
                     x: j,
                 };
                 if (i >= 3) plate.name = "plate";
+                else plate.name = "enemy";
                 this.scene.add(plate);
             });
         });
@@ -160,6 +161,7 @@ export default class Painter {
             cube.translateX(coord[0]);
             cube.translateY(coord[1]);
             cube.translateZ(coord[2]);
+            cube.name = "enemy";
             this.scene.add(cube);
         });
     }
@@ -374,8 +376,7 @@ function checkMouseHover(event) {
 
     Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
     const intersects = Painter.raycaster.intersectObjects(
-        Painter.scene.children,
-        false
+        Painter.scene.children
     );
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
@@ -434,8 +435,7 @@ function onDrop(event) {
 
     Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
     const intersects = Painter.raycaster.intersectObjects(
-        Painter.scene.children,
-        false
+        Painter.scene.children
     );
 
     for (let i = 0; i < intersects.length; ++i) {
