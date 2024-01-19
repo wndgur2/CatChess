@@ -158,6 +158,7 @@ export default class UI {
     }
 
     static displayItemInfo(item) {
+        console.log("displayItemInfo");
         let rightWrapper = document.getElementById("rightWrapper");
         rightWrapper.innerHTML = item.info();
     }

@@ -213,7 +213,6 @@ export default class Painter {
         );
         // unit.mesh.rotateY(Math.PI);
         unit.mesh.name = "unit";
-
         unit.mesh.unit = unit;
 
         // health bar
@@ -253,6 +252,7 @@ export default class Painter {
             );
             itemMesh.name = "item";
             itemMesh.position.set(10 - i * 10, 20, 0);
+            itemMesh.item = item;
             unit.mesh.add(itemMesh);
         });
     }
@@ -338,7 +338,9 @@ function onPointerDown(event) {
 }
 
 function onPointerMove(event) {
-    if (!Painter.isDragging) return;
+    if (!Painter.isDragging) {
+        return checkMouseHover(event);
+    }
     if (UI.isDragging) {
         UI.isDragging = false;
         return;
@@ -361,6 +363,27 @@ function onPointerMove(event) {
                 intersects[i].point.z
             );
             break;
+        }
+    }
+}
+
+function checkMouseHover(event) {
+    console.log("checkMouseHover");
+    Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
+    const intersects = Painter.raycaster.intersectObjects(
+        Painter.scene.children,
+        false
+    );
+    for (let i = 0; i < intersects.length; ++i) {
+        const object = intersects[i].object;
+        console.log(intersects[i].object.name);
+        if (object.name === "item") {
+            console.log("Item hovered");
+            UI.displayItemInfo(object.item);
+            return;
         }
     }
 }
