@@ -60,8 +60,4 @@ export default class Unit {
         <div class="catRange">🎯${this.range}</div>
         </div>`;
     }
-
-    updateMesh() {
-        Painter.updateUnitMesh(this);
-    }
 }

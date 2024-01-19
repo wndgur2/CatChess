@@ -12,6 +12,7 @@ import Game from "./Game.js";
 import Battle from "./Battle.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
+import UI from "./UI.js";
 
 export default class Painter {
     static board = new Array(6).fill(null).map(() => new Array(5).fill(null));
@@ -52,7 +53,6 @@ export default class Painter {
         this.renderer.setClearColor(0x81ecec, 0.5);
         document.getElementById("game").appendChild(this.renderer.domElement);
         this.renderer.render(this.scene, this.camera);
-        this.animate();
 
         // interaction
         this.mouse = new THREE.Vector2();
@@ -62,6 +62,12 @@ export default class Painter {
         window.addEventListener("pointerdown", onPointerDown);
         window.addEventListener("pointermove", onPointerMove);
         window.addEventListener("pointerup", onPointerUp);
+        this.renderer.domElement.addEventListener("dragover", onDragOver);
+        this.renderer.domElement.addEventListener("drop", onDrop);
+    }
+
+    static startRendering() {
+        this.animate();
     }
 
     static animate() {
@@ -220,20 +226,41 @@ export default class Painter {
         // items
         const itemMesh = new THREE.Mesh(
             new THREE.BoxGeometry(9, 9, 1),
-            new THREE.MeshLambertMaterial({ color: 0x000000 })
+            new THREE.MeshBasicMaterial({
+                map: new THREE.TextureLoader().load(
+                    "/images/items/longSword.jpg"
+                ),
+            })
         );
-        itemMesh.material.visible = false;
-        itemMesh.name = "item";
+        // itemMesh.material.visible = false;
         const itemMeshes = [];
         for (let i = 0; i < 3; ++i) {
-            const item = itemMesh.clone();
-            item.position.set(i * 10 - 10, 20, 0);
-            itemMeshes.push(item);
-            unit.mesh.add(item);
+            const itemMesh = new THREE.Mesh(
+                new THREE.BoxGeometry(9, 9, 1),
+                new THREE.MeshBasicMaterial()
+            );
+            itemMesh.name = "item";
+            itemMesh.material.visible = false;
+            itemMesh.position.set(i * 10 - 10, 20, 0);
+            itemMeshes.push(itemMesh);
+            unit.mesh.add(itemMesh);
         }
     }
 
+    // unit class에 hp, items 나눠서 넣기
     static updateUnitMesh(unit) {
+        // items
+        const itemMeshes = unit.mesh.children.filter(
+            (child) => child.name === "item"
+        );
+        unit.items.forEach((item, i) => {
+            itemMeshes[i].material.visible = true;
+            itemMeshes[i].material.map = new THREE.TextureLoader().load(
+                `/images/items/${item.id}.jpg`
+            );
+            console.log(i);
+        });
+
         const healthBarMesh = unit.mesh.getObjectByName("healthBar");
         healthBarMesh.scale.x = unit.hp / unit.maxHp;
         healthBarMesh.position.x = (1 - unit.hp / unit.maxHp) * 15;
@@ -307,8 +334,11 @@ function onPointerDown(event) {
 }
 
 function onPointerMove(event) {
-    // 보이지 않는 보드 위 판을 만들어서 거기에 raycast된 좌표로 이동
     if (!Painter.isDragging) return;
+    if (UI.isDragging) {
+        UI.isDragging = false;
+        return;
+    }
 
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -345,12 +375,6 @@ function onPointerUp(event) {
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
         if (object.name === "plate") {
-            // Painter.draggingObject.position.set(
-            //     object.position.x,
-            //     5,
-            //     object.position.z
-            // );
-            // send putCat message to server
             Socket.sendMsg("reqPutCat", {
                 from: {
                     x: Painter.draggingObject.unit.x,
@@ -366,4 +390,40 @@ function onPointerUp(event) {
     }
 
     Painter.isDragging = false;
+}
+
+function onDragOver(event) {
+    event.preventDefault();
+}
+
+function onDrop(event) {
+    if (!UI.isDragging) return;
+
+    Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
+    const intersects = Painter.raycaster.intersectObjects(
+        Painter.scene.children,
+        false
+    );
+
+    for (let i = 0; i < intersects.length; ++i) {
+        const object = intersects[i].object;
+        if (object.name === "unit") {
+            Socket.sendMsg("reqGiveItem", {
+                item: {
+                    x: parseInt(UI.draggingId.split("-")[2]),
+                    y: parseInt(UI.draggingId.split("-")[1]),
+                },
+                to: {
+                    x: object.unit.x,
+                    y: object.unit.y,
+                },
+            });
+            break;
+        }
+    }
+
+    UI.isDragging = false;
 }

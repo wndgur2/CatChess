@@ -8,12 +8,11 @@ import { DRAGGING_TYPES } from "./constants/CONSTS.js";
 
 export default class UI {
     static draggingId;
-    static draggingType;
     static isDragging = false;
 
     static init() {
+        this.hydrate();
         Painter.initScene();
-        UI.hydrate();
     }
 
     static hydrate() {
@@ -35,7 +34,6 @@ export default class UI {
         let shopEl = document.getElementById("shop");
         shopEl.addEventListener("drop", UI.shopDragDrop);
         shopEl.addEventListener("dragover", UI.shopDragOver);
-        shopEl.addEventListener("dragleave", UI.shopDragLeave);
 
         // 2 x 3 inventory
         for (let i = 0; i < 3; i++) {
@@ -47,8 +45,7 @@ export default class UI {
 
                 item.className = "cell";
                 item.addEventListener("dragstart", UI.itemDragStart);
-                item.addEventListener("dragover", UI.itemDragOver);
-                item.addEventListener("click", UI.itemClick);
+                item.addEventListener("click", UI.itemClick); // change to hover
                 item.draggable = false;
                 row.appendChild(item);
             }
@@ -61,12 +58,12 @@ export default class UI {
         document.getElementById("waiting").style.display = "none";
         document.getElementById("game").style.display = "flex";
 
-        Painter.animate();
+        Painter.startRendering();
     }
 
     static itemDragStart(event) {
         UI.draggingId = event.target.id;
-        UI.draggingType = DRAGGING_TYPES.ITEM;
+        UI.isDragging = true;
     }
 
     static itemDragOver(event) {
@@ -74,6 +71,8 @@ export default class UI {
     }
 
     static itemClick(event) {
+        // change it to hovering
+        //
         // let item = UI.getItemByCellId(event.target.id);
         // if (!item) return;
         // UI.displayItemInfo(item);
@@ -82,15 +81,6 @@ export default class UI {
         //         .getElementById("game")
         //         .addEventListener("click", UI.gameClick, true);
         // }, 500);
-    }
-
-    static cellDragStart(event) {
-        UI.draggingId = event.target.id;
-        UI.draggingType = DRAGGING_TYPES.UNIT;
-    }
-
-    static cellDragOver(event) {
-        event.preventDefault();
     }
 
     static cellDragDrop(event) {
@@ -147,10 +137,6 @@ export default class UI {
         Socket.sendMsg("reqSellCat", {
             cat: UI.draggingId,
         });
-        Player.player._shop = Player.player.shop;
-    }
-
-    static shopDragLeave(event) {
         Player.player._shop = Player.player.shop;
     }
 

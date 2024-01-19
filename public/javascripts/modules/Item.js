@@ -1,5 +1,6 @@
 export default class Item {
     constructor(data) {
+        this.id = data.id;
         this.name = data.name;
         this.desc = data.desc;
         this.img = data.img;
