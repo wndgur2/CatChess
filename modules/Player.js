@@ -214,6 +214,11 @@ class Player {
     }
 
     putCat(from, to) {
+        if (to.y <= 2 && this.game.state !== "arrange") {
+            this.updateBoard();
+            this.updateQueue();
+            return false;
+        }
         let unitToMove, unitToSwap;
 
         if (from.y === IN_QUEUE) {
@@ -256,7 +261,11 @@ class Player {
                 this.board[from.y][from.x] = unitToSwap;
             }
         }
-
+        if (!unitToMove) {
+            this.updateBoard();
+            this.updateQueue();
+            return false;
+        }
         if (unitToSwap) {
             unitToSwap.x = from.x;
             unitToSwap.y = from.y;

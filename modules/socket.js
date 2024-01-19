@@ -29,8 +29,6 @@ module.exports = (server) => {
                 case "reqPutCat": {
                     if (!data.from) return;
                     let player = getPlayer(from);
-                    if (data.to.y <= 2 && player.game.state !== "arrange")
-                        return;
                     player.putCat(data.from, data.to);
                     break;
                 }

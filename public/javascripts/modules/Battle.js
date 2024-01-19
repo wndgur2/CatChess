@@ -7,6 +7,12 @@ class Battle {
         this.reversed = reversed;
         if (reversed)
             Battle.board = Battle.board.map((row) => row.reverse()).reverse();
+        this.board.forEach((row) => {
+            row.forEach((cat) => {
+                if (!cat) return;
+                cat.draggable = false;
+            });
+        });
         Battle.displayBoard();
     }
 
@@ -26,11 +32,11 @@ class Battle {
         }
         targetCat.hp = parseInt(target.hp);
         if (targetCat.hp <= 0) {
-            Battle.board[targetCat.y][targetCat.x].die();
             Battle.board[targetCat.y][targetCat.x] = null;
         }
 
         Painter.updateUnitMesh(targetCat);
+        Painter.hitEffect(attacker.range > 1, targetCat, damage);
     }
 
     static move(beforeX, beforeY, nextX, nextY, reversed) {

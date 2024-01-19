@@ -133,14 +133,6 @@ class Game {
     readyState() {
         clearTimeout(this.timeout);
 
-        this.state = GAME_STATES.READY;
-        this.time = 3;
-        this.updateState();
-
-        this.timeout = setTimeout(() => {
-            this.battleState();
-        }, this.time * 1000);
-
         this.players.forEach((player) => {
             // count cats
             let catN = 0;
@@ -167,6 +159,14 @@ class Game {
                 catN++;
             }
         });
+
+        this.state = GAME_STATES.READY;
+        this.time = 3;
+        this.updateState();
+
+        this.timeout = setTimeout(() => {
+            this.battleState();
+        }, this.time * 1000);
 
         if (this.stage == 1) {
             this.creep.level = CREEP_ROUNDS[this.round].level;

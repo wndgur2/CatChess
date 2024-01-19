@@ -19,6 +19,7 @@ export default class Unit {
         this.y = data.y;
 
         Painter.createUnitMesh(this);
+        this.draggable = true;
     }
 
     display() {

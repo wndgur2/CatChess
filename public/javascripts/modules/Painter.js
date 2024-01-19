@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { GAME_STATES } from "./constants/CONSTS.js";
 import {
     BOX_DEPTH,
@@ -13,6 +15,8 @@ import Battle from "./Battle.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
 import UI from "./UI.js";
+import { objectPool } from "./effect/objectPool.js";
+import blood from "./effect/blood.js";
 
 export default class Painter {
     static board = new Array(6).fill(null).map(() => new Array(5).fill(null));
@@ -23,6 +27,8 @@ export default class Painter {
 
     static initScene() {
         this.scene = new THREE.Scene();
+
+        this.clock = new THREE.Clock();
 
         // camera
         this.camera = new THREE.PerspectiveCamera(
@@ -52,7 +58,11 @@ export default class Painter {
         this.renderer.domElement.id = "scene";
         this.renderer.setClearColor(0x81ecec, 0.5);
         document.getElementById("game").appendChild(this.renderer.domElement);
-        this.renderer.render(this.scene, this.camera);
+
+        const renderScene = new RenderPass(this.scene, this.camera);
+
+        this.composer = new EffectComposer(this.renderer);
+        this.composer.addPass(renderScene);
 
         // interaction
         this.mouse = new THREE.Vector2();
@@ -64,6 +74,9 @@ export default class Painter {
         window.addEventListener("pointerup", onPointerUp);
         this.renderer.domElement.addEventListener("dragover", onDragOver);
         this.renderer.domElement.addEventListener("drop", onDrop);
+
+        //effect
+        this.hitObjectPool = new objectPool(new blood(), 20);
     }
 
     static startRendering() {
@@ -72,7 +85,11 @@ export default class Painter {
 
     static animate() {
         requestAnimationFrame(Painter.animate);
-        Painter.renderer.render(Painter.scene, Painter.camera);
+        // Painter.renderer.render(Painter.scene, Painter.camera);
+
+        const dt = Painter.clock.getDelta();
+        Painter.hitObjectPool.Update(dt);
+        Painter.composer.render();
     }
 
     static drawPlates() {
@@ -194,7 +211,7 @@ export default class Painter {
             new THREE.BoxGeometry(10, 10, 10),
             new THREE.MeshLambertMaterial({ color: 0x000000 })
         );
-        unit.mesh.rotateY(Math.PI);
+        // unit.mesh.rotateY(Math.PI);
         unit.mesh.name = "unit";
 
         unit.mesh.unit = unit;
@@ -228,14 +245,14 @@ export default class Painter {
         unit.items.forEach((item, i) => {
             const itemMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(9, 9, 1),
-                new THREE.MeshBasicMaterial({
+                new THREE.MeshLambertMaterial({
                     map: new THREE.TextureLoader().load(
                         `/images/items/${item.id}.jpg`
                     ),
                 })
             );
             itemMesh.name = "item";
-            itemMesh.position.set(i * 10 - 10, 20, 0);
+            itemMesh.position.set(10 - i * 10, 20, 0);
             unit.mesh.add(itemMesh);
         });
     }
@@ -261,6 +278,12 @@ export default class Painter {
         }
 
         animateHealthDamage();
+    }
+
+    static hitEffect(isRange, target, damage) {
+        this.scene.add(
+            this.hitObjectPool.GetObject(target.mesh.position).object
+        );
     }
 }
 
@@ -307,6 +330,7 @@ function onPointerDown(event) {
     if (intersects.length > 0) {
         const object = intersects[0].object;
         if (object.name === "unit") {
+            if (!object.unit.draggable) return;
             Painter.isDragging = true;
             Painter.draggingObject = object;
         }
@@ -343,6 +367,7 @@ function onPointerMove(event) {
 
 function onPointerUp(event) {
     if (!Painter.isDragging) return;
+    Painter.isDragging = false;
 
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
@@ -365,11 +390,13 @@ function onPointerUp(event) {
                     y: object.boardCoords.y - 3,
                 },
             });
-            break;
+            return;
         }
     }
-
-    Painter.isDragging = false;
+    Painter.drawUnit(
+        Painter.draggingObject.unit,
+        Painter.draggingObject.unit.y !== 3
+    );
 }
 
 function onDragOver(event) {
