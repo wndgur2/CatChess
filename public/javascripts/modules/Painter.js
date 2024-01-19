@@ -194,6 +194,7 @@ export default class Painter {
             new THREE.BoxGeometry(10, 10, 10),
             new THREE.MeshLambertMaterial({ color: 0x000000 })
         );
+        unit.mesh.rotateY(Math.PI);
         unit.mesh.name = "unit";
 
         unit.mesh.unit = unit;
@@ -224,43 +225,22 @@ export default class Painter {
         unit.mesh.add(healthBarMesh);
 
         // items
-        const itemMesh = new THREE.Mesh(
-            new THREE.BoxGeometry(9, 9, 1),
-            new THREE.MeshBasicMaterial({
-                map: new THREE.TextureLoader().load(
-                    "/images/items/longSword.jpg"
-                ),
-            })
-        );
-        // itemMesh.material.visible = false;
-        const itemMeshes = [];
-        for (let i = 0; i < 3; ++i) {
+        unit.items.forEach((item, i) => {
             const itemMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(9, 9, 1),
-                new THREE.MeshBasicMaterial()
+                new THREE.MeshBasicMaterial({
+                    map: new THREE.TextureLoader().load(
+                        `/images/items/${item.id}.jpg`
+                    ),
+                })
             );
             itemMesh.name = "item";
-            itemMesh.material.visible = false;
             itemMesh.position.set(i * 10 - 10, 20, 0);
-            itemMeshes.push(itemMesh);
             unit.mesh.add(itemMesh);
-        }
+        });
     }
 
-    // unit class에 hp, items 나눠서 넣기
     static updateUnitMesh(unit) {
-        // items
-        const itemMeshes = unit.mesh.children.filter(
-            (child) => child.name === "item"
-        );
-        unit.items.forEach((item, i) => {
-            itemMeshes[i].material.visible = true;
-            itemMeshes[i].material.map = new THREE.TextureLoader().load(
-                `/images/items/${item.id}.jpg`
-            );
-            console.log(i);
-        });
-
         const healthBarMesh = unit.mesh.getObjectByName("healthBar");
         healthBarMesh.scale.x = unit.hp / unit.maxHp;
         healthBarMesh.position.x = (1 - unit.hp / unit.maxHp) * 15;
