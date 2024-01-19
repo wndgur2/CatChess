@@ -40,6 +40,8 @@ export default class Painter {
         );
         this.camera.position.set(0, 168, -168);
         this.camera.lookAt(0, 0, -46);
+        // this.camera.position.set(0, 168, 168);
+        // this.camera.lookAt(0, 0, 30);
         this.scene.add(this.camera);
 
         // light
@@ -77,7 +79,7 @@ export default class Painter {
         this.renderer.domElement.addEventListener("drop", onDrop);
 
         //effect
-        this.hitObjectPool = new objectPool(blood, 30);
+        this.hitObjectPool = new objectPool(blood, 130);
     }
 
     static startRendering() {
@@ -194,6 +196,7 @@ export default class Painter {
     }
 
     static drawUnit(unit, onBoard) {
+        console.log("drawUnit");
         const coords = onBoard
             ? getBoardCoords(unit.x, unit.y)
             : getQueueCoords(unit.x, unit.owner === Player.player.id);
@@ -210,7 +213,7 @@ export default class Painter {
         //body
         unit.mesh = new THREE.Mesh(
             new THREE.BoxGeometry(10, 10, 10),
-            new THREE.MeshLambertMaterial({ color: 0x000000 })
+            new THREE.MeshLambertMaterial({ color: 0x007777 })
         );
         unit.mesh.name = "unit";
         unit.mesh.unit = unit;

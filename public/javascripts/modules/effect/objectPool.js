@@ -23,9 +23,8 @@ class objectPool {
 
             this.pool[i].SetPosition(position);
             this.pool[i].SetActive(true);
+            console.log(i);
             this.activeCount++;
-            console.log("GETOBJECT:", this.activeCount);
-
             return this.pool[i];
         }
 
@@ -33,14 +32,11 @@ class objectPool {
     }
 
     die() {
-        console.log(this);
         this.activeCount--;
-        console.log("die", this.activeCount);
     }
 
     Update(dt) {
         if (this.activeCount == 0) return;
-        // console.log("activeCount: " + this.activeCount);
         let cnt = 0;
         for (let i = 0; i < this.count; ++i) {
             this.pool[i].Update(dt);

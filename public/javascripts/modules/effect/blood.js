@@ -1,7 +1,7 @@
 import * as THREE from "three";
 
-const SCALE = 5;
-const numParticles = 40 * SCALE;
+const SCALE = 10;
+const numParticles = 40;
 const gravity = -9.8 * SCALE;
 const groundHeight = new THREE.Vector3(0, 0, 0);
 
@@ -26,10 +26,6 @@ export default class blood {
         this.objectPool = objectPool;
     }
 
-    // Instantiate() {
-    //     return new blood();
-    // }
-
     #init() {
         this.velocity = new Float32Array(numParticles * 3);
 
@@ -38,7 +34,11 @@ export default class blood {
         let t1 = origin
             .clone()
             .add(
-                new THREE.Vector3(Math.random(), Math.random(), Math.random())
+                new THREE.Vector3(
+                    Math.random() - 0.5,
+                    Math.random() - 0.5,
+                    Math.random() - 0.5
+                )
             );
         t1.normalize();
 
@@ -62,21 +62,23 @@ export default class blood {
         const material = new THREE.PointsMaterial({
             color: 0xff0000,
             sizeAttenuation: true,
+            // depthTest: false,
+            // transparent: true,
         });
         material.size = 0.2;
 
         this.object = new THREE.Points(geometry, material);
 
         // calculate random explostion location
-        let half = origin.clone().add(t1).multiplyScalar(0.5);
+        let half = origin.clone().add(t1).multiplyScalar(0.5); //
         let perpendicular = generateRandomPerpendicularVector(half);
         perpendicular.normalize();
         let explosionLoc = half.clone().add(perpendicular.multiplyScalar(0.5));
-        explosionLoc.y += -0.6; // 피가 아래에서 위로 튀기도록 하기 위함
+        explosionLoc.y += -0.3; // 피가 아래에서 위로 튀기도록 하기 위함
 
         for (let i = 0; i < numParticles; ++i) {
             let cur = i * 3;
-            let noise = Math.random() * 1 + 0;
+            let noise = Math.random();
 
             let initVec = new THREE.Vector3(
                 vertices[cur] - explosionLoc.x + noise,
@@ -85,9 +87,9 @@ export default class blood {
             );
             initVec.normalize();
 
-            this.initVelocity[cur] = initVec.x * 4 * SCALE;
-            this.initVelocity[cur + 1] = initVec.y * 4 * SCALE;
-            this.initVelocity[cur + 2] = initVec.z * 4 * SCALE;
+            this.initVelocity[cur] = initVec.x * 3.2 * SCALE;
+            this.initVelocity[cur + 1] = initVec.y * 3.2 * SCALE;
+            this.initVelocity[cur + 2] = initVec.z * 3.2 * SCALE;
 
             this.velocity[cur] = this.initVelocity[cur];
             this.velocity[cur + 1] = this.initVelocity[cur + 1];
@@ -97,9 +99,9 @@ export default class blood {
 
     SetPosition(vec3) {
         this.object.position.set(
-            vec3.x + Math.random() * 0.2 * SCALE - 0.1,
-            vec3.y + Math.random() * 0.2 * SCALE - 0.1,
-            vec3.z + Math.random() * 0.2 * SCALE - 0.1
+            vec3.x + (Math.random() * 0.2 - 0.1),
+            vec3.y + (Math.random() * 0.2 - 0.1),
+            vec3.z + (Math.random() * 0.2 - 0.1)
         );
 
         let target;
@@ -131,11 +133,10 @@ export default class blood {
         for (let i = 0; i < numParticles; i++) {
             let cur = i * 3;
 
-            // if (positions[ cur + 1 ] <= this.localGroundHeight)
-            // {
-            //     positions[ cur + 1] = this.localGroundHeight;
-            //     continue;
-            // }
+            if (positions[cur + 1] <= this.localGroundHeight) {
+                positions[cur + 1] = this.localGroundHeight;
+                continue;
+            }
 
             this.velocity[cur];
             this.velocity[cur + 1] += gravity * dt;
@@ -160,7 +161,7 @@ export default class blood {
         for (let i = 0; i < numParticles; ++i) {
             this.velocity[i * 3] = this.initVelocity[i];
             this.velocity[i * 3 + 1] = this.initVelocity[i * 3 + 1];
-            this.velocity[i * 3 + 2] = this.initVelocity[i * 3 + 1];
+            this.velocity[i * 3 + 2] = this.initVelocity[i * 3 + 2];
 
             positions[i * 3] = this.particleStart[i].x;
             positions[i * 3 + 1] = this.particleStart[i].y;
@@ -175,9 +176,9 @@ export default class blood {
 
 function generateRandomPerpendicularVector(givenVector) {
     var randomVector = new THREE.Vector3(
-        Math.random(),
-        Math.random(),
-        Math.random()
+        Math.random() - 0.5,
+        Math.random() - 0.5,
+        Math.random() - 0.5
     );
 
     // 주어진 벡터와 수직인 벡터를 찾기 위한 외적 계산
