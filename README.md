@@ -1,1 +1,3 @@
-롤토체스 Teamfight Tactics 웹 버전 클론 코딩
+# 롤토체스 (Team Fight Tactics) 방식 웹 게임
+
+# Nodejs, Express, Three.js 사용
