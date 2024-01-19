@@ -1,5 +1,3 @@
-import * as THREE from "three";
-
 import { Effect } from "./Effect.js";
 
 class objectPool {
@@ -14,9 +12,8 @@ class objectPool {
     }
 
     Init() {
-        for (let i = 0; i < this.count; ++i) {
+        for (let i = 0; i < this.count; ++i)
             this.pool.push(this.prefab.Instantiate());
-        }
     }
 
     GetObject(position) {
@@ -35,12 +32,8 @@ class objectPool {
         let cnt = 0;
         for (let i = 0; i < this.count; ++i) {
             this.pool[i].Update(dt);
-            if (this.pool[i].GetActive()) {
-                // console.log(this.pool[i]);
-                ++cnt;
-            }
+            if (this.pool[i].GetActive()) ++cnt;
         }
-        console.log(cnt);
     }
 }
 
