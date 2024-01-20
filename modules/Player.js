@@ -321,6 +321,8 @@ class Player {
     }
 
     giveItem(item, to) {
+        //TODO battle state에도 줄 수 있게
+        if (this.game.state !== GAME_STATES.ARRANGE) return;
         let cat;
         let curItem = this.items[item.y * 2 + item.x];
         if (!curItem) return false;
