@@ -146,4 +146,21 @@ export default class UI {
         let popUp = document.getElementById("popUp");
         popUp.style.display = "none";
     }
+
+    static showUnitInfo(unit) {
+        let unitInfoEl = document.getElementById("unitInfo");
+        unitInfoEl.innerHTML = unit.info();
+        unitInfoEl.style.display = "flex";
+
+        let shopEl = document.getElementById("shop");
+        shopEl.style.display = "none";
+    }
+
+    static hideUnitInfo() {
+        let unitInfoEl = document.getElementById("unitInfo");
+        unitInfoEl.style.display = "none";
+
+        let shopEl = document.getElementById("shop");
+        shopEl.style.display = "flex";
+    }
 }

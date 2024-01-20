@@ -11,6 +11,8 @@ import {
     CAT_HEIGHT,
     HEALTHBAR_WIDTH,
     HEALTHBAR_HEIGHT,
+    ITEM_WIDTH,
+    ITEM_GAP,
 } from "./constants/THREE_CONSTS.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
@@ -50,7 +52,7 @@ export default class Painter {
         // pointlight
         const pointLight = new THREE.PointLight(
             0xffffff,
-            PLATE_RADIUS * PLATE_RADIUS * 120
+            120 * Math.pow(PLATE_RADIUS, 2)
         );
         pointLight.position.set(0, PLATE_RADIUS * 4, 0);
         pointLight.castShadow = true;
@@ -156,9 +158,7 @@ export default class Painter {
         COORDINATES.BOARD.forEach((row, i) => {
             row.forEach((coord, j) => {
                 const plate = new THREE.Mesh(plateGeometry, material);
-                plate.translateX(coord[0]);
-                plate.translateY(coord[1]);
-                plate.translateZ(coord[2]);
+                plate.position.set(coord[0], coord[1], coord[2]);
                 plate.boardCoords = {
                     y: i,
                     x: j,
@@ -243,7 +243,7 @@ export default class Painter {
             : getQueueCoords(unit.x, unit.owner === Player.player.id);
         unit.mesh.position.set(
             coords[0],
-            coords[1] + BOX_HEIGHT / 2 + CAT_HEIGHT,
+            coords[1] + (CAT_HEIGHT + PLATE_HEIGHT) / 2,
             coords[2]
         );
         this.scene.add(unit.mesh);
@@ -311,9 +311,9 @@ export default class Painter {
         unit.items.forEach((item, i) => {
             const itemMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(
-                    HEALTHBAR_WIDTH / 3 - 1,
-                    HEALTHBAR_WIDTH / 3 - 1,
-                    1
+                    ITEM_WIDTH,
+                    ITEM_WIDTH,
+                    HEALTHBAR_HEIGHT / 10
                 ),
                 new THREE.MeshBasicMaterial({
                     map: new THREE.TextureLoader().load(
@@ -323,7 +323,7 @@ export default class Painter {
             );
             itemMesh.name = "item";
             itemMesh.position.set(
-                (1 - i) * (HEALTHBAR_WIDTH / 3),
+                (1 - i) * (ITEM_WIDTH + ITEM_GAP),
                 CAT_HEIGHT + HEALTHBAR_HEIGHT,
                 0
             );
@@ -369,6 +369,7 @@ function onPointerDown(event) {
             Painter.draggingObject = object;
         }
     }
+    UI.hideUnitInfo();
 }
 
 function onPointerMove(event) {
@@ -469,11 +470,10 @@ function onPointerClick(event) {
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
         if (object.name === "unit") {
-            UI.popUp(object.unit.info(), event);
+            UI.showUnitInfo(object.unit);
             return;
         }
     }
-    UI.popDown();
 }
 
 function onDragOver(event) {

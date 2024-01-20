@@ -23,7 +23,6 @@ class objectPool {
 
             this.pool[i].SetPosition(position);
             this.pool[i].SetActive(true);
-            console.log(i);
             this.activeCount++;
             return this.pool[i];
         }
