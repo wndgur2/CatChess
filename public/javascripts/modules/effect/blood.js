@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-const SCALE = 10;
+const SCALE = 1;
 const numParticles = 40;
 const gravity = -9.8 * SCALE;
 const groundHeight = new THREE.Vector3(0, 0, 0);

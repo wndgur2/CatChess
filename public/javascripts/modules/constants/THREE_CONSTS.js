@@ -4,11 +4,11 @@ const COORDINATES = {
     ENEMY_QUEUE: [],
 };
 
-const PLATE_RADIUS = 18;
+const PLATE_RADIUS = 2;
 const PLATE_WIDTH = PLATE_RADIUS * Math.sqrt(3);
 const PLATE_DEPTH = (3 / 2) * PLATE_RADIUS;
-const PLATE_HEIGHT = 4;
-const PLATE_GAP = 1;
+const PLATE_HEIGHT = PLATE_RADIUS / 4;
+const PLATE_GAP = PLATE_RADIUS / 18;
 for (let i = 5; i >= 0; i--) {
     COORDINATES.BOARD.push([]);
     for (let j = 4; j >= 0; j--) {
@@ -24,10 +24,10 @@ for (let i = 5; i >= 0; i--) {
     }
 }
 
-const BOX_WIDTH = 28;
-const BOX_DEPTH = 28;
-const BOX_HEIGHT = 4;
-const BOX_GAP = 1;
+const BOX_WIDTH = PLATE_RADIUS * 1.5;
+const BOX_DEPTH = PLATE_RADIUS * 1.5;
+const BOX_HEIGHT = PLATE_HEIGHT;
+const BOX_GAP = BOX_WIDTH / 18;
 for (let i = 6; i >= 0; i--) {
     const coord = [0, 0, 0];
     coord[0] = i * (BOX_WIDTH + BOX_GAP) - (6 * (BOX_WIDTH + BOX_GAP)) / 2;
@@ -45,10 +45,10 @@ for (let i = 6; i >= 0; i--) {
 
 Object.freeze(COORDINATES);
 
-const CAT_HEIGHT = 10;
+const CAT_HEIGHT = PLATE_RADIUS / 2;
 
-const HEALTHBAR_WIDTH = 24;
-const HEALTHBAR_HEIGHT = 5;
+const HEALTHBAR_WIDTH = PLATE_RADIUS * 1.5;
+const HEALTHBAR_HEIGHT = PLATE_RADIUS / 3;
 
 export {
     COORDINATES,

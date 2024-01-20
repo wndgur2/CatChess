@@ -48,8 +48,11 @@ export default class Painter {
         this.scene.add(light);
 
         // pointlight
-        const pointLight = new THREE.PointLight(0xffffff, PLATE_RADIUS * 2500);
-        pointLight.position.set(0, PLATE_RADIUS * 5, 0);
+        const pointLight = new THREE.PointLight(
+            0xffffff,
+            PLATE_RADIUS * PLATE_RADIUS * 120
+        );
+        pointLight.position.set(0, PLATE_RADIUS * 4, 0);
         pointLight.castShadow = true;
         this.scene.add(pointLight);
 
@@ -261,7 +264,11 @@ export default class Painter {
 
         // health bar
         const healthBarBackgroundMesh = new THREE.Mesh(
-            new THREE.BoxGeometry(HEALTHBAR_WIDTH, HEALTHBAR_HEIGHT, 1),
+            new THREE.BoxGeometry(
+                HEALTHBAR_WIDTH,
+                HEALTHBAR_HEIGHT,
+                HEALTHBAR_HEIGHT / 10
+            ),
             new THREE.MeshBasicMaterial({ color: 0x00000 })
         );
         healthBarBackgroundMesh.name = "healthBarBackground";
@@ -273,7 +280,11 @@ export default class Painter {
         unit.mesh.add(healthBarBackgroundMesh);
 
         const damagedHealthMesh = new THREE.Mesh(
-            new THREE.BoxGeometry(HEALTHBAR_WIDTH, HEALTHBAR_HEIGHT, 1),
+            new THREE.BoxGeometry(
+                HEALTHBAR_WIDTH,
+                HEALTHBAR_HEIGHT,
+                HEALTHBAR_HEIGHT / 10
+            ),
             new THREE.MeshBasicMaterial({ color: 0xcc0000 })
         );
         damagedHealthMesh.name = "damagedHealth";
@@ -285,7 +296,11 @@ export default class Painter {
         unit.mesh.add(damagedHealthMesh);
 
         const healthBarMesh = new THREE.Mesh(
-            new THREE.BoxGeometry(HEALTHBAR_WIDTH, HEALTHBAR_HEIGHT, 1),
+            new THREE.BoxGeometry(
+                HEALTHBAR_WIDTH,
+                HEALTHBAR_HEIGHT,
+                HEALTHBAR_HEIGHT / 10
+            ),
             new THREE.MeshBasicMaterial({ color: 0x00aa00 })
         );
         healthBarMesh.name = "healthBar";
@@ -349,9 +364,7 @@ function onPointerDown(event) {
     if (intersects.length > 0) {
         const object = intersects[0].object;
         if (object.name === "unit") {
-            if (!object.unit.draggable) {
-                return onPointerClick(event);
-            }
+            if (!object.unit.draggable) return onPointerClick(event);
             Painter.isDragging = true;
             Painter.draggingObject = object;
         }
