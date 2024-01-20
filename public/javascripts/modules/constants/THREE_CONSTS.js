@@ -7,7 +7,7 @@ const COORDINATES = {
 const PLATE_RADIUS = 18;
 const PLATE_WIDTH = PLATE_RADIUS * Math.sqrt(3);
 const PLATE_DEPTH = (3 / 2) * PLATE_RADIUS;
-const PLATE_HEIGHT = 120;
+const PLATE_HEIGHT = 4;
 const PLATE_GAP = 1;
 for (let i = 5; i >= 0; i--) {
     COORDINATES.BOARD.push([]);
@@ -26,7 +26,7 @@ for (let i = 5; i >= 0; i--) {
 
 const BOX_WIDTH = 28;
 const BOX_DEPTH = 28;
-const BOX_HEIGHT = 120;
+const BOX_HEIGHT = 4;
 const BOX_GAP = 1;
 for (let i = 6; i >= 0; i--) {
     const coord = [0, 0, 0];
@@ -47,6 +47,9 @@ Object.freeze(COORDINATES);
 
 const CAT_HEIGHT = 10;
 
+const HEALTHBAR_WIDTH = 24;
+const HEALTHBAR_HEIGHT = 5;
+
 export {
     COORDINATES,
     PLATE_RADIUS,
@@ -56,4 +59,6 @@ export {
     BOX_DEPTH,
     BOX_HEIGHT,
     CAT_HEIGHT,
+    HEALTHBAR_WIDTH,
+    HEALTHBAR_HEIGHT,
 };

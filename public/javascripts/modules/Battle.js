@@ -17,7 +17,7 @@ class Battle {
     }
 
     static displayBoard() {
-        Painter._board = Battle.board.map((row) => [...row]);
+        Painter._board = Battle.board;
     }
 
     static attack(attacker, target, damage) {

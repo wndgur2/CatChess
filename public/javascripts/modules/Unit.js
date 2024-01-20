@@ -1,6 +1,7 @@
 import Item from "./Item.js";
 import Painter from "./Painter.js";
 import Player from "./Player.js";
+import { HEALTHBAR_WIDTH } from "./constants/THREE_CONSTS.js";
 import { getBoardCoords } from "./untils.js";
 
 export default class Unit {
@@ -71,7 +72,8 @@ export default class Unit {
 
         const healthBarMesh = this.mesh.getObjectByName("healthBar");
         healthBarMesh.scale.x = this.hp / this.maxHp;
-        healthBarMesh.position.x = (1 - this.hp / this.maxHp) * 15;
+        healthBarMesh.position.x =
+            ((1 - this.hp / this.maxHp) * HEALTHBAR_WIDTH) / 2;
 
         const damagedHealthMesh = this.mesh.getObjectByName("damagedHealth");
 
@@ -79,12 +81,12 @@ export default class Unit {
             if (damagedHealthMesh.scale.x > healthBarMesh.scale.x) {
                 damagedHealthMesh.scale.x -= 0.01;
                 damagedHealthMesh.position.x =
-                    (1 - damagedHealthMesh.scale.x) * 15;
+                    ((1 - damagedHealthMesh.scale.x) * HEALTHBAR_WIDTH) / 2;
                 requestAnimationFrame(animateHealthDamage);
             } else {
                 damagedHealthMesh.scale.x = healthBarMesh.scale.x;
                 damagedHealthMesh.position.x =
-                    (1 - damagedHealthMesh.scale.x) * 15;
+                    ((1 - damagedHealthMesh.scale.x) * HEALTHBAR_WIDTH) / 2;
             }
         }
 

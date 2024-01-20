@@ -60,7 +60,7 @@ export default class blood {
             new THREE.Float32BufferAttribute(vertices, 3)
         );
         const material = new THREE.PointsMaterial({
-            color: 0xff0000,
+            color: 0xbb0000,
             sizeAttenuation: true,
             // depthTest: false,
             // transparent: true,

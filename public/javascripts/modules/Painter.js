@@ -9,6 +9,8 @@ import {
     PLATE_HEIGHT,
     PLATE_RADIUS,
     CAT_HEIGHT,
+    HEALTHBAR_WIDTH,
+    HEALTHBAR_HEIGHT,
 } from "./constants/THREE_CONSTS.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
@@ -36,16 +38,20 @@ export default class Painter {
             0.1,
             1000
         );
-        this.camera.position.set(0, 168, -168);
-        this.camera.lookAt(0, 0, -46);
-        // this.camera.position.set(0, 168, 168);
-        // this.camera.lookAt(0, 0, 30);
+        this.camera.position.set(0, PLATE_RADIUS * 9, -(PLATE_RADIUS * 9));
+        this.camera.lookAt(0, 0, -PLATE_RADIUS * 2.5);
         this.scene.add(this.camera);
 
         // light
-        const light = new THREE.HemisphereLight(0xffffff, 0x000000, 3);
-        light.position.set(0, 100, 0);
+        const light = new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.9);
+        light.position.set(0, PLATE_RADIUS * 5, 0);
         this.scene.add(light);
+
+        // pointlight
+        const pointLight = new THREE.PointLight(0xffffff, PLATE_RADIUS * 2500);
+        pointLight.position.set(0, PLATE_RADIUS * 5, 0);
+        pointLight.castShadow = true;
+        this.scene.add(pointLight);
 
         // board & queue
         this.drawPlates();
@@ -57,7 +63,7 @@ export default class Painter {
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.domElement.id = "scene";
-        this.renderer.setClearColor(0x81ecec, 0.5);
+        this.renderer.setClearColor(0xeeeeee, 0.5);
         document.getElementById("game").appendChild(this.renderer.domElement);
 
         const renderScene = new RenderPass(this.scene, this.camera);
@@ -77,7 +83,7 @@ export default class Painter {
         this.renderer.domElement.addEventListener("drop", onDrop);
 
         //effect
-        this.hitObjectPool = new objectPool(blood, 130);
+        this.hitObjectPool = new objectPool(blood, 100);
     }
 
     static startRendering() {
@@ -92,8 +98,36 @@ export default class Painter {
     }
 
     static drawPlates() {
+        // background
+        const backgroundGeometry = new THREE.PlaneGeometry(
+            PLATE_RADIUS * 50,
+            PLATE_RADIUS * 50
+        );
+        const backgroundMaterial = new THREE.MeshLambertMaterial({
+            map: new THREE.TextureLoader().load(
+                "/images/grounds/background.jpg",
+                (texture) => {
+                    texture.wrapS = THREE.RepeatWrapping;
+                    texture.wrapT = THREE.RepeatWrapping;
+                    texture.repeat.set(PLATE_RADIUS * 5, PLATE_RADIUS * 5);
+                }
+            ),
+            side: THREE.DoubleSide,
+        });
+        const background = new THREE.Mesh(
+            backgroundGeometry,
+            backgroundMaterial
+        );
+        background.rotateX(Math.PI / 2);
+        background.position.set(0, -PLATE_RADIUS / 10, 0);
+        background.name = "background";
+        this.scene.add(background);
+
         // floor
-        const floorGeometry = new THREE.PlaneGeometry(1000, 1000);
+        const floorGeometry = new THREE.PlaneGeometry(
+            PLATE_RADIUS * 50,
+            PLATE_RADIUS * 50
+        );
         const floorMaterial = new THREE.MeshLambertMaterial({
             color: 0x000000,
             side: THREE.DoubleSide,
@@ -112,7 +146,9 @@ export default class Painter {
             PLATE_HEIGHT,
             6
         );
-        let material = new THREE.MeshLambertMaterial({ color: 0x914461 });
+        let material = new THREE.MeshLambertMaterial({
+            map: new THREE.TextureLoader().load("/images/grounds/board.jpg"),
+        });
 
         COORDINATES.BOARD.forEach((row, i) => {
             row.forEach((coord, j) => {
@@ -138,7 +174,9 @@ export default class Painter {
         );
 
         // 1 x 7 ally queue
-        material = new THREE.MeshLambertMaterial({ color: 0x489462 });
+        material = new THREE.MeshLambertMaterial({
+            map: new THREE.TextureLoader().load("/images/grounds/queue.jpg"),
+        });
 
         COORDINATES.ALLY_QUEUE.forEach((coord, i) => {
             const cube = new THREE.Mesh(boxGeometry, material);
@@ -154,7 +192,9 @@ export default class Painter {
         });
 
         // 1 x 7 enemy queue
-        material = new THREE.MeshLambertMaterial({ color: 0x734742 });
+        material = new THREE.MeshLambertMaterial({
+            map: new THREE.TextureLoader().load("/images/grounds/queue.jpg"),
+        });
         COORDINATES.ENEMY_QUEUE.forEach((coord, i) => {
             const cube = new THREE.Mesh(boxGeometry, material);
             cube.translateX(coord[0]);
@@ -209,7 +249,11 @@ export default class Painter {
     static createUnitMesh(unit) {
         //body
         unit.mesh = new THREE.Mesh(
-            new THREE.BoxGeometry(10, 10, 10),
+            new THREE.BoxGeometry(
+                PLATE_RADIUS / 2,
+                PLATE_RADIUS / 2,
+                PLATE_RADIUS / 2
+            ),
             new THREE.MeshLambertMaterial({ color: 0x007777 })
         );
         unit.mesh.name = "unit";
@@ -217,41 +261,57 @@ export default class Painter {
 
         // health bar
         const healthBarBackgroundMesh = new THREE.Mesh(
-            new THREE.BoxGeometry(30, 8, 1),
-            new THREE.MeshLambertMaterial({ color: 0x00000 })
+            new THREE.BoxGeometry(HEALTHBAR_WIDTH, HEALTHBAR_HEIGHT, 1),
+            new THREE.MeshBasicMaterial({ color: 0x00000 })
         );
         healthBarBackgroundMesh.name = "healthBarBackground";
-        healthBarBackgroundMesh.position.set(0, 30, 0);
+        healthBarBackgroundMesh.position.set(
+            0,
+            (CAT_HEIGHT + HEALTHBAR_HEIGHT) * 1.5,
+            0
+        );
         unit.mesh.add(healthBarBackgroundMesh);
 
         const damagedHealthMesh = new THREE.Mesh(
-            new THREE.BoxGeometry(30, 8, 1),
-            new THREE.MeshLambertMaterial({ color: 0xcc0000 })
+            new THREE.BoxGeometry(HEALTHBAR_WIDTH, HEALTHBAR_HEIGHT, 1),
+            new THREE.MeshBasicMaterial({ color: 0xcc0000 })
         );
         damagedHealthMesh.name = "damagedHealth";
-        damagedHealthMesh.position.set(0, 30, 0);
+        damagedHealthMesh.position.set(
+            0,
+            (CAT_HEIGHT + HEALTHBAR_HEIGHT) * 1.5,
+            0
+        );
         unit.mesh.add(damagedHealthMesh);
 
         const healthBarMesh = new THREE.Mesh(
-            new THREE.BoxGeometry(30, 8, 1),
-            new THREE.MeshLambertMaterial({ color: 0x00cc00 })
+            new THREE.BoxGeometry(HEALTHBAR_WIDTH, HEALTHBAR_HEIGHT, 1),
+            new THREE.MeshBasicMaterial({ color: 0x00aa00 })
         );
         healthBarMesh.name = "healthBar";
-        healthBarMesh.position.set(0, 30, 0);
+        healthBarMesh.position.set(0, (CAT_HEIGHT + HEALTHBAR_HEIGHT) * 1.5, 0);
         unit.mesh.add(healthBarMesh);
 
         // items
         unit.items.forEach((item, i) => {
             const itemMesh = new THREE.Mesh(
-                new THREE.BoxGeometry(9, 9, 1),
-                new THREE.MeshLambertMaterial({
+                new THREE.BoxGeometry(
+                    HEALTHBAR_WIDTH / 3 - 1,
+                    HEALTHBAR_WIDTH / 3 - 1,
+                    1
+                ),
+                new THREE.MeshBasicMaterial({
                     map: new THREE.TextureLoader().load(
                         `/images/items/${item.id}.jpg`
                     ),
                 })
             );
             itemMesh.name = "item";
-            itemMesh.position.set(10 - i * 10, 20, 0);
+            itemMesh.position.set(
+                (1 - i) * (HEALTHBAR_WIDTH / 3),
+                CAT_HEIGHT + HEALTHBAR_HEIGHT,
+                0
+            );
             itemMesh.item = item;
             unit.mesh.add(itemMesh);
         });
@@ -279,6 +339,8 @@ function onPointerDown(event) {
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
+    Painter.dragStart = Painter.mouse.clone();
+
     Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
     const intersects = Painter.raycaster.intersectObjects(
         Painter.scene.children,
@@ -287,7 +349,9 @@ function onPointerDown(event) {
     if (intersects.length > 0) {
         const object = intersects[0].object;
         if (object.name === "unit") {
-            if (!object.unit.draggable) return;
+            if (!object.unit.draggable) {
+                return onPointerClick(event);
+            }
             Painter.isDragging = true;
             Painter.draggingObject = object;
         }
@@ -347,6 +411,13 @@ function onPointerUp(event) {
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
+    if (
+        Painter.mouse.x == Painter.dragStart.x &&
+        Painter.mouse.y == Painter.dragStart.y
+    ) {
+        onPointerClick(event);
+    }
+
     Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
     const intersects = Painter.raycaster.intersectObjects(
         Painter.scene.children,
@@ -372,6 +443,24 @@ function onPointerUp(event) {
         Painter.draggingObject.unit,
         Painter.draggingObject.unit.y !== 3
     );
+}
+
+function onPointerClick(event) {
+    Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
+    const intersects = Painter.raycaster.intersectObjects(
+        Painter.scene.children
+    );
+    for (let i = 0; i < intersects.length; ++i) {
+        const object = intersects[i].object;
+        if (object.name === "unit") {
+            UI.popUp(object.unit.info(), event);
+            return;
+        }
+    }
+    UI.popDown();
 }
 
 function onDragOver(event) {
