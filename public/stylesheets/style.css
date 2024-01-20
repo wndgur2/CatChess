@@ -257,3 +257,12 @@ body {
     width: 100%;
     height: 50%;
 }
+
+#popUp {
+    position: absolute;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #212121cc;
+}

@@ -47,6 +47,7 @@ class Unit {
         if (target.hp <= 0) {
             target.die = true;
             this.battleField.board[target.y][target.x] = null;
+            // item drop
             if (target.owner == "creep")
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
         }

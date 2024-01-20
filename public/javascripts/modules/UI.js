@@ -32,8 +32,8 @@ export default class UI {
         });
 
         let shopEl = document.getElementById("shop");
-        shopEl.addEventListener("drop", UI.shopDragDrop);
-        shopEl.addEventListener("dragover", UI.shopDragOver);
+        shopEl.addEventListener("mouseover", UI.shopMouseOver);
+        shopEl.addEventListener("pointerup", UI.shopPointerUp);
 
         // 2 x 3 inventory
         for (let i = 0; i < 3; i++) {
@@ -70,19 +70,6 @@ export default class UI {
         event.preventDefault();
     }
 
-    static itemClick(event) {
-        // change it to hovering
-        //
-        // let item = UI.getItemByCellId(event.target.id);
-        // if (!item) return;
-        // UI.displayItemInfo(item);
-        // setTimeout(() => {
-        //     Game.clickEvent = document
-        //         .getElementById("game")
-        //         .addEventListener("click", UI.gameClick, true);
-        // }, 500);
-    }
-
     static cellDragDrop(event) {
         switch (UI.draggingType) {
             case DRAGGING_TYPES.ITEM:
@@ -100,18 +87,6 @@ export default class UI {
         }
     }
 
-    static cellClick(event) {
-        let unit = UI.getCellUnitByCellId(event.target.id);
-        if (!unit) return;
-        UI.displayUnitInfo(unit);
-
-        setTimeout(() => {
-            Game.clickEvent = document
-                .getElementById("game")
-                .addEventListener("click", UI.gameClick, true);
-        }, 500);
-    }
-
     /**
      * @param {Unit} unit
      */
@@ -127,15 +102,17 @@ export default class UI {
             .removeEventListener("click", UI.gameClick, true);
     }
 
-    static shopDragOver(event) {
+    static shopMouseOver(event) {
+        if (!Painter.isDragging) return;
         event.preventDefault();
         let shopEl = document.getElementById("shop");
-        shopEl.innerHTML = `고양이 판매하기<br/>💰${UI.draggingId.cost}`;
+        shopEl.innerHTML = `고양이 판매하기<br/>💰${Painter.draggingObject.unit.cost}`;
     }
 
-    static shopDragDrop(event) {
+    static shopPointerUp(event) {
+        if (!Painter.isDragging) return;
         Socket.sendMsg("reqSellCat", {
-            cat: UI.draggingId,
+            cat: Painter.draggingObject.unit,
         });
         Player.player._shop = Player.player.shop;
     }
@@ -157,9 +134,16 @@ export default class UI {
         }
     }
 
-    static displayItemInfo(item) {
-        console.log("displayItemInfo");
-        let rightWrapper = document.getElementById("rightWrapper");
-        rightWrapper.innerHTML = item.info();
+    static popUp(html, mouseEvent) {
+        let popUp = document.getElementById("popUp");
+        popUp.innerHTML = html;
+        popUp.style.display = "flex";
+        popUp.style.left = mouseEvent.clientX + "px";
+        popUp.style.top = mouseEvent.clientY + "px";
+    }
+
+    static popDown() {
+        let popUp = document.getElementById("popUp");
+        popUp.style.display = "none";
     }
 }

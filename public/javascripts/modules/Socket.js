@@ -96,13 +96,13 @@ export default class Socket {
                     break;
                 }
                 case "battle_attack": {
-                    let { attacker, target, damage, reversed } = data;
-                    Battle.attack(attacker, target, damage, reversed);
+                    let { attacker, target, damage } = data;
+                    Battle.attack(attacker, target, damage);
                     break;
                 }
                 case "battle_move": {
-                    let { beforeX, beforeY, nextX, nextY, reversed } = data;
-                    Battle.move(beforeX, beforeY, nextX, nextY, reversed);
+                    let { beforeX, beforeY, nextX, nextY } = data;
+                    Battle.move(beforeX, beforeY, nextX, nextY);
                     break;
                 }
                 case "battleResult": {

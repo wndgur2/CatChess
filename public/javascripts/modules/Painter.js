@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import { GAME_STATES } from "./constants/CONSTS.js";
 import {
     BOX_DEPTH,
     BOX_HEIGHT,
@@ -11,13 +10,12 @@ import {
     PLATE_RADIUS,
     CAT_HEIGHT,
 } from "./constants/THREE_CONSTS.js";
-import Game from "./Game.js";
-import Battle from "./Battle.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
 import UI from "./UI.js";
 import { objectPool } from "./effect/objectPool.js";
 import blood from "./effect/blood.js";
+import { getBoardCoords } from "./untils.js";
 
 export default class Painter {
     static board = new Array(6).fill(null).map(() => new Array(5).fill(null));
@@ -168,6 +166,7 @@ export default class Painter {
     }
 
     static set _board(newBoard) {
+        console.log("Painter board changed.");
         this.board.forEach((row) => {
             row.forEach((unit) => {
                 if (unit) this.scene.remove(unit.mesh);
@@ -196,7 +195,6 @@ export default class Painter {
     }
 
     static drawUnit(unit, onBoard) {
-        console.log("drawUnit");
         const coords = onBoard
             ? getBoardCoords(unit.x, unit.y)
             : getQueueCoords(unit.x, unit.owner === Player.player.id);
@@ -205,7 +203,6 @@ export default class Painter {
             coords[1] + BOX_HEIGHT / 2 + CAT_HEIGHT,
             coords[2]
         );
-        this.updateUnitMesh(unit);
         this.scene.add(unit.mesh);
     }
 
@@ -260,53 +257,10 @@ export default class Painter {
         });
     }
 
-    static updateUnitMesh(unit) {
-        const healthBarMesh = unit.mesh.getObjectByName("healthBar");
-        healthBarMesh.scale.x = unit.hp / unit.maxHp;
-        healthBarMesh.position.x = (1 - unit.hp / unit.maxHp) * 15;
-
-        const damagedHealthMesh = unit.mesh.getObjectByName("damagedHealth");
-
-        function animateHealthDamage() {
-            if (damagedHealthMesh.scale.x > healthBarMesh.scale.x) {
-                damagedHealthMesh.scale.x -= 0.01;
-                damagedHealthMesh.position.x =
-                    (1 - damagedHealthMesh.scale.x) * 15;
-                requestAnimationFrame(animateHealthDamage);
-            } else {
-                damagedHealthMesh.scale.x = healthBarMesh.scale.x;
-                damagedHealthMesh.position.x =
-                    (1 - damagedHealthMesh.scale.x) * 15;
-            }
-        }
-
-        animateHealthDamage();
-    }
-
     static hitEffect(isRange, target, damage) {
         this.scene.add(
             this.hitObjectPool.GetObject(target.mesh.position).object
         );
-    }
-}
-
-function getBoardCoords(x, y) {
-    switch (Game.state) {
-        case GAME_STATES.ARRANGE:
-            return [...COORDINATES.BOARD[y + 3][x]];
-        case GAME_STATES.FINISH:
-            return [...COORDINATES.BOARD[y + 3][x]];
-        case GAME_STATES.BATTLE:
-            return Battle.reversed
-                ? [...COORDINATES.BOARD[5 - y][4 - x]]
-                : [...COORDINATES.BOARD[y][x]];
-        case GAME_STATES.READY:
-            return Battle.reversed
-                ? [...COORDINATES.BOARD[5 - y][4 - x]]
-                : [...COORDINATES.BOARD[y][x]];
-        default:
-            console.log("getBoardCoords: invalid state");
-            return [0, 0, 0];
     }
 }
 
@@ -341,9 +295,7 @@ function onPointerDown(event) {
 }
 
 function onPointerMove(event) {
-    if (!Painter.isDragging) {
-        return checkMouseHover(event);
-    }
+    if (!Painter.isDragging) return checkMouseHover(event);
     if (UI.isDragging) {
         UI.isDragging = false;
         return;
@@ -381,11 +333,11 @@ function checkMouseHover(event) {
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
         if (object.name === "item") {
-            console.log("Item hovered");
-            UI.displayItemInfo(object.item);
+            UI.popUp(object.item.info(), event);
             return;
         }
     }
+    UI.popDown();
 }
 
 function onPointerUp(event) {

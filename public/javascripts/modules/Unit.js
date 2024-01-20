@@ -1,5 +1,7 @@
+import Item from "./Item.js";
 import Painter from "./Painter.js";
 import Player from "./Player.js";
+import { getBoardCoords } from "./untils.js";
 
 export default class Unit {
     constructor(data) {
@@ -13,7 +15,7 @@ export default class Unit {
         this.armor = data.armor;
         this.cost = data.cost;
         this.owner = data.owner;
-        this.items = data.items;
+        this.items = data.items.map((item) => (item ? new Item(item) : null));
 
         this.x = data.x;
         this.y = data.y;
@@ -39,7 +41,9 @@ export default class Unit {
         </div>`;
     }
 
-    die() {}
+    die() {
+        this.mesh.visible = false;
+    }
 
     info() {
         return `<div class="cat">
@@ -60,5 +64,51 @@ export default class Unit {
         <div class="catSpeed">🏃${this.speed}</div>
         <div class="catRange">🎯${this.range}</div>
         </div>`;
+    }
+
+    set _hp(newHp) {
+        this.hp = newHp < 0 ? 0 : newHp;
+
+        const healthBarMesh = this.mesh.getObjectByName("healthBar");
+        healthBarMesh.scale.x = this.hp / this.maxHp;
+        healthBarMesh.position.x = (1 - this.hp / this.maxHp) * 15;
+
+        const damagedHealthMesh = this.mesh.getObjectByName("damagedHealth");
+
+        function animateHealthDamage() {
+            if (damagedHealthMesh.scale.x > healthBarMesh.scale.x) {
+                damagedHealthMesh.scale.x -= 0.01;
+                damagedHealthMesh.position.x =
+                    (1 - damagedHealthMesh.scale.x) * 15;
+                requestAnimationFrame(animateHealthDamage);
+            } else {
+                damagedHealthMesh.scale.x = healthBarMesh.scale.x;
+                damagedHealthMesh.position.x =
+                    (1 - damagedHealthMesh.scale.x) * 15;
+            }
+        }
+
+        animateHealthDamage();
+    }
+
+    move(beforeX, beforeY, nextX, nextY) {
+        const beforeCoords = getBoardCoords(beforeX, beforeY);
+        const nextCoords = getBoardCoords(nextX, nextY);
+
+        const toMoveCoords = {
+            x: nextCoords[0] - beforeCoords[0],
+            z: nextCoords[2] - beforeCoords[2],
+        };
+        const duration = 240 / this.speed;
+
+        let i = duration;
+        const animateMove = () => {
+            if (i-- <= 0) return;
+            this.mesh.position.x += toMoveCoords.x / duration;
+            this.mesh.position.z += toMoveCoords.z / duration;
+            requestAnimationFrame(animateMove);
+        };
+
+        animateMove();
     }
 }
