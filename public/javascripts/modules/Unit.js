@@ -1,19 +1,22 @@
 import Item from "./Item.js";
 import Painter from "./Painter.js";
-import Player from "./Player.js";
+import { COST_COLORS } from "./constants/CONSTS.js";
 import { HEALTHBAR_WIDTH } from "./constants/THREE_CONSTS.js";
 import { getBoardCoords } from "./untils.js";
 
 export default class Unit {
     constructor(data) {
+        this.id = data.id;
         this.tier = data.tier;
         this.name = data.name;
+        this.desc = data.desc;
         this.ad = data.ad;
         this.speed = data.speed;
         this.range = data.range;
         this.maxHp = data.maxHp;
         this.hp = data.hp;
         this.armor = data.armor;
+        this.originalCost = data.originalCost;
         this.cost = data.cost;
         this.owner = data.owner;
         this.items = data.items.map((item) => (item ? new Item(item) : null));
@@ -23,23 +26,10 @@ export default class Unit {
 
         Painter.createUnitMesh(this);
         this.draggable = true;
-    }
 
-    display() {
-        return `<div class="cat ${
-            this.owner === Player.player.id ? "ally" : "enemy"
-        }">
-            <div class="catTier">🌟${this.tier}</div>
-            ${
-                this.items
-                    ? `<div class="items">${this.items.map(
-                          (item) => item.img
-                      )}</div>`
-                    : `<div />`
-            }
-            <div class="catHp">♥️${this.hp}</div>
-            <div class="catName">${this.name}</div>
-        </div>`;
+        // load image from images/units/this.id.jpg
+        this.image = `<img id="catImg" src="/images/units/${this.id}.jpg" />`;
+        this.color = COST_COLORS[this.originalCost];
     }
 
     die() {
@@ -47,24 +37,38 @@ export default class Unit {
     }
 
     info() {
-        return `<div class="cat">
-        <div class="catTier">🌟${this.tier}</div>
-        <div class="catHp">♥️${this.hp}/${this.maxHp}</div>
-        
-        ${
-            this.items
-                ? `<div class="items">${this.items.map(
-                      (item) => item.img + item.name
-                  )}</div>`
-                : `<div />`
-        }
-        <div class="catName">${this.name}</div>
-        <div class="catCost">💰${this.cost}</div>
-        <div class="catAd">⚔️${this.ad}</div>
-        <div class="catArmor">🛡${this.armor}</div>
-        <div class="catSpeed">🏃${this.speed}</div>
-        <div class="catRange">🎯${this.range}</div>
-        </div>`;
+        return `
+            <div id="catIntro">
+                <div id="catImgWrapper">${this.image}</div>
+                <span id="catName" style="color:${this.color};">
+                    ${"★".repeat(this.tier)} ${this.name}
+                </span>
+            </div>
+            <div class="catStats">
+                <div>💰${this.cost}</div>
+                <div>♥️${this.maxHp}</div>
+                <div>⚔️${this.ad}</div>
+            </div>
+
+            <div class="catStats">
+                <div>🛡${this.armor}</div>
+                <div>🎯${this.range}</div>
+                <div>🏃${this.speed}</div>
+            </div>
+            <div id="catSkills">
+                <div class="catSkill" style="background-color:#FF0000;">
+                    passive
+                </div>
+                <div class="catSkill" style="background-color:#0000FF;">
+                    active
+                </div>
+            </div>
+            <div id="catItems">
+                <div>item1</div>
+                <div>item2</div>
+                <div>item3</div>
+            </div>
+        `;
     }
 
     set _hp(newHp) {
