@@ -37,7 +37,7 @@ class Battle {
             Battle.board[targetCat.y][targetCat.x] = null;
         }
 
-        Painter.hitEffect(attacker.range > 1, targetCat, damage);
+        Painter.hitEffect(attackerCat, targetCat, damage);
     }
 
     static move(beforeX, beforeY, nextX, nextY) {

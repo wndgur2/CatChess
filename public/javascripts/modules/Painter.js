@@ -331,9 +331,12 @@ export default class Painter {
         });
     }
 
-    static hitEffect(isRange, target, damage) {
+    static hitEffect(attacker, target, damage) {
         this.scene.add(
-            this.hitObjectPool.GetObject(target.mesh.position).object
+            this.hitObjectPool.GetObject(
+                target.mesh.position,
+                attacker.mesh.position
+            ).object
         );
     }
 }
@@ -363,7 +366,7 @@ function onPointerDown(event) {
     if (intersects.length > 0) {
         const object = intersects[0].object;
         if (object.name === "unit") {
-            if (!object.unit.draggable) return onPointerClick(event);
+            if (!object.unit.draggable) return;
             Painter.isDragging = true;
             Painter.draggingObject = object;
         }
@@ -418,21 +421,21 @@ function checkMouseHover(event) {
 }
 
 function onPointerUp(event) {
-    if (!Painter.isDragging) return;
-    Painter.isDragging = false;
-
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     if (
         // click 판정
-        Painter.mouse.x <= Painter.dragStart.x + PLATE_RADIUS / 100 &&
-        Painter.mouse.x >= Painter.dragStart.x - PLATE_RADIUS / 100 &&
-        Painter.mouse.y <= Painter.dragStart.y + PLATE_RADIUS / 100 &&
-        Painter.mouse.y >= Painter.dragStart.y - PLATE_RADIUS / 100
+        Painter.mouse.x <= Painter.dragStart.x + PLATE_RADIUS / 50 &&
+        Painter.mouse.x >= Painter.dragStart.x - PLATE_RADIUS / 50 &&
+        Painter.mouse.y <= Painter.dragStart.y + PLATE_RADIUS / 50 &&
+        Painter.mouse.y >= Painter.dragStart.y - PLATE_RADIUS / 50
     ) {
         onPointerClick(event);
     }
+
+    if (!Painter.isDragging) return;
+    Painter.isDragging = false;
 
     Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
     const intersects = Painter.raycaster.intersectObjects(

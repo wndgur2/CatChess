@@ -33,7 +33,7 @@ export default class Unit {
     }
 
     die() {
-        this.mesh.visible = false;
+        Painter.scene.remove(this.mesh);
     }
 
     info() {
