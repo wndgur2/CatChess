@@ -2,6 +2,7 @@ const CATS = {
     wildCat: {
         id: "wildCat",
         name: "길 고양이",
+        desc: "description of wildCat.",
         cost: 1,
         ad: 10,
         speed: 10,
@@ -12,6 +13,7 @@ const CATS = {
     thiefCat: {
         id: "thiefCat",
         name: "도둑 고양이",
+        desc: "description of thiefCat.",
         cost: 1,
         ad: 12,
         speed: 22,
@@ -22,6 +24,7 @@ const CATS = {
     houseCat: {
         id: "houseCat",
         name: "집 고양이",
+        desc: "description of houseCat.",
         cost: 1,
         ad: 10,
         speed: 8,
@@ -32,6 +35,7 @@ const CATS = {
     fatCat: {
         id: "fatCat",
         name: "비만 고양이",
+        desc: "description of fatCat.",
         cost: 2,
         ad: 25,
         speed: 6,
@@ -42,6 +46,7 @@ const CATS = {
     strongCat: {
         id: "strongCat",
         name: "강한 고양이",
+        desc: "description of strongCat.",
         cost: 2,
         ad: 25,
         speed: 12,
@@ -52,6 +57,7 @@ const CATS = {
     longCat: {
         id: "longCat",
         name: "롱다리 고양이",
+        desc: "description of longCat.",
         cost: 2,
         ad: 10,
         speed: 35,
@@ -62,6 +68,7 @@ const CATS = {
     tankCat: {
         id: "tankCat",
         name: "탱크 고양이",
+        desc: "description of tankCat.",
         cost: 3,
         ad: 15,
         speed: 8,
@@ -72,6 +79,7 @@ const CATS = {
     adCat: {
         id: "adCat",
         name: "원딜 고양이",
+        desc: "description of adCat.",
         cost: 3,
         ad: 17,
         speed: 20,
@@ -82,6 +90,7 @@ const CATS = {
     assasinCat: {
         id: "assasinCat",
         name: "암살자 고양이",
+        desc: "description of assasinCat.",
         cost: 4,
         ad: 100,
         speed: 20,
@@ -92,6 +101,7 @@ const CATS = {
     armorCat: {
         id: "armorCat",
         name: "철갑 고양이",
+        desc: "description of armorCat.",
         cost: 4,
         ad: 15,
         speed: 5,
