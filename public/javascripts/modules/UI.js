@@ -33,6 +33,7 @@ export default class UI {
 
         let shopEl = document.getElementById("shop");
         shopEl.addEventListener("mouseover", UI.shopMouseOver);
+        shopEl.addEventListener("mouseleave", UI.shopMouseLeave);
         shopEl.addEventListener("pointerup", UI.shopPointerUp);
 
         // 2 x 3 inventory
@@ -107,6 +108,12 @@ export default class UI {
         event.preventDefault();
         let shopEl = document.getElementById("shop");
         shopEl.innerHTML = `고양이 판매하기<br/>💰${Painter.draggingObject.unit.cost}`;
+    }
+
+    static shopMouseLeave(event) {
+        if (!Painter.isDragging) return;
+        event.preventDefault();
+        Player.player._shop = Player.player.shop;
     }
 
     static shopPointerUp(event) {

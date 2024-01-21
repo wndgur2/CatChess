@@ -209,7 +209,6 @@ export default class Painter {
     }
 
     static set _board(newBoard) {
-        console.log("Painter board changed.");
         this.board.forEach((row) => {
             row.forEach((unit) => {
                 if (unit) this.scene.remove(unit.mesh);
@@ -426,8 +425,11 @@ function onPointerUp(event) {
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     if (
-        Painter.mouse.x == Painter.dragStart.x &&
-        Painter.mouse.y == Painter.dragStart.y
+        // click 판정
+        Painter.mouse.x <= Painter.dragStart.x + PLATE_RADIUS / 100 &&
+        Painter.mouse.x >= Painter.dragStart.x - PLATE_RADIUS / 100 &&
+        Painter.mouse.y <= Painter.dragStart.y + PLATE_RADIUS / 100 &&
+        Painter.mouse.y >= Painter.dragStart.y - PLATE_RADIUS / 100
     ) {
         onPointerClick(event);
     }
