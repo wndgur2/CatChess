@@ -1,13 +1,12 @@
 import * as THREE from "three";
 
-const SCALE = 1;
-const numParticles = 40;
-const gravity = -9.8 * SCALE;
+const numParticles = 15;
+const gravity = -9.8;
 const groundHeight = new THREE.Vector3(0, 0, 0);
 
-export default class blood {
+class blood {
     object = new THREE.Object3D();
-    duration = 1;
+    duration = 2;
     targetPosition = new THREE.Vector3(0, 0, 0);
     active = false;
 
@@ -17,13 +16,16 @@ export default class blood {
     particleStart = [];
     velocity = new Float32Array(numParticles * 3);
     initVelocity = new Float32Array(numParticles * 3);
-    particleInitSize = 0.3 * SCALE;
+    particleInitSize = 0.3;
     localGroundHeight;
 
-    constructor(objectPool) {
+    constructor() {
         this.#init();
         this.SetActive(false);
-        this.objectPool = objectPool;
+    }
+
+    Instantiate() {
+        return new blood();
     }
 
     #init() {
@@ -60,25 +62,24 @@ export default class blood {
             new THREE.Float32BufferAttribute(vertices, 3)
         );
         const material = new THREE.PointsMaterial({
-            color: 0xbb0000,
+            color: 0xcc0000,
             sizeAttenuation: true,
-            // depthTest: false,
-            // transparent: true,
         });
-        material.size = 0.2;
+        material.size = this.particleInitSize;
 
         this.object = new THREE.Points(geometry, material);
 
         // calculate random explostion location
-        let half = origin.clone().add(t1).multiplyScalar(0.5); //
+        let half = origin.clone().add(t1).multiplyScalar(0.5);
         let perpendicular = generateRandomPerpendicularVector(half);
         perpendicular.normalize();
         let explosionLoc = half.clone().add(perpendicular.multiplyScalar(0.5));
-        explosionLoc.y += -0.3; // 피가 아래에서 위로 튀기도록 하기 위함
+        explosionLoc.y += -0.6; // 피가 아래에서 위로 튀기도록 하기 위함
+        explosionLoc.z += -1; // 피가 오브젝트의 0, 0, -1 방향으로 튀기도록
 
         for (let i = 0; i < numParticles; ++i) {
             let cur = i * 3;
-            let noise = Math.random();
+            let noise = Math.random() * 1 + 0;
 
             let initVec = new THREE.Vector3(
                 vertices[cur] - explosionLoc.x + noise,
@@ -87,9 +88,9 @@ export default class blood {
             );
             initVec.normalize();
 
-            this.initVelocity[cur] = initVec.x * 3.2 * SCALE;
-            this.initVelocity[cur + 1] = initVec.y * 3.2 * SCALE;
-            this.initVelocity[cur + 2] = initVec.z * 3.2 * SCALE;
+            this.initVelocity[cur] = initVec.x * 4;
+            this.initVelocity[cur + 1] = initVec.y * 4;
+            this.initVelocity[cur + 2] = initVec.z * 4;
 
             this.velocity[cur] = this.initVelocity[cur];
             this.velocity[cur + 1] = this.initVelocity[cur + 1];
@@ -99,21 +100,24 @@ export default class blood {
 
     SetPosition(vec3) {
         this.object.position.set(
-            vec3.x + (Math.random() * 0.2 - 0.1),
-            vec3.y + (Math.random() * 0.2 - 0.1),
-            vec3.z + (Math.random() * 0.2 - 0.1)
+            vec3.x + Math.random() * 0.2 - 0.1,
+            vec3.y + Math.random() * 0.2 - 0.1,
+            vec3.z + Math.random() * 0.2 - 0.1
         );
 
-        let target;
-        target = this.object.worldToLocal(groundHeight);
+        let target = groundHeight.clone();
+        this.object.worldToLocal(target);
         this.localGroundHeight = target.y;
     }
 
     SetActive(active) {
         this.active = active;
 
-        if (active) this.object.visible = true;
-        else this.object.visible = false;
+        if (active) {
+            this.object.visible = true;
+        } else {
+            this.object.visible = false;
+        }
     }
     GetActive() {
         return this.active;
@@ -133,7 +137,7 @@ export default class blood {
         for (let i = 0; i < numParticles; i++) {
             let cur = i * 3;
 
-            if (positions[cur + 1] <= this.localGroundHeight) {
+            if (positions[cur + 1] <= this.localGroundHeight + 0.1) {
                 positions[cur + 1] = this.localGroundHeight;
                 continue;
             }
@@ -159,7 +163,7 @@ export default class blood {
     Reset() {
         const positions = this.object.geometry.attributes.position.array;
         for (let i = 0; i < numParticles; ++i) {
-            this.velocity[i * 3] = this.initVelocity[i];
+            this.velocity[i * 3] = this.initVelocity[i * 3];
             this.velocity[i * 3 + 1] = this.initVelocity[i * 3 + 1];
             this.velocity[i * 3 + 2] = this.initVelocity[i * 3 + 2];
 
@@ -170,7 +174,6 @@ export default class blood {
 
         this.timeElapse = 0;
         this.object.geometry.attributes.position.needsUpdate = true;
-        this.objectPool.die();
     }
 }
 
@@ -185,10 +188,12 @@ function generateRandomPerpendicularVector(givenVector) {
     var perpendicularVector = givenVector.clone().cross(randomVector);
 
     // 크기를 조절하여 길이가 length가 되도록
-    let length = (Math.random() * 1.0 + 0.1) * SCALE;
+    let length = Math.random() * 1.0 + 0.1;
     var scaleFactor = length / perpendicularVector.length();
 
     perpendicularVector.multiplyScalar(scaleFactor);
 
     return perpendicularVector;
 }
+
+export default blood;
