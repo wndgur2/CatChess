@@ -52,6 +52,8 @@ export default class UI {
             }
             document.getElementById("inventory").appendChild(row);
         }
+
+        // let catItems = document.getElementById("catItems");
     }
 
     static gameStart() {
@@ -156,7 +158,7 @@ export default class UI {
 
     static showUnitInfo(unit) {
         let unitInfoEl = document.getElementById("unitInfo");
-        unitInfoEl.innerHTML = unit.info();
+        unit.showInfo();
         unitInfoEl.style.display = "flex";
 
         let shopEl = document.getElementById("shop");

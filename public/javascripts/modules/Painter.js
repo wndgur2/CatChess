@@ -375,7 +375,8 @@ function onPointerDown(event) {
 }
 
 function onPointerMove(event) {
-    if (!Painter.isDragging) return checkMouseHover(event);
+    // if (!Painter.isDragging) return checkMouseHover(event);
+    if (!Painter.isDragging) return;
     if (UI.isDragging) {
         UI.isDragging = false;
         return;

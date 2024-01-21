@@ -4,6 +4,7 @@ export default class Item {
         this.name = data.name;
         this.desc = data.desc;
         this.img = data.img;
+        this.image = `<img class="itemImg" src="/images/items/${this.id}.jpg" />`;
         this.ad = data.ad;
         this.hp = data.hp;
         this.armor = data.armor;
@@ -25,16 +26,16 @@ export default class Item {
     }
 
     info() {
-        return `<div class="itemInfo">
-        <div class="itemInfoImg">${this.img}</div>
-        <div class="itemInfoName">${this.name}</div>
-        <div class="itemInfoDesc">${this.getStat()}</div>
+        return `<div style="text-align:center;">
+        <div>${this.img}</div>
+        <div>${this.name}</div>
+        <div>${this.getStat()}</div>
         </div>`;
     }
 
     display() {
-        return `<div class="item">
-        <div class="itemImg">${this.img}</div>
+        return `<div>
+        <div>${this.img}</div>
         </div>`;
     }
 }

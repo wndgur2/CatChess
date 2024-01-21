@@ -11,6 +11,7 @@ class Battle {
             row.forEach((cat) => {
                 if (!cat) return;
                 cat.draggable = false;
+                cat.damage = 0;
             });
         });
         Battle.displayBoard();
@@ -30,7 +31,7 @@ class Battle {
             attackerCat = Battle.board[attacker.y][attacker.x];
             targetCat = Battle.board[target.y][target.x];
         }
-
+        attackerCat._damage += damage;
         targetCat._hp = parseInt(target.hp);
         if (targetCat.hp <= 0) {
             targetCat.die();
@@ -63,5 +64,7 @@ class Battle {
             cat.y = nextY;
         }
     }
+
+    static updateDamage(unit, damage) {}
 }
 export default Battle;

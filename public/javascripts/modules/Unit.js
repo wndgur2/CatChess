@@ -1,5 +1,6 @@
 import Item from "./Item.js";
 import Painter from "./Painter.js";
+import Player from "./Player.js";
 import { COST_COLORS } from "./constants/CONSTS.js";
 import { HEALTHBAR_WIDTH } from "./constants/THREE_CONSTS.js";
 import { getBoardCoords } from "./untils.js";
@@ -36,39 +37,20 @@ export default class Unit {
         Painter.scene.remove(this.mesh);
     }
 
-    info() {
-        return `
-            <div id="catIntro">
-                <div id="catImgWrapper">${this.image}</div>
-                <span id="catName" style="color:${this.color};">
-                    ${"★".repeat(this.tier)} ${this.name}
-                </span>
-            </div>
-            <div class="catStats">
-                <div>💰${this.cost}</div>
-                <div>♥️${this.maxHp}</div>
-                <div>⚔️${this.ad}</div>
-            </div>
-
-            <div class="catStats">
-                <div>🛡${this.armor}</div>
-                <div>🎯${this.range}</div>
-                <div>🏃${this.speed}</div>
-            </div>
-            <div id="catSkills">
-                <div class="catSkill" style="background-color:#FF0000;">
-                    passive
-                </div>
-                <div class="catSkill" style="background-color:#0000FF;">
-                    active
-                </div>
-            </div>
-            <div id="catItems">
-                <div>item1</div>
-                <div>item2</div>
-                <div>item3</div>
-            </div>
-        `;
+    showInfo() {
+        document.getElementById("catImgWrapper").innerHTML = this.image;
+        document.getElementById("catName").innerHTML =
+            "★".repeat(this.tier) + this.name;
+        document.getElementById("catName").style.color = this.color;
+        document.getElementById("cost").innerHTML = this.cost;
+        document.getElementById("maxHp").innerHTML = this.maxHp;
+        document.getElementById("ad").innerHTML = this.ad;
+        document.getElementById("armor").innerHTML = this.armor;
+        document.getElementById("range").innerHTML = this.range;
+        document.getElementById("speed").innerHTML = this.speed;
+        document.getElementById("catItems").innerHTML = this.items
+            .map((item) => "<div>" + item.image + "</div>")
+            .join("");
     }
 
     set _hp(newHp) {
@@ -95,6 +77,11 @@ export default class Unit {
         }
 
         animateHealthDamage();
+    }
+
+    set _damage(newDamage) {
+        this.damage = newDamage;
+        Player.player.setDamage(this, newDamage);
     }
 
     move(beforeX, beforeY, nextX, nextY) {

@@ -331,14 +331,13 @@ class Player {
         else cat = this.board[to.y][to.x];
         if (!cat) return false;
 
-        if (cat.items.length >= 3) return false;
-
         if (cat.equip(curItem)) {
             this.items = this.items.filter((i) => i != curItem);
             this.updateItems();
             this.updateBoard();
+            return true;
         }
-        return true;
+        return false;
     }
 
     reward() {

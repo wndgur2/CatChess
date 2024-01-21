@@ -46,6 +46,10 @@
     gap: 0.1vh;
     font-size: 1.5vw;
 }
+.catStats div {
+    display: flex;
+    flex-direction: row;
+}
 
 #catSkills {
     display: flex;
@@ -66,18 +70,18 @@
     justify-content: center;
     align-items: center;
     width: 40%;
-    height: 80%;
 }
+
 #catItems div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 30%;
     height: 100%;
 }
-#catItems div:first-child {
-    background-color: red;
-}
-#catItems div:nth-child(2) {
-    background-color: green;
-}
-#catItems div:nth-child(3) {
-    background-color: blue;
+
+.itemImg {
+    width: 100%;
+    object-fit: cover;
+    aspect-ratio: 1/1;
 }

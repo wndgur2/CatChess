@@ -11,14 +11,14 @@ const ITEMS = {
         name: "루비 수정",
         img: "🔮",
         desc: "단단한 수정이다.",
-        hp: 70,
+        hp: 80,
     },
     helmet: {
         id: "helmet",
         name: "방탄모",
         img: "🪖",
         desc: "단단한 헬멧이다.",
-        armor: 6,
+        armor: 8,
     },
     recurveBow: {
         id: "recurveBow",

@@ -152,4 +152,6 @@ export default class Player {
             itemEl.innerHTML = newItems[i].info();
         }
     }
+
+    setDamage(unit, damage) {}
 }
