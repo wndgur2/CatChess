@@ -40,8 +40,8 @@ export default class Painter {
             0.1,
             1000
         );
-        this.camera.position.set(0, PLATE_RADIUS * 9, -(PLATE_RADIUS * 9));
-        this.camera.lookAt(0, 0, -PLATE_RADIUS * 2.5);
+        this.camera.position.set(0, PLATE_RADIUS * 9, -(PLATE_RADIUS * 10));
+        this.camera.lookAt(0, 0, -PLATE_RADIUS * 2.8);
         this.scene.add(this.camera);
 
         // light
