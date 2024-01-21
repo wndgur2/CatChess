@@ -25,7 +25,7 @@ const ITEMS = {
         name: "곡궁",
         img: "🏹",
         desc: "견고한 활이다.",
-        range: 2,
+        range: 1,
     },
 };
 
