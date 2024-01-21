@@ -13,8 +13,8 @@ const CATCHESS_ID = "CATCHESS_ID";
 const COST_COLORS = {
     1: "#EEEEEE",
     2: "#55EE33",
-    4: "#4488EE",
-    3: "#CC21CC",
+    3: "#4488EE",
+    4: "#CC21CC",
     5: "#EEEE42",
 };
 
