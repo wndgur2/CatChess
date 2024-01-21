@@ -10,12 +10,14 @@ class Unit {
         const magnifier = Math.sqrt(this.tier).toPrecision(2);
 
         this.name = this.proto.name;
+        this.desc = this.proto.desc;
         this.ad = parseInt(this.proto.ad * magnifier);
         this.speed = parseInt(this.proto.speed * magnifier);
         this.range = this.proto.range;
         this.maxHp = parseInt(this.proto.hp * magnifier);
         this.hp = this.maxHp;
         this.armor = parseInt(this.proto.armor * magnifier);
+        this.originalCost = this.proto.cost;
         this.cost = this.proto.cost * Math.pow(3, tier - 1);
         if (tier > 1) this.cost -= 1;
 
