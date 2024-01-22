@@ -269,4 +269,6 @@ body {
     justify-content: center;
     align-items: center;
     background-color: #212121cc;
+    z-index: 1;
+    pointer-events: none;
 }
