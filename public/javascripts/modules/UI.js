@@ -3,12 +3,11 @@ import Game from "./Game.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
 import Painter from "./Painter.js";
-import Unit from "./Unit.js";
-import { DRAGGING_TYPES } from "./constants/CONSTS.js";
 
 export default class UI {
     static draggingId;
     static isDragging = false;
+    static infoUnit;
 
     static init() {
         this.hydrate();
@@ -32,9 +31,9 @@ export default class UI {
         });
 
         let shopEl = document.getElementById("shop");
-        shopEl.addEventListener("mouseover", UI.shopMouseOver);
-        shopEl.addEventListener("mouseleave", UI.shopMouseLeave);
-        shopEl.addEventListener("pointerup", UI.shopPointerUp);
+        shopEl.addEventListener("mouseenter", shopMouseEnter);
+        shopEl.addEventListener("mouseleave", shopMouseLeave);
+        shopEl.addEventListener("pointerup", shopPointerUp);
 
         // 2 x 3 inventory
         for (let i = 0; i < 3; i++) {
@@ -45,12 +44,18 @@ export default class UI {
                 item.id = `inventory-${i}-${j}`;
 
                 item.className = "cell";
-                item.addEventListener("dragstart", UI.itemDragStart);
-                item.addEventListener("click", UI.itemClick); // change to hover
+                item.addEventListener("dragstart", inventoryDragStart);
                 item.draggable = false;
                 row.appendChild(item);
             }
             document.getElementById("inventory").appendChild(row);
+        }
+
+        let itemEls = document.getElementsByClassName("item");
+        for (let i = 0; i < itemEls.length; i++) {
+            itemEls[i].addEventListener("mouseenter", itemMouseEnter);
+            itemEls[i].addEventListener("mousemove", itemMouseMove);
+            itemEls[i].addEventListener("mouseleave", itemMouseLeave);
         }
     }
 
@@ -60,51 +65,6 @@ export default class UI {
         document.getElementById("game").style.display = "flex";
 
         Painter.startRendering();
-    }
-
-    static itemDragStart(event) {
-        UI.draggingId = event.target.id;
-        UI.isDragging = true;
-    }
-
-    static itemDragOver(event) {
-        event.preventDefault();
-    }
-
-    /**
-     * @param {Unit} unit
-     */
-    static displayUnitInfo(unit) {
-        let rightWrapper = document.getElementById("rightWrapper");
-        rightWrapper.innerHTML = unit.info();
-    }
-
-    static gameClick(event) {
-        Game.displayPlayersInfo();
-        document
-            .getElementById("game")
-            .removeEventListener("click", UI.gameClick, true);
-    }
-
-    static shopMouseOver(event) {
-        if (!Painter.isDragging) return;
-        event.preventDefault();
-        let shopEl = document.getElementById("shop");
-        shopEl.innerHTML = `고양이 판매하기<br/>💰${Painter.draggingObject.unit.cost}`;
-    }
-
-    static shopMouseLeave(event) {
-        if (!Painter.isDragging) return;
-        event.preventDefault();
-        Player.player._shop = Player.player.shop;
-    }
-
-    static shopPointerUp(event) {
-        if (!Painter.isDragging) return;
-        Socket.sendMsg("reqSellCat", {
-            cat: Painter.draggingObject.unit,
-        });
-        Player.player._shop = Player.player.shop;
     }
 
     static getCellUnitByCellId(id) {
@@ -125,19 +85,20 @@ export default class UI {
     }
 
     static popUp(html, mouseEvent) {
-        let popUp = document.getElementById("popUp");
-        popUp.innerHTML = html;
-        popUp.style.display = "flex";
-        popUp.style.left = mouseEvent.clientX + "px";
-        popUp.style.top = mouseEvent.clientY + "px";
+        let popUpEl = document.getElementById("popUp");
+        popUpEl.innerHTML = html;
+        popUpEl.style.display = "flex";
+        popUpEl.style.left = mouseEvent.clientX + "px";
+        popUpEl.style.top = mouseEvent.clientY + "px";
     }
 
     static popDown() {
-        let popUp = document.getElementById("popUp");
-        popUp.style.display = "none";
+        let popUpEl = document.getElementById("popUp");
+        popUpEl.style.display = "none";
     }
 
     static showUnitInfo(unit) {
+        this.infoUnit = unit;
         let unitInfoEl = document.getElementById("unitInfo");
         unit.showInfo();
         unitInfoEl.style.display = "flex";
@@ -153,4 +114,48 @@ export default class UI {
         let shopEl = document.getElementById("shop");
         shopEl.style.display = "flex";
     }
+}
+
+function inventoryDragStart(event) {
+    UI.draggingId = event.target.id;
+    UI.isDragging = true;
+}
+
+function itemMouseEnter(event) {
+    console.log("itemMouseOver");
+    UI.popUp(UI.infoUnit.items[this.id].info(), event);
+}
+
+function itemMouseMove(event) {
+    console.log("itemMouseMove");
+    UI.popUp(UI.infoUnit.items[this.id].info(), event);
+}
+
+function itemMouseLeave(event) {
+    console.log("itemMouseLeave");
+    UI.popDown();
+}
+
+function shopMouseEnter(event) {
+    console.log("shopMouseEnter");
+    if (!Painter.isDragging) return;
+    event.preventDefault();
+    let shopEl = document.getElementById("shop");
+    shopEl.innerHTML = `고양이 판매하기<br/>💰${Painter.draggingObject.unit.cost}`;
+}
+
+function shopMouseLeave(event) {
+    console.log("shopMouseLeave");
+    if (!Painter.isDragging) return;
+    event.preventDefault();
+    Player.player._shop = Player.player.shop;
+}
+
+function shopPointerUp(event) {
+    console.log("shopPointerUp");
+    if (!Painter.isDragging) return;
+    Socket.sendMsg("reqSellCat", {
+        cat: Painter.draggingObject.unit,
+    });
+    Player.player._shop = Player.player.shop;
 }
