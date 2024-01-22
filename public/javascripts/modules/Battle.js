@@ -1,3 +1,4 @@
+import Item from "./Item.js";
 import Painter from "./Painter.js";
 
 class Battle {
@@ -63,6 +64,15 @@ class Battle {
             cat.x = nextX;
             cat.y = nextY;
         }
+    }
+
+    static itemUpdate(data) {
+        let unit =
+            Battle.board[this.reversed ? 5 - data.y : data.y][
+                this.reversed ? 4 - data.x : data.x
+            ];
+        unit.items = data.items.map((item) => new Item(item));
+        Painter.createItemMesh(unit);
     }
 
     static updateDamage(unit, damage) {}

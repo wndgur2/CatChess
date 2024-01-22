@@ -209,6 +209,7 @@ export default class Painter {
     }
 
     static set _board(newBoard) {
+        cancelDragging();
         this.board.forEach((row) => {
             row.forEach((unit) => {
                 if (unit) this.scene.remove(unit.mesh);
@@ -225,6 +226,7 @@ export default class Painter {
     }
 
     static set _allyQueue(newQueue) {
+        cancelDragging();
         this.allyQueue.forEach((unit, i) => {
             if (unit) this.scene.remove(unit.mesh);
         });
@@ -307,6 +309,19 @@ export default class Painter {
         unit.mesh.add(healthBarMesh);
 
         // items
+        this.createItemMesh(unit);
+    }
+
+    static hitEffect(attacker, target, damage) {
+        this.scene.add(
+            this.hitObjectPool.GetObject(
+                target.mesh.position,
+                attacker.mesh.position
+            ).object
+        );
+    }
+
+    static createItemMesh(unit) {
         unit.items.forEach((item, i) => {
             const itemMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(
@@ -329,15 +344,6 @@ export default class Painter {
             itemMesh.item = item;
             unit.mesh.add(itemMesh);
         });
-    }
-
-    static hitEffect(attacker, target, damage) {
-        this.scene.add(
-            this.hitObjectPool.GetObject(
-                target.mesh.position,
-                attacker.mesh.position
-            ).object
-        );
     }
 }
 
@@ -375,6 +381,7 @@ function onPointerDown(event) {
 }
 
 function onPointerMove(event) {
+    // 드래그하다가 board, queue update되면 드래그 취소
     // if (!Painter.isDragging) return checkMouseHover(event);
     if (!Painter.isDragging) return;
     if (UI.isDragging) {
@@ -403,25 +410,8 @@ function onPointerMove(event) {
     }
 }
 
-function checkMouseHover(event) {
-    Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
-    const intersects = Painter.raycaster.intersectObjects(
-        Painter.scene.children
-    );
-    for (let i = 0; i < intersects.length; ++i) {
-        const object = intersects[i].object;
-        if (object.name === "item") {
-            UI.popUp(object.item.info(), event);
-            return;
-        }
-    }
-    UI.popDown();
-}
-
 function onPointerUp(event) {
+    console.log("onPointerUp");
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -436,7 +426,6 @@ function onPointerUp(event) {
     }
 
     if (!Painter.isDragging) return;
-    Painter.isDragging = false;
 
     Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
     const intersects = Painter.raycaster.intersectObjects(
@@ -459,10 +448,18 @@ function onPointerUp(event) {
             return;
         }
     }
+    cancelDragging();
+}
+
+function cancelDragging() {
+    console.log("cancelDragging");
+    if (!Painter.isDragging) return;
+    Painter.isDragging = false;
     Painter.drawUnit(
         Painter.draggingObject.unit,
         Painter.draggingObject.unit.y !== 3
     );
+    Painter.draggingObject = null;
 }
 
 function onPointerClick(event) {
@@ -500,6 +497,7 @@ function onDrop(event) {
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
         if (object.name === "unit") {
+            if (object.unit.owner !== Player.player.id) return;
             Socket.sendMsg("reqGiveItem", {
                 item: {
                     x: parseInt(UI.draggingId.split("-")[2]),

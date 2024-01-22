@@ -105,6 +105,11 @@ export default class Socket {
                     Battle.move(beforeX, beforeY, nextX, nextY);
                     break;
                 }
+                case "battle_itemUpdate": {
+                    let { unit } = data;
+                    Battle.itemUpdate(unit);
+                    break;
+                }
                 case "battleResult": {
                     data.players.forEach(([player, hp]) => {
                         let p = Player.getPlayerById(player);

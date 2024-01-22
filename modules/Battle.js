@@ -10,6 +10,7 @@ class Battle {
      * @param {Player} player2
      */
     constructor(player1, player2, isCreep = false) {
+        this.finished = false;
         /**
          * @type {Game}
          */
@@ -43,6 +44,15 @@ class Battle {
         this.battleInterval = setInterval(() => this.updateBattle(), TIME_STEP);
     }
 
+    updateUnit(unit) {
+        [this.player1, this.player2].forEach((player) => {
+            if (!player.ws) return;
+            sendMsg(player.ws, "battle_itemUpdate", {
+                unit: { ...unit, battleField: null },
+            });
+        });
+    }
+
     updateBattle() {
         let p1Cats = this.battleField.getCats(this.player1.id);
         let p2Cats = this.battleField.getCats(this.player2.id);
@@ -61,6 +71,7 @@ class Battle {
     }
 
     finish() {
+        if (this.fisnished) return;
         clearInterval(this.battleInterval);
 
         let p1Units = this.battleField.getCats(this.player1.id).length,
@@ -97,11 +108,11 @@ class Battle {
             });
         });
 
-        this.game.battles = this.game.battles.filter(
-            (battle) => battle !== this
-        );
+        this.fisnished = true;
 
-        if (this.game.battles.length === 0) this.game.finishState();
+        if (this.game.battles.every((battle) => battle.fisnished)) {
+            this.game.finishState();
+        }
     }
 }
 
