@@ -11,7 +11,7 @@ class Battle {
         this.board.forEach((row) => {
             row.forEach((cat) => {
                 if (!cat) return;
-                cat.draggable = false;
+                cat.inBattle = true;
                 cat.damage = 0;
             });
         });
