@@ -19,6 +19,7 @@ class Item {
         this.hp = proto.hp ? proto.hp : 0;
         this.armor = proto.armor ? proto.armor : 0;
         this.range = proto.range ? proto.range : 0;
+        this.speed = proto.speed ? proto.speed : 0;
     }
 }
 
