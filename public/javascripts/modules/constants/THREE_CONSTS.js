@@ -4,7 +4,6 @@ const COORDINATES = {
     ENEMY_QUEUE: [],
 };
 
-// TODO: 2로 했을 때 아이템 안보임
 const PLATE_RADIUS = 2;
 const PLATE_WIDTH = PLATE_RADIUS * Math.sqrt(3);
 const PLATE_DEPTH = (3 / 2) * PLATE_RADIUS;
