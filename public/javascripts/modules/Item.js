@@ -9,6 +9,7 @@ export default class Item {
         this.hp = data.hp;
         this.armor = data.armor;
         this.range = data.range;
+        this.speed = data.speed;
     }
 
     getStat() {
@@ -20,8 +21,10 @@ export default class Item {
             ? "방어력"
             : this.range
             ? "사거리"
+            : this.speed
+            ? "민첩"
             : "";
-        let stat = this.ad || this.hp || this.armor || this.range;
+        let stat = this.ad || this.hp || this.armor || this.range || this.speed;
         return `${type} +${stat}`;
     }
 
@@ -30,12 +33,6 @@ export default class Item {
         <div>${this.img}</div>
         <div>${this.name}</div>
         <div>${this.getStat()}</div>
-        </div>`;
-    }
-
-    display() {
-        return `<div>
-        <div>${this.img}</div>
         </div>`;
     }
 }

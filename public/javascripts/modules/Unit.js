@@ -26,7 +26,7 @@ export default class Unit {
         this.y = data.y;
 
         Painter.createUnitMesh(this);
-        this.draggable = true;
+        this.inBattle = false;
 
         // load image from images/units/this.id.jpg
         this.image = `<img id="catImg" src="/images/units/${this.id}.jpg" />`;
@@ -48,9 +48,10 @@ export default class Unit {
         document.getElementById("armor").innerHTML = this.armor;
         document.getElementById("range").innerHTML = this.range;
         document.getElementById("speed").innerHTML = this.speed;
-        document.getElementById("catItems").innerHTML = this.items
-            .map((item) => "<div>" + item.image + "</div>")
-            .join("");
+        let itemEls = document.getElementsByClassName("item");
+        for (let i = 0; i < itemEls.length; i++) {
+            itemEls[i].innerHTML = this.items[i] ? this.items[i].image : "";
+        }
     }
 
     set _hp(newHp) {

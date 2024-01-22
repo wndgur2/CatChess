@@ -113,6 +113,7 @@ class Unit {
         this.maxHp += item.hp;
         this.armor += item.armor;
         this.range += item.range;
+        this.speed += item.speed;
         return true;
     }
 
