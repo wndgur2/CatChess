@@ -321,12 +321,12 @@ class Player {
     }
 
     giveItem(item, to) {
-        // TODO battle state: original unit과 현재 유닛 모두에게 주기?
         let cat, battle;
         let curItem = this.items[item.y * 2 + item.x];
         if (!curItem) return false;
 
-        if (this.game.state !== GAME_STATES.ARRANGE) {
+        if (to.y === 6) cat = this.queue[to.x];
+        else if (this.game.state !== GAME_STATES.ARRANGE) {
             this.game.battles.forEach((b) => {
                 if (b.player1 === this || b.player2 === this) {
                     battle = b;
@@ -334,21 +334,15 @@ class Player {
                 }
             });
             if (!battle) {
-                //현재 배틀이 사라진 시점에선 찾을 수 없다
                 console.log("giveItem: no battle");
-                console.log(
-                    this.game.battles.map((b) => [b.player1.id, b.player2.id])
-                );
                 return false;
             }
         } else {
-            if (to.y === 3) cat = this.queue[to.x];
-            else cat = this.board[to.y][to.x];
+            cat = this.board[to.y - 3][to.x];
         }
 
         if (!cat) {
             console.log("giveItem: no cat");
-            console.log(battle.battleField.board);
             return false;
         }
 
@@ -356,9 +350,12 @@ class Player {
             // find index of curItem
             this.items[this.items.findIndex((i) => i === curItem)] = null;
             this.updateItems();
-            if (this.game.state !== GAME_STATES.ARRANGE) battle.updateUnit(cat);
-            this.updateQueue();
-            this.updateBoard();
+            if (this.game.state !== GAME_STATES.ARRANGE && to.y !== 6)
+                battle.updateUnit(cat);
+            else {
+                this.updateQueue();
+                this.updateBoard();
+            }
             return true;
         }
         console.log("giveItem: equip failed");

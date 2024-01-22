@@ -258,7 +258,11 @@ export default class Painter {
                 PLATE_RADIUS / 2,
                 PLATE_RADIUS / 2
             ),
-            new THREE.MeshLambertMaterial({ color: 0x007777 })
+            new THREE.MeshLambertMaterial({
+                map: new THREE.TextureLoader().load(
+                    `/images/units/${unit.id}.jpg`
+                ),
+            })
         );
         unit.mesh.name = "unit";
         unit.mesh.unit = unit;
@@ -345,6 +349,12 @@ export default class Painter {
             unit.mesh.add(itemMesh);
         });
     }
+
+    static resetMeshes() {
+        this.scene.children.forEach((child) => {
+            if (child.name === "unit") this.scene.remove(child);
+        });
+    }
 }
 
 function getQueueCoords(x, isAlly) {
@@ -359,6 +369,7 @@ function onResize() {
 }
 
 function onPointerDown(event) {
+    console.log("onPointerDown");
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -372,7 +383,7 @@ function onPointerDown(event) {
     if (intersects.length > 0) {
         const object = intersects[0].object;
         if (object.name === "unit") {
-            if (!object.unit.draggable) return;
+            if (object.unit.inBattle) return;
             Painter.isDragging = true;
             Painter.draggingObject = object;
         }
@@ -381,8 +392,7 @@ function onPointerDown(event) {
 }
 
 function onPointerMove(event) {
-    // 드래그하다가 board, queue update되면 드래그 취소
-    // if (!Painter.isDragging) return checkMouseHover(event);
+    console.log("onPointerMove");
     if (!Painter.isDragging) return;
     if (UI.isDragging) {
         UI.isDragging = false;
@@ -463,6 +473,7 @@ function cancelDragging() {
 }
 
 function onPointerClick(event) {
+    console.log("onPointerClick");
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -480,10 +491,12 @@ function onPointerClick(event) {
 }
 
 function onDragOver(event) {
+    console.log("onDragOver");
     event.preventDefault();
 }
 
 function onDrop(event) {
+    console.log("onDrop");
     if (!UI.isDragging) return;
 
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -504,8 +517,9 @@ function onDrop(event) {
                     y: parseInt(UI.draggingId.split("-")[1]),
                 },
                 to: {
+                    // battle 일 때, y 3일 때 대기열이랑 겹침
                     x: object.unit.x,
-                    y: object.unit.y,
+                    y: object.unit.inBattle ? object.unit.y : object.unit.y + 3,
                 },
             });
             break;
