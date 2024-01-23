@@ -87,8 +87,8 @@ const CATS = {
         armor: 1,
         range: 4,
     },
-    assasinCat: {
-        id: "assasinCat",
+    assassinCat: {
+        id: "assassinCat",
         name: "암살자 고양이",
         desc: "description of assasinCat.",
         cost: 4,
