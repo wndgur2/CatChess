@@ -45,14 +45,16 @@ export default class Painter {
         this.scene.add(this.camera);
 
         // light
-        const light = new THREE.HemisphereLight(0xaaaaaa, 0x000000, 0.9);
+        const light = new THREE.HemisphereLight(0xdddddd, 0x000000, 1);
         light.position.set(0, PLATE_RADIUS * 5, 0);
         this.scene.add(light);
 
         // pointlight
         const pointLight = new THREE.PointLight(
-            0xffffff,
-            120 * Math.pow(PLATE_RADIUS, 2)
+            0xeeeeee,
+            25 * Math.pow(PLATE_RADIUS, 1.5),
+            0,
+            1.5
         );
         pointLight.position.set(0, PLATE_RADIUS * 4, 0);
         pointLight.castShadow = true;
@@ -251,14 +253,15 @@ export default class Painter {
     }
 
     static createUnitMesh(unit) {
+        //texture 불러오는 부분 수정. 매번 불러와서 렉 https://threejs.org/docs/#api/en/loaders/managers/LoadingManager
         //body
         unit.mesh = new THREE.Mesh(
             new THREE.BoxGeometry(
-                PLATE_RADIUS / 2,
-                PLATE_RADIUS / 2,
-                PLATE_RADIUS / 2
+                PLATE_RADIUS / 1.5,
+                CAT_HEIGHT,
+                PLATE_RADIUS / 1.5
             ),
-            new THREE.MeshLambertMaterial({
+            new THREE.MeshStandardMaterial({
                 map: new THREE.TextureLoader().load(
                     `/images/units/${unit.id}.jpg`
                 ),
@@ -279,7 +282,7 @@ export default class Painter {
         healthBarBackgroundMesh.name = "healthBarBackground";
         healthBarBackgroundMesh.position.set(
             0,
-            (CAT_HEIGHT + HEALTHBAR_HEIGHT) * 1.5,
+            CAT_HEIGHT + HEALTHBAR_HEIGHT,
             0
         );
         unit.mesh.add(healthBarBackgroundMesh);
@@ -293,11 +296,7 @@ export default class Painter {
             new THREE.MeshBasicMaterial({ color: 0xcc0000 })
         );
         damagedHealthMesh.name = "damagedHealth";
-        damagedHealthMesh.position.set(
-            0,
-            (CAT_HEIGHT + HEALTHBAR_HEIGHT) * 1.5,
-            0
-        );
+        damagedHealthMesh.position.set(0, CAT_HEIGHT + HEALTHBAR_HEIGHT, 0);
         unit.mesh.add(damagedHealthMesh);
 
         const healthBarMesh = new THREE.Mesh(
@@ -309,7 +308,7 @@ export default class Painter {
             new THREE.MeshBasicMaterial({ color: 0x00aa00 })
         );
         healthBarMesh.name = "healthBar";
-        healthBarMesh.position.set(0, (CAT_HEIGHT + HEALTHBAR_HEIGHT) * 1.5, 0);
+        healthBarMesh.position.set(0, CAT_HEIGHT + HEALTHBAR_HEIGHT, 0);
         unit.mesh.add(healthBarMesh);
 
         // items
@@ -342,7 +341,7 @@ export default class Painter {
             itemMesh.name = "item";
             itemMesh.position.set(
                 (1 - i) * (ITEM_WIDTH + ITEM_GAP),
-                CAT_HEIGHT + HEALTHBAR_HEIGHT,
+                CAT_HEIGHT + HEALTHBAR_HEIGHT - ITEM_WIDTH,
                 0
             );
             itemMesh.item = item;
@@ -379,20 +378,23 @@ function onPointerDown(event) {
         Painter.scene.children,
         false
     );
-    if (intersects.length > 0) {
-        const object = intersects[0].object;
+    intersects.forEach((intersect) => {
+        const object = intersect.object;
         if (object.name === "unit") {
             if (object.unit.inBattle) return;
             Painter.isDragging = true;
             Painter.draggingObject = object;
         }
-    }
+    });
     UI.hideUnitInfo();
 }
 
 function onPointerMove(event) {
-    if (!Painter.isDragging) return;
+    if (!Painter.isDragging) {
+        return;
+    }
     if (UI.isDragging) {
+        console.log("dragging item");
         UI.isDragging = false;
         return;
     }

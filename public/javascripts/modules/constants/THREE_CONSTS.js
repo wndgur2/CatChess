@@ -45,7 +45,7 @@ for (let i = 6; i >= 0; i--) {
 
 Object.freeze(COORDINATES);
 
-const CAT_HEIGHT = PLATE_RADIUS / 2;
+const CAT_HEIGHT = PLATE_RADIUS;
 
 const HEALTHBAR_WIDTH = PLATE_RADIUS * 1.5;
 const HEALTHBAR_HEIGHT = PLATE_RADIUS / 3;

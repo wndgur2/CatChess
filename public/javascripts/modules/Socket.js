@@ -55,7 +55,9 @@ export default class Socket {
                     break;
                 }
                 case "boardUpdate": {
-                    Player.getPlayerById(data.player)._board = data.board;
+                    Player.getPlayerById(data.player)._board = data.board.map(
+                        (row) => row.map((cat) => (cat ? new Unit(cat) : null))
+                    );
                     break;
                 }
                 case "queueUpdate": {
