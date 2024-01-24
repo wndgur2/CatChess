@@ -51,11 +51,8 @@ class Unit {
             target.die = true;
             this.battleField.board[target.y][target.x] = null;
             // item drop
-            if (target.owner == "creep") {
+            if (target.owner == "creep")
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
-                getPlayer(this.owner).pushItem(Item.getRandomItem());
-                getPlayer(this.owner).pushItem(Item.getRandomItem());
-            }
         }
 
         this.delay += 100;

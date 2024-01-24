@@ -369,7 +369,6 @@ function onResize() {
 }
 
 function onPointerDown(event) {
-    console.log("onPointerDown");
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -392,7 +391,6 @@ function onPointerDown(event) {
 }
 
 function onPointerMove(event) {
-    console.log("onPointerMove");
     if (!Painter.isDragging) return;
     if (UI.isDragging) {
         UI.isDragging = false;
@@ -421,16 +419,14 @@ function onPointerMove(event) {
 }
 
 function onPointerUp(event) {
-    console.log("onPointerUp");
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
     if (
         // click 판정
-        Painter.mouse.x <= Painter.dragStart.x + PLATE_RADIUS / 50 &&
-        Painter.mouse.x >= Painter.dragStart.x - PLATE_RADIUS / 50 &&
-        Painter.mouse.y <= Painter.dragStart.y + PLATE_RADIUS / 50 &&
-        Painter.mouse.y >= Painter.dragStart.y - PLATE_RADIUS / 50
+        Painter.mouse.x <= Painter.dragStart.x + 0.1 &&
+        Painter.mouse.x >= Painter.dragStart.x - 0.1 &&
+        Painter.mouse.y <= Painter.dragStart.y + 0.1 &&
+        Painter.mouse.y >= Painter.dragStart.y - 0.1
     ) {
         onPointerClick(event);
     }
@@ -462,7 +458,6 @@ function onPointerUp(event) {
 }
 
 function cancelDragging() {
-    console.log("cancelDragging");
     if (!Painter.isDragging) return;
     Painter.isDragging = false;
     Painter.drawUnit(
@@ -473,7 +468,6 @@ function cancelDragging() {
 }
 
 function onPointerClick(event) {
-    console.log("onPointerClick");
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -491,12 +485,10 @@ function onPointerClick(event) {
 }
 
 function onDragOver(event) {
-    console.log("onDragOver");
     event.preventDefault();
 }
 
 function onDrop(event) {
-    console.log("onDrop");
     if (!UI.isDragging) return;
 
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;

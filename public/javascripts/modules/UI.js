@@ -37,10 +37,10 @@ export default class UI {
 
         // 2 x 3 inventory
         for (let i = 0; i < 3; i++) {
-            let row = document.createElement("div");
+            let row = document.createElement("tr");
             row.className = "row";
             for (let j = 0; j < 2; j++) {
-                let item = document.createElement("div");
+                let item = document.createElement("td");
                 item.id = `inventory-${i}-${j}`;
 
                 item.className = "cell";
@@ -50,6 +50,10 @@ export default class UI {
             }
             document.getElementById("inventory").appendChild(row);
         }
+
+        document
+            .getElementById("inventory")
+            .appendChild(document.getElementById("moneyWrapper"));
 
         let itemEls = document.getElementsByClassName("item");
         for (let i = 0; i < itemEls.length; i++) {
@@ -122,22 +126,18 @@ function inventoryDragStart(event) {
 }
 
 function itemMouseEnter(event) {
-    console.log("itemMouseOver");
     UI.popUp(UI.infoUnit.items[this.id].info(), event);
 }
 
 function itemMouseMove(event) {
-    console.log("itemMouseMove");
     UI.popUp(UI.infoUnit.items[this.id].info(), event);
 }
 
 function itemMouseLeave(event) {
-    console.log("itemMouseLeave");
     UI.popDown();
 }
 
 function shopMouseEnter(event) {
-    console.log("shopMouseEnter");
     if (!Painter.isDragging) return;
     event.preventDefault();
     let shopEl = document.getElementById("shop");
@@ -145,14 +145,12 @@ function shopMouseEnter(event) {
 }
 
 function shopMouseLeave(event) {
-    console.log("shopMouseLeave");
     if (!Painter.isDragging) return;
     event.preventDefault();
     Player.player._shop = Player.player.shop;
 }
 
 function shopPointerUp(event) {
-    console.log("shopPointerUp");
     if (!Painter.isDragging) return;
     Socket.sendMsg("reqSellCat", {
         cat: Painter.draggingObject.unit,

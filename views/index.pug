@@ -23,56 +23,60 @@ block content
           span#timer
       #leftWrapper
         #damage
-        span 아이템
-        #inventory
+        table 
+          tbody#inventory
+            tr
+              span 아이템
+        #moneyWrapper
+          span 💰
+          span#money
       #rightWrapper
       #bottomWrapper
         #streak
         #bottomRow
-          #myInfo
-            div#levelWrapper
-              span 레벨:&nbsp
-              span#level 1
-            div#expWrapper
-              span 경험치:&nbsp
-              span#curExp 0
-              span /
-              span#maxExp 2
-            div#moneyWrapper
-              span 💰
-              span#money
           #buyBtns
-            button#reload 상점 새로고침
-            button#buyExp 경험치 구매
+            button#reload Reload 2💰
+            button#buyExp
+              #levelInfo
+                span Lv.
+                span#level 1
+                span &nbsp
+                span#curExp 0
+                span /
+                span#maxExp 2
+              span Exp 4💰
           #shop
           #unitInfo
-            #catIntro
-              #catImgWrapper
-              #catName
-            .catStats
-              div
-                span 💰
-                #cost
-              div
-                span ❤️
-                #maxHp
-              div
-                span 🗡️
-                #ad
-            .catStats
-              div
-                span 🛡️
-                #armor
-              div
-                span 🎯
-                #range
-              div
-                span 🏃
-                #speed
-            #catSkills
-              #passive.catSkill
-              #active.catSkill
-            #catItems
+            #unitPortrait
+              #unitImgWrapper
+              #unitPortraitGradient
+            #unitDesc
+              #unitName
+              #unitStats
+                .unitStat
+                  div
+                    span 💰
+                    #cost
+                  div
+                    span ❤️
+                    #maxHp
+                  div
+                    span 🗡️
+                    #ad
+                .unitStat
+                  div
+                    span 🛡️
+                    #armor
+                  div
+                    span 🎯
+                    #range
+                  div
+                    span 🏃
+                    #speed
+            #unitSkills
+              #passive.unitSkill
+              #active.unitSkill
+            #unitItems
               .item#0
               .item#1
               .item#2

@@ -29,7 +29,7 @@ export default class Unit {
         this.inBattle = false;
 
         // load image from images/units/this.id.jpg
-        this.image = `<img id="catImg" src="/images/units/${this.id}.jpg" />`;
+        this.image = `<img id="unitImg" src="/images/units/${this.id}.jpg" />`;
         this.color = COST_COLORS[this.originalCost];
     }
 
@@ -38,10 +38,10 @@ export default class Unit {
     }
 
     showInfo() {
-        document.getElementById("catImgWrapper").innerHTML = this.image;
-        document.getElementById("catName").innerHTML =
+        document.getElementById("unitImgWrapper").innerHTML = this.image;
+        document.getElementById("unitName").innerHTML =
             "★".repeat(this.tier) + this.name;
-        document.getElementById("catName").style.color = this.color;
+        document.getElementById("unitName").style.color = this.color;
         document.getElementById("cost").innerHTML = this.cost;
         document.getElementById("maxHp").innerHTML = this.maxHp;
         document.getElementById("ad").innerHTML = this.ad;

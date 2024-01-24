@@ -1,7 +1,7 @@
 import Game from "./Game.js";
 import Unit from "./Unit.js";
 import Socket from "./Socket.js";
-import { GAME_STATES } from "./constants/CONSTS.js";
+import { COST_COLORS, GAME_STATES } from "./constants/CONSTS.js";
 import Painter from "./Painter.js";
 
 export default class Player {
@@ -85,30 +85,42 @@ export default class Player {
         shop.innerHTML = "";
         for (let i = 0; i < newShop.length; i++) {
             let unit = document.createElement("button");
-            unit.style.display = "flex";
-            unit.style.flexDirection = "column";
-            unit.style.alignItems = "center";
-            unit.style.justifyContent = "center";
-
-            if (newShop[i] === null) {
-                shop.appendChild(unit);
-                continue;
-            }
+            shop.appendChild(unit);
+            if (newShop[i] === null) continue;
             unit.onclick = function () {
                 Socket.sendMsg("reqBuyCat", {
                     index: i,
                 });
             };
 
-            let cost = document.createElement("span");
-            cost.innerHTML = newShop[i].cost + "💰";
-            unit.appendChild(cost);
+            let unitImageContainer = document.createElement("div");
+            unitImageContainer.className = "unitImageContainer";
+            unitImageContainer.style.backgroundImage = `url(/images/units/${newShop[i].id}.jpg)`;
+
+            let gradient = document.createElement("div");
+            gradient.className = "gradient";
+            unitImageContainer.appendChild(gradient);
+
+            unit.appendChild(unitImageContainer);
+
+            let unitInfo = document.createElement("div");
+            unitInfo.className = "shopUnitInfo";
+
+            if (newShop[i] === null) {
+                shop.appendChild(unit);
+                continue;
+            }
 
             let name = document.createElement("span");
             name.innerHTML = newShop[i].name;
+            name.style.color = COST_COLORS[newShop[i].cost];
+            unitInfo.appendChild(name);
 
-            unit.appendChild(name);
-            shop.appendChild(unit);
+            let cost = document.createElement("span");
+            cost.innerHTML = newShop[i].cost + "💰";
+            unitInfo.appendChild(cost);
+
+            unit.appendChild(unitInfo);
         }
     }
 
