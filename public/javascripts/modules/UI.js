@@ -27,11 +27,11 @@ export default class UI {
         });
 
         document.addEventListener("keypress", (event) => {
-            if (event.key === "D" || event.key === "d")
+            if (event.key.toUpperCase() === "D")
                 Socket.sendMsg("reqReload", "");
-            else if (event.key === "F" || event.key === "f")
+            else if (event.key.toUpperCase() === "F")
                 Socket.sendMsg("reqBuyExp", "");
-            else if (event.key === "E" || event.key === "e")
+            else if (event.key.toUpperCase() === "E")
                 Painter.sellUnitOnKeypress();
         });
 
@@ -176,7 +176,7 @@ function shopMouseEnter(event) {
     if (!Painter.isDragging) return;
     event.preventDefault();
     let shopEl = document.getElementById("shop");
-    shopEl.innerHTML = `고양이 판매하기<br/>💰${Painter.draggingObject.unit.cost}`;
+    shopEl.innerHTML = `고양이 판매하기 [E]<br/>💰${Painter.draggingObject.unit.cost}`;
 }
 
 function shopMouseLeave(event) {
