@@ -106,11 +106,11 @@ body {
 #leftWrapper {
     z-index: 1;
     position: absolute;
-    top: 30dvh;
+    top: 26dvh;
     left: 0vw;
     width: 16vw;
     min-width: 160px;
-    height: 32dvh;
+    height: 44dvh;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -156,6 +156,9 @@ td {
     font-size: 16px;
     color: #fff;
     user-select: none;
+
+    overflow: hidden;
+    object-fit: cover;
 }
 
 .cell:hover {
@@ -195,7 +198,6 @@ td {
     display: flex;
     flex-direction: column;
     align-items: center;
-    pointer-events: none;
 }
 
 #streak {
