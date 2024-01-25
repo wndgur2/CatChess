@@ -109,14 +109,13 @@ class Game {
         });
     }
 
-    // 게임 진행 로직: arrange -> ready -> battle -> finish -> arrange
-
+    // 게임 진행: arrange -> ready -> battle -> finish -> arrange
     arrangeState() {
         clearTimeout(this.timeout);
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 7;
+        this.time = 20;
         this.updateState();
 
         // 결과 지급, 리로드
@@ -133,6 +132,7 @@ class Game {
     readyState() {
         clearTimeout(this.timeout);
 
+        // put units
         this.players.forEach((player) => {
             // count cats
             let catN = 0;
@@ -168,7 +168,7 @@ class Game {
             this.battleState();
         }, this.time * 1000);
 
-        if (this.stage == 1) {
+        if (this.stage == 1 && this.round <= CREEP_ROUNDS.length) {
             this.creep.level = CREEP_ROUNDS[this.round].level;
             this.creep.board = CREEP_ROUNDS[this.round].board;
             this.players.forEach((player) =>

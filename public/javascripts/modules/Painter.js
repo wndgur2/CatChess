@@ -425,7 +425,7 @@ function onPointerMove(event) {
         if (object.name === "floor") {
             Painter.draggingObject.position.set(
                 intersects[i].point.x,
-                CAT_HEIGHT,
+                CAT_HEIGHT / 1.5,
                 intersects[i].point.z
             );
             break;

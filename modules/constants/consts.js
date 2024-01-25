@@ -1,6 +1,5 @@
-const TIME_STEP = 50; // bigger is slower (a step per a TIME_STEP)
+const TIME_STEP = 60; // bigger is slower (a step per a TIME_STEP)
 const PLAYER_NUM = 2;
-const MAX_LEVEL = 6;
 const DIRECTIONS = [
     [
         [1, 0],
@@ -27,11 +26,13 @@ const GAME_STATES = {
 };
 const SHOP_POSSIBILITIES = [
     [100, 0, 0, 0],
-    [100, 0, 0, 0],
+    [90, 10, 0, 0],
     [75, 25, 0, 0],
     [50, 30, 20, 0],
-    [30, 40, 25, 5],
-    [15, 25, 35, 25],
+    [30, 40, 29, 1],
+    [15, 40, 40, 5],
+    [5, 35, 40, 20],
+    [0, 25, 35, 40],
 ];
 
 module.exports = {
@@ -39,6 +40,5 @@ module.exports = {
     TIME_STEP,
     PLAYER_NUM,
     DIRECTIONS,
-    MAX_LEVEL,
     SHOP_POSSIBILITIES,
 };

@@ -27,6 +27,7 @@ export default class Unit {
 
         Painter.createUnitMesh(this);
         this.inBattle = false;
+        this.focused = false;
 
         // load image from images/units/this.id.jpg
         this.image = `<img id="unitImg" src="/images/units/${this.id}.jpg" />`;
@@ -38,11 +39,13 @@ export default class Unit {
     }
 
     showInfo() {
+        this.focused = true;
         document.getElementById("unitImgWrapper").innerHTML = this.image;
         document.getElementById("unitName").innerHTML =
             "★".repeat(this.tier) + this.name;
         document.getElementById("unitName").style.color = this.color;
         document.getElementById("cost").innerHTML = this.cost;
+        document.getElementById("hp").innerHTML = this.hp;
         document.getElementById("maxHp").innerHTML = this.maxHp;
         document.getElementById("ad").innerHTML = this.ad;
         document.getElementById("armor").innerHTML = this.armor;
@@ -56,6 +59,7 @@ export default class Unit {
 
     set _hp(newHp) {
         this.hp = newHp < 0 ? 0 : newHp;
+        if (this.focused) document.getElementById("hp").innerHTML = this.hp;
 
         const healthBarMesh = this.mesh.getObjectByName("healthBar");
         healthBarMesh.scale.x = this.hp / this.maxHp;
@@ -76,7 +80,6 @@ export default class Unit {
                     ((1 - damagedHealthMesh.scale.x) * HEALTHBAR_WIDTH) / 2;
             }
         }
-
         animateHealthDamage();
     }
 

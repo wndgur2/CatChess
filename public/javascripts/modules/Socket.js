@@ -47,6 +47,7 @@ export default class Socket {
                     Game._round = data.round;
                     Game._stage = data.stage;
                     Painter.resetMeshes();
+                    UI.hideUnitInfo();
                     break;
                 }
                 case "stateUpdate": {
@@ -97,6 +98,7 @@ export default class Socket {
                         row.map((cat) => (cat ? new Unit(cat) : null))
                     );
                     Battle.initBattle(data.reversed);
+                    UI.hideUnitInfo();
                     break;
                 }
                 case "battle_attack": {

@@ -124,6 +124,8 @@ export default class UI {
     static hideUnitInfo() {
         let unitInfoEl = document.getElementById("unitInfo");
         unitInfoEl.style.display = "none";
+        if (this.infoUnit) this.infoUnit.focused = false;
+        this.infoUnit = null;
 
         let shopEl = document.getElementById("shop");
         shopEl.style.display = "flex";
@@ -155,11 +157,13 @@ function inventoryItemMouseLeave(event) {
 
 function itemMouseEnter(event) {
     console.log("mouseEnter");
-    UI.popUp(UI.infoUnit.items[this.id].info(), event);
+    if (UI.infoUnit.items[this.id])
+        UI.popUp(UI.infoUnit.items[this.id].info(), event);
 }
 
 function itemMouseMove(event) {
-    UI.popUp(UI.infoUnit.items[this.id].info(), event);
+    if (UI.infoUnit.items[this.id])
+        UI.popUp(UI.infoUnit.items[this.id].info(), event);
 }
 
 function itemMouseLeave(event) {

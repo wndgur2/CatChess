@@ -1,9 +1,5 @@
 const SimpleCat = require("./SimpleCat");
-const {
-    MAX_LEVEL,
-    SHOP_POSSIBILITIES,
-    GAME_STATES,
-} = require("./constants/CONSTS");
+const { SHOP_POSSIBILITIES, GAME_STATES } = require("./constants/CONSTS");
 const { sendMsg, addPlayer } = require("./utils");
 
 const IN_QUEUE = 3;
@@ -66,12 +62,12 @@ class Player {
     }
 
     set _exp(newExp) {
-        if (this.level === MAX_LEVEL) return;
+        if (this.level === SHOP_POSSIBILITIES.length) return;
         this.exp = parseInt(newExp);
         if (this.exp >= this.maxExp) {
             this.exp -= this.maxExp;
             this.level++;
-            this.maxExp += 3;
+            this.maxExp += this.level * 2;
             this.updateLevel();
         }
         this.updateExp();
@@ -312,7 +308,7 @@ class Player {
 
     buyExp() {
         if (this.money < 4) return false;
-        if (this.level === 6) return false;
+        if (this.level === SHOP_POSSIBILITIES.length) return false;
         this._money -= 4;
         this._exp += 4;
         return true;
