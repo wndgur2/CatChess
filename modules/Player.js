@@ -38,6 +38,7 @@ class Player {
 
         this.winning = 0;
         this.losing = 0;
+        this.synergies = [];
     }
 
     updatePlayer() {
@@ -214,6 +215,7 @@ class Player {
     }
 
     putCat(from, to) {
+        // TODO Synergy update
         if (to.y <= 2 && this.game.state !== "arrange") {
             this.updateBoard();
             this.updateQueue();
@@ -392,6 +394,10 @@ class Player {
         this.game.sendMsgToAll("boardUpdate", {
             player: this.id,
             board: this.board,
+        });
+        this.game.sendMsgToAll("synergyUpdate", {
+            player: this.id,
+            synergies: this.synergies,
         });
     }
 
