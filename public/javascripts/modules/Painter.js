@@ -27,6 +27,7 @@ export default class Painter {
     static allyQueue = new Array(7).fill(null);
     static draggingObject = null;
     static isDragging = false;
+    static textures = {};
 
     static initScene() {
         this.scene = new THREE.Scene();
@@ -60,9 +61,6 @@ export default class Painter {
         pointLight.castShadow = true;
         this.scene.add(pointLight);
 
-        // board & queue
-        this.drawPlates();
-
         // renderer
         this.renderer = new THREE.WebGLRenderer({
             antialias: true,
@@ -91,6 +89,26 @@ export default class Painter {
 
         //effect
         this.hitObjectPool = new objectPool(blood, 100);
+
+        // texture
+        this.textureLodaer = new THREE.TextureLoader();
+        this.textures.background = this.textureLodaer.load(
+            "/images/grounds/background.jpg",
+            (texture) => {
+                texture.wrapS = THREE.RepeatWrapping;
+                texture.wrapT = THREE.RepeatWrapping;
+                texture.repeat.set(PLATE_RADIUS * 5, PLATE_RADIUS * 5);
+            }
+        );
+        this.textures.board = this.textureLodaer.load(
+            "/images/grounds/board.jpg"
+        );
+        this.textures.queue = this.textureLodaer.load(
+            "/images/grounds/queue.jpg"
+        );
+
+        // board & queue
+        this.drawPlates();
     }
 
     static startRendering() {
@@ -111,14 +129,7 @@ export default class Painter {
             PLATE_RADIUS * 50
         );
         const backgroundMaterial = new THREE.MeshLambertMaterial({
-            map: new THREE.TextureLoader().load(
-                "/images/grounds/background.jpg",
-                (texture) => {
-                    texture.wrapS = THREE.RepeatWrapping;
-                    texture.wrapT = THREE.RepeatWrapping;
-                    texture.repeat.set(PLATE_RADIUS * 5, PLATE_RADIUS * 5);
-                }
-            ),
+            map: this.textures.background,
             side: THREE.DoubleSide,
         });
         const background = new THREE.Mesh(
@@ -154,7 +165,7 @@ export default class Painter {
             6
         );
         let material = new THREE.MeshLambertMaterial({
-            map: new THREE.TextureLoader().load("/images/grounds/board.jpg"),
+            map: this.textures.board,
         });
 
         COORDINATES.BOARD.forEach((row, i) => {
@@ -180,7 +191,7 @@ export default class Painter {
 
         // 1 x 7 ally queue
         material = new THREE.MeshLambertMaterial({
-            map: new THREE.TextureLoader().load("/images/grounds/queue.jpg"),
+            map: this.textures.queue,
         });
 
         COORDINATES.ALLY_QUEUE.forEach((coord, i) => {
@@ -198,7 +209,7 @@ export default class Painter {
 
         // 1 x 7 enemy queue
         material = new THREE.MeshLambertMaterial({
-            map: new THREE.TextureLoader().load("/images/grounds/queue.jpg"),
+            map: this.textures.queue,
         });
         COORDINATES.ENEMY_QUEUE.forEach((coord, i) => {
             const cube = new THREE.Mesh(boxGeometry, material);
@@ -253,8 +264,12 @@ export default class Painter {
     }
 
     static createUnitMesh(unit) {
-        //texture 불러오는 부분 수정. 매번 불러와서 렉 https://threejs.org/docs/#api/en/loaders/managers/LoadingManager
         //body
+        if (!this.textures[unit.id]) {
+            this.textures[unit.id] = this.textureLodaer.load(
+                `/images/units/${unit.id}.jpg`
+            );
+        }
         unit.mesh = new THREE.Mesh(
             new THREE.BoxGeometry(
                 PLATE_RADIUS / 1.5,
@@ -262,9 +277,7 @@ export default class Painter {
                 PLATE_RADIUS / 1.5
             ),
             new THREE.MeshStandardMaterial({
-                map: new THREE.TextureLoader().load(
-                    `/images/units/${unit.id}.jpg`
-                ),
+                map: this.textures[unit.id],
             })
         );
         unit.mesh.name = "unit";
