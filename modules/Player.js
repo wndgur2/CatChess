@@ -216,8 +216,14 @@ class Player {
 
     putCat(from, to) {
         // TODO Synergy update
-        if (to.y <= 2 && this.game.state !== "arrange") {
-            this.updateBoard();
+        // for that, split this function into 4 functions
+        // 1. putCatFromQueueToBoard
+        // 2. putCatFromBoardToBoard
+        // 3. putCatFromBoardToQueue
+        // 4. putCatFromQueueToQueue
+        // and call updateSynergy() after each function
+
+        if (to.y <= 2 && this.game.state !== GAME_STATES.ARRANGE) {
             this.updateQueue();
             return false;
         }
@@ -395,16 +401,19 @@ class Player {
             player: this.id,
             board: this.board,
         });
-        this.game.sendMsgToAll("synergyUpdate", {
-            player: this.id,
-            synergies: this.synergies,
-        });
     }
 
     updateQueue() {
         this.game.sendMsgToAll("queueUpdate", {
             player: this.id,
             queue: this.queue,
+        });
+    }
+
+    updateSynergies() {
+        this.game.sendMsgToAll("synergiesUpdate", {
+            player: this.id,
+            synergies: this.synergies,
         });
     }
 

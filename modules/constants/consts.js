@@ -21,8 +21,8 @@ const DIRECTIONS = [
 ];
 const GAME_STATES = {
     ARRANGE: "arrange",
-    BATTLE: "battle",
     READY: "ready",
+    BATTLE: "battle",
     FINISH: "finish",
 };
 const SHOP_POSSIBILITIES = [
