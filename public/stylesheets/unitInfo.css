@@ -54,22 +54,22 @@
     width: 16%;
     height: 100%;
 }
-#unitName {
+#unitName,
+#unitSynergies {
     white-space: nowrap;
     overflow: hidden;
     font-size: 1.4vw;
 }
 #unitStats {
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-direction: row;
+    justify-content: space-around;
 }
 .unitStat {
-    width: 50%;
     font-size: 1.3vw;
     align-items: start;
 }
-
 .unitStat div {
     display: flex;
     flex-direction: row;

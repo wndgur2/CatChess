@@ -10,6 +10,7 @@ export default class Unit {
         this.id = data.id;
         this.tier = data.tier;
         this.name = data.name;
+        this.synergies = data.synergies;
         this.desc = data.desc;
         this.ad = data.ad;
         this.speed = data.speed;
@@ -44,6 +45,7 @@ export default class Unit {
         document.getElementById("unitName").innerHTML =
             "★".repeat(this.tier) + this.name;
         document.getElementById("unitName").style.color = this.color;
+        document.getElementById("unitSynergies").innerHTML = this.synergies;
         document.getElementById("cost").innerHTML = this.cost;
         document.getElementById("hp").innerHTML = this.hp;
         document.getElementById("maxHp").innerHTML = this.maxHp;

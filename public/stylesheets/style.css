@@ -187,12 +187,25 @@ td {
     pointer-events: none;
 }
 
+#synergies {
+    z-index: 1;
+    position: absolute;
+    bottom: 22dvh;
+    width: 100dvw;
+    height: 5dvh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1dvw;
+}
+
 #bottomWrapper {
     z-index: 1;
     position: absolute;
     bottom: 0px;
     width: 100vw;
-    height: 26dvh;
+    height: 22dvh;
     padding: 0px;
     margin: 0px;
     display: flex;
@@ -215,7 +228,7 @@ td {
 #bottomRow {
     display: flex;
     width: 100dvw;
-    height: 82%;
+    height: 100%;
     align-items: center;
     justify-content: space-around;
     background-color: #000;
@@ -301,12 +314,6 @@ td {
         linear-gradient(to bottom, rgba(0, 0, 0, 0), 97%, rgba(0, 0, 0, 0.5)),
         linear-gradient(to left, rgba(0, 0, 0, 0), 97%, rgba(0, 0, 0, 0.5)),
         linear-gradient(to right, rgba(0, 0, 0, 0), 40%, rgba(0, 0, 0, 1));
-    /* background: linear-gradient(
-        to right,
-        rgba(0, 0, 0, 0),
-        40%,
-        rgba(0, 0, 0, 1)
-    ); */
 }
 
 .shopUnitInfo {

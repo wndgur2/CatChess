@@ -10,6 +10,7 @@ class Unit {
         const magnifier = Math.sqrt(this.tier).toPrecision(2);
 
         this.name = this.proto.name;
+        this.synergies = this.proto.synergies;
         this.desc = this.proto.desc;
         this.ad = parseInt(this.proto.ad * magnifier);
         this.speed = parseInt(this.proto.speed * magnifier);
