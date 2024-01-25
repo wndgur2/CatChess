@@ -24,7 +24,7 @@ const CATS = {
     arherCat: {
         id: "arherCat",
         name: "궁수 고양이",
-        desc: "description of houseCat.",
+        desc: "description of arherCat.",
         cost: 1,
         ad: 10,
         speed: 13,
