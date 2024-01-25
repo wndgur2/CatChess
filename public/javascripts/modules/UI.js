@@ -31,6 +31,8 @@ export default class UI {
                 Socket.sendMsg("reqReload", "");
             else if (event.key === "F" || event.key === "f")
                 Socket.sendMsg("reqBuyExp", "");
+            else if (event.key === "E" || event.key === "e")
+                Painter.sellUnitOnKeypress();
         });
 
         document.getElementById("buyExp").addEventListener("click", () => {

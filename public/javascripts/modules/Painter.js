@@ -367,6 +367,23 @@ export default class Painter {
             if (child.name === "unit") this.scene.remove(child);
         });
     }
+
+    static sellUnitOnKeypress() {
+        Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
+        const intersects = Painter.raycaster.intersectObjects(
+            Painter.scene.children,
+            false
+        );
+        intersects.forEach((intersect) => {
+            const object = intersect.object;
+            if (object.name === "unit") {
+                if (object.unit.owner !== Player.player.id) return;
+                Socket.sendMsg("reqSellCat", {
+                    cat: object.unit,
+                });
+            }
+        });
+    }
 }
 
 function getQueueCoords(x, isAlly) {
@@ -403,6 +420,8 @@ function onPointerDown(event) {
 }
 
 function onPointerMove(event) {
+    Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     if (!Painter.isDragging) {
         return;
     }
@@ -411,9 +430,6 @@ function onPointerMove(event) {
         UI.isDragging = false;
         return;
     }
-
-    Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
     Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
     const intersects = Painter.raycaster.intersectObjects(
