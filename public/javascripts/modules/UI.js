@@ -26,6 +26,13 @@ export default class UI {
             Socket.sendMsg("reqReload", "");
         });
 
+        document.addEventListener("keypress", (event) => {
+            if (event.key === "D" || event.key === "d")
+                Socket.sendMsg("reqReload", "");
+            else if (event.key === "F" || event.key === "f")
+                Socket.sendMsg("reqBuyExp", "");
+        });
+
         document.getElementById("buyExp").addEventListener("click", () => {
             Socket.sendMsg("reqBuyExp", "");
         });
@@ -46,6 +53,9 @@ export default class UI {
                 item.className = "cell";
                 item.addEventListener("dragstart", inventoryDragStart);
                 item.draggable = false;
+                item.addEventListener("mouseenter", inventoryItemMouseEnter);
+                item.addEventListener("mousemove", inventoryItemMouseMove);
+                item.addEventListener("mouseleave", inventoryItemMouseLeave);
                 row.appendChild(item);
             }
             document.getElementById("inventory").appendChild(row);
@@ -57,9 +67,9 @@ export default class UI {
 
         let itemEls = document.getElementsByClassName("item");
         for (let i = 0; i < itemEls.length; i++) {
-            itemEls[i].addEventListener("mouseenter", itemMouseEnter);
+            itemEls[i].addEventListener("mouseover", itemMouseEnter);
             itemEls[i].addEventListener("mousemove", itemMouseMove);
-            itemEls[i].addEventListener("mouseleave", itemMouseLeave);
+            itemEls[i].addEventListener("mouseout", itemMouseLeave);
         }
     }
 
@@ -125,7 +135,26 @@ function inventoryDragStart(event) {
     UI.isDragging = true;
 }
 
+function inventoryItemMouseEnter(event) {
+    let index =
+        parseInt(this.id.split("-")[1]) * 2 + parseInt(this.id.split("-")[2]);
+    if (Player.player.items[index])
+        UI.popUp(Player.player.items[index].info(), event);
+}
+
+function inventoryItemMouseMove(event) {
+    let index =
+        parseInt(this.id.split("-")[1]) * 2 + parseInt(this.id.split("-")[2]);
+    if (Player.player.items[index])
+        UI.popUp(Player.player.items[index].info(), event);
+}
+
+function inventoryItemMouseLeave(event) {
+    UI.popDown();
+}
+
 function itemMouseEnter(event) {
+    console.log("mouseEnter");
     UI.popUp(UI.infoUnit.items[this.id].info(), event);
 }
 
