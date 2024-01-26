@@ -50,7 +50,7 @@ export default class Unit {
         unitSynergiesEl.innerHTML = "";
         this.synergies.forEach((synergy) => {
             console.log(synergy);
-            const s = new Synergy({ id: synergy });
+            const s = Synergy.getSynergy(synergy);
             unitSynergiesEl.appendChild(s.display());
         });
         document.getElementById("cost").innerHTML = this.cost;

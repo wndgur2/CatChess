@@ -1,15 +1,22 @@
+import Player from "./Player.js";
 import UI from "./UI.js";
 import { SYNERGIES } from "./constants/CONSTS.js";
 
 export default class Synergy {
+    static synergyInstances = {};
+
+    static getSynergy(id) {
+        if (Synergy.synergyInstances[id]) {
+            return Synergy.synergyInstances[id];
+        } else {
+            return new Synergy({ id: id });
+        }
+    }
+
     constructor(data) {
         this.id = data.id;
         this.desc = SYNERGIES[this.id].desc;
-    }
-
-    static describe(id) {
-        let s = new Synergy({ id });
-        return s.describe();
+        Synergy.synergyInstances[this.id] = this;
     }
 
     describe(amount = 0) {
@@ -59,7 +66,14 @@ export default class Synergy {
 }
 
 function synergyMouseEnter(event) {
-    UI.popUp(Synergy.describe(event.target.id), event);
+    UI.popUp(
+        Synergy.getSynergy(event.target.id).describe(
+            Player.player.synergies[event.target.id]
+                ? Player.player.synergies[event.target.id].length
+                : 0
+        ),
+        event
+    );
 }
 
 function synergyMouseLeave() {

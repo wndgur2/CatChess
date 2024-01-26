@@ -122,7 +122,7 @@ export default class Player {
             synergiesEl.className = "shopSynergies";
 
             for (let synergy of newShop[i].synergies) {
-                synergiesEl.appendChild(new Synergy({ id: synergy }).display());
+                synergiesEl.appendChild(Synergy.getSynergy(synergy).display());
             }
             unitInfo.appendChild(synergiesEl);
 
@@ -182,7 +182,9 @@ export default class Player {
         synergiesEl.innerHTML = "";
         for (let synergy in newSynergies) {
             synergiesEl.appendChild(
-                new Synergy({ id: synergy }).display(newSynergies[synergy])
+                Synergy.getSynergy(synergy).display(
+                    newSynergies[synergy] ? newSynergies[synergy].length : 0
+                )
             );
         }
     }

@@ -48,11 +48,11 @@ class Battle {
             this.battleField.board.forEach((row) => {
                 row.forEach((cat) => {
                     if (!cat) return;
-                    for (const [synergy, amount] of Object.entries(
+                    for (const [synergy, cats] of Object.entries(
                         player.synergies
                     )) {
                         if (cat.synergies.includes(synergy)) {
-                            SYNERGIES[synergy].apply(cat, parseInt(amount));
+                            SYNERGIES[synergy].apply(cat, cats.length);
                         }
                     }
                 });

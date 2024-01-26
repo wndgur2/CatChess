@@ -291,8 +291,9 @@ class Player {
             row.forEach((cat) => {
                 if (!cat) return;
                 cat.synergies.forEach((synergy) => {
-                    if (!this.synergies[synergy]) this.synergies[synergy] = 0;
-                    this.synergies[synergy]++;
+                    if (!this.synergies[synergy]) this.synergies[synergy] = [];
+                    if (!this.synergies[synergy].includes(cat.id))
+                        this.synergies[synergy].push(cat.id);
                 });
             });
         });
