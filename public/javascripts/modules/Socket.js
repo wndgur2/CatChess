@@ -136,6 +136,11 @@ export default class Socket {
                     else alert("패배!");
                     break;
                 }
+                case "synergiesUpdate": {
+                    Player.getPlayerById(data.player)._synergies =
+                        data.synergies;
+                    break;
+                }
             }
         };
 

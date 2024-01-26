@@ -28,10 +28,10 @@ export default class Painter {
     static draggingObject = null;
     static isDragging = false;
     static textures = {};
+    static running = false;
 
     static initScene() {
         this.scene = new THREE.Scene();
-
         this.clock = new THREE.Clock();
 
         // camera
@@ -71,8 +71,10 @@ export default class Painter {
         this.renderer.setClearColor(0xeeeeee, 0.5);
         document.getElementById("game").appendChild(this.renderer.domElement);
 
+        // passes
         const renderScene = new RenderPass(this.scene, this.camera);
 
+        // composer
         this.composer = new EffectComposer(this.renderer);
         this.composer.addPass(renderScene);
 
@@ -87,10 +89,10 @@ export default class Painter {
         this.renderer.domElement.addEventListener("dragover", onDragOver);
         this.renderer.domElement.addEventListener("drop", onDrop);
 
-        //effect
+        // effect
         this.hitObjectPool = new objectPool(blood, 100);
 
-        // texture
+        // textures
         this.textureLodaer = new THREE.TextureLoader();
         this.textures.background = this.textureLodaer.load(
             "/images/grounds/background.jpg",
@@ -112,7 +114,10 @@ export default class Painter {
     }
 
     static startRendering() {
-        this.animate();
+        if (!this.running) {
+            this.animate();
+            this.running = true;
+        }
     }
 
     static animate() {
@@ -176,8 +181,8 @@ export default class Painter {
                     y: i,
                     x: j,
                 };
-                if (i >= 3) plate.name = "plate";
-                else plate.name = "enemy";
+                if (i >= 3) plate.name = "allyPlate";
+                else plate.name = "enemyPlate";
                 this.scene.add(plate);
             });
         });
@@ -199,7 +204,7 @@ export default class Painter {
             cube.translateX(coord[0]);
             cube.translateY(coord[1]);
             cube.translateZ(coord[2]);
-            cube.name = "plate";
+            cube.name = "allyPlate";
             cube.boardCoords = {
                 y: 6,
                 x: i,
@@ -216,7 +221,7 @@ export default class Painter {
             cube.translateX(coord[0]);
             cube.translateY(coord[1]);
             cube.translateZ(coord[2]);
-            cube.name = "enemy";
+            cube.name = "enemyPlate";
             this.scene.add(cube);
         });
     }
@@ -471,7 +476,7 @@ function onPointerUp(event) {
     );
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
-        if (object.name === "plate") {
+        if (object.name === "allyPlate") {
             Socket.sendMsg("reqPutCat", {
                 from: {
                     x: Painter.draggingObject.unit.x,

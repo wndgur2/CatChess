@@ -17,9 +17,9 @@ class Player {
     }
 
     init() {
-        this.level = 1;
+        this.level = 3;
         this.exp = -2;
-        this.money = -3;
+        this.money = 30;
         this.maxExp = 4;
         this.maxHp = 100;
         this.hp = 100;
@@ -34,7 +34,7 @@ class Player {
 
         this.winning = 0;
         this.losing = 0;
-        this.synergies = [];
+        this.synergies = {};
     }
 
     updatePlayer() {
@@ -45,6 +45,7 @@ class Player {
         this.updateMoney();
         this.updateBoard();
         this.updateQueue();
+        this.updateSynergies();
         this.updateWinning();
         this.updateLosing();
         this.updateItems();
@@ -204,6 +205,7 @@ class Player {
             c = this.board[cat.y][cat.x];
             this.board[cat.y][cat.x] = null;
             this.updateBoard();
+            this.countSynergy();
         }
         c.items.forEach((item) => this.pushItem(item));
 
@@ -211,18 +213,14 @@ class Player {
     }
 
     putCat(from, to) {
+        // from.y, to.y는 0, 1, 2, 3으로 클라이언트에서 제한함.
         // TODO Synergy update
-        // for that, split this function into 4 functions
-        // 1. putCatFromQueueToBoard
-        // 2. putCatFromBoardToBoard
-        // 3. putCatFromBoardToQueue
-        // 4. putCatFromQueueToQueue
-        // and call updateSynergy() after each function
 
         if (to.y <= 2 && this.game.state !== GAME_STATES.ARRANGE) {
             this.updateQueue();
             return false;
         }
+
         let unitToMove, unitToSwap;
 
         if (from.y === IN_QUEUE) {
@@ -249,6 +247,8 @@ class Player {
 
                 this.board[to.y][to.x] = unitToMove;
                 this.queue[from.x] = unitToSwap;
+
+                this.countSynergy();
             }
         } else {
             // from board
@@ -256,8 +256,11 @@ class Player {
             if (to.y === IN_QUEUE) {
                 // to queue
                 unitToSwap = this.queue[to.x];
-                this.queue[to.x] = unitToMove;
+
                 this.board[from.y][from.x] = unitToSwap;
+                this.queue[to.x] = unitToMove;
+
+                this.countSynergy();
             } else {
                 // to board
                 unitToSwap = this.board[to.y][to.x];
@@ -280,6 +283,20 @@ class Player {
         this.updateBoard();
         this.updateQueue();
         return true;
+    }
+
+    countSynergy() {
+        this.synergies = {};
+        this.board.forEach((row) => {
+            row.forEach((cat) => {
+                if (!cat) return;
+                cat.synergies.forEach((synergy) => {
+                    if (!this.synergies[synergy]) this.synergies[synergy] = 0;
+                    this.synergies[synergy]++;
+                });
+            });
+        });
+        this.updateSynergies();
     }
 
     reload(freeReload = false) {

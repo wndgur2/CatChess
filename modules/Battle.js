@@ -3,6 +3,7 @@ const Game = require("./Game");
 const Player = require("./Player");
 const { sendMsg } = require("./utils");
 const { TIME_STEP } = require("./constants/CONSTS.js");
+const SYNERGIES = require("./constants/SYNERGIES.js");
 
 class Battle {
     /**
@@ -29,6 +30,8 @@ class Battle {
 
         this.battleField = new BattleField([...board2, ...board1]);
 
+        this.applySynergies();
+
         [this.player1, this.player2].forEach((player) => {
             if (!player.ws) return;
             sendMsg(player.ws, "battleInit", {
@@ -36,6 +39,23 @@ class Battle {
                     row.map((c) => (c ? { ...c, battleField: null } : null))
                 ),
                 reversed: player === this.player2,
+            });
+        });
+    }
+
+    applySynergies() {
+        [this.player1, this.player2].forEach((player) => {
+            this.battleField.board.forEach((row) => {
+                row.forEach((cat) => {
+                    if (!cat) return;
+                    for (const [synergy, amount] of Object.entries(
+                        player.synergies
+                    )) {
+                        if (cat.synergies.includes(synergy)) {
+                            SYNERGIES[synergy].apply(cat, parseInt(amount));
+                        }
+                    }
+                });
             });
         });
     }
