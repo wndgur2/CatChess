@@ -12,16 +12,24 @@ const CATCHESS_ID = "CATCHESS_ID";
 
 const SYNERGIES = {
     Poeir: {
-        desc: "2: Poeir units gain 25% Attack Damage.\n4: Poeir units gain 50% Attack Damage.",
-        color: "#FF0000",
+        desc: {
+            3: "Poeir units gain 25% Attack Damage.",
+            6: "Poeir units gain 50% Attack Damage.",
+        },
     },
     Lumen: {
-        desc: "Lumen units gain 10% Attack Speed.",
-        color: "#00FF00",
+        desc: {
+            2: "Lumen units gain 10% Attack Speed.",
+            4: "Lumen units gain 25% Attack Speed.",
+            6: "Lumen units gain 50% Attack Speed.",
+        },
     },
     Nature: {
-        desc: "Nature units gain 10% Armor.",
-        color: "#0000FF",
+        desc: {
+            2: "Nature units gain 10% Armor.",
+            4: "Nature units gain 25% Armor.",
+            6: "Nature units gain 50% Armor.",
+        },
     },
 };
 

@@ -104,8 +104,16 @@ export default class UI {
         let popUpEl = document.getElementById("popUp");
         popUpEl.innerHTML = html;
         popUpEl.style.display = "flex";
-        popUpEl.style.left = mouseEvent.clientX + "px";
-        popUpEl.style.top = mouseEvent.clientY + "px";
+
+        if (mouseEvent.clientX + popUpEl.clientWidth > window.innerWidth)
+            popUpEl.style.left =
+                mouseEvent.clientX - popUpEl.clientWidth + "px";
+        else popUpEl.style.left = mouseEvent.clientX + "px";
+
+        if (mouseEvent.clientY + popUpEl.clientHeight > window.innerHeight)
+            popUpEl.style.top =
+                mouseEvent.clientY - popUpEl.clientHeight + "px";
+        else popUpEl.style.top = mouseEvent.clientY + "px";
     }
 
     static popDown() {

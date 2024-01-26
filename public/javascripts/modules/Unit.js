@@ -1,6 +1,7 @@
 import Item from "./Item.js";
 import Painter from "./Painter.js";
 import Player from "./Player.js";
+import Synergy from "./Synergy.js";
 import { COST_COLORS } from "./constants/CONSTS.js";
 import { HEALTHBAR_WIDTH } from "./constants/THREE_CONSTS.js";
 import { getBoardCoords } from "./untils.js";
@@ -45,7 +46,13 @@ export default class Unit {
         document.getElementById("unitName").innerHTML =
             "★".repeat(this.tier) + this.name;
         document.getElementById("unitName").style.color = this.color;
-        document.getElementById("unitSynergies").innerHTML = this.synergies;
+        let unitSynergiesEl = document.getElementById("unitSynergies");
+        unitSynergiesEl.innerHTML = "";
+        this.synergies.forEach((synergy) => {
+            console.log(synergy);
+            const s = new Synergy({ id: synergy });
+            unitSynergiesEl.appendChild(s.display());
+        });
         document.getElementById("cost").innerHTML = this.cost;
         document.getElementById("hp").innerHTML = this.hp;
         document.getElementById("maxHp").innerHTML = this.maxHp;

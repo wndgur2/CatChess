@@ -3,7 +3,7 @@ import Unit from "./Unit.js";
 import Socket from "./Socket.js";
 import { COST_COLORS, GAME_STATES, SYNERGIES } from "./constants/CONSTS.js";
 import Painter from "./Painter.js";
-import UI from "./UI.js";
+import Synergy from "./Synergy.js";
 
 export default class Player {
     static player = null;
@@ -27,6 +27,7 @@ export default class Player {
         ];
         this.queue = [null, null, null, null, null, null, null];
         this.items = [null, null, null, null, null, null];
+        this.synergies = {};
     }
 
     set _money(newMoney) {
@@ -121,20 +122,7 @@ export default class Player {
             synergiesEl.className = "shopSynergies";
 
             for (let synergy of newShop[i].synergies) {
-                let synergyEl = document.createElement("div");
-                synergyEl.id = synergy;
-                synergyEl.className = "synergy";
-                synergyEl.style.background = `url(/images/synergies/${synergy}.jpg)`;
-                synergyEl.style.backgroundSize = "cover";
-                synergyEl.style.backgroundPosition = "center";
-                synergyEl.style.height = "20%";
-                synergyEl.style.width = "12%";
-
-                synergiesEl.appendChild(synergyEl);
-
-                // add hover event.
-                synergyEl.addEventListener("mouseenter", synergyMouseEnter);
-                synergyEl.addEventListener("mouseleave", synergyMouseLeave);
+                synergiesEl.appendChild(new Synergy({ id: synergy }).display());
             }
             unitInfo.appendChild(synergiesEl);
 
@@ -193,42 +181,11 @@ export default class Player {
         let synergiesEl = document.getElementById("synergies");
         synergiesEl.innerHTML = "";
         for (let synergy in newSynergies) {
-            let synergyEl = document.createElement("div");
-            synergyEl.className = "synergy";
-            synergyEl.id = synergy;
-            synergyEl.style.background = `url(/images/synergies/${synergy}.jpg)`;
-            synergyEl.style.backgroundSize = "cover";
-            synergyEl.style.backgroundPosition = "center";
-
-            synergiesEl.appendChild(synergyEl);
-
-            let synergyName = document.createElement("span");
-            synergyName.innerHTML = synergy;
-            synergyEl.appendChild(synergyName);
-
-            let synergyAmount = document.createElement("span");
-            synergyAmount.innerHTML = newSynergies[synergy];
-            synergyEl.appendChild(synergyAmount);
-
-            // add hover event.
-            synergyEl.addEventListener("mouseenter", synergyMouseEnter);
-            synergyEl.addEventListener("mouseleave", synergyMouseLeave);
-
-            // let synergyDesc = document.createElement("span");
-            // synergyDesc.innerHTML =
-            //     SYNERGIES[synergy][newSynergies[synergy]].desc;
-            // synergyEl.appendChild(synergyDesc);
+            synergiesEl.appendChild(
+                new Synergy({ id: synergy }).display(newSynergies[synergy])
+            );
         }
     }
 
     setDamage(unit, damage) {}
-}
-
-function synergyMouseEnter(event) {
-    console.log(this.id);
-    UI.popUp(SYNERGIES[this.id].desc, event);
-}
-
-function synergyMouseLeave() {
-    UI.popDown();
 }

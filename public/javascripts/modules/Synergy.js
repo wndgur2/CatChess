@@ -1,0 +1,67 @@
+import UI from "./UI.js";
+import { SYNERGIES } from "./constants/CONSTS.js";
+
+export default class Synergy {
+    constructor(data) {
+        this.id = data.id;
+        this.desc = SYNERGIES[this.id].desc;
+    }
+
+    static describe(id) {
+        let s = new Synergy({ id });
+        return s.describe();
+    }
+
+    describe(amount = 0) {
+        let descs = [];
+        let active = -1;
+        let i = 0;
+        for (const [a, d] of Object.entries(this.desc)) {
+            if (amount >= parseInt(a)) active = i;
+            descs.push(`${a} : ${d}`);
+            ++i;
+        }
+        let result = "";
+        descs.forEach((d, j) => {
+            result = result.concat(
+                `<span class=${
+                    j === active ? "active" : "inactive"
+                }>${d}</span>`
+            );
+        });
+        return result;
+    }
+
+    display(amount = 0) {
+        let synergyEl = document.createElement("div");
+        synergyEl.className = "synergy";
+        synergyEl.id = this.id;
+        synergyEl.style.background = `url(/images/synergies/${this.id}.jpg)`;
+        synergyEl.style.backgroundSize = "cover";
+        synergyEl.style.backgroundPosition = "center";
+
+        let synergyName = document.createElement("span");
+        synergyName.innerHTML = this.id;
+        synergyEl.appendChild(synergyName);
+
+        if (amount > 0) {
+            let synergyAmount = document.createElement("span");
+            synergyAmount.innerHTML = amount;
+            synergyEl.appendChild(synergyAmount);
+        }
+
+        // add hover event.
+        synergyEl.addEventListener("mouseenter", synergyMouseEnter);
+        synergyEl.addEventListener("mouseleave", synergyMouseLeave);
+
+        return synergyEl;
+    }
+}
+
+function synergyMouseEnter(event) {
+    UI.popUp(Synergy.describe(event.target.id), event);
+}
+
+function synergyMouseLeave() {
+    UI.popDown();
+}
