@@ -100,7 +100,7 @@ export default class Player {
             unitImageContainer.style.backgroundImage = `url(/images/units/${newShop[i].id}.jpg)`;
 
             let gradient = document.createElement("div");
-            gradient.className = "gradient";
+            gradient.className = "shopGradient";
             unitImageContainer.appendChild(gradient);
 
             unit.appendChild(unitImageContainer);

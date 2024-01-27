@@ -166,7 +166,6 @@ function inventoryItemMouseLeave(event) {
 }
 
 function itemMouseEnter(event) {
-    console.log("mouseEnter");
     if (UI.infoUnit.items[this.id])
         UI.popUp(UI.infoUnit.items[this.id].info(), event);
 }

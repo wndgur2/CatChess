@@ -115,7 +115,7 @@ class Game {
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 10;
+        this.time = 30;
         this.updateState();
 
         // 결과 지급, 리로드

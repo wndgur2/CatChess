@@ -34,11 +34,15 @@ export default class Unit {
         this.inBattle = false;
         this.focused = false;
 
-        // load image from images/units/this.id.jpg
         this.imageEl = document.createElement("img");
         this.imageEl.src = `/images/units/${this.id}.jpg`;
         this.imageEl.id = "unitImg";
+
         this.color = COST_COLORS[this.originalCost];
+
+        this.skillImageEl = document.createElement("img");
+        this.skillImageEl.id = "unitSkill";
+        this.skillImageEl.src = `/images/skills/${this.skill}.jpg`;
     }
 
     die() {
@@ -69,6 +73,11 @@ export default class Unit {
         document.getElementById("armor").innerHTML = this.armor;
         document.getElementById("range").innerHTML = this.range;
         document.getElementById("speed").innerHTML = this.speed;
+
+        let unitSkillWrapperEl = document.getElementById("unitSkillWrapper");
+        unitSkillWrapperEl.innerHTML = "";
+        unitSkillWrapperEl.appendChild(this.skillImageEl);
+
         let itemEls = document.getElementsByClassName("item");
         for (let i = 0; i < itemEls.length; i++) {
             itemEls[i].innerHTML = "";
