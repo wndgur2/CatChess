@@ -52,10 +52,9 @@ class Unit {
             return;
         }
 
-        let res = this.battleField.getNearestEnemy(this);
-        if (!res) return;
-
-        let { distance, target } = res;
+        let res = this.battleField.getNearestUnits(this, 30, 1, false);
+        if (res.length < 1) return;
+        let { distance, target } = res[0];
         if (distance <= this.range) return this.attack(target);
         else return this.move(this.battleField.getNextMove(this, target));
     }
