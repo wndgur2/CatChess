@@ -51,16 +51,16 @@ class BattleField {
         visited[cat.y][cat.x] = true;
 
         while (queue.length > 0) {
-            let [y, x, dist] = queue.shift();
+            let [y, x, distance] = queue.shift();
             if (this.board[y][x] && this.board[y][x].owner !== cat.owner)
-                return { dist, target: this.board[y][x] };
+                return { distance, target: this.board[y][x] };
             DIRECTIONS[y % 2].forEach(([dy, dx]) => {
                 let ny = y + dy,
                     nx = x + dx;
                 if (ny < 0 || ny >= 6 || nx < 0 || nx >= 5) return;
                 if (visited[ny][nx]) return;
                 visited[ny][nx] = true;
-                queue.push([ny, nx, dist + 1]);
+                queue.push([ny, nx, distance + 1]);
             });
         }
 

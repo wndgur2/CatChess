@@ -3,11 +3,11 @@ import UI from "./UI.js";
 import { SYNERGIES } from "./constants/CONSTS.js";
 
 export default class Synergy {
-    static synergyInstances = {};
+    static instances = {};
 
     static getSynergy(id) {
-        if (Synergy.synergyInstances[id]) {
-            return Synergy.synergyInstances[id];
+        if (Synergy.instances[id]) {
+            return Synergy.instances[id];
         } else {
             return new Synergy({ id: id });
         }
@@ -16,7 +16,7 @@ export default class Synergy {
     constructor(data) {
         this.id = data.id;
         this.desc = SYNERGIES[this.id].desc;
-        Synergy.synergyInstances[this.id] = this;
+        Synergy.instances[this.id] = this;
     }
 
     describe(amount = 0) {
