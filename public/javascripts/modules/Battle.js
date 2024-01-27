@@ -4,7 +4,7 @@ import Painter from "./Painter.js";
 class Battle {
     static board = [];
 
-    static initBattle(reversed) {
+    static ready(reversed) {
         this.reversed = reversed;
         if (reversed)
             Battle.board = Battle.board.map((row) => row.reverse()).reverse();
@@ -16,6 +16,18 @@ class Battle {
             });
         });
         Battle.displayBoard();
+    }
+
+    static init(timeStep) {
+        if (this.interval) clearInterval(this.interval);
+        this.interval = setInterval(() => {
+            this.board.forEach((row) => {
+                row.forEach((cat) => {
+                    if (!cat) return;
+                    cat._mp = cat.mp + 1;
+                });
+            });
+        }, timeStep);
     }
 
     static displayBoard() {
@@ -64,6 +76,17 @@ class Battle {
             cat.x = nextX;
             cat.y = nextY;
         }
+    }
+
+    static useSkill(position, skill) {
+        let cat;
+        if (this.reversed) {
+            cat = Battle.board[5 - position.y][4 - position.x];
+        } else {
+            cat = Battle.board[position.y][position.x];
+        }
+        cat.useSkill = skill;
+        cat.useSkill();
     }
 
     static itemUpdate(data) {

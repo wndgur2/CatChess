@@ -2,7 +2,9 @@ const CREEPS = {
     crab: {
         id: "crab",
         name: "게",
+        synergies: [],
         cost: 1,
+        skill: "roar",
         ad: 10,
         speed: 10,
         hp: 90,
@@ -12,7 +14,9 @@ const CREEPS = {
     eel: {
         id: "eel",
         name: "뱀장어",
+        synergies: [],
         cost: 2,
+        skill: "roar",
         ad: 20,
         speed: 25,
         hp: 65,
@@ -22,7 +26,9 @@ const CREEPS = {
     frog: {
         id: "frog",
         name: "개구리",
+        synergies: [],
         cost: 1,
+        skill: "roar",
         ad: 26,
         speed: 49,
         hp: 10,
@@ -32,7 +38,9 @@ const CREEPS = {
     zara: {
         id: "zara",
         name: "자라",
+        synergies: [],
         cost: 1,
+        skill: "roar",
         ad: 48,
         speed: 10,
         hp: 10000,

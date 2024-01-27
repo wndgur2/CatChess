@@ -1,4 +1,5 @@
 const Item = require("./Item");
+const SKILLS = require("./constants/SKILLS");
 const { getPlayer } = require("./utils");
 
 class Unit {
@@ -24,41 +25,75 @@ class Unit {
 
         this.items = [];
 
+        this.skill = this.proto.skill;
+        const skillProto = SKILLS[this.skill];
+        this.maxMp = parseInt(skillProto.mp);
+        this.mp = 0;
+        this.useSkill = skillProto.execute; // 스코프에 따라 알아서 바인딩됨
+
         this.x = x;
         this.y = y;
         this.owner = playerId;
         this.die = false;
         this.battleField = null;
         this.delay = 0;
+        this.stunLeft = 0;
     }
 
     action() {
         if (this.die) return;
-        let res = this.battleField.getNearestEnemy(this);
-        if (!res) return;
-        let { dist, target } = res;
-        if (dist <= this.range) return this.attack(target);
-        else return this.move(this.battleField.getNextMove(this, target));
-    }
-
-    attack(target) {
+        this.mp += 1;
+        if (this.stunLeft > 0) {
+            this.stunLeft--;
+            return;
+        }
         if (this.delay > 0) {
             this.delay -= this.speed;
             return;
         }
+
+        let res = this.battleField.getNearestEnemy(this);
+        if (!res) return;
+
+        let { distance, target } = res;
+        if (distance <= this.range) return this.attack(target);
+        else return this.move(this.battleField.getNextMove(this, target));
+    }
+
+    attack(target) {
+        if (this.mp >= this.maxMp) {
+            this.useSkill();
+            this.mp -= this.maxMp;
+            return {
+                type: "battleUseSkill",
+                data: {
+                    position: {
+                        x: this.x,
+                        y: this.y,
+                    },
+                    skill: "JSON.stringify(this.useSkill)",
+                },
+            };
+        }
+
         if (this.ad - target.armor > 0) target.hp -= this.ad - target.armor;
         else target.hp -= 1;
+
+        this.delay += 100;
+
         if (target.hp <= 0) {
             target.die = true;
             this.battleField.board[target.y][target.x] = null;
             // item drop
-            if (target.owner == "creep")
+            if (target.owner == "creep") {
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
+                getPlayer(this.owner).pushItem(Item.getRandomItem());
+                getPlayer(this.owner).pushItem(Item.getRandomItem());
+            }
         }
 
-        this.delay += 100;
         return {
-            type: "battle_attack",
+            type: "battleAttack",
             data: {
                 attacker: {
                     x: this.x,
@@ -75,10 +110,6 @@ class Unit {
     }
 
     move(nextMove) {
-        if (this.delay > 0) {
-            this.delay -= this.speed / 2;
-            return;
-        }
         if (!nextMove) return;
 
         let y = nextMove[0],
@@ -93,7 +124,7 @@ class Unit {
         this.delay += 100;
 
         return {
-            type: "battle_move",
+            type: "battleMove",
             data: {
                 beforeX,
                 beforeY,
@@ -101,6 +132,10 @@ class Unit {
                 nextY: y,
             },
         };
+    }
+
+    stun(timeStep) {
+        this.stunLeft = timeStep;
     }
 
     equip(item) {
