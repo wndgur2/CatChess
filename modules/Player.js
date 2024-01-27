@@ -397,6 +397,7 @@ class Player {
 
     // update messages
     updateShop() {
+        if (!this.shop) return;
         sendMsg(this.ws, "shopUpdate", {
             player: this.id,
             shop: this.shop,
