@@ -41,6 +41,44 @@ class BattleField {
         }
     }
 
+    getNearestUnits(cat, range, amount, getAlly = false) {
+        let visited = [];
+        this.board.forEach((row) => {
+            visited.push(row.map((_) => false));
+        });
+        let queue = [];
+        queue.push([cat.y, cat.x, 0]);
+        visited[cat.y][cat.x] = true;
+        let res = [];
+
+        while (queue.length > 0) {
+            let [y, x, distance] = queue.shift();
+            if (distance > range) break;
+            if (
+                this.board[y][x] &&
+                (getAlly
+                    ? this.board[y][x].owner === cat.owner
+                    : this.board[y][x].owner !== cat.owner)
+            )
+                res.push({ distance, target: this.board[y][x] });
+            DIRECTIONS[y % 2].forEach(([dy, dx]) => {
+                let ny = y + dy,
+                    nx = x + dx;
+                if (ny < 0 || ny >= 6 || nx < 0 || nx >= 5) return;
+                if (visited[ny][nx]) return;
+                visited[ny][nx] = true;
+                queue.push([ny, nx, distance + 1]);
+            });
+        }
+
+        if (res.length > amount) res = res.slice(0, amount);
+        return res;
+    }
+
+    getFarthestUnits(cat, range, amount, getAlly = false) {}
+
+    getLowestHpUnits(cat, range, amount, getAlly = false) {}
+
     getNearestEnemy(cat) {
         let visited = [];
         this.board.forEach((row) => {
