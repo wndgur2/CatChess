@@ -34,7 +34,7 @@ class Battle {
 
         [this.player1, this.player2].forEach((player) => {
             if (!player.ws) return;
-            sendMsg(player.ws, "battleInit", {
+            sendMsg(player.ws, "battleReady", {
                 board: this.battleField.board.map((row) =>
                     row.map((c) => (c ? { ...c, battleField: null } : null))
                 ),
@@ -48,6 +48,7 @@ class Battle {
             this.battleField.board.forEach((row) => {
                 row.forEach((cat) => {
                     if (!cat) return;
+                    if (!cat.synergies) return;
                     for (const [synergy, cats] of Object.entries(
                         player.synergies
                     )) {
@@ -61,6 +62,12 @@ class Battle {
     }
 
     initBattle() {
+        [this.player1, this.player2].forEach((player) => {
+            if (!player.ws) return;
+            sendMsg(player.ws, "battleInit", {
+                timeStep: TIME_STEP,
+            });
+        });
         this.battleInterval = setInterval(() => this.updateBattle(), TIME_STEP);
     }
 

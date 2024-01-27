@@ -93,25 +93,34 @@ export default class Socket {
                     if (p) p._hp = data.hp;
                     break;
                 }
-                case "battleInit": {
+                case "battleReady": {
                     Battle.board = data.board.map((row) =>
                         row.map((cat) => (cat ? new Unit(cat) : null))
                     );
-                    Battle.initBattle(data.reversed);
+                    Battle.ready(data.reversed);
                     UI.hideUnitInfo();
                     break;
                 }
-                case "battle_attack": {
+                case "battleInit": {
+                    Battle.init(data.timeStep);
+                    break;
+                }
+                case "battleAttack": {
                     let { attacker, target, damage } = data;
                     Battle.attack(attacker, target, damage);
                     break;
                 }
-                case "battle_move": {
+                case "battleUseSkill": {
+                    let { position, skill } = data;
+                    Battle.useSkill(position, skill);
+                    break;
+                }
+                case "battleMove": {
                     let { beforeX, beforeY, nextX, nextY } = data;
                     Battle.move(beforeX, beforeY, nextX, nextY);
                     break;
                 }
-                case "battle_itemUpdate": {
+                case "battleItemUpdate": {
                     let { unit } = data;
                     Battle.itemUpdate(unit);
                     break;
