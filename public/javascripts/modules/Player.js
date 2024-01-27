@@ -171,7 +171,8 @@ export default class Player {
                 continue;
             }
             itemEl.draggable = true;
-            itemEl.innerHTML = newItems[i].image;
+            itemEl.innerHTML = "";
+            itemEl.appendChild(newItems[i].imageEl);
         }
     }
 
