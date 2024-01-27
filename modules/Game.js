@@ -115,7 +115,7 @@ class Game {
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 20;
+        this.time = 10;
         this.updateState();
 
         // 결과 지급, 리로드
@@ -168,7 +168,7 @@ class Game {
             this.battleState();
         }, this.time * 1000);
 
-        if (this.stage == 1 && this.round <= CREEP_ROUNDS.length) {
+        if (this.stage == 1 && this.round <= Object.keys(CREEP_ROUNDS).length) {
             this.creep.level = CREEP_ROUNDS[this.round].level;
             this.creep.board = CREEP_ROUNDS[this.round].board;
             this.players.forEach((player) =>

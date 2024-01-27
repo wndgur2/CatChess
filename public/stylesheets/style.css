@@ -195,6 +195,7 @@ td {
     position: absolute;
     bottom: 22dvh;
     height: 8dvh;
+    padding-bottom: 1dvh;
     display: flex;
     flex-direction: row;
     justify-content: center;
