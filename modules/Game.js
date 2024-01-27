@@ -50,7 +50,7 @@ class Game {
         this.players.forEach((player) => {
             player.game = this;
             player.init();
-            player.updateHp();
+            player.updatePlayer();
         });
 
         this.creep = new Player("creep"); // players에 creep이 여러명임
@@ -82,12 +82,6 @@ class Game {
             round: this.round,
             stage: this.stage,
         });
-        this.players.forEach((player) => {
-            sendMsg(ws, "hpUpdate", {
-                player: player.id,
-                hp: player.hp,
-            });
-        });
 
         if (this.state !== GAME_STATES.ARRANGE) {
             this.battles.forEach((battle) => {
@@ -115,7 +109,7 @@ class Game {
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 30;
+        this.time = 15;
         this.updateState();
 
         // 결과 지급, 리로드
