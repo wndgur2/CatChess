@@ -17,11 +17,11 @@ const SYNERGIES = {
             6: "Poeir units gain 50% Attack Damage.",
         },
     },
-    Lumen: {
+    Therme: {
         desc: {
-            2: "Lumen units gain 10% Attack Speed.",
-            4: "Lumen units gain 25% Attack Speed.",
-            6: "Lumen units gain 50% Attack Speed.",
+            2: "Therme units gain 10% Attack Speed.",
+            4: "Therme units gain 25% Attack Speed.",
+            6: "Therme units gain 50% Attack Speed.",
         },
     },
     Nature: {
