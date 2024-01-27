@@ -11,6 +11,7 @@ export default class Unit {
         this.id = data.id;
         this.tier = data.tier;
         this.name = data.name;
+        this.skill = data.skill;
         this.synergies = data.synergies;
         this.desc = data.desc;
         this.ad = data.ad;
@@ -18,6 +19,8 @@ export default class Unit {
         this.range = data.range;
         this.maxHp = data.maxHp;
         this.hp = data.hp;
+        this.maxMp = data.maxMp;
+        this.mp = data.mp;
         this.armor = data.armor;
         this.originalCost = data.originalCost;
         this.cost = data.cost;
@@ -32,7 +35,9 @@ export default class Unit {
         this.focused = false;
 
         // load image from images/units/this.id.jpg
-        this.image = `<img id="unitImg" src="/images/units/${this.id}.jpg" />`;
+        this.imageEl = document.createElement("img");
+        this.imageEl.src = `/images/units/${this.id}.jpg`;
+        this.imageEl.id = "unitImg";
         this.color = COST_COLORS[this.originalCost];
     }
 
@@ -42,27 +47,33 @@ export default class Unit {
 
     showInfo() {
         this.focused = true;
-        document.getElementById("unitImgWrapper").innerHTML = this.image;
+        document.getElementById("unitImgWrapper").innerHTML = "";
+        document.getElementById("unitImgWrapper").appendChild(this.imageEl);
+
         document.getElementById("unitName").innerHTML =
             "★".repeat(this.tier) + this.name;
         document.getElementById("unitName").style.color = this.color;
+
         let unitSynergiesEl = document.getElementById("unitSynergies");
         unitSynergiesEl.innerHTML = "";
         this.synergies.forEach((synergy) => {
-            console.log(synergy);
             const s = Synergy.getSynergy(synergy);
             unitSynergiesEl.appendChild(s.display());
         });
         document.getElementById("cost").innerHTML = this.cost;
         document.getElementById("hp").innerHTML = this.hp;
         document.getElementById("maxHp").innerHTML = this.maxHp;
+        document.getElementById("mp").innerHTML = this.mp;
+        document.getElementById("maxMp").innerHTML = this.maxMp;
         document.getElementById("ad").innerHTML = this.ad;
         document.getElementById("armor").innerHTML = this.armor;
         document.getElementById("range").innerHTML = this.range;
         document.getElementById("speed").innerHTML = this.speed;
         let itemEls = document.getElementsByClassName("item");
         for (let i = 0; i < itemEls.length; i++) {
-            itemEls[i].innerHTML = this.items[i] ? this.items[i].image : "";
+            itemEls[i].innerHTML = "";
+            if (!this.items[i]) return;
+            itemEls[i].appendChild(this.items[i].imageEl);
         }
     }
 
@@ -90,6 +101,11 @@ export default class Unit {
             }
         }
         animateHealthDamage();
+    }
+
+    set _mp(newMp) {
+        this.mp = newMp;
+        if (this.focused) document.getElementById("mp").innerHTML = this.mp;
     }
 
     set _damage(newDamage) {
