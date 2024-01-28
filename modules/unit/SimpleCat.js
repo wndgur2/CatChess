@@ -1,5 +1,5 @@
 const Unit = require("./Unit");
-const CATS = require("./constants/CATS");
+const CATS = require("../constants/CATS");
 
 class SimpleCat extends Unit {
     static prototypes = CATS;

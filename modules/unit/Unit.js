@@ -1,27 +1,26 @@
-const Item = require("./Item");
-const SKILLS = require("./constants/SKILLS");
-const { getPlayer } = require("./utils");
+const Item = require("../Item");
+const SKILLS = require("../constants/SKILLS");
+const { getPlayer } = require("../utils");
 
 class Unit {
     constructor(proto, playerId, x, y, tier) {
+        this.tier = tier;
         this.proto = proto;
         this.id = proto.id;
-
-        this.tier = tier;
-        const magnifier = Math.sqrt(this.tier).toPrecision(2);
-
         this.name = this.proto.name;
         this.synergies = this.proto.synergies;
         this.desc = this.proto.desc;
+        this.originalCost = this.proto.cost;
+        this.cost = this.proto.cost * Math.pow(3, tier - 1);
+        if (tier > 1) this.cost -= 1;
+
+        const magnifier = Math.sqrt(this.tier).toPrecision(2);
         this.ad = parseInt(this.proto.ad * magnifier);
         this.speed = parseInt(this.proto.speed * magnifier);
         this.range = this.proto.range;
         this.maxHp = parseInt(this.proto.hp * magnifier);
         this.hp = this.maxHp;
         this.armor = parseInt(this.proto.armor * magnifier);
-        this.originalCost = this.proto.cost;
-        this.cost = this.proto.cost * Math.pow(3, tier - 1);
-        if (tier > 1) this.cost -= 1;
 
         this.items = [];
 
@@ -36,16 +35,12 @@ class Unit {
         this.battleField = null;
         this.delay = 0;
 
-        this.status = []; // [[type, leftTime], ...]
+        this.modifiers = [];
     }
 
     action() {
         if (this.die) return;
         this.mp += 1;
-        if (this.stunLeft > 0) {
-            this.stunLeft--;
-            return;
-        }
         if (this.delay > 0) {
             this.delay -= this.speed;
             return;
@@ -63,7 +58,7 @@ class Unit {
             this.skill.execute(this);
             this.mp -= this.maxMp;
             return {
-                type: "battleUseSkill",
+                type: "unitUseSkill",
                 data: {
                     position: {
                         x: this.x,
@@ -72,9 +67,10 @@ class Unit {
                 },
             };
         }
-
-        if (this.ad - target.armor > 0) target.hp -= this.ad - target.armor;
-        else target.hp -= 1;
+        let damage;
+        if (this.ad - target.armor > 0) damage = this.ad - target.armor;
+        else damage = 1;
+        target.hp -= damage;
 
         this.delay += 100;
 
@@ -85,12 +81,11 @@ class Unit {
             if (target.owner == "creep") {
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
-                getPlayer(this.owner).pushItem(Item.getRandomItem());
             }
         }
 
         return {
-            type: "battleAttack",
+            type: "unitAttack",
             data: {
                 attacker: {
                     x: this.x,
@@ -101,7 +96,7 @@ class Unit {
                     y: target.y,
                     hp: target.hp,
                 },
-                damage: this.ad - target.armor > 0 ? this.ad - target.armor : 0,
+                damage,
             },
         };
     }
@@ -121,7 +116,7 @@ class Unit {
         this.delay += 100;
 
         return {
-            type: "battleMove",
+            type: "unitMove",
             data: {
                 beforeX,
                 beforeY,
