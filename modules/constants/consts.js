@@ -35,19 +35,10 @@ const SHOP_POSSIBILITIES = [
     [0, 25, 35, 40],
 ];
 
-const STATUS = {
-    STUNNED: "stunned",
-    DISARM: "disarm",
-    SILENCE: "silence",
-    INVINCIBLE: "invincible",
-    SHIELD_BREAK: "shieldBreak",
-};
-
 module.exports = {
     GAME_STATES,
     TIME_STEP,
     PLAYER_NUM,
     DIRECTIONS,
     SHOP_POSSIBILITIES,
-    STATUS,
 };
