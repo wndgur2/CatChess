@@ -1,5 +1,6 @@
 import Item from "./Item.js";
 import Painter from "./Painter.js";
+import attackMotion from "./motions/attack.js";
 
 class Battle {
     static board = [];
@@ -44,7 +45,9 @@ class Battle {
             attackerCat = Battle.board[attacker.y][attacker.x];
             targetCat = Battle.board[target.y][target.x];
         }
-        attackerCat._damage += damage;
+
+        attackMotion(attackerCat, targetCat);
+
         targetCat._hp = parseInt(target.hp);
         if (targetCat.hp <= 0) {
             targetCat.die();
@@ -78,15 +81,15 @@ class Battle {
         }
     }
 
-    static useSkill(position, skill) {
+    static useSkill(position) {
         let cat;
         if (this.reversed) {
             cat = Battle.board[5 - position.y][4 - position.x];
         } else {
             cat = Battle.board[position.y][position.x];
         }
-        cat.useSkill = skill;
-        cat.useSkill();
+        console.log(cat.name, "used skill.");
+        cat._mp = cat.mp - cat.maxMp;
     }
 
     static itemUpdate(data) {

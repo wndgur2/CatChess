@@ -79,32 +79,6 @@ class BattleField {
 
     getLowestHpUnits(cat, range, amount, getAlly = false) {}
 
-    getNearestEnemy(cat) {
-        let visited = [];
-        this.board.forEach((row) => {
-            visited.push(row.map((_) => false));
-        });
-        let queue = [];
-        queue.push([cat.y, cat.x, 0]);
-        visited[cat.y][cat.x] = true;
-
-        while (queue.length > 0) {
-            let [y, x, distance] = queue.shift();
-            if (this.board[y][x] && this.board[y][x].owner !== cat.owner)
-                return { distance, target: this.board[y][x] };
-            DIRECTIONS[y % 2].forEach(([dy, dx]) => {
-                let ny = y + dy,
-                    nx = x + dx;
-                if (ny < 0 || ny >= 6 || nx < 0 || nx >= 5) return;
-                if (visited[ny][nx]) return;
-                visited[ny][nx] = true;
-                queue.push([ny, nx, distance + 1]);
-            });
-        }
-
-        console.log("getNearestEnemy(cat): no enemy left.");
-    }
-
     getCats(playerId = null) {
         let res = [];
         if (playerId == null) {

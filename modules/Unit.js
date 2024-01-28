@@ -25,11 +25,9 @@ class Unit {
 
         this.items = [];
 
-        this.skill = this.proto.skill;
-        const skillProto = SKILLS[this.skill];
-        this.maxMp = parseInt(skillProto.mp);
+        this.skill = SKILLS[this.proto.skill];
+        this.maxMp = parseInt(this.skill.mp);
         this.mp = 0;
-        this.useSkill = skillProto.execute; // 스코프에 따라 알아서 바인딩됨
 
         this.x = x;
         this.y = y;
@@ -37,7 +35,8 @@ class Unit {
         this.die = false;
         this.battleField = null;
         this.delay = 0;
-        this.stunLeft = 0;
+
+        this.status = []; // [[type, leftTime], ...]
     }
 
     action() {
@@ -61,7 +60,7 @@ class Unit {
 
     attack(target) {
         if (this.mp >= this.maxMp) {
-            this.useSkill();
+            this.skill.execute(this);
             this.mp -= this.maxMp;
             return {
                 type: "battleUseSkill",
@@ -70,7 +69,6 @@ class Unit {
                         x: this.x,
                         y: this.y,
                     },
-                    skill: "JSON.stringify(this.useSkill)",
                 },
             };
         }

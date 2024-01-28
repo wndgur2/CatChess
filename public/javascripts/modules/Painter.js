@@ -17,8 +17,8 @@ import {
 import Player from "./Player.js";
 import Socket from "./Socket.js";
 import UI from "./UI.js";
-import { objectPool } from "./effect/objectPool.js";
-import blood from "./effect/blood.js";
+import { objectPool } from "./effects/objectPool.js";
+import blood from "./effects/blood.js";
 import { getBoardCoords } from "./untils.js";
 
 export default class Painter {
@@ -275,7 +275,8 @@ export default class Painter {
                 `/images/units/${unit.id}.jpg`
             );
         }
-        unit.mesh = new THREE.Mesh(
+        unit.mesh = new THREE.Group();
+        let bodyMesh = new THREE.Mesh(
             new THREE.BoxGeometry(
                 PLATE_RADIUS / 1.5,
                 CAT_HEIGHT,
@@ -285,8 +286,9 @@ export default class Painter {
                 map: this.textures[unit.id],
             })
         );
-        unit.mesh.name = "unit";
-        unit.mesh.unit = unit;
+        bodyMesh.name = "unit";
+        bodyMesh.unit = unit;
+        unit.mesh.add(bodyMesh);
 
         // health bar
         const healthBarBackgroundMesh = new THREE.Mesh(
@@ -331,6 +333,10 @@ export default class Painter {
 
         // items
         this.createItemMesh(unit);
+
+        // unit.mesh.children.forEach((child) => {
+        //     child.lookAt(Painter.camera.position);
+        // });
     }
 
     static hitEffect(attacker, target, damage) {
@@ -376,8 +382,7 @@ export default class Painter {
     static sellUnitOnKeypress() {
         Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
         const intersects = Painter.raycaster.intersectObjects(
-            Painter.scene.children,
-            false
+            Painter.scene.children
         );
         intersects.forEach((intersect) => {
             const object = intersect.object;
@@ -410,8 +415,7 @@ function onPointerDown(event) {
 
     Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
     const intersects = Painter.raycaster.intersectObjects(
-        Painter.scene.children,
-        false
+        Painter.scene.children
     );
     intersects.forEach((intersect) => {
         const object = intersect.object;
@@ -431,20 +435,18 @@ function onPointerMove(event) {
         return;
     }
     if (UI.isDragging) {
-        console.log("dragging item");
         UI.isDragging = false;
         return;
     }
 
     Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
     const intersects = Painter.raycaster.intersectObjects(
-        Painter.scene.children,
-        false
+        Painter.scene.children
     );
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
         if (object.name === "floor") {
-            Painter.draggingObject.position.set(
+            Painter.draggingObject.parent.position.set(
                 intersects[i].point.x,
                 CAT_HEIGHT / 1.5,
                 intersects[i].point.z

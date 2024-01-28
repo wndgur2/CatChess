@@ -189,6 +189,4 @@ export default class Player {
             );
         }
     }
-
-    setDamage(unit, damage) {}
 }

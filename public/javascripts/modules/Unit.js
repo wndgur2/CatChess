@@ -1,6 +1,6 @@
+import * as THREE from "three";
 import Item from "./Item.js";
 import Painter from "./Painter.js";
-import Player from "./Player.js";
 import Synergy from "./Synergy.js";
 import { COST_COLORS } from "./constants/CONSTS.js";
 import { HEALTHBAR_WIDTH } from "./constants/THREE_CONSTS.js";
@@ -30,7 +30,6 @@ export default class Unit {
         this.x = data.x;
         this.y = data.y;
 
-        Painter.createUnitMesh(this);
         this.inBattle = false;
         this.focused = false;
 
@@ -42,7 +41,13 @@ export default class Unit {
 
         this.skillImageEl = document.createElement("img");
         this.skillImageEl.id = "unitSkill";
-        this.skillImageEl.src = `/images/skills/${this.skill}.jpg`;
+        this.skillImageEl.src = `/images/skills/${this.skill.id}.jpg`;
+
+        /**
+         * @type {THREE.Mesh}
+         */
+        this.mesh = null;
+        Painter.createUnitMesh(this);
     }
 
     die() {
@@ -117,26 +122,30 @@ export default class Unit {
         if (this.focused) document.getElementById("mp").innerHTML = this.mp;
     }
 
-    set _damage(newDamage) {
-        this.damage = newDamage;
-        Player.player.setDamage(this, newDamage);
-    }
-
+    //https://stackoverflow.com/questions/30292831/three-js-lookat-how-to-pan-smoothly-between-old-and-new-target-positions
     move(beforeX, beforeY, nextX, nextY) {
         const beforeCoords = getBoardCoords(beforeX, beforeY);
         const nextCoords = getBoardCoords(nextX, nextY);
+
+        this.mesh
+            .getObjectByName("unit")
+            .lookAt(new THREE.Vector3(...nextCoords));
+        console.log(this.mesh.rotation);
+        this.mesh
+            .getObjectByName("unit")
+            .rotation.set(0, this.mesh.getObjectByName("unit").rotation.y, 0);
 
         const toMoveCoords = {
             x: nextCoords[0] - beforeCoords[0],
             z: nextCoords[2] - beforeCoords[2],
         };
-        const duration = 240 / this.speed;
 
-        let i = duration;
+        const durationToMove = 240 / this.speed;
+        let i = 0;
         const animateMove = () => {
-            if (i-- <= 0) return;
-            this.mesh.position.x += toMoveCoords.x / duration;
-            this.mesh.position.z += toMoveCoords.z / duration;
+            if (++i > durationToMove) return;
+            this.mesh.position.x += toMoveCoords.x / durationToMove;
+            this.mesh.position.z += toMoveCoords.z / durationToMove;
             requestAnimationFrame(animateMove);
         };
 

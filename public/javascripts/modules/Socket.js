@@ -111,8 +111,8 @@ export default class Socket {
                     break;
                 }
                 case "battleUseSkill": {
-                    let { position, skill } = data;
-                    Battle.useSkill(position, skill);
+                    let { position } = data;
+                    Battle.useSkill(position);
                     break;
                 }
                 case "battleMove": {
@@ -120,7 +120,7 @@ export default class Socket {
                     Battle.move(beforeX, beforeY, nextX, nextY);
                     break;
                 }
-                case "battleItemUpdate": {
+                case "battleUnitUpdate": {
                     let { unit } = data;
                     Battle.itemUpdate(unit);
                     break;
