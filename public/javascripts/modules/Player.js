@@ -1,9 +1,10 @@
 import Game from "./Game.js";
 import Unit from "./Unit.js";
 import Socket from "./Socket.js";
-import { COST_COLORS, GAME_STATES, SYNERGIES } from "./constants/CONSTS.js";
+import { COST_COLORS, GAME_STATES } from "./constants/CONSTS.js";
 import Painter from "./Painter.js";
 import Synergy from "./Synergy.js";
+import UI from "./UI.js";
 
 export default class Player {
     static player = null;
@@ -83,54 +84,33 @@ export default class Player {
     set _shop(newShop) {
         this.shop = newShop;
         if (this.id !== Socket.id) return;
-        let shop = document.getElementById("shop");
-        shop.innerHTML = "";
+        let shopListEl = document.getElementById("shop").children;
         for (let i = 0; i < newShop.length; i++) {
-            let unit = document.createElement("button");
-            shop.appendChild(unit);
-            if (newShop[i] === null) continue;
-            unit.onclick = function () {
-                Socket.sendMsg("reqBuyCat", {
-                    index: i,
-                });
-            };
-
-            let unitImageContainer = document.createElement("div");
-            unitImageContainer.className = "unitImageContainer";
-            unitImageContainer.style.backgroundImage = `url(/images/units/${newShop[i].id}.jpg)`;
-
-            let gradient = document.createElement("div");
-            gradient.className = "shopGradient";
-            unitImageContainer.appendChild(gradient);
-
-            unit.appendChild(unitImageContainer);
-
-            let unitInfo = document.createElement("div");
-            unitInfo.className = "shopUnitInfo";
-
             if (newShop[i] === null) {
-                shop.appendChild(unit);
+                shopListEl[i].style.visibility = "hidden";
                 continue;
             }
+            shopListEl[i].style.visibility = "visible";
+            let shopImageWrapper =
+                shopListEl[i].getElementsByClassName("shopImageWrapper")[0];
+            shopImageWrapper.style.backgroundImage = `url(/images/units/${newShop[i].id}.jpg)`;
 
-            let name = document.createElement("span");
+            let name = shopListEl[i].getElementsByClassName("shopUnitName")[0];
             name.innerHTML = newShop[i].name;
             name.style.color = COST_COLORS[newShop[i].cost];
-            unitInfo.appendChild(name);
 
-            let synergiesEl = document.createElement("div");
-            synergiesEl.className = "shopSynergies";
+            let synergiesEl =
+                shopListEl[i].getElementsByClassName("shopSynergies")[0];
+
+            synergiesEl.innerHTML = "";
 
             for (let synergy of newShop[i].synergies) {
                 synergiesEl.appendChild(Synergy.getSynergy(synergy).display());
             }
-            unitInfo.appendChild(synergiesEl);
 
-            let cost = document.createElement("span");
+            let cost = shopListEl[i].getElementsByClassName("shopUnitCost")[0];
+
             cost.innerHTML = newShop[i].cost + "💰";
-            unitInfo.appendChild(cost);
-
-            unit.appendChild(unitInfo);
         }
     }
 
