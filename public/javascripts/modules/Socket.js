@@ -105,22 +105,24 @@ export default class Socket {
                     Battle.init(data.timeStep);
                     break;
                 }
-                case "battleAttack": {
+                case "unitAttack": {
                     let { attacker, target, damage } = data;
                     Battle.attack(attacker, target, damage);
                     break;
                 }
-                case "battleUseSkill": {
+                case "unitUseSkill": {
                     let { position } = data;
                     Battle.useSkill(position);
                     break;
                 }
-                case "battleMove": {
+                case "unitMove": {
                     let { beforeX, beforeY, nextX, nextY } = data;
                     Battle.move(beforeX, beforeY, nextX, nextY);
                     break;
                 }
-                case "battleUnitUpdate": {
+                // status, item, mp, ad, armor, ...
+                // battleAttack 메시지를 없애고, 요소를 분해해서(hp, attack, ...) 보내기
+                case "unitItemUpdate": {
                     let { unit } = data;
                     Battle.itemUpdate(unit);
                     break;

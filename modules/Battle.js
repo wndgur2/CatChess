@@ -74,7 +74,7 @@ class Battle {
     updateUnit(unit) {
         [this.player1, this.player2].forEach((player) => {
             if (!player.ws) return;
-            sendMsg(player.ws, "battle_unitUpdate", {
+            sendMsg(player.ws, "unitItemUpdate", {
                 unit: { ...unit, battleField: null },
             });
         });
