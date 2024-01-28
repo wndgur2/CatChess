@@ -3,7 +3,9 @@ const SKILLS = require("../constants/SKILLS");
 const { getPlayer } = require("../utils");
 
 class Unit {
+    static number = 0;
     constructor(proto, playerId, x, y, tier) {
+        // 유닛 고유 id 필요
         this.tier = tier;
         this.proto = proto;
         this.id = proto.id;
@@ -141,6 +143,24 @@ class Unit {
         this.speed += item.speed;
         return true;
     }
+
+    // 여기에 player처럼 update 함수들 정의하기
+    // stat은 한 함수로 처리할 수 있나?
+    updateHp() {}
+
+    updateMaxHp() {}
+
+    updateMp() {}
+
+    updateMaxMp() {}
+
+    updateItems() {}
+
+    updateSpeed() {}
+
+    updateRange() {}
+
+    updateArmor() {}
 
     clone() {
         return Object.assign(Object.create(Object.getPrototypeOf(this)), this);

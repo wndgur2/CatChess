@@ -7,6 +7,8 @@ import { HEALTHBAR_WIDTH } from "./constants/THREE_CONSTS.js";
 import { getBoardCoords } from "./untils.js";
 
 export default class Unit {
+    static imageEls = {};
+    static skillImageEls = {};
     constructor(data) {
         this.id = data.id;
         this.tier = data.tier;
@@ -33,15 +35,21 @@ export default class Unit {
         this.inBattle = false;
         this.focused = false;
 
-        this.imageEl = document.createElement("img");
-        this.imageEl.src = `/images/units/${this.id}.jpg`;
-        this.imageEl.id = "unitImg";
+        if (!Unit.imageEls[this.id]) {
+            this.imageEl = document.createElement("img");
+            this.imageEl.src = `/images/units/${this.id}.jpg`;
+            this.imageEl.id = "unitImg";
+            Unit.imageEls[this.id] = this.imageEl;
+        } else this.imageEl = Unit.imageEls[this.id];
 
         this.color = COST_COLORS[this.originalCost];
 
-        this.skillImageEl = document.createElement("img");
-        this.skillImageEl.id = "unitSkill";
-        this.skillImageEl.src = `/images/skills/${this.skill.id}.jpg`;
+        if (!Unit.skillImageEls[this.skill.id]) {
+            this.skillImageEl = document.createElement("img");
+            this.skillImageEl.id = "unitSkill";
+            this.skillImageEl.src = `/images/skills/${this.skill.id}.jpg`;
+            Unit.skillImageEls[this.skill.id] = this.skillImageEl;
+        } else this.skillImageEl = Unit.skillImageEls[this.skill.id];
 
         /**
          * @type {THREE.Mesh}
