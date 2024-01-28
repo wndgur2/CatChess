@@ -44,6 +44,16 @@ export default class UI {
         shopEl.addEventListener("mouseleave", shopMouseLeave);
         shopEl.addEventListener("pointerup", shopPointerUp);
 
+        for (let i = 0; i < shopEl.children.length; ++i) {
+            shopEl.children[i].addEventListener("click", () => {
+                if (!Player.player.shop[i]) return;
+                Socket.sendMsg("reqBuyCat", {
+                    index: i,
+                });
+                UI.popDown();
+            });
+        }
+
         // 2 x 3 inventory
         for (let i = 0; i < 3; i++) {
             let row = document.createElement("tr");
