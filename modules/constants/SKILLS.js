@@ -1,11 +1,7 @@
-const { TIME_STEP, STATUS } = require("./CONSTS");
+const Modifier = require("../unit/Modifier");
+const { TIME_STEP } = require("./CONSTS");
 
 const INFINITY = 30;
-const TYPES = {
-    cc: "cc",
-    damage: "damage",
-    heal: "heal",
-};
 const SKILLS = {
     roar: {
         id: "roar",
@@ -21,10 +17,12 @@ const SKILLS = {
             cat.battleField
                 .getNearestUnits(cat, RANGE, TARGET_AMOUNT, false)
                 .forEach(({ _, target }) => {
-                    target.status.push([
-                        STATUS.STUNNED,
-                        secondToTimeStep(DURATION),
-                    ]);
+                    target.modifiers.push(
+                        new Modifier(
+                            { speedRatio: 0 },
+                            secondToTimeStep(DURATION)
+                        )
+                    );
                 });
         },
     },
