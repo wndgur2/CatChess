@@ -1,4 +1,4 @@
-const Creep = require("../Creep.js");
+const Creep = require("../unit/Creep.js");
 const CREEP_ROUNDS = {
     1: {
         id: "creep",

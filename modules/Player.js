@@ -1,4 +1,4 @@
-const SimpleCat = require("./SimpleCat");
+const SimpleCat = require("./unit/SimpleCat");
 const { SHOP_POSSIBILITIES, GAME_STATES } = require("./constants/CONSTS");
 const { sendMsg, addPlayer } = require("./utils");
 
