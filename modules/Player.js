@@ -193,6 +193,7 @@ class Player {
     }
 
     sellCat(cat) {
+        // TODO > uid
         if (!cat) return false;
         this._money += cat.cost;
 

@@ -4,13 +4,14 @@ import Painter from "./Painter.js";
 import Synergy from "./Synergy.js";
 import { COST_COLORS } from "./constants/CONSTS.js";
 import { HEALTHBAR_WIDTH } from "./constants/THREE_CONSTS.js";
-import { getBoardCoords } from "./untils.js";
+import { getBoardCoords } from "./utils.js";
 
 export default class Unit {
     static imageEls = {};
     static skillImageEls = {};
     constructor(data) {
         this.id = data.id;
+        this.uid = data.uid;
         this.tier = data.tier;
         this.name = data.name;
         this.skill = data.skill;
@@ -131,14 +132,14 @@ export default class Unit {
     }
 
     //https://stackoverflow.com/questions/30292831/three-js-lookat-how-to-pan-smoothly-between-old-and-new-target-positions
-    move(beforeX, beforeY, nextX, nextY) {
-        const beforeCoords = getBoardCoords(beforeX, beforeY);
+    move(nextX, nextY) {
+        const beforeCoords = getBoardCoords(this.x, this.y);
         const nextCoords = getBoardCoords(nextX, nextY);
 
         this.mesh
             .getObjectByName("unit")
             .lookAt(new THREE.Vector3(...nextCoords));
-        console.log(this.mesh.rotation);
+
         this.mesh
             .getObjectByName("unit")
             .rotation.set(0, this.mesh.getObjectByName("unit").rotation.y, 0);

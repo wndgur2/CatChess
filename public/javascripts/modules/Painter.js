@@ -19,7 +19,7 @@ import Socket from "./Socket.js";
 import UI from "./UI.js";
 import { objectPool } from "./effects/objectPool.js";
 import blood from "./effects/blood.js";
-import { getBoardCoords } from "./untils.js";
+import { getBoardCoords } from "./utils.js";
 
 export default class Painter {
     static board = new Array(6).fill(null).map(() => new Array(5).fill(null));
@@ -230,7 +230,9 @@ export default class Painter {
         cancelDragging();
         this.board.forEach((row) => {
             row.forEach((unit) => {
-                if (unit) this.scene.remove(unit.mesh);
+                if (unit) {
+                    this.scene.remove(unit.mesh);
+                }
             });
         });
 
@@ -276,6 +278,7 @@ export default class Painter {
             );
         }
         unit.mesh = new THREE.Group();
+        unit.mesh.name = "unitG";
         let bodyMesh = new THREE.Mesh(
             new THREE.BoxGeometry(
                 PLATE_RADIUS / 1.5,
@@ -333,10 +336,6 @@ export default class Painter {
 
         // items
         this.createItemMesh(unit);
-
-        // unit.mesh.children.forEach((child) => {
-        //     child.lookAt(Painter.camera.position);
-        // });
     }
 
     static hitEffect(attacker, target, damage) {
@@ -349,6 +348,7 @@ export default class Painter {
     }
 
     static createItemMesh(unit) {
+        // 이미 갖고있던 아이템도 중첩되서 만들고 있음
         unit.items.forEach((item, i) => {
             const itemMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(
@@ -375,7 +375,7 @@ export default class Painter {
 
     static resetMeshes() {
         this.scene.children.forEach((child) => {
-            if (child.name === "unit") this.scene.remove(child);
+            if (child.name === "unitG") this.scene.remove(child);
         });
     }
 
@@ -516,6 +516,7 @@ function onPointerClick(event) {
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
         if (object.name === "unit") {
+            console.log(object);
             UI.showUnitInfo(object.unit);
             return;
         }

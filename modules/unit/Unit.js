@@ -6,6 +6,7 @@ class Unit {
     static number = 0;
     constructor(proto, playerId, x, y, tier) {
         // 유닛 고유 id 필요
+        this.uid = Unit.number++;
         this.tier = tier;
         this.proto = proto;
         this.id = proto.id;
@@ -56,19 +57,21 @@ class Unit {
     }
 
     attack(target) {
+        let responses = [];
+
         if (this.mp >= this.maxMp) {
             this.skill.execute(this);
             this.mp -= this.maxMp;
-            return {
-                type: "unitUseSkill",
-                data: {
-                    position: {
-                        x: this.x,
-                        y: this.y,
+            return [
+                {
+                    type: "unitUseSkill",
+                    data: {
+                        uid: this.uid,
                     },
                 },
-            };
+            ];
         }
+
         let damage;
         if (this.ad - target.armor > 0) damage = this.ad - target.armor;
         else damage = 1;
@@ -76,9 +79,29 @@ class Unit {
 
         this.delay += 100;
 
+        responses.push({
+            type: "unitAttack",
+            data: {
+                attacker: { uid: this.uid },
+                target: {
+                    uid: target.uid,
+                    hp: target.hp,
+                },
+                damage,
+            },
+        });
+
         if (target.hp <= 0) {
             target.die = true;
             this.battleField.board[target.y][target.x] = null;
+
+            responses.push({
+                type: "unitDie",
+                data: {
+                    uid: target.uid,
+                },
+            });
+
             // item drop
             if (target.owner == "creep") {
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
@@ -86,30 +109,14 @@ class Unit {
             }
         }
 
-        return {
-            type: "unitAttack",
-            data: {
-                attacker: {
-                    x: this.x,
-                    y: this.y,
-                },
-                target: {
-                    x: target.x,
-                    y: target.y,
-                    hp: target.hp,
-                },
-                damage,
-            },
-        };
+        return responses;
     }
 
     move(nextMove) {
         if (!nextMove) return;
 
         let y = nextMove[0],
-            x = nextMove[1],
-            beforeX = this.x,
-            beforeY = this.y;
+            x = nextMove[1];
 
         this.battleField.board[this.y][this.x] = null;
         this.battleField.board[y][x] = this;
@@ -117,19 +124,16 @@ class Unit {
         this.x = x;
         this.delay += 100;
 
-        return {
-            type: "unitMove",
-            data: {
-                beforeX,
-                beforeY,
-                nextX: x,
-                nextY: y,
+        return [
+            {
+                type: "unitMove",
+                data: {
+                    uid: this.uid,
+                    nextX: x,
+                    nextY: y,
+                },
             },
-        };
-    }
-
-    stun(timeStep) {
-        this.stunLeft = timeStep;
+        ];
     }
 
     equip(item) {
@@ -143,24 +147,6 @@ class Unit {
         this.speed += item.speed;
         return true;
     }
-
-    // 여기에 player처럼 update 함수들 정의하기
-    // stat은 한 함수로 처리할 수 있나?
-    updateHp() {}
-
-    updateMaxHp() {}
-
-    updateMp() {}
-
-    updateMaxMp() {}
-
-    updateItems() {}
-
-    updateSpeed() {}
-
-    updateRange() {}
-
-    updateArmor() {}
 
     clone() {
         return Object.assign(Object.create(Object.getPrototypeOf(this)), this);

@@ -109,7 +109,7 @@ class Game {
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 15;
+        this.time = 7;
         this.updateState();
 
         // 결과 지급, 리로드
@@ -186,7 +186,7 @@ class Game {
         clearTimeout(this.timeout);
 
         this.state = GAME_STATES.FINISH;
-        this.time = 3;
+        this.time = 1;
         this.updateState();
 
         this.battles.forEach((battle) => battle.finish());

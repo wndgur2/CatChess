@@ -46,7 +46,7 @@ export default class Socket {
                 case "stageUpdate": {
                     Game._round = data.round;
                     Game._stage = data.stage;
-                    Painter.resetMeshes();
+                    // Painter.resetMeshes();
                     UI.hideUnitInfo();
                     break;
                 }
@@ -56,9 +56,7 @@ export default class Socket {
                     break;
                 }
                 case "boardUpdate": {
-                    Player.getPlayerById(data.player)._board = data.board.map(
-                        (row) => row.map((cat) => (cat ? new Unit(cat) : null))
-                    );
+                    Player.getPlayerById(data.player)._board = data.board;
                     break;
                 }
                 case "queueUpdate": {
@@ -111,17 +109,21 @@ export default class Socket {
                     break;
                 }
                 case "unitUseSkill": {
-                    let { position } = data;
-                    Battle.useSkill(position);
+                    let { uid } = data;
+                    Battle.useSkill(uid);
                     break;
                 }
                 case "unitMove": {
-                    let { beforeX, beforeY, nextX, nextY } = data;
-                    Battle.move(beforeX, beforeY, nextX, nextY);
+                    // TODO > uid
+                    let { uid, nextX, nextY } = data;
+                    Battle.move(uid, nextX, nextY);
                     break;
                 }
-                // status, item, mp, ad, armor, ...
-                // battleAttack 메시지를 없애고, 요소를 분해해서(hp, attack, ...) 보내기
+                case "unitDie": {
+                    let { uid } = data;
+                    Battle.die(uid);
+                    break;
+                }
                 case "unitItemUpdate": {
                     let { unit } = data;
                     Battle.itemUpdate(unit);

@@ -13,10 +13,21 @@ class Battle {
             row.forEach((cat) => {
                 if (!cat) return;
                 cat.inBattle = true;
-                cat.damage = 0;
             });
         });
-        Battle.displayBoard();
+        Painter._board = Battle.board;
+    }
+
+    static getCatByUid(uid) {
+        let cat;
+        this.board.forEach((row) => {
+            row.forEach((c) => {
+                if (!c) return;
+                if (c.uid == uid) cat = c;
+                console.log(c.uid, uid, c.uid == uid);
+            });
+        });
+        return cat;
     }
 
     static init(timeStep) {
@@ -31,64 +42,44 @@ class Battle {
         }, timeStep);
     }
 
-    static displayBoard() {
-        Painter._board = Battle.board;
-    }
-
     static attack(attacker, target, damage) {
-        let attackerCat;
-        let targetCat;
-        if (this.reversed) {
-            attackerCat = Battle.board[5 - attacker.y][4 - attacker.x];
-            targetCat = Battle.board[5 - target.y][4 - target.x];
-        } else {
-            attackerCat = Battle.board[attacker.y][attacker.x];
-            targetCat = Battle.board[target.y][target.x];
-        }
+        let attackerCat = this.getCatByUid(attacker.uid);
+        let targetCat = this.getCatByUid(target.uid);
 
         attackMotion(attackerCat, targetCat);
 
         targetCat._hp = parseInt(target.hp);
-        if (targetCat.hp <= 0) {
-            targetCat.die();
-            Battle.board[targetCat.y][targetCat.x] = null;
-        }
 
         Painter.hitEffect(attackerCat, targetCat, damage);
     }
 
-    static move(beforeX, beforeY, nextX, nextY) {
-        if (this.reversed) {
-            let cat = Battle.board[5 - beforeY][4 - beforeX];
-
-            cat.move(beforeX, beforeY, nextX, nextY);
-
-            Battle.board[5 - beforeY][4 - beforeX] = null;
-            Battle.board[5 - nextY][4 - nextX] = cat;
-
-            cat.x = 4 - nextX;
-            cat.y = 5 - nextY;
-        } else {
-            let cat = Battle.board[beforeY][beforeX];
-
-            cat.move(beforeX, beforeY, nextX, nextY);
-
-            Battle.board[beforeY][beforeX] = null;
-            Battle.board[nextY][nextX] = cat;
-
-            cat.x = nextX;
-            cat.y = nextY;
-        }
+    static die(uid) {
+        let cat = this.getCatByUid(uid);
+        cat.die();
+        Battle.board[this.reversed ? 5 - cat.y : cat.y][
+            this.reversed ? 4 - cat.x : cat.x
+        ] = null;
     }
 
-    static useSkill(position) {
-        let cat;
+    static move(uid, nextX, nextY) {
+        let cat = this.getCatByUid(uid);
+        const beforeX = cat.x;
+        const beforeY = cat.y;
+        cat.move(nextX, nextY);
+
         if (this.reversed) {
-            cat = Battle.board[5 - position.y][4 - position.x];
+            Battle.board[5 - beforeY][4 - beforeX] = null;
+            Battle.board[5 - nextY][4 - nextX] = cat;
         } else {
-            cat = Battle.board[position.y][position.x];
+            Battle.board[beforeY][beforeX] = null;
+            Battle.board[nextY][nextX] = cat;
         }
-        console.log(cat.name, "used skill.");
+        cat.x = nextX;
+        cat.y = nextY;
+    }
+
+    static useSkill(uid) {
+        let cat = this.getCatByUid(uid);
         cat._mp = cat.mp - cat.maxMp;
     }
 
@@ -100,7 +91,5 @@ class Battle {
         unit.items = data.items.map((item) => new Item(item));
         Painter.createItemMesh(unit);
     }
-
-    static updateDamage(unit, damage) {}
 }
 export default Battle;

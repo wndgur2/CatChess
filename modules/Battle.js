@@ -85,13 +85,15 @@ class Battle {
         let p2Cats = this.battleField.getCats(this.player2.id);
         if (p1Cats.length > 0 && p2Cats.length > 0)
             [...p1Cats, ...p2Cats].forEach((c) => {
-                let res = c.action();
-                if (!res) return;
+                let responses = c.action();
+                if (!responses) return;
 
                 [this.player1, this.player2].forEach((p) => {
                     if (!p.ws) return;
-                    res.data.reversed = p === this.player2;
-                    sendMsg(p.ws, res.type, res.data);
+                    responses.forEach((res) => {
+                        res.data.reversed = p === this.player2;
+                        sendMsg(p.ws, res.type, res.data);
+                    });
                 });
             });
         else this.finish();
@@ -136,6 +138,9 @@ class Battle {
         });
 
         this.fisnished = true;
+        this.game.battles = this.game.battles.filter(
+            (battle) => battle !== this
+        );
 
         if (this.game.battles.every((battle) => battle.fisnished)) {
             this.game.finishState();
