@@ -193,7 +193,7 @@ class Player {
     }
 
     sellCat(cat) {
-        // TODO > uid
+        // TODO > uid. Battle중인 cat이 player의 board의 cat과 같은 uid를 가짐 주의
         if (!cat) return false;
         this._money += cat.cost;
 
