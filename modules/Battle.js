@@ -29,6 +29,8 @@ class Battle {
             .reverse();
 
         this.battleField = new BattleField([...board2, ...board1]);
+        player1.battle = this;
+        player2.battle = this;
 
         this.applySynergies();
 
@@ -131,6 +133,8 @@ class Battle {
         }
 
         [this.player1, this.player2].forEach((player) => {
+            player.battle = null;
+
             this.game.sendMsgToAll("hpUpdate", {
                 player: player.id,
                 hp: player.hp,

@@ -544,11 +544,7 @@ function onDrop(event) {
                     x: parseInt(UI.draggingId.split("-")[2]),
                     y: parseInt(UI.draggingId.split("-")[1]),
                 },
-                to: {
-                    // battle 일 때, y 3일 때 대기열이랑 겹침
-                    x: object.unit.x,
-                    y: object.unit.inBattle ? object.unit.y : object.unit.y + 3,
-                },
+                uid: object.unit.uid,
             });
             break;
         }

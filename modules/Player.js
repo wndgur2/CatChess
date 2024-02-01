@@ -35,6 +35,7 @@ class Player {
         this.winning = 0;
         this.losing = 0;
         this.synergies = {};
+        this.battle = null;
     }
 
     updatePlayer() {
@@ -340,8 +341,8 @@ class Player {
         return false;
     }
 
-    giveItem(item, to) {
-        let cat, battle;
+    giveItem(item, uid) {
+        let cat;
         let curItem = this.items[item.y * 2 + item.x];
         if (!curItem) return false;
 
@@ -352,41 +353,27 @@ class Player {
          * equip을 하면 됨.
          * 그러니까 equip을 두 번.
          */
-
-        if (to.y === 6) cat = this.queue[to.x];
-        else if (this.game.state !== GAME_STATES.ARRANGE) {
-            this.game.battles.forEach((b) => {
-                if (b.player1 === this || b.player2 === this) {
-                    battle = b;
-                    cat = b.battleField.board[to.y][to.x];
+        if (this.game.state !== GAME_STATES.ARRANGE) {
+            cat = this.battle.battleField.getCatByUid(uid);
+            if (cat) {
+                if (cat.equip(curItem)) {
+                    this.items[this.items.findIndex((i) => i === curItem)] =
+                        null;
+                    this.updateItems();
+                    this.battle.updateUnitItem(cat);
+                    return true;
                 }
-            });
-            if (!battle) {
-                console.log("giveItem: no battle");
-                return false;
             }
-        } else {
-            cat = this.board[to.y - 3][to.x];
         }
-
-        if (!cat) {
-            console.log("giveItem: no cat");
-            return false;
-        }
-
+        cat = this.getCatByUid(uid);
+        if (!cat) return false;
         if (cat.equip(curItem)) {
-            // find index of curItem
             this.items[this.items.findIndex((i) => i === curItem)] = null;
             this.updateItems();
-            if (this.game.state !== GAME_STATES.ARRANGE && to.y !== 6)
-                battle.updateUnitItem(cat);
-            else {
-                this.updateQueue();
-                this.updateBoard();
-            }
+            this.updateBoard();
+            this.updateQueue();
             return true;
         }
-        console.log("giveItem: equip failed");
         return false;
     }
 
