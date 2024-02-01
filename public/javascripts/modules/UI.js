@@ -44,8 +44,9 @@ export default class UI {
         shopEl.addEventListener("mouseleave", shopMouseLeave);
         shopEl.addEventListener("pointerup", shopPointerUp);
 
-        for (let i = 0; i < shopEl.children.length; ++i) {
-            shopEl.children[i].addEventListener("click", () => {
+        let shoplistEl = document.getElementById("shoplist");
+        for (let i = 0; i < shoplistEl.children.length; ++i) {
+            shoplistEl.children[i].addEventListener("click", () => {
                 if (!Player.player.shop[i]) return;
                 Socket.sendMsg("reqBuyCat", {
                     index: i,
@@ -147,6 +148,12 @@ export default class UI {
         if (this.infoUnit) this.infoUnit.focused = false;
         this.infoUnit = null;
 
+        let sellEl = document.getElementById("sell");
+        sellEl.style.display = "none";
+
+        let shoplistEl = document.getElementById("shoplist");
+        shoplistEl.style.display = "flex";
+
         let shopEl = document.getElementById("shop");
         shopEl.style.display = "flex";
     }
@@ -192,20 +199,37 @@ function itemMouseLeave(event) {
 function shopMouseEnter(event) {
     if (!Painter.isDragging) return;
     event.preventDefault();
-    let shopEl = document.getElementById("shop");
-    shopEl.innerHTML = `고양이 판매하기 [E]<br/>💰${Painter.draggingObject.unit.cost}`;
+
+    let shoplistEl = document.getElementById("shoplist");
+    shoplistEl.style.display = "none";
+
+    let sellEl = document.getElementById("sell");
+    sellEl.innerHTML = `고양이 판매하기 [E]<br/>💰${Painter.draggingObject.unit.cost}`;
+    sellEl.style.display = "flex";
 }
 
 function shopMouseLeave(event) {
     if (!Painter.isDragging) return;
     event.preventDefault();
-    Player.player._shop = Player.player.shop;
+
+    let sellEl = document.getElementById("sell");
+    sellEl.style.display = "none";
+
+    let shoplistEl = document.getElementById("shoplist");
+    shoplistEl.style.display = "flex";
 }
 
 function shopPointerUp(event) {
     if (!Painter.isDragging) return;
     Socket.sendMsg("reqSellCat", {
-        cat: Painter.draggingObject.unit,
+        uid: Painter.draggingObject.unit.uid,
     });
+
+    let sellEl = document.getElementById("sell");
+    sellEl.style.display = "none";
+
+    let shoplistEl = document.getElementById("shoplist");
+    shoplistEl.style.display = "flex";
+
     Player.player._shop = Player.player.shop;
 }

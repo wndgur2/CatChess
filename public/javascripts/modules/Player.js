@@ -84,9 +84,9 @@ export default class Player {
     set _shop(newShop) {
         this.shop = newShop;
         if (this.id !== Socket.id) return;
-        let shopListEl = document.getElementById("shop").children;
+        let shopListEl = document.getElementById("shoplist").children;
         for (let i = 0; i < newShop.length; i++) {
-            if (newShop[i] === null) {
+            if (!newShop[i]) {
                 shopListEl[i].style.visibility = "hidden";
                 continue;
             }

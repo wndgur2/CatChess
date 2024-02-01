@@ -32,7 +32,7 @@ module.exports = (server) => {
                     break;
                 }
                 case "reqSellCat": {
-                    getPlayer(from).sellCat(data.cat);
+                    getPlayer(from).sellCat(data.uid);
                     break;
                 }
                 case "reqReload": {

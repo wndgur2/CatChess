@@ -388,8 +388,9 @@ export default class Painter {
             const object = intersect.object;
             if (object.name === "unit") {
                 if (object.unit.owner !== Player.player.id) return;
+                if (object.unit.inBattle) return;
                 Socket.sendMsg("reqSellCat", {
-                    cat: object.unit,
+                    uid: object.unit.uid,
                 });
             }
         });
