@@ -24,7 +24,6 @@ class Battle {
             row.forEach((c) => {
                 if (!c) return;
                 if (c.uid == uid) cat = c;
-                console.log(c.uid, uid, c.uid == uid);
             });
         });
         return cat;

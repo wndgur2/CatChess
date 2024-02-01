@@ -213,25 +213,28 @@ class Player {
         return true;
     }
 
-    putCat(from, to) {
-        // from.y, to.y는 0, 1, 2, 3으로 클라이언트에서 제한함.
-        // TODO Synergy update
-
+    putCat(uid, to) {
         if (to.y <= 2 && this.game.state !== GAME_STATES.ARRANGE) {
             this.updateQueue();
             return false;
         }
 
-        let unitToMove, unitToSwap;
+        let unitToMove = this.getCatByUid(uid),
+            unitToSwap;
+        console.log(unitToMove);
+        if (!unitToMove) {
+            this.updateBoard();
+            this.updateQueue();
+            return false;
+        }
 
-        if (from.y === IN_QUEUE) {
+        if (unitToMove.y === IN_QUEUE) {
             // from queue
-            unitToMove = this.queue[from.x];
             if (to.y === IN_QUEUE) {
                 // to queue
                 unitToSwap = this.queue[to.x];
                 this.queue[to.x] = unitToMove;
-                this.queue[from.x] = unitToSwap;
+                this.queue[unitToMove.x] = unitToSwap;
             } else {
                 // to board
                 let amount = 0;
@@ -247,18 +250,18 @@ class Player {
                 }
 
                 this.board[to.y][to.x] = unitToMove;
-                this.queue[from.x] = unitToSwap;
+                this.queue[unitToMove.x] = unitToSwap;
 
                 this.countSynergy();
             }
         } else {
             // from board
-            unitToMove = this.board[from.y][from.x];
+            unitToMove = this.board[unitToMove.y][unitToMove.x];
             if (to.y === IN_QUEUE) {
                 // to queue
                 unitToSwap = this.queue[to.x];
 
-                this.board[from.y][from.x] = unitToSwap;
+                this.board[unitToMove.y][unitToMove.x] = unitToSwap;
                 this.queue[to.x] = unitToMove;
 
                 this.countSynergy();
@@ -266,17 +269,12 @@ class Player {
                 // to board
                 unitToSwap = this.board[to.y][to.x];
                 this.board[to.y][to.x] = unitToMove;
-                this.board[from.y][from.x] = unitToSwap;
+                this.board[unitToMove.y][unitToMove.x] = unitToSwap;
             }
         }
-        if (!unitToMove) {
-            this.updateBoard();
-            this.updateQueue();
-            return false;
-        }
         if (unitToSwap) {
-            unitToSwap.x = from.x;
-            unitToSwap.y = from.y;
+            unitToSwap.x = unitToMove.x;
+            unitToSwap.y = unitToMove.y;
         }
 
         unitToMove.x = to.x;
@@ -474,6 +472,16 @@ class Player {
             player: this.id,
             items: this.items,
         });
+    }
+
+    getCatByUid(uid) {
+        let cat;
+        [...this.board, this.queue].forEach((row) => {
+            row.forEach((c) => {
+                if (c && c.uid === uid) cat = c;
+            });
+        });
+        return cat;
     }
 }
 

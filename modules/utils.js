@@ -1,3 +1,5 @@
+const Player = require("./Player");
+
 let players = [];
 
 function sendMsg(ws, type, data) {
@@ -13,6 +15,9 @@ function addPlayer(player) {
     players.push(player);
 }
 
+/**
+ * @returns {Player}
+ */
 function getPlayer(id) {
     return players.find((player) => player.id === id);
 }

@@ -480,10 +480,7 @@ function onPointerUp(event) {
         const object = intersects[i].object;
         if (object.name === "allyPlate") {
             Socket.sendMsg("reqPutCat", {
-                from: {
-                    x: Painter.draggingObject.unit.x,
-                    y: Painter.draggingObject.unit.y,
-                },
+                uid: Painter.draggingObject.unit.uid,
                 to: {
                     x: object.boardCoords.x,
                     y: object.boardCoords.y - 3,

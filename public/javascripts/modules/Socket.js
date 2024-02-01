@@ -114,7 +114,6 @@ export default class Socket {
                     break;
                 }
                 case "unitMove": {
-                    // TODO > uid
                     let { uid, nextX, nextY } = data;
                     Battle.move(uid, nextX, nextY);
                     break;

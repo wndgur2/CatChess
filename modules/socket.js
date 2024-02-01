@@ -27,9 +27,8 @@ module.exports = (server) => {
                     break;
                 }
                 case "reqPutCat": {
-                    if (!data.from) return;
                     let player = getPlayer(from);
-                    player.putCat(data.from, data.to);
+                    player.putCat(data.uid, data.to);
                     break;
                 }
                 case "reqSellCat": {

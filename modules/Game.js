@@ -143,13 +143,10 @@ class Game {
                     nextX = Math.floor(Math.random() * 5);
                     nextY = Math.floor(Math.random() * 3);
                 } while (player.board[nextY][nextX] != null);
-                player.putCat(
-                    { x: c.x, y: c.y },
-                    {
-                        x: nextX,
-                        y: nextY,
-                    }
-                );
+                player.putCat(c.uid, {
+                    x: nextX,
+                    y: nextY,
+                });
                 catN++;
             }
         });
