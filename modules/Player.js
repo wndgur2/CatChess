@@ -194,7 +194,6 @@ class Player {
     }
 
     sellCat(uid) {
-        // TODO > uid. Battle중인 cat이 player의 board의 cat과 같은 uid를 가짐 주의
         let cat = this.getCatByUid(uid);
         if (!cat) return false;
         this._money += cat.cost;
@@ -406,6 +405,12 @@ class Player {
     }
 
     updateBoard() {
+        this.board.forEach((row) => {
+            row.forEach((cat) => {
+                if (cat) console.log(cat.modifiers);
+            });
+        });
+
         this.game.sendMsgToAll("boardUpdate", {
             player: this.id,
             board: this.board,

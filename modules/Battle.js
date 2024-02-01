@@ -37,7 +37,7 @@ class Battle {
         [this.player1, this.player2].forEach((player) => {
             if (!player.ws) return;
             sendMsg(player.ws, "battleReady", {
-                board: this.battleField.board.map((row) =>
+                board: this.battleField.field.map((row) =>
                     row.map((c) => (c ? { ...c, battleField: null } : null))
                 ),
                 reversed: player === this.player2,
@@ -47,7 +47,7 @@ class Battle {
 
     applySynergies() {
         [this.player1, this.player2].forEach((player) => {
-            this.battleField.board.forEach((row) => {
+            this.battleField.field.forEach((row) => {
                 row.forEach((cat) => {
                     if (!cat) return;
                     if (!cat.synergies) return;
@@ -87,7 +87,7 @@ class Battle {
         let p2Cats = this.battleField.getCats(this.player2.id);
         if (p1Cats.length > 0 && p2Cats.length > 0)
             [...p1Cats, ...p2Cats].forEach((c) => {
-                let responses = c.action();
+                let responses = c.update();
                 if (!responses) return;
 
                 [this.player1, this.player2].forEach((p) => {

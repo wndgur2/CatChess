@@ -1,24 +1,25 @@
 const { DIRECTIONS } = require("./constants/CONSTS.js");
 
 class BattleField {
-    constructor(board) {
-        this.board = board;
+    constructor(field) {
+        this.field = field;
         this.catsOfPlayer = {};
-        this.board.forEach((row, i) => {
-            row.forEach((cell, j) => {
-                if (cell == null) return;
-                cell.battleField = this;
-                cell.y = i;
-                cell.x = j;
-                cell.hp = cell.maxHp;
-                cell.delay = 0;
+        this.field.forEach((row, i) => {
+            row.forEach((c, j) => {
+                if (c == null) return;
+                c.battleField = this;
+                c.modifiers = [];
+                c.y = i;
+                c.x = j;
+                c.hp = c.maxHp;
+                c.delay = 0;
             });
         });
     }
 
     getNextMove(cat, target) {
         let visited = [];
-        this.board.forEach((row) =>
+        this.field.forEach((row) =>
             visited.push(row.map((c) => c !== null && c.owner === cat.owner))
         );
         let queue = [];
@@ -43,7 +44,7 @@ class BattleField {
 
     getNearestUnits(cat, range, amount, getAlly = false) {
         let visited = [];
-        this.board.forEach((row) => {
+        this.field.forEach((row) => {
             visited.push(row.map((_) => false));
         });
         let queue = [];
@@ -55,12 +56,12 @@ class BattleField {
             let [y, x, distance] = queue.shift();
             if (distance > range) break;
             if (
-                this.board[y][x] &&
+                this.field[y][x] &&
                 (getAlly
-                    ? this.board[y][x].owner === cat.owner
-                    : this.board[y][x].owner !== cat.owner)
+                    ? this.field[y][x].owner === cat.owner
+                    : this.field[y][x].owner !== cat.owner)
             )
-                res.push({ distance, target: this.board[y][x] });
+                res.push({ distance, target: this.field[y][x] });
             DIRECTIONS[y % 2].forEach(([dy, dx]) => {
                 let ny = y + dy,
                     nx = x + dx;
@@ -82,7 +83,7 @@ class BattleField {
     getCats(playerId = null) {
         let res = [];
         if (playerId == null) {
-            this.board.forEach((row) => {
+            this.field.forEach((row) => {
                 row.forEach((cat) => {
                     if (cat) res.push(cat);
                 });
@@ -90,7 +91,7 @@ class BattleField {
             return res;
         }
 
-        this.board.forEach((row) => {
+        this.field.forEach((row) => {
             row.forEach((cat) => {
                 if (cat && cat.owner === playerId) res.push(cat);
             });
@@ -100,7 +101,7 @@ class BattleField {
 
     getCatByUid(uid) {
         let cat;
-        this.board.forEach((row) => {
+        this.field.forEach((row) => {
             row.forEach((c) => {
                 if (c && c.uid == uid) cat = c;
             });

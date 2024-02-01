@@ -8,26 +8,26 @@ class Unit {
         // 유닛 고유 id 필요
         this.uid = Unit.number++;
         this.tier = tier;
-        this.proto = proto;
         this.id = proto.id;
-        this.name = this.proto.name;
-        this.synergies = this.proto.synergies;
-        this.desc = this.proto.desc;
-        this.originalCost = this.proto.cost;
-        this.cost = this.proto.cost * Math.pow(3, tier - 1);
+        this.name = proto.name;
+        this.synergies = proto.synergies;
+        this.desc = proto.desc;
+        this.originalCost = proto.cost;
+        this.cost = proto.cost * Math.pow(3, tier - 1);
         if (tier > 1) this.cost -= 1;
 
         const magnifier = Math.sqrt(this.tier).toPrecision(2);
-        this.ad = parseInt(this.proto.ad * magnifier);
-        this.speed = parseInt(this.proto.speed * magnifier);
-        this.range = this.proto.range;
-        this.maxHp = parseInt(this.proto.hp * magnifier);
+
+        this.ad = parseInt(proto.ad * magnifier);
+        this.speed = parseInt(proto.speed * magnifier);
+        this.range = proto.range;
+        this.maxHp = parseInt(proto.hp * magnifier);
         this.hp = this.maxHp;
-        this.armor = parseInt(this.proto.armor * magnifier);
+        this.armor = parseInt(proto.armor * magnifier);
 
         this.items = [];
 
-        this.skill = SKILLS[this.proto.skill];
+        this.skill = SKILLS[proto.skill];
         this.maxMp = parseInt(this.skill.mp);
         this.mp = 0;
 
@@ -35,25 +35,36 @@ class Unit {
         this.y = y;
         this.owner = playerId;
         this.die = false;
-        this.battleField = null;
         this.delay = 0;
 
-        this.modifiers = [];
+        this.isClone = false;
     }
 
-    action() {
+    update() {
         if (this.die) return;
+
         this.mp += 1;
+        this.updateModifiers();
+
         if (this.delay > 0) {
             this.delay -= this.speed;
             return;
         }
-
         let res = this.battleField.getNearestUnits(this, 30, 1, false);
         if (res.length < 1) return;
         let { distance, target } = res[0];
         if (distance <= this.range) return this.attack(target);
         else return this.move(this.battleField.getNextMove(this, target));
+    }
+
+    updateModifiers() {
+        this.modifiers.forEach((modifier) => {
+            modifier.leftTime--;
+            if (modifier.leftTime <= 0) {
+                modifier.unit = null;
+                this.modifiers.splice(this.modifiers.indexOf(modifier), 1);
+            }
+        });
     }
 
     attack(target) {
@@ -93,7 +104,7 @@ class Unit {
 
         if (target.hp <= 0) {
             target.die = true;
-            this.battleField.board[target.y][target.x] = null;
+            this.battleField.field[target.y][target.x] = null;
 
             responses.push({
                 type: "unitDie",
@@ -118,8 +129,8 @@ class Unit {
         let y = nextMove[0],
             x = nextMove[1];
 
-        this.battleField.board[this.y][this.x] = null;
-        this.battleField.board[y][x] = this;
+        this.battleField.field[this.y][this.x] = null;
+        this.battleField.field[y][x] = this;
         this.y = y;
         this.x = x;
         this.delay += 100;
@@ -148,8 +159,19 @@ class Unit {
         return true;
     }
 
+    pushModifier(modifier) {
+        this.modifiers.push(modifier);
+        modifier.unit = this;
+    }
+
     clone() {
-        return Object.assign(Object.create(Object.getPrototypeOf(this)), this);
+        let clone = Object.assign(
+            Object.create(Object.getPrototypeOf(this)),
+            this
+        );
+        clone.isClone = true;
+        console.log("should be false: ", this.isClone);
+        return clone;
     }
 }
 

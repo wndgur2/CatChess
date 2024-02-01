@@ -1,5 +1,7 @@
+import Game from "./Game.js";
 import Item from "./Item.js";
 import Painter from "./Painter.js";
+import { GAME_STATES } from "./constants/CONSTS.js";
 import attackMotion from "./motions/attack.js";
 
 class Battle {
@@ -32,6 +34,10 @@ class Battle {
     static init(timeStep) {
         if (this.interval) clearInterval(this.interval);
         this.interval = setInterval(() => {
+            if (Game.state !== GAME_STATES.BATTLE) {
+                clearInterval(this.interval);
+                return;
+            }
             this.board.forEach((row) => {
                 row.forEach((cat) => {
                     if (!cat) return;

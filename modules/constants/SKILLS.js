@@ -17,7 +17,7 @@ const SKILLS = {
             cat.battleField
                 .getNearestUnits(cat, RANGE, TARGET_AMOUNT, false)
                 .forEach(({ _, target }) => {
-                    target.modifiers.push(
+                    target.pushModifier(
                         new Modifier(
                             { speedRatio: 0 },
                             secondToTimeStep(DURATION)

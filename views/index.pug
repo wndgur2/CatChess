@@ -2,20 +2,18 @@ extends layout
 
 block content
   #container
-    span#id &nbsp?
+    span#id &nbsp no id
     #home 
-      span#title 테스트
+      span#title Cat Chess
       button#enterGame
-        h2 ENter
+        h2 Enter Game
     #waiting
-      h2 대기열 
-      div
-        span 고양이 찾는중...
+      h2 Searching
     #game
       #topWrapper
         #state
         #stageInfo
-          span 스테이지&nbsp
+          span Stage&nbsp
           span#round 
           span &nbsp-&nbsp
           span#stage
@@ -25,7 +23,7 @@ block content
         table 
           tbody#inventory
             tr
-              span 아이템
+              span Inventory
         #moneyWrapper
           div
             span 💰
