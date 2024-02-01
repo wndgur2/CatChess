@@ -71,7 +71,7 @@ class Battle {
         this.battleInterval = setInterval(() => this.updateBattle(), TIME_STEP);
     }
 
-    updateUnit(unit) {
+    updateUnitItem(unit) {
         [this.player1, this.player2].forEach((player) => {
             if (!player.ws) return;
             sendMsg(player.ws, "unitItemUpdate", {

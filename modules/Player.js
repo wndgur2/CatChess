@@ -221,7 +221,6 @@ class Player {
 
         let unitToMove = this.getCatByUid(uid),
             unitToSwap;
-        console.log(unitToMove);
         if (!unitToMove) {
             this.updateBoard();
             this.updateQueue();
@@ -346,6 +345,14 @@ class Player {
         let curItem = this.items[item.y * 2 + item.x];
         if (!curItem) return false;
 
+        /**
+         * 이렇게 말고, arrange state가 아니면
+         * battleField에서 uid로 cat을 찾아서 주고 없으면 말고,
+         * 추가로 player board,queue에서 찾아서
+         * equip을 하면 됨.
+         * 그러니까 equip을 두 번.
+         */
+
         if (to.y === 6) cat = this.queue[to.x];
         else if (this.game.state !== GAME_STATES.ARRANGE) {
             this.game.battles.forEach((b) => {
@@ -372,7 +379,7 @@ class Player {
             this.items[this.items.findIndex((i) => i === curItem)] = null;
             this.updateItems();
             if (this.game.state !== GAME_STATES.ARRANGE && to.y !== 6)
-                battle.updateUnit(cat);
+                battle.updateUnitItem(cat);
             else {
                 this.updateQueue();
                 this.updateBoard();

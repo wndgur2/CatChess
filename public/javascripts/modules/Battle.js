@@ -83,10 +83,7 @@ class Battle {
     }
 
     static itemUpdate(data) {
-        let unit =
-            Battle.board[this.reversed ? 5 - data.y : data.y][
-                this.reversed ? 4 - data.x : data.x
-            ];
+        let unit = this.getCatByUid(data.uid);
         unit.items = data.items.map((item) => new Item(item));
         Painter.createItemMesh(unit);
     }
