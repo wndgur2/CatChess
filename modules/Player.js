@@ -14,6 +14,7 @@ class Player {
 
         this.id = id;
         this.ws = ws;
+        this.game = null;
     }
 
     init() {
@@ -405,12 +406,6 @@ class Player {
     }
 
     updateBoard() {
-        this.board.forEach((row) => {
-            row.forEach((cat) => {
-                if (cat) console.log(cat.modifiers);
-            });
-        });
-
         this.game.sendMsgToAll("boardUpdate", {
             player: this.id,
             board: this.board,

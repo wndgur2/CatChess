@@ -8,7 +8,6 @@ class BattleField {
             row.forEach((c, j) => {
                 if (c == null) return;
                 c.battleField = this;
-                c.modifiers = [];
                 c.y = i;
                 c.x = j;
                 c.hp = c.maxHp;

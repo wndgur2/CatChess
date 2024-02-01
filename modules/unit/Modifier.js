@@ -12,9 +12,7 @@ class Modifier {
         this.hpRatio = 1;
         this.armorRatio = 1;
 
-        for (const [key, value] of Object.entries(data)) {
-            this[key] = value;
-        }
+        for (const [key, value] of Object.entries(data)) this[key] = value;
 
         this.duration = duration;
         this.leftTime = duration;

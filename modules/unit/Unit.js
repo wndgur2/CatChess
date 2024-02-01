@@ -5,7 +5,6 @@ const { getPlayer } = require("../utils");
 class Unit {
     static number = 0;
     constructor(proto, playerId, x, y, tier) {
-        // 유닛 고유 id 필요
         this.uid = Unit.number++;
         this.tier = tier;
         this.id = proto.id;
@@ -25,7 +24,7 @@ class Unit {
         this.hp = this.maxHp;
         this.armor = parseInt(proto.armor * magnifier);
 
-        this.items = [];
+        this.items = []; // 참조형: clone과 공유함
 
         this.skill = SKILLS[proto.skill];
         this.maxMp = parseInt(this.skill.mp);
@@ -37,7 +36,7 @@ class Unit {
         this.die = false;
         this.delay = 0;
 
-        this.isClone = false;
+        this.modifiers = [];
     }
 
     update() {
@@ -47,24 +46,35 @@ class Unit {
         this.updateModifiers();
 
         if (this.delay > 0) {
-            this.delay -= this.speed;
+            this.delay -= this.getStat("speed");
             return;
         }
         let res = this.battleField.getNearestUnits(this, 30, 1, false);
         if (res.length < 1) return;
         let { distance, target } = res[0];
-        if (distance <= this.range) return this.attack(target);
+        if (distance <= this.getStat("range")) return this.attack(target);
         else return this.move(this.battleField.getNextMove(this, target));
     }
 
     updateModifiers() {
         this.modifiers.forEach((modifier) => {
-            modifier.leftTime--;
+            modifier.leftTime -= 1;
             if (modifier.leftTime <= 0) {
-                modifier.unit = null;
                 this.modifiers.splice(this.modifiers.indexOf(modifier), 1);
             }
         });
+    }
+
+    getStat(key) {
+        let stat = this[key];
+        this.modifiers.forEach((modifier) => {
+            stat += modifier[key];
+        });
+        let ratio = 1;
+        this.modifiers.forEach((modifier) => {
+            ratio *= modifier[key + "Ratio"];
+        });
+        return stat * ratio;
     }
 
     attack(target) {
@@ -73,6 +83,7 @@ class Unit {
         if (this.mp >= this.maxMp) {
             this.skill.execute(this);
             this.mp -= this.maxMp;
+            console.log(this.name, this.skill.name);
             return [
                 {
                     type: "unitUseSkill",
@@ -83,9 +94,8 @@ class Unit {
             ];
         }
 
-        let damage;
-        if (this.ad - target.armor > 0) damage = this.ad - target.armor;
-        else damage = 1;
+        let damage = this.getStat("ad") - target.getStat("armor");
+        if (damage < 0) damage = 1;
         target.hp -= damage;
 
         this.delay += 100;
@@ -165,12 +175,13 @@ class Unit {
     }
 
     clone() {
+        // 옵젝 속의 옵젝은 참조형이기 때문에, clone() 시 얕은 복사가 이뤄짐.
+        // 여기서 circular reference를 방지하기 위해서는 새로운 object를 (만들어서) 참조
         let clone = Object.assign(
             Object.create(Object.getPrototypeOf(this)),
             this
         );
-        clone.isClone = true;
-        console.log("should be false: ", this.isClone);
+        clone.modifiers = [];
         return clone;
     }
 }
