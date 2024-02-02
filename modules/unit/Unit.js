@@ -45,23 +45,27 @@ class Unit {
         this.mp += 1;
         this.updateModifiers();
 
+        if (this.mp >= this.maxMp) return this.useSkill();
+
         if (this.delay > 0) {
             this.delay -= this.getStat("speed");
             return;
         }
+
         let res = this.battleField.getNearestUnits(this, 30, 1, false);
         if (res.length < 1) return;
+
         let { distance, target } = res[0];
-        if (distance <= this.getStat("range")) return this.attack(target);
+        if (distance <= this.getStat("range"))
+            return this.ordinaryAttack(target);
         else return this.move(this.battleField.getNextMove(this, target));
     }
 
     updateModifiers() {
         this.modifiers.forEach((modifier) => {
             modifier.leftTime -= 1;
-            if (modifier.leftTime <= 0) {
+            if (modifier.leftTime <= 0)
                 this.modifiers.splice(this.modifiers.indexOf(modifier), 1);
-            }
         });
     }
 
@@ -77,60 +81,46 @@ class Unit {
         return stat * ratio;
     }
 
-    attack(target) {
-        let responses = [];
+    useSkill() {
+        this.skill.execute(this);
+        this.mp -= this.maxMp;
+        this.sendMsgToGame("unitUseSkill", {
+            uid: this.uid,
+        });
+    }
 
-        if (this.mp >= this.maxMp) {
-            this.skill.execute(this);
-            this.mp -= this.maxMp;
-            console.log(this.name, this.skill.name);
-            return [
-                {
-                    type: "unitUseSkill",
-                    data: {
-                        uid: this.uid,
-                    },
-                },
-            ];
-        }
+    ordinaryAttack(target) {
+        this.delay += 100;
+        this.attack(target, this.getStat("ad") - target.getStat("armor"));
+    }
 
-        let damage = this.getStat("ad") - target.getStat("armor");
-        if (damage < 0) damage = 1;
+    attack(target, damage) {
+        if (damage <= 0) damage = 1;
         target.hp -= damage;
 
-        this.delay += 100;
-
-        responses.push({
-            type: "unitAttack",
-            data: {
-                attacker: { uid: this.uid },
-                target: {
-                    uid: target.uid,
-                    hp: target.hp,
-                },
-                damage,
+        this.sendMsgToGame("unitAttack", {
+            attacker: { uid: this.uid },
+            target: {
+                uid: target.uid,
+                hp: target.hp,
             },
+            damage,
         });
 
         if (target.hp <= 0) {
             target.die = true;
             this.battleField.field[target.y][target.x] = null;
 
-            responses.push({
-                type: "unitDie",
-                data: {
-                    uid: target.uid,
-                },
+            this.sendMsgToGame("unitDie", {
+                uid: target.uid,
             });
 
             // item drop
-            if (target.owner == "creep") {
+            if (target.owner.split("-")[0] == "creep") {
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
             }
         }
-
-        return responses;
     }
 
     move(nextMove) {
@@ -145,16 +135,11 @@ class Unit {
         this.x = x;
         this.delay += 100;
 
-        return [
-            {
-                type: "unitMove",
-                data: {
-                    uid: this.uid,
-                    nextX: x,
-                    nextY: y,
-                },
-            },
-        ];
+        this.sendMsgToGame("unitMove", {
+            uid: this.uid,
+            nextX: x,
+            nextY: y,
+        });
     }
 
     equip(item) {
@@ -172,6 +157,11 @@ class Unit {
     pushModifier(modifier) {
         this.modifiers.push(modifier);
         modifier.unit = this;
+    }
+
+    sendMsgToGame(type, data) {
+        const p = getPlayer(this.owner);
+        p.game.sendMsgToAll(type, { ...data, battleId: p.battle.id });
     }
 
     clone() {

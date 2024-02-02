@@ -1,6 +1,7 @@
 const SimpleCat = require("./unit/SimpleCat");
 const { SHOP_POSSIBILITIES, GAME_STATES } = require("./constants/CONSTS");
 const { sendMsg, addPlayer } = require("./utils");
+const Battle = require("./Battle");
 
 const IN_QUEUE = 3;
 
@@ -347,13 +348,6 @@ class Player {
         let curItem = this.items[item.y * 2 + item.x];
         if (!curItem) return false;
 
-        /**
-         * 이렇게 말고, arrange state가 아니면
-         * battleField에서 uid로 cat을 찾아서 주고 없으면 말고,
-         * 추가로 player board,queue에서 찾아서
-         * equip을 하면 됨.
-         * 그러니까 equip을 두 번.
-         */
         if (this.game.state !== GAME_STATES.ARRANGE) {
             cat = this.battle.battleField.getCatByUid(uid);
             if (cat) {

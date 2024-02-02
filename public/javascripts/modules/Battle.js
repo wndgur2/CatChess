@@ -21,14 +21,14 @@ class Battle {
     }
 
     static getCatByUid(uid) {
-        let cat;
+        let unit;
         this.board.forEach((row) => {
-            row.forEach((c) => {
-                if (!c) return;
-                if (c.uid == uid) cat = c;
+            row.forEach((u) => {
+                if (!u) return;
+                if (u.uid == uid) unit = u;
             });
         });
-        return cat;
+        return unit;
     }
 
     static init(timeStep) {
@@ -50,6 +50,7 @@ class Battle {
     static attack(attacker, target, damage) {
         let attackerCat = this.getCatByUid(attacker.uid);
         let targetCat = this.getCatByUid(target.uid);
+        if (!attackerCat || !targetCat) return;
 
         attackMotion(attackerCat, targetCat);
 
@@ -60,6 +61,7 @@ class Battle {
 
     static die(uid) {
         let cat = this.getCatByUid(uid);
+        if (!cat) return;
         cat.die();
         Battle.board[this.reversed ? 5 - cat.y : cat.y][
             this.reversed ? 4 - cat.x : cat.x
@@ -68,6 +70,8 @@ class Battle {
 
     static move(uid, nextX, nextY) {
         let cat = this.getCatByUid(uid);
+        if (!cat) return;
+
         const beforeX = cat.x;
         const beforeY = cat.y;
         cat.move(nextX, nextY);
@@ -85,6 +89,7 @@ class Battle {
 
     static useSkill(uid) {
         let cat = this.getCatByUid(uid);
+        if (!cat) return;
         cat._mp = cat.mp - cat.maxMp;
     }
 

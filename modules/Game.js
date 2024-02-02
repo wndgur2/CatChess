@@ -1,8 +1,9 @@
 const { sendMsg, getPlayer, removePlayer } = require("./utils.js");
 const { GAME_STATES, PLAYER_NUM } = require("./constants/CONSTS.js");
 const CREEP_ROUNDS = require("./constants/CREEP_ROUNDS.js");
-const Battle = require("./Battle.js");
 const Player = require("./Player.js");
+const Battle = require("./Battle.js");
+const Creep = require("./unit/Creep.js");
 
 class Game {
     static waitingPlayers = [];
@@ -53,15 +54,16 @@ class Game {
             player.updatePlayer();
         });
 
-        this.creep = new Player("creep"); // players에 creep이 여러명임
-        this.creep.init();
+        this.creeps = [];
+        this.players.forEach((_, i) => {
+            this.creeps.push(new Player(`creep-${i}`));
+            this.creeps[i].init();
+            this.creeps[i].game = this;
+        });
         this.round = 1;
         this.stage = 0;
         this.arrangeState();
-        /**
-         * @type {Battle[]}
-         */
-        this.battles = [];
+        this.battles = {};
         this.timer = setInterval(() => {
             if (this.time <= 0) return;
             this.time = this.time - 1;
@@ -84,9 +86,8 @@ class Game {
         });
 
         if (this.state !== GAME_STATES.ARRANGE) {
-            this.battles.forEach((battle) => {
+            for (const [_, battle] of Object.entries(this.battles))
                 battle.updateBattle();
-            });
         }
         player.updatePlayer();
     }
@@ -159,13 +160,26 @@ class Game {
             this.battleState();
         }, this.time * 1000);
 
+        // TODO 한 creep의 battle이 여러개라 map에서 덮어씌워짐.
+        // 플레이어 마다 한 크립 필요.
         if (this.stage == 1 && this.round <= Object.keys(CREEP_ROUNDS).length) {
-            this.creep.level = CREEP_ROUNDS[this.round].level;
-            this.creep.board = CREEP_ROUNDS[this.round].board;
-            this.players.forEach((player) =>
-                this.battles.push(new Battle(player, this.creep, true))
-            );
-        } else this.battles.push(new Battle(this.players[0], this.players[1]));
+            this.players.forEach((player, i) => {
+                this.creeps[i].level = CREEP_ROUNDS[this.round].level;
+                this.creeps[i].board = CREEP_ROUNDS[this.round].board.map(
+                    (row) =>
+                        row.map((c) => {
+                            if (!c) return null;
+                            return new Creep(c, this.creeps[i].id);
+                        })
+                );
+                const newBattle = new Battle(player, this.creeps[i], true);
+                this.battles[player.id] = newBattle;
+            });
+        } else {
+            const newBattle = new Battle(this.players[0], this.players[1]);
+            this.battles[this.players[0].id] = newBattle;
+            this.battles[this.players[1].id] = newBattle;
+        }
     }
 
     battleState() {
@@ -175,7 +189,9 @@ class Game {
         this.time = 30;
         this.updateState();
 
-        this.battles.forEach((battle) => battle.initBattle());
+        for (const [_, battle] of Object.entries(this.battles)) {
+            battle.initBattle();
+        }
         this.timeout = setTimeout(() => this.finishState(), this.time * 1000);
     }
 
@@ -186,7 +202,10 @@ class Game {
         this.time = 1;
         this.updateState();
 
-        this.battles.forEach((battle) => battle.finish());
+        // this.battles.forEach((battle) => battle.finish());
+        for (const [_, battle] of Object.entries(this.battles)) {
+            battle.finish();
+        }
 
         let isEnd = false;
         this.players.forEach((player) => {

@@ -92,6 +92,7 @@ export default class Socket {
                     break;
                 }
                 case "battleReady": {
+                    Battle.id = data.battleId;
                     Battle.board = data.board.map((row) =>
                         row.map((cat) => (cat ? new Unit(cat) : null))
                     );
@@ -104,35 +105,33 @@ export default class Socket {
                     break;
                 }
                 case "unitAttack": {
-                    let { attacker, target, damage } = data;
+                    let { battleId, attacker, target, damage } = data;
+                    if (Battle.id != battleId) return;
                     Battle.attack(attacker, target, damage);
                     break;
                 }
                 case "unitUseSkill": {
-                    let { uid } = data;
+                    let { battleId, uid } = data;
+                    if (Battle.id != battleId) return;
                     Battle.useSkill(uid);
                     break;
                 }
                 case "unitMove": {
-                    let { uid, nextX, nextY } = data;
+                    let { battleId, uid, nextX, nextY } = data;
+                    if (Battle.id != battleId) return;
                     Battle.move(uid, nextX, nextY);
                     break;
                 }
                 case "unitDie": {
-                    let { uid } = data;
+                    let { battleId, uid } = data;
+                    if (Battle.id != battleId) return;
                     Battle.die(uid);
                     break;
                 }
                 case "unitItemUpdate": {
-                    let { unit } = data;
+                    let { battleId, unit } = data;
+                    if (Battle.id != battleId) return;
                     Battle.itemUpdate(unit);
-                    break;
-                }
-                case "battleResult": {
-                    data.players.forEach(([player, hp]) => {
-                        let p = Player.getPlayerById(player);
-                        if (p) p._hp = hp;
-                    });
                     break;
                 }
                 case "winningUpdate": {

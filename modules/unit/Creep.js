@@ -4,8 +4,8 @@ const CREEPS = require("../constants/CREEPS.js");
 class Creep extends Unit {
     static prototypes = CREEPS;
 
-    constructor(id) {
-        super(Creep.prototypes[id], "creep", 0, 0, 1);
+    constructor(id, pid) {
+        super(Creep.prototypes[id], pid, 0, 0, 1);
     }
 }
 

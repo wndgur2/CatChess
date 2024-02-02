@@ -40,21 +40,9 @@ const SKILLS = {
             cat.battleField
                 .getNearestUnits(cat, RANGE, TARGET_AMOUNT, (getAlly = false))
                 .forEach(({ _, target }) => {
-                    // 이거 attack과 같은 함수 호출해서 죽음 체크까지 하도록 해야함. damage같은 함수
                     let damage =
                         cat.getStat("ad") * 2 - target.getStat("armor") + 100;
-                    if (damage < 0) damage = 1;
-                    target.hp -= damage;
-
-                    // TODO: send this message to client
-                    getPlayer(cat.owner).game.sendMsgToAll("unitAttack", {
-                        attacker: { uid: cat.uid },
-                        target: {
-                            uid: target.uid,
-                            hp: target.hp,
-                        },
-                        damage,
-                    });
+                    cat.attack(target, damage);
                 });
         },
     },

@@ -1,25 +1,22 @@
 const BattleField = require("./BattleField");
-const Game = require("./Game");
-const Player = require("./Player");
 const { sendMsg } = require("./utils");
 const { TIME_STEP } = require("./constants/CONSTS.js");
 const SYNERGIES = require("./constants/SYNERGIES.js");
 
 class Battle {
-    /**
-     * @param {Player} player1
-     * @param {Player} player2
-     */
+    static newId = 0;
     constructor(player1, player2, isCreep = false) {
+        this.id = Battle.newId++;
         this.finished = false;
-        /**
-         * @type {Game}
-         */
         this.game = player1.game;
         this.player1 = player1;
         this.player2 = player2;
+        this.player1.battle = this;
+        this.player2.battle = this;
+
         this.isCreep = isCreep;
 
+        // TODO: creep이 중복된 uid를 가짐.
         let board1 = player1.board.map((row) =>
             row.map((c) => (c ? c.clone() : null))
         );
@@ -37,6 +34,7 @@ class Battle {
         [this.player1, this.player2].forEach((player) => {
             if (!player.ws) return;
             sendMsg(player.ws, "battleReady", {
+                battleId: this.id,
                 board: this.battleField.field.map((row) =>
                     row.map((c) => (c ? { ...c, battleField: null } : null))
                 ),
@@ -77,6 +75,7 @@ class Battle {
         [this.player1, this.player2].forEach((player) => {
             if (!player.ws) return;
             sendMsg(player.ws, "unitItemUpdate", {
+                battleId: this.id,
                 unit: { ...unit, battleField: null },
             });
         });
@@ -85,19 +84,16 @@ class Battle {
     updateBattle() {
         let p1Cats = this.battleField.getCats(this.player1.id);
         let p2Cats = this.battleField.getCats(this.player2.id);
-        if (p1Cats.length > 0 && p2Cats.length > 0)
-            [...p1Cats, ...p2Cats].forEach((c) => {
-                let responses = c.update();
-                if (!responses) return;
+        const units = [...p1Cats, ...p2Cats];
 
-                [this.player1, this.player2].forEach((p) => {
-                    if (!p.ws) return;
-                    responses.forEach((res) => {
-                        res.data.reversed = p === this.player2;
-                        sendMsg(p.ws, res.type, res.data);
-                    });
-                });
-            });
+        // random shuffle
+        for (let i = units.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [units[i], units[j]] = [units[j], units[i]];
+        }
+
+        if (p1Cats.length > 0 && p2Cats.length > 0)
+            units.forEach((c) => c.update());
         else this.finish();
     }
 
@@ -142,11 +138,14 @@ class Battle {
         });
 
         this.fisnished = true;
-        this.game.battles = this.game.battles.filter(
-            (battle) => battle !== this
-        );
+        delete this.game.battles[this.player1.id];
+        delete this.game.battles[this.player2.id];
 
-        if (this.game.battles.every((battle) => battle.fisnished)) {
+        if (
+            Object.entries(this.game.battles).every(
+                ([_, battle]) => battle.fisnished
+            )
+        ) {
             this.game.finishState();
         }
     }

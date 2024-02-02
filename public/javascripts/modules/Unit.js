@@ -60,6 +60,8 @@ export default class Unit {
     }
 
     die() {
+        console.log(this.name, "die");
+        this._hp = 0;
         Painter.scene.remove(this.mesh);
     }
 
@@ -69,7 +71,7 @@ export default class Unit {
         document.getElementById("unitImgWrapper").appendChild(this.imageEl);
 
         document.getElementById("unitName").innerHTML =
-            "★".repeat(this.tier) + this.name;
+            "★".repeat(this.tier) + this.name + this.uid;
         document.getElementById("unitName").style.color = this.color;
 
         let unitSynergiesEl = document.getElementById("unitSynergies");
@@ -131,7 +133,6 @@ export default class Unit {
         if (this.focused) document.getElementById("mp").innerHTML = this.mp;
     }
 
-    //https://stackoverflow.com/questions/30292831/three-js-lookat-how-to-pan-smoothly-between-old-and-new-target-positions
     move(nextX, nextY) {
         const beforeCoords = getBoardCoords(this.x, this.y);
         const nextCoords = getBoardCoords(nextX, nextY);
