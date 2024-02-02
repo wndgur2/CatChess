@@ -60,7 +60,6 @@ export default class Unit {
     }
 
     die() {
-        console.log(this.name, "die");
         this._hp = 0;
         Painter.scene.remove(this.mesh);
     }
@@ -71,7 +70,7 @@ export default class Unit {
         document.getElementById("unitImgWrapper").appendChild(this.imageEl);
 
         document.getElementById("unitName").innerHTML =
-            "★".repeat(this.tier) + this.name + this.uid;
+            "★".repeat(this.tier) + this.name;
         document.getElementById("unitName").style.color = this.color;
 
         let unitSynergiesEl = document.getElementById("unitSynergies");
@@ -100,6 +99,10 @@ export default class Unit {
             if (!this.items[i]) return;
             itemEls[i].appendChild(this.items[i].imageEl);
         }
+    }
+
+    skillInfo() {
+        return `<div><span>${this.skill.name}</span><br /><span>${this.skill.desc}</span></div>`;
     }
 
     set _hp(newHp) {

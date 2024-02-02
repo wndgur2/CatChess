@@ -129,8 +129,6 @@ class Battle {
         }
 
         [this.player1, this.player2].forEach((player) => {
-            player.battle = null;
-
             this.game.sendMsgToAll("hpUpdate", {
                 player: player.id,
                 hp: player.hp,
@@ -138,16 +136,13 @@ class Battle {
         });
 
         this.fisnished = true;
-        delete this.game.battles[this.player1.id];
-        delete this.game.battles[this.player2.id];
 
         if (
             Object.entries(this.game.battles).every(
                 ([_, battle]) => battle.fisnished
             )
-        ) {
+        )
             this.game.finishState();
-        }
     }
 }
 

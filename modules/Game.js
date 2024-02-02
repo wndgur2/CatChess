@@ -108,6 +108,8 @@ class Game {
     arrangeState() {
         clearTimeout(this.timeout);
 
+        this.battles = {};
+
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
         this.time = 7;

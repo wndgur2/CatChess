@@ -66,7 +66,7 @@ export default class UI {
                 item.className = "cell";
                 item.addEventListener("dragstart", inventoryDragStart);
                 item.draggable = false;
-                item.addEventListener("mouseenter", inventoryItemMouseEnter);
+                // item.addEventListener("mouseenter", inventoryItemMouseEnter);
                 item.addEventListener("mousemove", inventoryItemMouseMove);
                 item.addEventListener("mouseleave", inventoryItemMouseLeave);
                 row.appendChild(item);
@@ -78,12 +78,18 @@ export default class UI {
             .getElementById("inventory")
             .appendChild(document.getElementById("moneyWrapper"));
 
+        // unit info
         let itemEls = document.getElementsByClassName("item");
         for (let i = 0; i < itemEls.length; i++) {
-            itemEls[i].addEventListener("mouseover", itemMouseEnter);
+            // itemEls[i].addEventListener("mouseover", itemMouseEnter);
             itemEls[i].addEventListener("mousemove", itemMouseMove);
             itemEls[i].addEventListener("mouseout", itemMouseLeave);
         }
+
+        let skillEl = document.getElementById("unitSkillWrapper");
+        // skillEl.addEventListener("mouseover", skillMouseEnter);
+        skillEl.addEventListener("mousemove", skillMouseMove);
+        skillEl.addEventListener("mouseout", skillMouseLeave);
     }
 
     static gameStart() {
@@ -164,13 +170,6 @@ function inventoryDragStart(event) {
     UI.isDragging = true;
 }
 
-function inventoryItemMouseEnter(event) {
-    let index =
-        parseInt(this.id.split("-")[1]) * 2 + parseInt(this.id.split("-")[2]);
-    if (Player.player.items[index])
-        UI.popUp(Player.player.items[index].info(), event);
-}
-
 function inventoryItemMouseMove(event) {
     let index =
         parseInt(this.id.split("-")[1]) * 2 + parseInt(this.id.split("-")[2]);
@@ -182,17 +181,20 @@ function inventoryItemMouseLeave(event) {
     UI.popDown();
 }
 
-function itemMouseEnter(event) {
-    if (UI.infoUnit.items[this.id])
-        UI.popUp(UI.infoUnit.items[this.id].info(), event);
-}
-
 function itemMouseMove(event) {
     if (UI.infoUnit.items[this.id])
         UI.popUp(UI.infoUnit.items[this.id].info(), event);
 }
 
 function itemMouseLeave(event) {
+    UI.popDown();
+}
+
+function skillMouseMove(event) {
+    UI.popUp(UI.infoUnit.skillInfo(), event);
+}
+
+function skillMouseLeave(event) {
     UI.popDown();
 }
 
