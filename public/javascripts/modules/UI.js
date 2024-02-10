@@ -66,7 +66,6 @@ export default class UI {
                 item.className = "cell";
                 item.addEventListener("dragstart", inventoryDragStart);
                 item.draggable = false;
-                // item.addEventListener("mouseenter", inventoryItemMouseEnter);
                 item.addEventListener("mousemove", inventoryItemMouseMove);
                 item.addEventListener("mouseleave", inventoryItemMouseLeave);
                 row.appendChild(item);
@@ -81,13 +80,11 @@ export default class UI {
         // unit info
         let itemEls = document.getElementsByClassName("item");
         for (let i = 0; i < itemEls.length; i++) {
-            // itemEls[i].addEventListener("mouseover", itemMouseEnter);
             itemEls[i].addEventListener("mousemove", itemMouseMove);
             itemEls[i].addEventListener("mouseout", itemMouseLeave);
         }
 
         let skillEl = document.getElementById("unitSkillWrapper");
-        // skillEl.addEventListener("mouseover", skillMouseEnter);
         skillEl.addEventListener("mousemove", skillMouseMove);
         skillEl.addEventListener("mouseout", skillMouseLeave);
     }

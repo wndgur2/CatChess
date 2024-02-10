@@ -91,6 +91,9 @@ export default class Player {
                 continue;
             }
             shopListEl[i].style.visibility = "visible";
+            shopListEl[i].style.border = `2px solid ${
+                COST_COLORS[newShop[i].cost]
+            }`;
             let shopImageWrapper =
                 shopListEl[i].getElementsByClassName("shopImageWrapper")[0];
             shopImageWrapper.style.backgroundImage = `url(/images/units/${newShop[i].id}.jpg)`;

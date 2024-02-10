@@ -34,11 +34,11 @@ const SYNERGIES = {
 };
 
 const COST_COLORS = {
-    1: "#EEEEEE",
-    2: "#55EE33",
-    3: "#4488EE",
-    4: "#CC21CC",
-    5: "#EEEE42",
+    1: "#cccccc",
+    2: "#33bb11",
+    3: "#3366ee",
+    4: "#af11af",
+    5: "#cccc21",
 };
 
 export { GAME_STATES, DRAGGING_TYPES, CATCHESS_ID, COST_COLORS, SYNERGIES };

@@ -2,7 +2,6 @@ import Game from "./Game.js";
 import Item from "./Item.js";
 import Painter from "./Painter.js";
 import { GAME_STATES } from "./constants/CONSTS.js";
-import attackMotion from "./motions/attack.js";
 
 class Battle {
     static board = [];
@@ -52,7 +51,7 @@ class Battle {
         let targetCat = this.getCatByUid(target.uid);
         if (!attackerCat || !targetCat) return;
 
-        attackMotion(attackerCat, targetCat);
+        attackerCat.attack(targetCat);
 
         targetCat._hp = parseInt(target.hp);
 

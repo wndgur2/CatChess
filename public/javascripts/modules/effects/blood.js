@@ -6,7 +6,7 @@ const groundHeight = new THREE.Vector3(0, 0, 0);
 
 class blood {
     object = new THREE.Object3D();
-    duration = 0.5;
+    duration = 0.8;
     targetPosition = new THREE.Vector3(0, 0, 0);
     active = false;
 
