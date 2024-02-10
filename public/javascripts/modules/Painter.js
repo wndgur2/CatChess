@@ -1,19 +1,7 @@
 import * as THREE from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import {
-    BOX_DEPTH,
-    BOX_HEIGHT,
-    BOX_WIDTH,
-    COORDINATES,
-    PLATE_HEIGHT,
-    PLATE_RADIUS,
-    CAT_HEIGHT,
-    HEALTHBAR_WIDTH,
-    HEALTHBAR_HEIGHT,
-    ITEM_WIDTH,
-    ITEM_GAP,
-} from "./constants/THREE_CONSTS.js";
+import THREE_CONSTS from "./constants/THREE_CONSTS.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
 import UI from "./UI.js";
@@ -41,23 +29,27 @@ export default class Painter {
             0.1,
             1000
         );
-        this.camera.position.set(0, PLATE_RADIUS * 9, -(PLATE_RADIUS * 10));
-        this.camera.lookAt(0, 0, -PLATE_RADIUS * 2.8);
+        this.camera.position.set(
+            0,
+            THREE_CONSTS.PLATE_RADIUS * 9,
+            -(THREE_CONSTS.PLATE_RADIUS * 10)
+        );
+        this.camera.lookAt(0, 0, -THREE_CONSTS.PLATE_RADIUS * 2.8);
         this.scene.add(this.camera);
 
         // light
         const light = new THREE.HemisphereLight(0xdddddd, 0x000000, 1);
-        light.position.set(0, PLATE_RADIUS * 5, 0);
+        light.position.set(0, THREE_CONSTS.PLATE_RADIUS * 5, 0);
         this.scene.add(light);
 
         // pointlight
         const pointLight = new THREE.PointLight(
             0xeeeeee,
-            25 * Math.pow(PLATE_RADIUS, 1.5),
+            25 * Math.pow(THREE_CONSTS.PLATE_RADIUS, 1.5),
             0,
             1.5
         );
-        pointLight.position.set(0, PLATE_RADIUS * 4, 0);
+        pointLight.position.set(0, THREE_CONSTS.PLATE_RADIUS * 4, 0);
         pointLight.castShadow = true;
         this.scene.add(pointLight);
 
@@ -99,7 +91,10 @@ export default class Painter {
             (texture) => {
                 texture.wrapS = THREE.RepeatWrapping;
                 texture.wrapT = THREE.RepeatWrapping;
-                texture.repeat.set(PLATE_RADIUS * 5, PLATE_RADIUS * 5);
+                texture.repeat.set(
+                    THREE_CONSTS.PLATE_RADIUS * 5,
+                    THREE_CONSTS.PLATE_RADIUS * 5
+                );
             }
         );
         this.textures.board = this.textureLodaer.load(
@@ -130,8 +125,8 @@ export default class Painter {
     static drawPlates() {
         // background
         const backgroundGeometry = new THREE.PlaneGeometry(
-            PLATE_RADIUS * 50,
-            PLATE_RADIUS * 50
+            THREE_CONSTS.PLATE_RADIUS * 50,
+            THREE_CONSTS.PLATE_RADIUS * 50
         );
         const backgroundMaterial = new THREE.MeshLambertMaterial({
             map: this.textures.background,
@@ -142,14 +137,14 @@ export default class Painter {
             backgroundMaterial
         );
         background.rotateX(Math.PI / 2);
-        background.position.set(0, -PLATE_RADIUS / 10, 0);
+        background.position.set(0, -THREE_CONSTS.PLATE_RADIUS / 10, 0);
         background.name = "background";
         this.scene.add(background);
 
         // floor
         const floorGeometry = new THREE.PlaneGeometry(
-            PLATE_RADIUS * 50,
-            PLATE_RADIUS * 50
+            THREE_CONSTS.PLATE_RADIUS * 50,
+            THREE_CONSTS.PLATE_RADIUS * 50
         );
         const floorMaterial = new THREE.MeshLambertMaterial({
             color: 0x000000,
@@ -164,16 +159,16 @@ export default class Painter {
 
         // board
         let plateGeometry = new THREE.CylinderGeometry(
-            PLATE_RADIUS,
-            PLATE_RADIUS,
-            PLATE_HEIGHT,
+            THREE_CONSTS.PLATE_RADIUS,
+            THREE_CONSTS.PLATE_RADIUS,
+            THREE_CONSTS.PLATE_HEIGHT,
             6
         );
         let material = new THREE.MeshLambertMaterial({
             map: this.textures.board,
         });
 
-        COORDINATES.BOARD.forEach((row, i) => {
+        THREE_CONSTS.COORDINATES.BOARD.forEach((row, i) => {
             row.forEach((coord, j) => {
                 const plate = new THREE.Mesh(plateGeometry, material);
                 plate.position.set(coord[0], coord[1], coord[2]);
@@ -189,9 +184,9 @@ export default class Painter {
 
         // queue
         const boxGeometry = new THREE.BoxGeometry(
-            BOX_WIDTH,
-            BOX_HEIGHT,
-            BOX_DEPTH
+            THREE_CONSTS.BOX_WIDTH,
+            THREE_CONSTS.BOX_HEIGHT,
+            THREE_CONSTS.BOX_DEPTH
         );
 
         // 1 x 7 ally queue
@@ -199,7 +194,7 @@ export default class Painter {
             map: this.textures.queue,
         });
 
-        COORDINATES.ALLY_QUEUE.forEach((coord, i) => {
+        THREE_CONSTS.COORDINATES.ALLY_QUEUE.forEach((coord, i) => {
             const cube = new THREE.Mesh(boxGeometry, material);
             cube.translateX(coord[0]);
             cube.translateY(coord[1]);
@@ -216,7 +211,7 @@ export default class Painter {
         material = new THREE.MeshLambertMaterial({
             map: this.textures.queue,
         });
-        COORDINATES.ENEMY_QUEUE.forEach((coord, i) => {
+        THREE_CONSTS.COORDINATES.ENEMY_QUEUE.forEach((coord, i) => {
             const cube = new THREE.Mesh(boxGeometry, material);
             cube.translateX(coord[0]);
             cube.translateY(coord[1]);
@@ -264,7 +259,8 @@ export default class Painter {
             : getQueueCoords(unit.x, unit.owner === Player.player.id);
         unit.mesh.position.set(
             coords[0],
-            coords[1] + (CAT_HEIGHT + PLATE_HEIGHT) / 2,
+            coords[1] +
+                (THREE_CONSTS.CAT_HEIGHT + THREE_CONSTS.PLATE_HEIGHT) / 2,
             coords[2]
         );
         this.scene.add(unit.mesh);
@@ -281,9 +277,9 @@ export default class Painter {
         unit.mesh.name = "unitG";
         let bodyMesh = new THREE.Mesh(
             new THREE.BoxGeometry(
-                PLATE_RADIUS / 1.5,
-                CAT_HEIGHT,
-                PLATE_RADIUS / 1.5
+                THREE_CONSTS.PLATE_RADIUS / 1.5,
+                THREE_CONSTS.CAT_HEIGHT,
+                THREE_CONSTS.PLATE_RADIUS / 1.5
             ),
             new THREE.MeshStandardMaterial({
                 map: this.textures[unit.id],
@@ -296,42 +292,50 @@ export default class Painter {
         // health bar
         const healthBarBackgroundMesh = new THREE.Mesh(
             new THREE.BoxGeometry(
-                HEALTHBAR_WIDTH,
-                HEALTHBAR_HEIGHT,
-                HEALTHBAR_HEIGHT / 10
+                THREE_CONSTS.HEALTHBAR_WIDTH,
+                THREE_CONSTS.HEALTHBAR_HEIGHT,
+                THREE_CONSTS.HEALTHBAR_HEIGHT / 10
             ),
             new THREE.MeshBasicMaterial({ color: 0x00000 })
         );
         healthBarBackgroundMesh.name = "healthBarBackground";
         healthBarBackgroundMesh.position.set(
             0,
-            CAT_HEIGHT + HEALTHBAR_HEIGHT,
+            THREE_CONSTS.CAT_HEIGHT + THREE_CONSTS.HEALTHBAR_HEIGHT,
             0
         );
         unit.mesh.add(healthBarBackgroundMesh);
 
         const damagedHealthMesh = new THREE.Mesh(
             new THREE.BoxGeometry(
-                HEALTHBAR_WIDTH,
-                HEALTHBAR_HEIGHT,
-                HEALTHBAR_HEIGHT / 10
+                THREE_CONSTS.HEALTHBAR_WIDTH,
+                THREE_CONSTS.HEALTHBAR_HEIGHT,
+                THREE_CONSTS.HEALTHBAR_HEIGHT / 10
             ),
             new THREE.MeshBasicMaterial({ color: 0xcc0000 })
         );
         damagedHealthMesh.name = "damagedHealth";
-        damagedHealthMesh.position.set(0, CAT_HEIGHT + HEALTHBAR_HEIGHT, 0);
+        damagedHealthMesh.position.set(
+            0,
+            THREE_CONSTS.CAT_HEIGHT + THREE_CONSTS.HEALTHBAR_HEIGHT,
+            0
+        );
         unit.mesh.add(damagedHealthMesh);
 
         const healthBarMesh = new THREE.Mesh(
             new THREE.BoxGeometry(
-                HEALTHBAR_WIDTH,
-                HEALTHBAR_HEIGHT,
-                HEALTHBAR_HEIGHT / 10
+                THREE_CONSTS.HEALTHBAR_WIDTH,
+                THREE_CONSTS.HEALTHBAR_HEIGHT,
+                THREE_CONSTS.HEALTHBAR_HEIGHT / 10
             ),
             new THREE.MeshBasicMaterial({ color: 0x00aa00 })
         );
         healthBarMesh.name = "healthBar";
-        healthBarMesh.position.set(0, CAT_HEIGHT + HEALTHBAR_HEIGHT, 0);
+        healthBarMesh.position.set(
+            0,
+            THREE_CONSTS.CAT_HEIGHT + THREE_CONSTS.HEALTHBAR_HEIGHT,
+            0
+        );
         unit.mesh.add(healthBarMesh);
 
         // items
@@ -352,9 +356,9 @@ export default class Painter {
         unit.items.forEach((item, i) => {
             const itemMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(
-                    ITEM_WIDTH,
-                    ITEM_WIDTH,
-                    HEALTHBAR_HEIGHT / 10
+                    THREE_CONSTS.ITEM_WIDTH,
+                    THREE_CONSTS.ITEM_WIDTH,
+                    THREE_CONSTS.HEALTHBAR_HEIGHT / 10
                 ),
                 new THREE.MeshBasicMaterial({
                     map: new THREE.TextureLoader().load(
@@ -364,8 +368,10 @@ export default class Painter {
             );
             itemMesh.name = "item";
             itemMesh.position.set(
-                (1 - i) * (ITEM_WIDTH + ITEM_GAP),
-                CAT_HEIGHT + HEALTHBAR_HEIGHT - ITEM_WIDTH,
+                (1 - i) * (THREE_CONSTS.ITEM_WIDTH + THREE_CONSTS.ITEM_GAP),
+                THREE_CONSTS.CAT_HEIGHT +
+                    THREE_CONSTS.HEALTHBAR_HEIGHT -
+                    THREE_CONSTS.ITEM_WIDTH,
                 0
             );
             itemMesh.item = item;
@@ -398,8 +404,8 @@ export default class Painter {
 }
 
 function getQueueCoords(x, isAlly) {
-    if (isAlly) return [...COORDINATES.ALLY_QUEUE[x]];
-    return [...COORDINATES.ENEMY_QUEUE[x]];
+    if (isAlly) return [...THREE_CONSTS.COORDINATES.ALLY_QUEUE[x]];
+    return [...THREE_CONSTS.COORDINATES.ENEMY_QUEUE[x]];
 }
 
 function onResize() {
@@ -449,7 +455,7 @@ function onPointerMove(event) {
         if (object.name === "floor") {
             Painter.draggingObject.parent.position.set(
                 intersects[i].point.x,
-                CAT_HEIGHT / 1.5,
+                THREE_CONSTS.CAT_HEIGHT / 1.5,
                 intersects[i].point.z
             );
             break;

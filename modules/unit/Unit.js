@@ -15,16 +15,14 @@ class Unit {
         this.cost = proto.cost * Math.pow(3, tier - 1);
         if (tier > 1) this.cost -= 1;
 
-        const magnifier = Math.sqrt(this.tier).toPrecision(2);
+        const MAGNITUDE = Math.sqrt(this.tier).toPrecision(2);
 
-        this.ad = parseInt(proto.ad * magnifier);
-        this.speed = parseInt(proto.speed * magnifier);
+        this.ad = parseInt(proto.ad * MAGNITUDE);
+        this.speed = parseInt(proto.speed * MAGNITUDE);
         this.range = proto.range;
-        this.maxHp = parseInt(proto.hp * magnifier);
+        this.maxHp = parseInt(proto.hp * MAGNITUDE);
         this.hp = this.maxHp;
-        this.armor = parseInt(proto.armor * magnifier);
-
-        this.items = []; // 참조형: clone과 공유함
+        this.armor = parseInt(proto.armor * MAGNITUDE);
 
         this.skill = SKILLS[proto.skill];
         this.maxMp = parseInt(this.skill.mp);
@@ -36,6 +34,7 @@ class Unit {
         this.die = false;
         this.delay = 0;
 
+        this.items = [];
         this.modifiers = [];
     }
 
@@ -45,7 +44,10 @@ class Unit {
         this.mp += 1;
         this.updateModifiers();
 
-        if (this.mp >= this.maxMp) return this.useSkill();
+        if (this.mp >= this.maxMp) {
+            this.delay = this.speed;
+            return this.useSkill();
+        }
 
         if (this.delay > 0) {
             this.delay -= this.getStat("speed");
@@ -54,6 +56,8 @@ class Unit {
 
         let res = this.battleField.getNearestUnits(this, 30, 1, false);
         if (res.length < 1) return;
+
+        this.delay += 100;
 
         let { distance, target } = res[0];
         if (distance <= this.getStat("range"))
@@ -90,7 +94,6 @@ class Unit {
     }
 
     ordinaryAttack(target) {
-        this.delay += 100;
         this.attack(target, this.getStat("ad") - target.getStat("armor"));
     }
 
@@ -133,7 +136,6 @@ class Unit {
         this.battleField.field[y][x] = this;
         this.y = y;
         this.x = x;
-        this.delay += 100;
 
         this.sendMsgToGame("unitMove", {
             uid: this.uid,
@@ -165,8 +167,7 @@ class Unit {
     }
 
     clone() {
-        // 옵젝 속의 옵젝은 참조형이기 때문에, clone() 시 얕은 복사가 이뤄짐.
-        // 여기서 circular reference를 방지하기 위해서는 새로운 object를 (만들어서) 참조
+        // *옵젝 속의 옵젝은 얕은 복사
         let clone = Object.assign(
             Object.create(Object.getPrototypeOf(this)),
             this

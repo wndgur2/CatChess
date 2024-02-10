@@ -1,7 +1,6 @@
 import Battle from "./Battle.js";
 import Game from "./Game.js";
 import Item from "./Item.js";
-import Painter from "./Painter.js";
 import Player from "./Player.js";
 import UI from "./UI.js";
 import Unit from "./Unit.js";
@@ -12,7 +11,7 @@ export default class Socket {
     static id = localStorage.getItem(CATCHESS_ID);
 
     static init() {
-        Socket.socket = new WebSocket("ws://localhost:3000");
+        Socket.socket = new WebSocket("ws://localhost:8080");
 
         Socket.socket.onopen = function (event) {
             console.log("web socket connected.");

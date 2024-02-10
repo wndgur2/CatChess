@@ -54,7 +54,7 @@ const ITEM_GAP = HEALTHBAR_WIDTH / 60;
 const ITEM_WIDTH = HEALTHBAR_WIDTH / 3 - ITEM_GAP;
 const ITEM_DEPTH = HEALTHBAR_HEIGHT / 10;
 
-export {
+const THREE_CONSTS = {
     COORDINATES,
     PLATE_RADIUS,
     PLATE_WIDTH,
@@ -69,3 +69,5 @@ export {
     ITEM_DEPTH,
     ITEM_GAP,
 };
+
+export default THREE_CONSTS;

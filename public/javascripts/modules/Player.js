@@ -4,7 +4,6 @@ import Socket from "./Socket.js";
 import { COST_COLORS, GAME_STATES } from "./constants/CONSTS.js";
 import Painter from "./Painter.js";
 import Synergy from "./Synergy.js";
-import UI from "./UI.js";
 
 export default class Player {
     static player = null;

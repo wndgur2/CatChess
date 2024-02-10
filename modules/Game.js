@@ -166,13 +166,12 @@ class Game {
         // 플레이어 마다 한 크립 필요.
         if (this.stage == 1 && this.round <= Object.keys(CREEP_ROUNDS).length) {
             this.players.forEach((player, i) => {
-                this.creeps[i].level = CREEP_ROUNDS[this.round].level;
-                this.creeps[i].board = CREEP_ROUNDS[this.round].board.map(
-                    (row) =>
-                        row.map((c) => {
-                            if (!c) return null;
-                            return new Creep(c, this.creeps[i].id);
-                        })
+                this.creeps[i].level = this.round;
+                this.creeps[i].board = CREEP_ROUNDS[this.round].map((row) =>
+                    row.map((c) => {
+                        if (!c) return null;
+                        return new Creep(c, this.creeps[i].id);
+                    })
                 );
                 const newBattle = new Battle(player, this.creeps[i], true);
                 this.battles[player.id] = newBattle;

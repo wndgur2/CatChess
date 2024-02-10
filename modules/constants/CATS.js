@@ -1,7 +1,7 @@
 const CATS = {
     wildCat: {
         id: "wildCat",
-        name: "길 고양이",
+        name: "Wild Cat",
         synergies: ["Poeir"],
         desc: "description of wildCat.",
         cost: 1,
@@ -14,7 +14,7 @@ const CATS = {
     },
     thiefCat: {
         id: "thiefCat",
-        name: "도둑 고양이",
+        name: "Thief Cat",
         synergies: ["Therme"],
         desc: "description of thiefCat.",
         cost: 1,
@@ -27,7 +27,7 @@ const CATS = {
     },
     arherCat: {
         id: "arherCat",
-        name: "궁수 고양이",
+        name: "Arher Cat",
         synergies: ["Nature"],
         desc: "description of arherCat.",
         cost: 1,
@@ -40,7 +40,7 @@ const CATS = {
     },
     fatCat: {
         id: "fatCat",
-        name: "비만 고양이",
+        name: "Fat Cat",
         synergies: ["Poeir"],
         desc: "description of fatCat.",
         cost: 2,
@@ -53,7 +53,7 @@ const CATS = {
     },
     strongCat: {
         id: "strongCat",
-        name: "강한 고양이",
+        name: "Strong Cat",
         synergies: ["Therme"],
         desc: "description of strongCat.",
         cost: 2,
@@ -66,7 +66,7 @@ const CATS = {
     },
     longCat: {
         id: "longCat",
-        name: "롱다리 고양이",
+        name: "Long Cat",
         synergies: ["Nature"],
         desc: "description of longCat.",
         cost: 2,
@@ -79,7 +79,7 @@ const CATS = {
     },
     tankCat: {
         id: "tankCat",
-        name: "탱크 고양이",
+        name: "Tank Cat",
         synergies: ["Poeir"],
         desc: "description of tankCat.",
         cost: 3,
@@ -92,7 +92,7 @@ const CATS = {
     },
     adCat: {
         id: "adCat",
-        name: "원딜 고양이",
+        name: "AD Cat",
         synergies: ["Therme"],
         desc: "description of adCat.",
         cost: 3,
@@ -105,7 +105,7 @@ const CATS = {
     },
     catKing: {
         id: "catKing",
-        name: "고양이 왕",
+        name: "Cat King",
         synergies: ["Poeir"],
         desc: "description of catKing.",
         cost: 4,
@@ -118,7 +118,7 @@ const CATS = {
     },
     unknownCat: {
         id: "unknownCat",
-        name: "미지의 고양이",
+        name: "Unknown Cat",
         synergies: ["Nature"],
         desc: "description of unknownCat.",
         cost: 4,
@@ -131,7 +131,7 @@ const CATS = {
     },
     assassinCat: {
         id: "assassinCat",
-        name: "암살자 고양이",
+        name: "Assassin Cat",
         synergies: ["Therme"],
         desc: "description of assasinCat.",
         cost: 4,
