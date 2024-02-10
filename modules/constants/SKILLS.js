@@ -1,5 +1,4 @@
 const Modifier = require("../unit/Modifier");
-const { getPlayer } = require("../utils");
 const { TIME_STEP } = require("./CONSTS");
 
 const INFINITY = 30;
@@ -41,7 +40,7 @@ const SKILLS = {
                 .getNearestUnits(cat, RANGE, TARGET_AMOUNT, (getAlly = false))
                 .forEach(({ _, target }) => {
                     let damage =
-                        cat.getStat("ad") * 2 - target.getStat("armor") + 100;
+                        cat.getStat("ad") * 2 - target.getStat("armor");
                     cat.attack(target, damage);
                 });
         },

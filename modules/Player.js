@@ -19,9 +19,9 @@ class Player {
     }
 
     init() {
-        this.level = 3;
+        this.level = 1;
         this.exp = -2;
-        this.money = 30;
+        this.money = 0;
         this.maxExp = 4;
         this.maxHp = 100;
         this.hp = 100;

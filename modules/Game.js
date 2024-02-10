@@ -80,6 +80,7 @@ class Game {
             state: this.state,
             time: this.time,
         });
+
         sendMsg(ws, "stageUpdate", {
             round: this.round,
             stage: this.stage,
@@ -112,7 +113,7 @@ class Game {
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 7;
+        this.time = 20;
         this.updateState();
 
         // 결과 지급, 리로드
@@ -138,6 +139,7 @@ class Game {
                     if (cell) catN++;
                 });
             });
+
             while (catN < player.level) {
                 let c = player.queue.find((cat) => cat != null);
                 if (!c) break;
@@ -223,6 +225,8 @@ class Game {
     }
 
     endState() {
+        // TODO: 이제부터 들어오는 요청에 대한 처리
+
         clearTimeout(this.timeout);
         clearInterval(this.timer);
 

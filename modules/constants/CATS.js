@@ -19,7 +19,7 @@ const CATS = {
         desc: "description of thiefCat.",
         cost: 1,
         skill: "neckBite",
-        ad: 1,
+        ad: 12,
         speed: 16,
         hp: 100,
         armor: 1,

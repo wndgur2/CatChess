@@ -1,4 +1,4 @@
-const TIME_STEP = 100; // bigger is slower (a step per a TIME_STEP)
+const TIME_STEP = 120; // bigger is slower (a step per a TIME_STEP)
 const PLAYER_NUM = 2;
 const DIRECTIONS = [
     [

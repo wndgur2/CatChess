@@ -121,7 +121,7 @@ class Unit {
             // item drop
             if (target.owner.split("-")[0] == "creep") {
                 getPlayer(this.owner).pushItem(Item.getRandomItem());
-                getPlayer(this.owner).pushItem(Item.getRandomItem());
+                // getPlayer(this.owner).pushItem(Item.getRandomItem());
             }
         }
     }
