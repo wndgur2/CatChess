@@ -1,35 +1,50 @@
-const { sendMsg, getPlayer, removePlayer } = require("./utils.js");
-const { GAME_STATES, PLAYER_NUM } = require("./constants/CONSTS.js");
+const { sendMsg, getPlayerById, removePlayer } = require("./utils.js");
+const { GAME_STATES, PLAYER_NUM, TESTING } = require("./constants/CONSTS.js");
 const CREEP_ROUNDS = require("./constants/CREEP_ROUNDS.js");
 const Player = require("./Player.js");
 const Battle = require("./Battle.js");
 const Creep = require("./unit/Creep.js");
 
 class Game {
-    static waitingPlayers = [];
+    static matchingPlayers = [];
     /**
      * @type {Game[]} games
      */
     static games = [];
-    static newPlayer(from, ws) {
-        if (Game.waitingPlayers.find((player) => player.id === from)) return;
-        let player = getPlayer(from);
+    static startMatching(from, ws) {
+        if (Game.matchingPlayers.find((player) => player.id === from)) return;
+        let player = getPlayerById(from);
         if (player) {
             player.ws = ws;
-
-            // 게임 데이터 전송
-            let game = player.game;
-            if (game && game.state !== GAME_STATES.FINISH) {
+            // 재접속
+            if (player.game) {
                 sendMsg(ws, "gameMatched", {
-                    players: game.players.map((p) => p.id),
+                    players: player.game.players.map((p) => p.id),
                 });
-                game.sendGameData(from);
+                player.game.sendGameData(from);
                 return;
             }
+        } else {
+            player = new Player(from, ws);
         }
-        Game.waitingPlayers.push(new Player(from, ws));
-        if (Game.waitingPlayers.length === PLAYER_NUM)
-            new Game(Game.waitingPlayers.splice(0, PLAYER_NUM));
+
+        Game.matchingPlayers.push(player);
+        if (Game.matchingPlayers.length === PLAYER_NUM) {
+            Game.matchingPlayers.forEach((player) => {
+                sendMsg(player.ws, "areYouReady", {});
+            });
+
+            // TODO: confirm all players are ready
+
+            new Game(Game.matchingPlayers.splice(0, PLAYER_NUM));
+        }
+    }
+
+    static cancelMatching(pid) {
+        console.log("cancelMatching", pid);
+        let player = getPlayerById(pid);
+        let i = Game.matchingPlayers.indexOf(player);
+        if (player && i >= 0) Game.matchingPlayers.splice(i, 1);
     }
 
     /**
@@ -63,7 +78,6 @@ class Game {
         this.round = 1;
         this.stage = 0;
         this.arrangeState();
-        this.battles = {};
         this.timer = setInterval(() => {
             if (this.time <= 0) return;
             this.time = this.time - 1;
@@ -74,22 +88,12 @@ class Game {
     }
 
     sendGameData(from) {
-        let player = getPlayer(from);
-        let ws = player.ws;
-        sendMsg(ws, "stateUpdate", {
-            state: this.state,
-            time: this.time,
-        });
+        let player = getPlayerById(from);
+        this.updateState();
+        this.updateStage();
 
-        sendMsg(ws, "stageUpdate", {
-            round: this.round,
-            stage: this.stage,
-        });
-
-        if (this.state !== GAME_STATES.ARRANGE) {
-            for (const [_, battle] of Object.entries(this.battles))
-                battle.updateBattle();
-        }
+        if (this.state !== GAME_STATES.ARRANGE)
+            this.battles.forEach((battle) => battle.updateBattle());
         player.updatePlayer();
     }
 
@@ -99,21 +103,18 @@ class Game {
             newStage = 1;
         }
         this.stage = newStage;
-        this.sendMsgToAll("stageUpdate", {
-            round: this.round,
-            stage: this.stage,
-        });
+        this.updateStage();
     }
 
     // 게임 진행: arrange -> ready -> battle -> finish -> arrange
     arrangeState() {
         clearTimeout(this.timeout);
 
-        this.battles = {};
+        this.battles = [];
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = 20;
+        this.time = TESTING ? 12 : 20;
         this.updateState();
 
         // 결과 지급, 리로드
@@ -164,8 +165,6 @@ class Game {
             this.battleState();
         }, this.time * 1000);
 
-        // TODO 한 creep의 battle이 여러개라 map에서 덮어씌워짐.
-        // 플레이어 마다 한 크립 필요.
         if (this.stage == 1 && this.round <= Object.keys(CREEP_ROUNDS).length) {
             this.players.forEach((player, i) => {
                 this.creeps[i].level = this.round;
@@ -175,13 +174,10 @@ class Game {
                         return new Creep(c, this.creeps[i].id);
                     })
                 );
-                const newBattle = new Battle(player, this.creeps[i], true);
-                this.battles[player.id] = newBattle;
+                this.battles.push(new Battle(player, this.creeps[i], true));
             });
         } else {
-            const newBattle = new Battle(this.players[0], this.players[1]);
-            this.battles[this.players[0].id] = newBattle;
-            this.battles[this.players[1].id] = newBattle;
+            this.battles.push(new Battle(this.players[0], this.players[1]));
         }
     }
 
@@ -192,9 +188,7 @@ class Game {
         this.time = 30;
         this.updateState();
 
-        for (const [_, battle] of Object.entries(this.battles)) {
-            battle.initBattle();
-        }
+        this.battles.forEach((battle) => battle.initBattle());
         this.timeout = setTimeout(() => this.finishState(), this.time * 1000);
     }
 
@@ -205,10 +199,7 @@ class Game {
         this.time = 1;
         this.updateState();
 
-        // this.battles.forEach((battle) => battle.finish());
-        for (const [_, battle] of Object.entries(this.battles)) {
-            battle.finish();
-        }
+        this.battles.forEach((battle) => battle.finish());
 
         let isEnd = false;
         this.players.forEach((player) => {
@@ -225,14 +216,8 @@ class Game {
     }
 
     endState() {
-        // TODO: 이제부터 들어오는 요청에 대한 처리
-
         clearTimeout(this.timeout);
         clearInterval(this.timer);
-
-        this.players.forEach((player) => {
-            removePlayer(player.id);
-        });
 
         this.sendMsgToAll("gameEnd", {
             winner:
@@ -240,8 +225,15 @@ class Game {
                     ? this.players[0].id
                     : this.players[1].id,
         });
+        this.players.forEach((player) => {
+            player.game = null;
+            removePlayer(player.id);
+        });
 
         Game.games.splice(Game.games.indexOf(this), 1);
+
+        delete this.players;
+        delete this;
     }
 
     sendMsgToAll(type, data) {
@@ -254,6 +246,13 @@ class Game {
         this.sendMsgToAll("stateUpdate", {
             state: this.state,
             time: this.time,
+        });
+    }
+
+    updateStage() {
+        this.sendMsgToAll("stageUpdate", {
+            round: this.round,
+            stage: this.stage,
         });
     }
 }

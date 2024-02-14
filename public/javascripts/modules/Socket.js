@@ -45,7 +45,6 @@ export default class Socket {
                 case "stageUpdate": {
                     Game._round = data.round;
                     Game._stage = data.stage;
-                    // Painter.resetMeshes();
                     UI.hideUnitInfo();
                     break;
                 }
@@ -144,6 +143,7 @@ export default class Socket {
                 case "gameEnd": {
                     if (data.winner === Socket.id) alert("승리!");
                     else alert("패배!");
+                    UI.gameEnd();
                     break;
                 }
                 case "synergiesUpdate": {

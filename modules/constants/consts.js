@@ -1,4 +1,5 @@
-const TIME_STEP = 120; // bigger is slower (a step per a TIME_STEP)
+const TESTING = true;
+const TIME_STEP = TESTING ? 80 : 110; // bigger is slower (a step per a TIME_STEP)
 const PLAYER_NUM = 2;
 const DIRECTIONS = [
     [
@@ -41,4 +42,5 @@ module.exports = {
     PLAYER_NUM,
     DIRECTIONS,
     SHOP_POSSIBILITIES,
+    TESTING,
 };

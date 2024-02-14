@@ -18,7 +18,7 @@ export default class Painter {
     static textures = {};
     static running = false;
 
-    static initScene() {
+    static init() {
         this.scene = new THREE.Scene();
         this.clock = new THREE.Clock();
 
@@ -108,14 +108,22 @@ export default class Painter {
         this.drawPlates();
     }
 
+    static clear() {
+        this.scene.children.forEach((child) => {
+            if (child.name === "unitG") this.scene.remove(child);
+        });
+        this.running = false;
+    }
+
     static startRendering() {
         if (!this.running) {
-            this.animate();
             this.running = true;
+            this.animate();
         }
     }
 
     static animate() {
+        if (!Painter.running) return;
         requestAnimationFrame(Painter.animate);
         const dt = Painter.clock.getDelta();
         Painter.hitObjectPool.Update(dt);
@@ -376,12 +384,6 @@ export default class Painter {
             );
             itemMesh.item = item;
             unit.mesh.add(itemMesh);
-        });
-    }
-
-    static resetMeshes() {
-        this.scene.children.forEach((child) => {
-            if (child.name === "unitG") this.scene.remove(child);
         });
     }
 

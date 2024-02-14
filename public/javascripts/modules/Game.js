@@ -2,7 +2,12 @@ import Player from "./Player.js";
 
 export default class Game {
     static init(players) {
-        Game.players = players.map((id) => new Player(id));
+        // TODO: 두판쨰 고려
+        Game.players = players.map((id) => {
+            const p = Player.getPlayerById(id);
+            if (p) return p;
+            else return new Player(id);
+        });
         Game.displayPlayersInfo();
     }
 

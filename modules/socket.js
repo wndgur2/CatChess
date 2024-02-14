@@ -1,6 +1,11 @@
 const Player = require("./Player.js");
 const Game = require("./Game.js");
-const { sendMsg, getPlayer } = require("./utils.js");
+const {
+    sendMsg,
+    getPlayerById,
+    getPlayerByWs,
+    removePlayer,
+} = require("./utils.js");
 const webSocket = require("ws");
 
 module.exports = (server) => {
@@ -8,7 +13,7 @@ module.exports = (server) => {
 
     wss.on("connection", (ws, req) => {
         console.log("새로운 클라이언트 접속");
-
+        // id 모름
         ws.on("message", (message) => {
             let msg = JSON.parse(message);
             let { from, type, data } = msg;
@@ -18,33 +23,47 @@ module.exports = (server) => {
                     sendMsg(ws, "resNewId", Player.getNewId());
                     break;
                 }
-                case "startWaiting": {
-                    Game.newPlayer(from, ws);
+                case "startMatching": {
+                    Game.startMatching(from, ws);
+                    break;
+                }
+                case "cancelMatching": {
+                    Game.cancelMatching(from);
+                    break;
+                }
+                case "surrender": {
+                    const p = getPlayerById(from);
+                    if (p) p.surrender();
                     break;
                 }
                 case "reqBuyCat": {
-                    getPlayer(from).buyCat(data.index);
+                    const p = getPlayerById(from);
+                    if (p) p.buyCat(data.index);
                     break;
                 }
                 case "reqPutCat": {
-                    let player = getPlayer(from);
-                    player.putCat(data.uid, data.to);
+                    const p = getPlayerById(from);
+                    if (p) p.putCat(data.uid, data.to);
                     break;
                 }
                 case "reqSellCat": {
-                    getPlayer(from).sellCat(data.uid);
+                    const p = getPlayerById(from);
+                    if (p) p.sellCat(data.uid);
                     break;
                 }
                 case "reqReload": {
-                    getPlayer(from).reload();
+                    const p = getPlayerById(from);
+                    if (p) p.reload();
                     break;
                 }
                 case "reqBuyExp": {
-                    getPlayer(from).buyExp();
+                    const p = getPlayerById(from);
+                    if (p) p.buyExp();
                     break;
                 }
                 case "reqGiveItem": {
-                    getPlayer(from).giveItem(data.item, data.uid);
+                    const p = getPlayerById(from);
+                    if (p) p.giveItem(data.item, data.uid);
                     break;
                 }
             }
@@ -55,6 +74,11 @@ module.exports = (server) => {
         });
         ws.on("close", () => {
             console.log("클라이언트 접속 해제");
+            const p = getPlayerByWs(ws);
+            if (p) {
+                // removePlayer(p.id);
+                if (Game.matchingPlayers.includes(p)) Game.cancelMatching(p.id);
+            }
         });
     });
 };

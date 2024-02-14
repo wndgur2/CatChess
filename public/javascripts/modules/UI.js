@@ -11,12 +11,11 @@ export default class UI {
 
     static init() {
         this.hydrate();
-        Painter.initScene();
     }
 
     static hydrate() {
         document.getElementById("enterGame").addEventListener("click", () => {
-            Socket.sendMsg("startWaiting", "");
+            Socket.sendMsg("startMatching", "");
             document.getElementById("home").style.display = "none";
             document.getElementById("game").style.display = "none";
             document.getElementById("waiting").style.display = "flex";
@@ -159,6 +158,12 @@ export default class UI {
 
         let shopEl = document.getElementById("shop");
         shopEl.style.display = "flex";
+    }
+
+    static gameEnd() {
+        document.getElementById("game").style.display = "none";
+        document.getElementById("home").style.display = "flex";
+        Painter.clear();
     }
 }
 

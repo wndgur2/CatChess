@@ -1,7 +1,10 @@
 const SimpleCat = require("./unit/SimpleCat");
-const { SHOP_POSSIBILITIES, GAME_STATES } = require("./constants/CONSTS");
+const {
+    SHOP_POSSIBILITIES,
+    GAME_STATES,
+    TESTING,
+} = require("./constants/CONSTS");
 const { sendMsg, addPlayer } = require("./utils");
-const Battle = require("./Battle");
 
 const IN_QUEUE = 3;
 
@@ -21,10 +24,10 @@ class Player {
     init() {
         this.level = 1;
         this.exp = -2;
-        this.money = 0;
+        this.money = TESTING ? 100 : 2;
         this.maxExp = 4;
-        this.maxHp = 100;
-        this.hp = 100;
+        this.maxHp = TESTING ? 30 : 100;
+        this.hp = this.maxHp;
 
         this.board = [
             [null, null, null, null, null],
@@ -101,6 +104,12 @@ class Player {
     set _shop(newShop) {
         this.shop = newShop;
         this.updateShop();
+    }
+
+    surrender() {
+        //TODO
+        this.hp = 0;
+        this.game.finish();
     }
 
     buyCat(index) {
@@ -376,6 +385,7 @@ class Player {
         this.reload(true);
 
         let income = 5;
+        //TODO streak income refine
         income += this.winning > 1 ? this.winning : 0;
         income += this.losing > 1 ? this.losing * 2 : 0;
         income += Math.min(parseInt(this.money / 10), 5);

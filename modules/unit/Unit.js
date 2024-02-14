@@ -1,6 +1,6 @@
 const Item = require("../Item");
 const SKILLS = require("../constants/SKILLS");
-const { getPlayer } = require("../utils");
+const { getPlayerById } = require("../utils");
 
 class Unit {
     static number = 0;
@@ -120,8 +120,8 @@ class Unit {
 
             // item drop
             if (target.owner.split("-")[0] == "creep") {
-                getPlayer(this.owner).pushItem(Item.getRandomItem());
-                // getPlayer(this.owner).pushItem(Item.getRandomItem());
+                getPlayerById(this.owner).pushItem(Item.getRandomItem());
+                // getPlayerById(this.owner).pushItem(Item.getRandomItem());
             }
         }
     }
@@ -162,7 +162,7 @@ class Unit {
     }
 
     sendMsgToGame(type, data) {
-        const p = getPlayer(this.owner);
+        const p = getPlayerById(this.owner);
         p.game.sendMsgToAll(type, { ...data, battleId: p.battle.id });
     }
 

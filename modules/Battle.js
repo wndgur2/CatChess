@@ -16,7 +16,6 @@ class Battle {
 
         this.isCreep = isCreep;
 
-        // TODO: creep이 중복된 uid를 가짐.
         let board1 = player1.board.map((row) =>
             row.map((c) => (c ? c.clone() : null))
         );
@@ -137,11 +136,7 @@ class Battle {
 
         this.fisnished = true;
 
-        if (
-            Object.entries(this.game.battles).every(
-                ([_, battle]) => battle.fisnished
-            )
-        )
+        if (this.game.battles.every((battle) => battle.fisnished))
             this.game.finishState();
     }
 }
