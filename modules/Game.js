@@ -225,9 +225,15 @@ class Game {
                     ? this.players[0].id
                     : this.players[1].id,
         });
+
         this.players.forEach((player) => {
             player.game = null;
             removePlayer(player.id);
+        });
+
+        this.creeps.forEach((creep) => {
+            creep.game = null;
+            removePlayer(creep.id);
         });
 
         Game.games.splice(Game.games.indexOf(this), 1);
