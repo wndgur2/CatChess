@@ -1,11 +1,6 @@
 const Player = require("./Player.js");
 const Game = require("./Game.js");
-const {
-    sendMsg,
-    getPlayerById,
-    getPlayerByWs,
-    removePlayer,
-} = require("./utils.js");
+const { sendMsg, getPlayerById, getPlayerByWs } = require("./utils.js");
 const webSocket = require("ws");
 
 module.exports = (server) => {
@@ -13,7 +8,7 @@ module.exports = (server) => {
 
     wss.on("connection", (ws, req) => {
         console.log("새로운 클라이언트 접속");
-        // id 모름
+
         ws.on("message", (message) => {
             let msg = JSON.parse(message);
             let { from, type, data } = msg;
