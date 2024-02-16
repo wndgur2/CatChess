@@ -385,11 +385,13 @@ class Player {
         this.reload(true);
 
         let income = 5;
-        //TODO streak income refine
-        income += this.winning > 1 ? this.winning : 0;
-        income += this.losing > 1 ? this.losing * 2 : 0;
         income += Math.min(parseInt(this.money / 10), 5);
+        if (this.winning >= 2 && this.winning < 4) income += 1;
+        else if (this.winning == 4) income += 2;
+        else income += 3;
+        income += this.losing;
         this._money = this.money + income;
+
         this._exp += 2;
     }
 
