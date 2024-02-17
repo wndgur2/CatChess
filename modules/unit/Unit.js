@@ -1,4 +1,5 @@
 const Item = require("../Item");
+const { TESTING } = require("../constants/CONSTS");
 const SKILLS = require("../constants/SKILLS");
 const { getPlayerById } = require("../utils");
 
@@ -15,14 +16,14 @@ class Unit {
         this.cost = proto.cost * Math.pow(3, tier - 1);
         if (tier > 1) this.cost -= 1;
 
-        const MAGNITUDE = Math.sqrt(this.tier).toPrecision(2);
+        const MAGNITUDE = this.tier + (this.tier == 3 ? 0.5 : 0);
 
         this.ad = parseInt(proto.ad * MAGNITUDE);
-        this.speed = parseInt(proto.speed * MAGNITUDE);
-        this.range = proto.range;
+        this.speed = parseInt(proto.speed * Math.sqrt(MAGNITUDE));
         this.maxHp = parseInt(proto.hp * MAGNITUDE);
-        this.hp = this.maxHp;
         this.armor = parseInt(proto.armor * MAGNITUDE);
+        this.range = proto.range;
+        this.hp = this.maxHp;
 
         this.skill = SKILLS[proto.skill];
         this.maxMp = parseInt(this.skill.mp);
@@ -121,7 +122,8 @@ class Unit {
             // item drop
             if (target.owner.split("-")[0] == "creep") {
                 getPlayerById(this.owner).pushItem(Item.getRandomItem());
-                // getPlayerById(this.owner).pushItem(Item.getRandomItem());
+                if (TESTING)
+                    getPlayerById(this.owner).pushItem(Item.getRandomItem());
             }
         }
     }

@@ -97,6 +97,16 @@ class BattleField {
         });
         return res;
     }
+
+    getUnitByUid(uid) {
+        let cat;
+        this.field.forEach((row) => {
+            row.forEach((c) => {
+                if (c && c.uid == uid) cat = c;
+            });
+        });
+        return cat;
+    }
 }
 
 module.exports = BattleField;
