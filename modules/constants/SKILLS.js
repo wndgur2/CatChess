@@ -33,11 +33,15 @@ const SKILLS = {
         mp: 50,
         active: true,
         execute: (cat) => {
-            const RANGE = 1;
             const TARGET_AMOUNT = 1;
 
             cat.battleField
-                .getNearestUnits(cat, RANGE, TARGET_AMOUNT, (getAlly = false))
+                .getNearestUnits(
+                    cat,
+                    cat.range,
+                    TARGET_AMOUNT,
+                    (getAlly = false)
+                )
                 .forEach(({ _, target }) => {
                     let damage =
                         cat.getStat("ad") * 2 - target.getStat("armor");

@@ -69,7 +69,7 @@ export default class UI {
                 item.addEventListener("mouseleave", inventoryItemMouseLeave);
                 row.appendChild(item);
             }
-            document.getElementById("inventory").appendChild(row);
+            document.getElementById("items").appendChild(row);
         }
 
         document
@@ -86,14 +86,6 @@ export default class UI {
         let skillEl = document.getElementById("unitSkillWrapper");
         skillEl.addEventListener("mousemove", skillMouseMove);
         skillEl.addEventListener("mouseout", skillMouseLeave);
-    }
-
-    static gameStart() {
-        document.getElementById("home").style.display = "none";
-        document.getElementById("waiting").style.display = "none";
-        document.getElementById("game").style.display = "flex";
-
-        Painter.startRendering();
     }
 
     static getCellUnitByCellId(id) {
@@ -158,6 +150,14 @@ export default class UI {
 
         let shopEl = document.getElementById("shop");
         shopEl.style.display = "flex";
+    }
+
+    static gameStart() {
+        document.getElementById("home").style.display = "none";
+        document.getElementById("waiting").style.display = "none";
+        document.getElementById("game").style.display = "flex";
+
+        Painter.startRendering();
     }
 
     static gameEnd() {

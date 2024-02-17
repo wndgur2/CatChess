@@ -205,7 +205,7 @@ class Player {
     }
 
     sellCat(uid) {
-        let cat = this.getCatByUid(uid);
+        let cat = this.getUnitByUid(uid);
         if (!cat) return false;
         this._money += cat.cost;
 
@@ -231,7 +231,7 @@ class Player {
             return false;
         }
 
-        let unitToMove = this.getCatByUid(uid),
+        let unitToMove = this.getUnitByUid(uid),
             unitToSwap;
         if (!unitToMove) {
             this.updateBoard();
@@ -358,7 +358,7 @@ class Player {
         if (!curItem) return false;
 
         if (this.game.state !== GAME_STATES.ARRANGE) {
-            cat = this.battle.battleField.getCatByUid(uid);
+            cat = this.battle.battleField.getUnitByUid(uid);
             if (cat) {
                 if (cat.equip(curItem)) {
                     this.items[this.items.findIndex((i) => i === curItem)] =
@@ -369,7 +369,7 @@ class Player {
                 }
             }
         }
-        cat = this.getCatByUid(uid);
+        cat = this.getUnitByUid(uid);
         if (!cat) return false;
         if (cat.equip(curItem)) {
             this.items[this.items.findIndex((i) => i === curItem)] = null;
@@ -475,7 +475,7 @@ class Player {
         });
     }
 
-    getCatByUid(uid) {
+    getUnitByUid(uid) {
         let cat;
         [...this.board, this.queue].forEach((row) => {
             row.forEach((c) => {

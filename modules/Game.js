@@ -34,8 +34,6 @@ class Game {
                 sendMsg(player.ws, "areYouReady", {});
             });
 
-            // TODO: confirm all players are ready
-
             new Game(Game.matchingPlayers.splice(0, PLAYER_NUM));
         }
     }

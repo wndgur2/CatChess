@@ -1,6 +1,7 @@
 import Game from "./Game.js";
 import Item from "./Item.js";
 import Painter from "./Painter.js";
+import Player from "./Player.js";
 import { GAME_STATES } from "./constants/CONSTS.js";
 
 class Battle {
@@ -17,9 +18,12 @@ class Battle {
             });
         });
         Painter._board = Battle.board;
+
+        Player.players.forEach((p) => (p.damageChart = {}));
+        document.getElementById("damage").innerHTML = "";
     }
 
-    static getCatByUid(uid) {
+    static getUnitByUid(uid) {
         let unit;
         this.board.forEach((row) => {
             row.forEach((u) => {
@@ -47,8 +51,8 @@ class Battle {
     }
 
     static attack(attacker, target, damage) {
-        let attackerCat = this.getCatByUid(attacker.uid);
-        let targetCat = this.getCatByUid(target.uid);
+        let attackerCat = this.getUnitByUid(attacker.uid);
+        let targetCat = this.getUnitByUid(target.uid);
         if (!attackerCat || !targetCat) return;
 
         attackerCat.attack(targetCat);
@@ -56,10 +60,15 @@ class Battle {
         targetCat._hp = parseInt(target.hp);
 
         Painter.hitEffect(attackerCat, targetCat, damage);
+        if (attackerCat.owner === Player.player.id)
+            Player.getPlayerById(attackerCat.owner).updateDamage(
+                attackerCat,
+                damage
+            );
     }
 
     static die(uid) {
-        let cat = this.getCatByUid(uid);
+        let cat = this.getUnitByUid(uid);
         if (!cat) return;
         cat.die();
         Battle.board[this.reversed ? 5 - cat.y : cat.y][
@@ -68,7 +77,7 @@ class Battle {
     }
 
     static move(uid, nextX, nextY) {
-        let cat = this.getCatByUid(uid);
+        let cat = this.getUnitByUid(uid);
         if (!cat) return;
 
         const beforeX = cat.x;
@@ -87,13 +96,13 @@ class Battle {
     }
 
     static useSkill(uid) {
-        let cat = this.getCatByUid(uid);
+        let cat = this.getUnitByUid(uid);
         if (!cat) return;
         cat._mp = cat.mp - cat.maxMp;
     }
 
     static itemUpdate(data) {
-        let unit = this.getCatByUid(data.uid);
+        let unit = this.getUnitByUid(data.uid);
         unit.items = data.items.map((item) => new Item(item));
         Painter.createItemMesh(unit);
     }

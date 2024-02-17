@@ -28,6 +28,7 @@ export default class Player {
         this.queue = [null, null, null, null, null, null, null];
         this.items = [null, null, null, null, null, null];
         this.synergies = {};
+        this.damageChart = {};
     }
 
     set _money(newMoney) {
@@ -169,6 +170,26 @@ export default class Player {
                     newSynergies[synergy] ? newSynergies[synergy].length : 0
                 )
             );
+        }
+    }
+
+    updateDamage(unit, damage) {
+        if (this.damageChart[unit.uid]) {
+            this.damageChart[unit.uid] += damage;
+            document.getElementById(`${unit.uid}-damage`).innerHTML = `${
+                unit.name
+            }${"★".repeat(unit.tier)}: ${this.damageChart[unit.uid]}`;
+        } else {
+            this.damageChart[unit.uid] = damage;
+            const damageChartEl = document.getElementById("damage");
+            const damageEl = document.createElement("div");
+            damageEl.id = `${unit.uid}-damage`;
+            damageEl.className = "damage";
+            damageEl.innerHTML = `${unit.name}${"★".repeat(
+                unit.tier
+            )}: ${damage}`;
+            damageEl.style.color = unit.color;
+            damageChartEl.appendChild(damageEl);
         }
     }
 }
