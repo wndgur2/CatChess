@@ -226,6 +226,9 @@ class Player {
     }
 
     putCat(uid, to) {
+        // need fix? or change ec2 instance?
+        // instead of sending the whole board & queue,
+        // send only the unit to move and the unit to swap
         if (to.y <= 2 && this.game.state !== GAME_STATES.ARRANGE) {
             this.updateQueue();
             return false;

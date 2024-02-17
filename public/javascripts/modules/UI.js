@@ -21,6 +21,28 @@ export default class UI {
             document.getElementById("waiting").style.display = "flex";
         });
 
+        document.getElementById("modalClose").addEventListener("click", () => {
+            document.getElementById("modal").style.display = "none";
+        });
+
+        document
+            .getElementById("surrenderBtn")
+            .addEventListener("click", () => {
+                const modalEl = document.getElementById("modal");
+                modalEl.style.display = "flex";
+                const modalBodyEl = document.getElementById("modalBody");
+                const surrenderEl = document.getElementById("surrenderWrapper");
+                modalBodyEl.innerHTML = surrenderEl.innerHTML;
+            });
+
+        document.getElementById("settingBtn").addEventListener("click", () => {
+            const modalEl = document.getElementById("modal");
+            modalEl.style.display = "flex";
+            const modalBodyEl = document.getElementById("modalBody");
+            const settingEl = document.getElementById("settingWrapper");
+            modalBodyEl.innerHTML = settingEl.innerHTML;
+        });
+
         document.getElementById("reload").addEventListener("click", () => {
             Socket.sendMsg("reqReload", "");
         });
