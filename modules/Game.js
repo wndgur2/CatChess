@@ -89,6 +89,12 @@ class Game {
         let player = getPlayerById(from);
         this.updateState();
         this.updateStage();
+        this.players.forEach((p) => {
+            sendMsg(player.ws, "playerData", {
+                id: p.id,
+                hp: p.hp,
+            });
+        });
 
         if (this.state !== GAME_STATES.ARRANGE)
             this.battles.forEach((battle) => battle.updateBattle());

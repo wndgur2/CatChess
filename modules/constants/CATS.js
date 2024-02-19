@@ -88,7 +88,7 @@ const CATS = {
         ad: 15,
         speed: 8,
         hp: 210,
-        armor: 8,
+        armor: 6,
         range: 2,
     },
     adCat: {
@@ -114,7 +114,7 @@ const CATS = {
         ad: 30,
         speed: 12,
         hp: 320,
-        armor: 12,
+        armor: 10,
         range: 1,
     },
     unknownCat: {
@@ -127,7 +127,7 @@ const CATS = {
         ad: 25,
         speed: 16,
         hp: 240,
-        armor: 8,
+        armor: 7,
         range: 1,
     },
     assassinCat: {
@@ -137,10 +137,10 @@ const CATS = {
         desc: "description of assasinCat.",
         cost: 4,
         skill: "roar",
-        ad: 80,
+        ad: 60,
         speed: 10,
         hp: 80,
-        armor: 0,
+        armor: 2,
         range: 1,
     },
 };

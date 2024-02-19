@@ -33,11 +33,14 @@ export default class Socket {
                     break;
                 }
                 case "gameMatched": {
-                    // three
                     UI.gameStart();
                     UI.closeModal();
                     Game.init(data.players);
                     break;
+                }
+                case "playerData": {
+                    const p = Player.getPlayerById(data.id);
+                    if (p) p._hp = data.hp;
                 }
                 case "timeUpdate": {
                     Game._time = data.time;
