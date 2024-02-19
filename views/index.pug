@@ -2,23 +2,25 @@ extends layout
 
 block content
   #container
-    #home 
-      span#id &nbsp no id
-      span#title Cat Chess
-      button#enterGame
-        h2 Enter Game
-    #waiting
-      h2 Searching
+    #home
+      #homeBody
+        span#title Cat Chess
+        #greeting
+          span#sub Welcome, &nbsp
+          span#id unknown
+        button#playBtn
+          h2 Play
     #game
       #topWrapper
-        #state
-        #stageInfo
-          span Stage&nbsp
-          span#round 
-          span &nbsp-&nbsp
-          span#stage
+        #placeholder
         #timerWrapper
           span#timer
+        //- #state
+        //- #stageInfo
+        //-   span Stage&nbsp
+        //-   span#round 
+        //-   span &nbsp-&nbsp
+        //-   span#stage
         #controlBtns
           button#surrenderBtn 🏳️
           button#settingBtn ⚙️
@@ -124,7 +126,7 @@ block content
       #modalBackdrop
       #modalContent
         #modalHeader
-          span#modalTitle the title of the modal
+          span#modalTitle 
           button#modalClose X
         #modalBody
     #settingWrapper
@@ -135,3 +137,6 @@ block content
       .modalRow
         button#cancel.modalBtn ❌
         button#surrender.modalBtn 🏳️
+    #waiting
+      .modalRow
+        h2 Searching

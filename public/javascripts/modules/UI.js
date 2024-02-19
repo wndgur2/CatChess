@@ -14,10 +14,14 @@ export default class UI {
     }
 
     static hydrate() {
-        document.getElementById("enterGame").addEventListener("click", () => {
+        document.getElementById("playBtn").addEventListener("click", () => {
+            // TODO: change waiting page to modal
+            // TODO: functionize displaying modal
             Socket.sendMsg("startMatching", "");
-            document.getElementById("home").style.display = "none";
-            document.getElementById("game").style.display = "none";
+            this.openModal(
+                "Play",
+                document.getElementById("waiting").innerHTML
+            );
             document.getElementById("waiting").style.display = "flex";
         });
 
@@ -108,6 +112,20 @@ export default class UI {
         let skillEl = document.getElementById("unitSkillWrapper");
         skillEl.addEventListener("mousemove", skillMouseMove);
         skillEl.addEventListener("mouseout", skillMouseLeave);
+    }
+
+    static openModal(title, content) {
+        const modalEl = document.getElementById("modal");
+        modalEl.style.display = "flex";
+        const modalTitleEl = document.getElementById("modalTitle");
+        modalTitleEl.innerHTML = `${title}`;
+        const modalBodyEl = document.getElementById("modalBody");
+        modalBodyEl.innerHTML = content;
+    }
+
+    static closeModal() {
+        const modalEl = document.getElementById("modal");
+        modalEl.style.display = "none";
     }
 
     static getCellUnitByCellId(id) {

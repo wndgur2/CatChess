@@ -35,6 +35,7 @@ export default class Socket {
                 case "gameMatched": {
                     // three
                     UI.gameStart();
+                    UI.closeModal();
                     Game.init(data.players);
                     break;
                 }

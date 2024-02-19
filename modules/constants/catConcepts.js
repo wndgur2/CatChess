@@ -1,4 +1,3 @@
-// 현재: 중세 풍
 const CATS = {
     wildCat: {
         id: "wildCat",
@@ -144,5 +143,11 @@ const CATS = {
         range: 1,
     },
 };
-Object.freeze(CATS);
-module.exports = CATS;
+/*
+    Peasant(Serf)
+    Lord
+    Aristocrat
+    Knight
+    King
+    Clergy(regular || secular)
+*/

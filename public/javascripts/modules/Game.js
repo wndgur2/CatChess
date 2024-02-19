@@ -38,7 +38,7 @@ export default class Game {
 
     static set _state(newState) {
         this.state = newState;
-        document.getElementById("state").innerHTML = newState;
+        // document.getElementById("state").innerHTML = newState;
     }
 
     static set _time(newTime) {
@@ -48,12 +48,12 @@ export default class Game {
 
     static set _round(newRound) {
         Game.round = newRound;
-        document.getElementById("round").innerHTML = newRound;
+        // document.getElementById("round").innerHTML = newRound;
     }
 
     static set _stage(newStage) {
         Game.stage = newStage;
-        document.getElementById("stage").innerHTML =
-            newStage === 1 ? `${newStage}(creep)` : newStage;
+        // document.getElementById("stage").innerHTML =
+        //     newStage === 1 ? `${newStage}(creep)` : newStage;
     }
 }

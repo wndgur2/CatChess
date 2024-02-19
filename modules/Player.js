@@ -109,7 +109,7 @@ class Player {
     surrender() {
         //TODO
         this.hp = 0;
-        this.game.finish();
+        // if game state is battle, kill all cats in battlefield
     }
 
     buyCat(index) {
