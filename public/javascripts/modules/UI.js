@@ -32,19 +32,13 @@ export default class UI {
         document
             .getElementById("surrenderBtn")
             .addEventListener("click", () => {
-                const modalEl = document.getElementById("modal");
-                modalEl.style.display = "flex";
-                const modalBodyEl = document.getElementById("modalBody");
                 const surrenderEl = document.getElementById("surrenderWrapper");
-                modalBodyEl.innerHTML = surrenderEl.innerHTML;
+                UI.openModal("Surrender", surrenderEl.innerHTML);
             });
 
         document.getElementById("settingBtn").addEventListener("click", () => {
-            const modalEl = document.getElementById("modal");
-            modalEl.style.display = "flex";
-            const modalBodyEl = document.getElementById("modalBody");
             const settingEl = document.getElementById("settingWrapper");
-            modalBodyEl.innerHTML = settingEl.innerHTML;
+            UI.openModal("Setting", settingEl.innerHTML);
         });
 
         document.getElementById("reload").addEventListener("click", () => {

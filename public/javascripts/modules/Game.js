@@ -11,7 +11,8 @@ export default class Game {
     }
 
     static displayPlayersInfo() {
-        let playersEl = document.createElement("div");
+        let playersEl = document.getElementById("playersHp");
+        playersEl.innerHTML = "";
         Game.players.forEach((player) => {
             let playerDiv = document.createElement("div");
             playerDiv.id = `player-${player.id}`;
@@ -19,14 +20,10 @@ export default class Game {
             playerDiv.innerHTML = player.id;
             let playerHp = document.createElement("div");
             playerHp.id = `${player.id}-hp`;
-            playerHp.className = "hp";
             playerHp.innerHTML = player.hp;
             playerDiv.appendChild(playerHp);
             playersEl.appendChild(playerDiv);
         });
-        let rightWrapper = document.getElementById("rightWrapper");
-        rightWrapper.innerHTML = "";
-        rightWrapper.appendChild(playersEl);
     }
 
     static displayCatInfo(cat) {
