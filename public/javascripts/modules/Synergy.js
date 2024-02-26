@@ -32,7 +32,7 @@ export default class Synergy {
         descs.forEach((d, j) => {
             result = result.concat(
                 `<span class=${
-                    j === active ? "active" : "inactive"
+                    j === active ? "synergyActive" : "synergyInactive"
                 }>${d}</span>`
             );
         });

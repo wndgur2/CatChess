@@ -13,13 +13,18 @@ export default class Socket {
     static init() {
         // Socket.socket = new WebSocket("ws://localhost:8080");
         Socket.socket = new WebSocket(
-            "ws://catchessdemo.eu-north-1.elasticbeanstalk.com/:8080"
+            "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080"
         );
 
         Socket.socket.onopen = function (event) {
             console.log("web socket connected.");
             if (!Socket.id) Socket.sendMsg("reqNewId", null);
-            else document.getElementById("id").innerHTML = Socket.id;
+            else {
+                document.getElementById("id").innerHTML = Socket.id;
+                const playBtn = document.getElementById("playBtn");
+                playBtn.className = "btnActive";
+                playBtn.innerHTML = "<span>Match</span>";
+            }
         };
 
         Socket.socket.onmessage = function (event) {

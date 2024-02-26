@@ -3,25 +3,28 @@ extends layout
 block content
   #container
     #home
-      #homeBody
-        span#title Cat Chess
-        span 0.0.27
-        #greeting
-          span#sub Welcome, &nbsp
+      #homeContent
+        #logoWrapper
+          img#logo(src="images/logo.png" alt="logo" width="152" height="80")
+        //- #homeBody
+        //-   span 0.1.0
+        //-   span#id unknown
+        #playBtnWrapper
+          button#playBtn.btnInactive
+            span Waiting for connection...
+          #accentBar
+      #triangle
+      #info
+        #client
           span#id unknown
-        button#playBtn
-          h2 Play
+        #app
+          span v0.1.0
+          a(href = "https://github.com/wndgur2") @wndgur2
     #game
       #topWrapper
         #placeholder
         #timerWrapper
           span#timer
-        //- #state
-        //- #stageInfo
-        //-   span Stage&nbsp
-        //-   span#round
-        //-   span &nbsp-&nbsp
-        //-   span#stage
         #controlBtns
           button#surrenderBtn 🏳️
           button#settingBtn ⚙️
@@ -123,6 +126,7 @@ block content
               .item#0
               .item#1
               .item#2
+  #hid
     #popUp
     #modal
       #modalBackdrop
