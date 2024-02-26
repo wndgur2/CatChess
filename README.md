@@ -18,4 +18,15 @@ Nodejs, Express, Three.js 사용
 -   아마존 배포.
 -   TODO
 -   기획, mesh, UI, sound
--
+
+2.26
+
+DONE
+
+-   AWS 지역 스톡홀롬에서 서울로 변경: 응답 속도 개선(1초 이상 -> 거의 실시간)
+-   Home 화면 UI 개선: frame, footer, "CAT CHESS" logo 등
+
+TODO
+
+-   modal UI 개선
+-   in Game UI 개선
