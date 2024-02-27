@@ -15,19 +15,33 @@ export default class UI {
 
     static hydrate() {
         document.getElementById("playBtn").addEventListener("click", () => {
-            // TODO: change waiting page to modal
-            // TODO: functionize displaying modal
             Socket.sendMsg("startMatching", "");
             this.openModal(
                 "Play",
                 document.getElementById("waiting").innerHTML
             );
-            document.getElementById("waiting").style.display = "flex";
         });
 
+        document
+            .getElementById("fullscreenBtn")
+            .addEventListener("click", () => {
+                let elem = document.documentElement;
+                if (document.fullscreenElement) {
+                    document.exitFullscreen();
+                } else {
+                    elem.requestFullscreen();
+                }
+            });
+
+        //TODO modal close callback
         document.getElementById("modalClose").addEventListener("click", () => {
             document.getElementById("modal").style.display = "none";
         });
+        document
+            .getElementById("modalBackdrop")
+            .addEventListener("click", () => {
+                document.getElementById("modal").style.display = "none";
+            });
 
         document
             .getElementById("surrenderBtn")
@@ -92,6 +106,7 @@ export default class UI {
             document.getElementById("items").appendChild(row);
         }
 
+        // TODO?
         document
             .getElementById("inventory")
             .appendChild(document.getElementById("moneyWrapper"));
@@ -111,8 +126,6 @@ export default class UI {
     static openModal(title, content) {
         const modalEl = document.getElementById("modal");
         modalEl.style.display = "flex";
-        const modalTitleEl = document.getElementById("modalTitle");
-        modalTitleEl.innerHTML = `${title}`;
         const modalBodyEl = document.getElementById("modalBody");
         modalBodyEl.innerHTML = content;
     }
