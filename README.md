@@ -4,7 +4,22 @@ Nodejs, Express, Three.js 사용
 
 기록
 
-1.29 서버-클라이언트 통신 방식 개선 실패
+## 12.1 Cat chess 3인 개발 시작
+
+역할
+
+-   이중혁: node.js로 backend 담당
+-   유규빈: three js로 effect 구현 담당
+-   오준묵: react js 로 frontend 담당
+
+## 1.15 cat chess 1인 개발 시작
+
+-   react에서 express로 프레임워크 변경  
+    왜? (개발할 page가 많지 않아 spa에서 얻는 이득이 적고, 일반적인 웹 UI와 게임 UI가 요구하는 게 다르기 때문에 vanilla로 디테일하게 개발하기 위함)
+
+## ~ commit 참고 ~
+
+## 1.29 서버-클라이언트 통신 방식 개선 실패
 
 -   unit을 참조할 때, 좌표 참조형 방식에서 unit.uid 참조형 방식으로 변경을 시도함.  
     -> client 측에서 game state에 따라 같은 unit을 다양한 목적으로 활용하고 있었다는 것을 간과함.  
@@ -13,13 +28,21 @@ Nodejs, Express, Three.js 사용
     -> 내일, client에서 같은 uid의 여러 Unit을 다루면서 서버와 클라이언트가 uid로 소통할 수 있게 개선해볼 예정.  
     배운 점: 많은 코드에 손이 가는, 통신 구조 변경과 같은 수정 사항은 그 여파를 고려해보고, 이 시스템을 처음 설계한 의도와 걸맞는지 판단한 후에 적용하기
 
-2.11
+## 이후 적절한 곳에 uid 사용하여 개선함
+
+## ~ commit 참고 ~
+
+## 2.11
 
 -   아마존 배포.
 -   TODO
 -   기획, mesh, UI, sound
 
-2.26
+## ~ commit 참고 ~
+
+## 2.26
+
+로직은 웬만큼 다 한 것 같다. 스킬 제외
 
 DONE
 
@@ -30,3 +53,16 @@ TODO
 
 -   modal UI 개선
 -   in Game UI 개선
+
+2.27
+
+DONE
+
+-   home UI 개선
+-   modal UI 개선
+-   modal close callback 구현
+
+TODO
+
+-   ingame UI 개선 (inventory)
+-   surrender 구현
