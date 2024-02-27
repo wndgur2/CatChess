@@ -17,8 +17,8 @@ export default class UI {
         document.getElementById("playBtn").addEventListener("click", () => {
             Socket.sendMsg("startMatching", "");
             this.openModal(
-                "Play",
-                document.getElementById("waiting").innerHTML
+                document.getElementById("waiting").innerHTML,
+                cancelMatching
             );
         });
 
@@ -36,24 +36,32 @@ export default class UI {
         //TODO modal close callback
         document.getElementById("modalClose").addEventListener("click", () => {
             document.getElementById("modal").style.display = "none";
+            if (UI.callback) {
+                UI.callback();
+                UI.callback = null;
+            }
         });
         document
             .getElementById("modalBackdrop")
             .addEventListener("click", () => {
                 document.getElementById("modal").style.display = "none";
+                if (UI.callback) {
+                    UI.callback();
+                    UI.callback = null;
+                }
             });
 
         document
             .getElementById("surrenderBtn")
             .addEventListener("click", () => {
                 const surrenderEl = document.getElementById("surrenderWrapper");
-                UI.openModal("Surrender", surrenderEl.innerHTML);
+                UI.openModal(surrenderEl.innerHTML);
             });
 
-        document.getElementById("settingBtn").addEventListener("click", () => {
-            const settingEl = document.getElementById("settingWrapper");
-            UI.openModal("Setting", settingEl.innerHTML);
-        });
+        // document.getElementById("settingBtn").addEventListener("click", () => {
+        //     const settingEl = document.getElementById("settingWrapper");
+        //     UI.openModal(settingEl.innerHTML);
+        // });
 
         document.getElementById("reload").addEventListener("click", () => {
             Socket.sendMsg("reqReload", "");
@@ -123,11 +131,12 @@ export default class UI {
         skillEl.addEventListener("mouseout", skillMouseLeave);
     }
 
-    static openModal(title, content) {
+    static openModal(content, callback) {
         const modalEl = document.getElementById("modal");
         modalEl.style.display = "flex";
         const modalBodyEl = document.getElementById("modalBody");
         modalBodyEl.innerHTML = content;
+        if (callback) UI.callback = callback;
     }
 
     static closeModal() {
@@ -283,4 +292,8 @@ function shopPointerUp(event) {
     shoplistEl.style.display = "flex";
 
     Player.player._shop = Player.player.shop;
+}
+
+function cancelMatching() {
+    Socket.sendMsg("cancelMatching", "");
 }
