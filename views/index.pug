@@ -5,20 +5,26 @@ block content
     #home
       #homeContent
         #logoWrapper
-          img#logo(src="images/logo.png" alt="logo" width="152" height="80")
+          img#logo(src="images/home/logo.png" alt="logo" width="152" height="80")
         //- #homeBody
         //-   span 0.1.0
         //-   span#id unknown
-        #playBtnWrapper
-          button#playBtn.btnInactive
-            span Waiting for connection...
-          #accentBar
+        #homeDisplayLayer
+        #homeBtnLayer
+          div
+          #playBtnWrapper
+            button#playBtn.btnInactive
+              span Waiting for connection...
+          div
+            button#fullscreenBtn
+              img(src="images/home/fullscreen.png" alt="fullscreen" width="24" height="24")
+        #accentBar
       #triangle
-      #info
+      #footer
         #client
-          span#id unknown
+          span#id.timesFont unknown
         #app
-          span v0.1.0
+          span.timesFont v0.1.0
           a(href = "https://github.com/wndgur2") @wndgur2
     #game
       #topWrapper
@@ -132,9 +138,10 @@ block content
       #modalBackdrop
       #modalContent
         #modalHeader
-          span#modalTitle 
-          button#modalClose X
+          button#modalClose
+            img(src="images/home/x.png" alt="close" width="20" height="20")
         #modalBody
+        #modalFooter
     #settingWrapper
       .modalRow
         button#language.modalBtn 🌎
@@ -145,4 +152,4 @@ block content
         button#surrender.modalBtn 🏳️
     #waiting
       .modalRow
-        h2 Searching
+        span Looking for a match...
