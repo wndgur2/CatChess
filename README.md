@@ -61,6 +61,7 @@ DONE
 -   home UI 개선
 -   modal UI 개선
 -   modal close callback 구현
+    ![img](./devHistory/images/0.1.0.png)
 
 TODO
 
