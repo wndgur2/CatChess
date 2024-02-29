@@ -36,10 +36,19 @@ block content
         #inventory
           table 
             tbody#items
-          #moneyWrapper
-            div
-              span 💰
-              span#money
+              tr.row
+                td#inventory-0-0.cell
+                td#inventory-0-1.cell
+              tr.row
+                td#inventory-1-0.cell
+                td#inventory-1-1.cell
+              tr.row
+                td#inventory-2-0.cell
+                td#inventory-2-1.cell
+              tr.row
+                td#moneyWrapper(colspan="2")
+                  span 💰
+                  span#money
       #rightWrapper
         #playersHp
       #synergies

@@ -58,11 +58,6 @@ export default class UI {
                 UI.openModal(surrenderEl.innerHTML);
             });
 
-        // document.getElementById("settingBtn").addEventListener("click", () => {
-        //     const settingEl = document.getElementById("settingWrapper");
-        //     UI.openModal(settingEl.innerHTML);
-        // });
-
         document.getElementById("reload").addEventListener("click", () => {
             Socket.sendMsg("reqReload", "");
         });
@@ -98,26 +93,14 @@ export default class UI {
 
         // 2 x 3 inventory
         for (let i = 0; i < 3; i++) {
-            let row = document.createElement("tr");
-            row.className = "row";
             for (let j = 0; j < 2; j++) {
-                let item = document.createElement("td");
-                item.id = `inventory-${i}-${j}`;
-
-                item.className = "cell";
+                let item = document.getElementById(`inventory-${i}-${j}`);
                 item.addEventListener("dragstart", inventoryDragStart);
                 item.draggable = false;
                 item.addEventListener("mousemove", inventoryItemMouseMove);
                 item.addEventListener("mouseleave", inventoryItemMouseLeave);
-                row.appendChild(item);
             }
-            document.getElementById("items").appendChild(row);
         }
-
-        // TODO?
-        document
-            .getElementById("inventory")
-            .appendChild(document.getElementById("moneyWrapper"));
 
         // unit info
         let itemEls = document.getElementsByClassName("item");
@@ -218,7 +201,7 @@ export default class UI {
 
     static gameEnd() {
         document.getElementById("game").style.display = "none";
-        document.getElementById("home").style.display = "flex";
+        document.getElementById("home").style.display = "block-inline";
         Painter.clear();
     }
 }

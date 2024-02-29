@@ -9,9 +9,6 @@ body {
     background-color: #27273a;
 }
 
-/* span {
-} */
-
 .timesFont {
     font-family: "Times New Roman", Times, serif;
 }
@@ -41,6 +38,7 @@ body::-webkit-scrollbar {
 }
 
 #home {
+    display: block-inline;
     width: calc(100dvw - 6dvh);
     height: 94dvh;
     margin: 3dvh 3dvh 0px 3dvh;
@@ -104,18 +102,19 @@ body::-webkit-scrollbar {
     letter-spacing: 0.15dvw;
 
     color: #cebb82;
-    background-color: #32324c;
+    background-color: #2e2e46;
     border: 0.3dvh solid #dac378;
     box-shadow: 0px 0px 3px 3px #00000044;
 
     transition: opacity 0.2s, width 0.6s, color 0.2s, border 0.2s,
-        box-shadow 0.2s;
+        box-shadow 0.2s, background-color 0.2s;
 }
 
 #playBtn:hover {
     color: #eddaa1;
     border: 0.3dvh solid #f7e5ab;
     box-shadow: 0px 0px 4px 4px #ffffff08;
+    background-color: #32324c;
 }
 
 .btnActive {
@@ -141,8 +140,7 @@ body::-webkit-scrollbar {
     /* font-weight: bold; */
     letter-spacing: 0.15dvw;
 
-    color: #cebb82;
-    background-color: #32324c;
+    background-color: #2e2e46;
     border: 0.2dvh solid #dac378;
     box-shadow: 0px 0px 2px 2px #00000022;
 }
@@ -298,12 +296,12 @@ a:visited {
 
 table {
     width: 100%;
-    height: 90%;
+    height: 100%;
     border-collapse: collapse;
 }
 
 #inventory .row {
-    height: 33%;
+    height: 25%;
     width: 100%;
     display: flex;
     flex-direction: row;
@@ -337,8 +335,8 @@ td {
 }
 
 #moneyWrapper {
+    height: 100%;
     width: 100%;
-    height: 10%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;

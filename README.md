@@ -65,4 +65,15 @@ DONE
 TODO
 
 -   ingame UI 개선 (inventory)
--   surrender 구현
+-   ~~surrender 구현~~
+
+2.29
+
+DONE
+
+-   ingame UI 설계 figma
+-   inventory UI 개선
+
+TODO
+
+-   ingame UI 설계 확정 및 구현
