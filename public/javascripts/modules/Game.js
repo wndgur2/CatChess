@@ -22,6 +22,7 @@ export default class Game {
             playerHp.id = `${player.id}-hp`;
             playerHp.innerHTML = player.hp;
             playerDiv.appendChild(playerHp);
+            playerDiv.appendChild(document.createElement("div"));
             playersEl.appendChild(playerDiv);
         });
     }
