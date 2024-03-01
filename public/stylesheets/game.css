@@ -1,0 +1,410 @@
+#game {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100vw;
+    height: 100vh;
+    /* display: flex; */
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+#scene {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100dvw;
+    height: 100dvh;
+}
+
+#topWrapper {
+    z-index: 1;
+    position: absolute;
+    top: 0dvh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 5dvh;
+    background-color: #212121;
+}
+
+#placeholder {
+    width: 15%;
+    height: 100%;
+}
+
+/* #state {
+    width: 15%;
+    text-align: center;
+    font-size: 20px;
+} */
+#timerWrapper {
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 35dvw;
+    width: 30dvw;
+    height: 13dvh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    background-image: url("/images/game/pentagon.png");
+    object-fit: cover;
+
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#timer {
+    letter-spacing: 0.15dvw;
+    text-align: center;
+    font-size: 3.6dvh;
+    color: #f4dc92;
+}
+
+#timerAccentBar {
+    width: 6%;
+    height: 0px;
+    border: 0.1vh solid #e1c573;
+    margin-bottom: 2.5vh;
+}
+#stageInfo {
+    width: 55%;
+    text-align: center;
+    font-size: 20px;
+}
+
+#controlBtns {
+    width: 15%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+#settingBtn {
+    background: none;
+    border: none;
+}
+
+#surrenderBtn {
+    background: none;
+    border: none;
+}
+
+.cat {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    background-color: #212121;
+}
+
+#damage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30dvw;
+    height: 40dvh;
+    background-color: #212121aa;
+}
+
+#inventoryWrapper {
+    z-index: 1;
+    position: absolute;
+    bottom: 26dvh;
+    left: 1dvw;
+    padding: 0.5dvh;
+
+    background-color: #1f1f33;
+    border: 2px solid #e1c573;
+}
+
+#inventory {
+    border-spacing: 1dvh;
+}
+
+.inventoryCell {
+    width: 6dvw;
+    height: 6dvw;
+    border: 1px solid #807253;
+    background-color: #232337;
+}
+
+#moneyWrapper {
+    height: 3dvw;
+    padding: 0% 5%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #807253;
+    background-color: #232337;
+}
+
+#money {
+    width: 100%;
+    text-align: end;
+}
+
+.cell:hover {
+    background-color: #444444aa;
+}
+
+#rightWrapper {
+    z-index: 1;
+    position: absolute;
+    bottom: 26dvh;
+    right: 1dvw;
+    width: 5.6dvw;
+    height: 40dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    pointer-events: none;
+}
+
+#playersHp {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-right: 20%;
+}
+
+.player {
+    width: 100%;
+    height: 45%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1f1f33;
+    border: 2px solid #e1c573;
+    color: #f5e4af;
+}
+
+.player div {
+    height: 30%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#synergies {
+    z-index: 1;
+    position: absolute;
+    bottom: 24dvh;
+    height: 8dvh;
+    padding-bottom: 1dvh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 1dvw;
+}
+
+.synergy {
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    border-radius: 24%;
+    color: #fff;
+    aspect-ratio: 1;
+}
+
+.synergyActive {
+    color: #fff;
+    /* border: 2px solid #e1c573; */
+}
+.synergyInactive {
+    color: #ccc;
+    /* border: 2px solid #807253; */
+}
+
+.synergy span {
+    font-size: calc(8px + 0.5vw);
+}
+
+#bottomWrapper {
+    z-index: 1;
+    position: absolute;
+    bottom: 1dvh;
+    left: 1dvw;
+    width: calc(98dvw - 8px);
+    height: 22dvh;
+    padding: 0px;
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    border: 3px solid #e1c573;
+}
+
+#streak {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #212121;
+    width: 10%;
+    height: 18%;
+    color: #eee;
+    visibility: hidden;
+}
+
+#bottomRow {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #000;
+}
+
+#buyBtns {
+    height: 100%;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    pointer-events: initial;
+}
+
+#buyExp {
+    height: 50%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    color: #fff;
+    background: linear-gradient(to right, #000, #192455);
+}
+
+#levelInfo {
+    width: 100%;
+}
+
+#level {
+    font-weight: bold;
+}
+
+#reload {
+    height: 50%;
+    width: 100%;
+    color: #fff;
+    background: linear-gradient(to right, #000, #5f5711);
+}
+
+#sell {
+    height: 100%;
+    width: 80%;
+    display: none;
+    justify-content: space-evenly;
+    align-items: center;
+    pointer-events: initial;
+}
+
+#shop {
+    height: 100%;
+    width: 80%;
+    display: flex;
+}
+
+#shoplist {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    pointer-events: initial;
+}
+
+#shoplist button {
+    height: 100%;
+    width: 25%;
+    padding: 0px;
+    margin: 0px;
+    display: grid;
+    grid-template-columns: 1fr;
+    background-color: #000;
+    overflow: hidden;
+}
+
+.shopImageWrapper {
+    width: 90%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    grid-row-start: 1;
+    grid-column-start: 1;
+    background-size: cover;
+    background-position: center;
+}
+
+.shopGradient {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+            to top,
+            rgba(0, 0, 0, 0),
+            97%,
+            rgba(0, 0, 0, 0.5)
+        ),
+        linear-gradient(to bottom, rgba(0, 0, 0, 0), 97%, rgba(0, 0, 0, 0.5)),
+        linear-gradient(to left, rgba(0, 0, 0, 0), 97%, rgba(0, 0, 0, 0.5)),
+        linear-gradient(to right, rgba(0, 0, 0, 0), 40%, rgba(0, 0, 0, 1));
+}
+
+.shopUnitInfo {
+    width: 92%;
+    height: 92%;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: end;
+    grid-row-start: 1;
+    grid-column-start: 1;
+
+    padding: 4%;
+    gap: 4%;
+}
+
+.shopSynergies {
+    height: 32%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    align-items: start;
+    gap: 2%;
+}
+
+.shopSynergies .synergy span {
+    visibility: hidden;
+}

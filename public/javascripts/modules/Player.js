@@ -91,7 +91,7 @@ export default class Player {
                 continue;
             }
             shopListEl[i].style.visibility = "visible";
-            shopListEl[i].style.border = `2px solid ${
+            shopListEl[i].style.border = `1px solid ${
                 COST_COLORS[newShop[i].cost]
             }`;
             let shopImageWrapper =

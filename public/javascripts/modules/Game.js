@@ -17,7 +17,9 @@ export default class Game {
             let playerDiv = document.createElement("div");
             playerDiv.id = `player-${player.id}`;
             playerDiv.className = "player";
-            playerDiv.innerHTML = player.id;
+            let playerId = document.createElement("div");
+            playerId.innerHTML = player.id;
+            playerDiv.appendChild(playerId);
             let playerHp = document.createElement("div");
             playerHp.id = `${player.id}-hp`;
             playerHp.innerHTML = player.hp;

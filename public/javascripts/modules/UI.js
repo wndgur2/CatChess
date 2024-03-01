@@ -8,6 +8,7 @@ export default class UI {
     static draggingId;
     static isDragging = false;
     static infoUnit;
+    static muted = true;
 
     static init() {
         this.hydrate();
@@ -58,20 +59,12 @@ export default class UI {
         });
 
         document.getElementById("modalClose").addEventListener("click", () => {
-            document.getElementById("modal").style.display = "none";
-            if (UI.callback) {
-                UI.callback();
-                UI.callback = null;
-            }
+            this.closeModal();
         });
         document
             .getElementById("modalBackdrop")
             .addEventListener("click", () => {
-                document.getElementById("modal").style.display = "none";
-                if (UI.callback) {
-                    UI.callback();
-                    UI.callback = null;
-                }
+                this.closeModal();
             });
 
         document
@@ -139,7 +132,8 @@ export default class UI {
 
     static openModal(content, callback) {
         const modalEl = document.getElementById("modal");
-        modalEl.style.display = "flex";
+        modalEl.style.opacity = "1";
+        modalEl.style.visibility = "visible";
         const modalBodyEl = document.getElementById("modalBody");
         modalBodyEl.innerHTML = content;
         if (callback) UI.callback = callback;
@@ -147,7 +141,14 @@ export default class UI {
 
     static closeModal() {
         const modalEl = document.getElementById("modal");
-        modalEl.style.display = "none";
+        if (UI.callback) {
+            UI.callback();
+            UI.callback = null;
+        }
+        modalEl.style.opacity = "0";
+        setTimeout(() => {
+            modalEl.style.visibility = "hidden";
+        }, 200);
     }
 
     static getCellUnitByCellId(id) {

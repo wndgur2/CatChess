@@ -28,6 +28,8 @@ export default class Synergy {
             descs.push(`${a} : ${d}`);
             ++i;
         }
+
+        //TODO 여기 말고 display에서 active인지 판단하기?
         let result = "";
         descs.forEach((d, j) => {
             result = result.concat(
