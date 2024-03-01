@@ -28,14 +28,18 @@ Nodejs, Express, Three.js 사용
     -> 내일, client에서 같은 uid의 여러 Unit을 다루면서 서버와 클라이언트가 uid로 소통할 수 있게 개선해볼 예정.  
     배운 점: 많은 코드에 손이 가는, 통신 구조 변경과 같은 수정 사항은 그 여파를 고려해보고, 이 시스템을 처음 설계한 의도와 걸맞는지 판단한 후에 적용하기
 
-## 이후 적절한 곳에 uid 사용하여 개선함
+이후 적절한 곳에 uid 사용하여 개선함
 
 ## ~ commit 참고 ~
 
 ## 2.11
 
+DONE
+
 -   아마존 배포.
--   TODO
+
+TODO
+
 -   기획, mesh, UI, sound
 
 ## ~ commit 참고 ~
@@ -78,3 +82,8 @@ DONE
 TODO
 
 -   ingame UI 설계 확정 및 구현
+
+3.1
+DONE
+
+-   ingame time, inventory UI 구현

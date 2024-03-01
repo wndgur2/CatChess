@@ -27,14 +27,14 @@ block content
           a(href = "https://github.com/wndgur2") @wndgur2
     #game
       #timerWrapper
-        span#timer
+        span#timer 0
         #timerAccentBar
       #controlBtns
         button#surrenderBtn 🏳️
         //- button#settingBtn ⚙️
       #damage
       #inventoryWrapper
-        table #inventory
+        table#inventory
           tbody#items
             tr.row
               td#inventory-0-0.inventoryCell
@@ -46,11 +46,12 @@ block content
               td#inventory-2-0.inventoryCell
               td#inventory-2-1.inventoryCell
             tr.row
-              td#moneyWrapper(colspan="2")
-                span 💰
-                span#money
+              td(colspan="2")
+                #moneyWrapper
+                  span 💰
+                  span#money
       #rightWrapper
-        #playersHp
+        #playersHp.timesFont
       #synergies
       #bottomWrapper
         //- #streak

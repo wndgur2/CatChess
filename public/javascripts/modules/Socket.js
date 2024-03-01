@@ -48,7 +48,7 @@ export default class Socket {
                     if (p) p._hp = data.hp;
                 }
                 case "timeUpdate": {
-                    Game._time = data.time;
+                    if (data.time) Game._time = data.time;
                     break;
                 }
                 case "stageUpdate": {
@@ -59,7 +59,7 @@ export default class Socket {
                 }
                 case "stateUpdate": {
                     Game._state = data.state;
-                    Game._time = data.time;
+                    if (data.time) Game._time = data.time;
                     break;
                 }
                 case "boardUpdate": {
