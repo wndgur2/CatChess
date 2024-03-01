@@ -15,6 +15,9 @@ export default class UI {
     }
 
     static hydrate() {
+        // document.getElementById("test").addEventListener("click", () => {
+        //     document.getElementById("home").style.display = "inline-block";
+        // });
         document.getElementById("playBtn").addEventListener("click", () => {
             Socket.sendMsg("startMatching", "");
             const t = document.getElementById("matchingTime");
@@ -216,8 +219,8 @@ export default class UI {
     }
 
     static gameStart() {
+        UI.closeModal();
         document.getElementById("home").style.display = "none";
-        document.getElementById("waiting").style.display = "none";
         document.getElementById("game").style.display = "flex";
 
         Painter.startRendering();
@@ -225,7 +228,7 @@ export default class UI {
 
     static gameEnd() {
         document.getElementById("game").style.display = "none";
-        document.getElementById("home").style.display = "block-inline";
+        document.getElementById("home").style.display = "inline-block";
         Painter.clear();
     }
 }

@@ -1,5 +1,5 @@
 #home {
-    display: block-inline;
+    display: inline-block;
     width: calc(100dvw - 6dvh);
     height: 94dvh;
     margin: 3dvh 3dvh 0px 3dvh;

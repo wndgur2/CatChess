@@ -26,7 +26,7 @@ class Player {
         this.exp = -2;
         this.money = TESTING ? 100 : 2;
         this.maxExp = 4;
-        this.maxHp = TESTING ? 30 : 100;
+        this.maxHp = TESTING ? 20 : 100;
         this.hp = this.maxHp;
 
         this.board = [

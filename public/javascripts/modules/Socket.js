@@ -39,7 +39,6 @@ export default class Socket {
                 }
                 case "gameMatched": {
                     UI.gameStart();
-                    UI.closeModal();
                     Game.init(data.players);
                     break;
                 }
@@ -150,9 +149,9 @@ export default class Socket {
                     break;
                 }
                 case "gameEnd": {
+                    UI.gameEnd();
                     if (data.winner === Socket.id) alert("승리!");
                     else alert("패배!");
-                    UI.gameEnd();
                     break;
                 }
                 case "synergiesUpdate": {

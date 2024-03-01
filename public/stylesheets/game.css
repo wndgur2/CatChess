@@ -182,8 +182,6 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-
-    margin-right: 20%;
 }
 
 .player {
@@ -237,7 +235,7 @@
     /* border: 2px solid #e1c573; */
 }
 .synergyInactive {
-    color: #ccc;
+    color: #aaa;
     /* border: 2px solid #807253; */
 }
 
@@ -250,7 +248,7 @@
     position: absolute;
     bottom: 1dvh;
     left: 1dvw;
-    width: calc(98dvw - 8px);
+    width: calc(98dvw - 2px);
     height: 22dvh;
     padding: 0px;
     margin: 0px;

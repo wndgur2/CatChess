@@ -1,4 +1,4 @@
-const TESTING = false;
+const TESTING = true;
 const TIME_STEP = TESTING ? 80 : 100; // bigger is slower (a step per a TIME_STEP)
 const PLAYER_NUM = 2;
 const DIRECTIONS = [
