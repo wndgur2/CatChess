@@ -145,7 +145,7 @@ body::-webkit-scrollbar {
     box-shadow: 0px 0px 2px 2px #00000022;
 }
 
-#accentBar {
+#homeAccentBar {
     margin-bottom: 3dvh;
 
     width: 4%;
@@ -175,20 +175,35 @@ body::-webkit-scrollbar {
     display: flex;
     justify-content: space-between;
 
-    color: #f5e4af;
+    color: #e1c573;
 }
 
-#app {
+#footer div {
+    height: 100%;
+
     display: flex;
+    flex-direction: row;
+    align-items: center;
+
     gap: 2dvw;
 }
 
+#soundBtn {
+    height: 100%;
+}
+
+#soundImg {
+    height: 80%;
+    max-width: 32px;
+    object-fit: cover;
+}
+
 a {
-    color: #f5e4af;
+    color: #f0dea3;
 }
 
 a:visited {
-    color: #f5e4af;
+    color: #f0dea3;
 }
 
 #game {
@@ -226,9 +241,33 @@ a:visited {
     font-size: 20px;
 } */
 #timerWrapper {
-    width: 15%;
-    text-align: center;
-    font-size: 24px;
+    z-index: 1;
+    position: absolute;
+    top: 0;
+    left: 38dvw;
+    width: 24dvw;
+    height: 14dvh;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+
+    font-size: 3vh;
+    color: #f4dc92;
+    background-image: url("/images/game/pentagon.png");
+    object-fit: cover;
+
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#timerAccentBar {
+    width: 6%;
+    height: 0px;
+    border: 1px solid #e1c573;
+    margin-bottom: 2vh;
 }
 #stageInfo {
     width: 55%;
@@ -265,82 +304,45 @@ a:visited {
     background-color: #212121;
 }
 
-#leftWrapper {
-    z-index: 1;
-    position: absolute;
-    top: 5dvh;
-    left: 0px;
-    width: 16vw;
-    min-width: 160px;
-    height: 73dvh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 #damage {
-    width: 100%;
-    height: 40%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 30dvw;
+    height: 40dvh;
     background-color: #212121aa;
 }
 
-/* TODO: inventory, moneyWrapper 다시. border 깔끔하게 */
+#inventoryWrapper {
+    z-index: 1;
+    position: absolute;
+    top: 28dvh;
+    left: 0dvw;
+    padding: 0.5dvh;
+
+    background-color: #1f1f33;
+    border: 2px solid #e1c573;
+}
+
 #inventory {
-    width: 100%;
-    height: 60%;
-    border: 0.5px solid #a88a30;
-    background-color: #141420;
-    border-collapse: collapse;
+    border-spacing: 1dvh;
 }
 
-table {
-    width: 100%;
-    height: 100%;
-    border-collapse: collapse;
+.inventoryCell {
+    width: 7dvw;
+    height: 7dvw;
+    border: 1px solid #807253;
+    background-color: #232337;
 }
 
-#inventory .row {
-    height: 25%;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
-}
-
-td {
-    outline: 1px solid #a88a30;
-}
-
-.cell {
-    padding: 0px;
-    width: 50%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    text-align: center;
-    font-size: 16px;
-    color: #fff;
-    user-select: none;
-
-    overflow: hidden;
-    object-fit: cover;
+#moneyWrapper {
+    height: 3dvw;
+    border: 1px solid #807253;
+    background-color: #232337;
 }
 
 .cell:hover {
     background-color: #444444aa;
-}
-
-#moneyWrapper {
-    height: 100%;
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: center;
 }
 
 #rightWrapper {
@@ -602,6 +604,8 @@ td {
     align-items: center;
     justify-content: center;
     z-index: 1;
+
+    transition: display 0.5s;
 }
 
 #modalBackdrop {
@@ -611,11 +615,11 @@ td {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: #00000022;
+    background-color: #00000066;
 }
 
 #modalContent {
-    min-width: 40%;
+    min-width: 30%;
     min-height: 40%;
     padding: 1%;
     display: flex;
@@ -646,8 +650,7 @@ td {
 
 #modalBody {
     width: 100%;
-    height: 90%;
-    padding: 8%;
+    height: 80%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -659,9 +662,18 @@ td {
     text-align: center;
 }
 
+#modalFooter {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
 .modalRow {
     width: 100%;
-    height: 20%;
+    height: 16%;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
@@ -673,11 +685,6 @@ td {
     height: 8dvh;
     font-size: 24px;
 }
-
-#modalFooter {
-    height: 10%;
-}
-
 #settingWrapper {
     display: none;
 }

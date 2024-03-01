@@ -15,40 +15,40 @@ block content
           div
             button#fullscreenBtn
               img(src="images/home/fullscreen.png" alt="fullscreen" width="24" height="24")
-        #accentBar
+        #homeAccentBar
       #triangle
       #footer
         #client
           span#id.timesFont unknown
+          button#soundBtn
+            img#soundImg(src="images/home/mutedSound.png" alt="sound")
         #app
           span.timesFont v0.1.0
           a(href = "https://github.com/wndgur2") @wndgur2
     #game
-      #topWrapper
-        #placeholder
-        #timerWrapper
-          span#timer
-        #controlBtns
-          button#surrenderBtn 🏳️
-          //- button#settingBtn ⚙️
-      #leftWrapper
-        #damage
-        #inventory
-          table 
-            tbody#items
-              tr.row
-                td#inventory-0-0.cell
-                td#inventory-0-1.cell
-              tr.row
-                td#inventory-1-0.cell
-                td#inventory-1-1.cell
-              tr.row
-                td#inventory-2-0.cell
-                td#inventory-2-1.cell
-              tr.row
-                td#moneyWrapper(colspan="2")
-                  span 💰
-                  span#money
+      #timerWrapper
+        span#timer
+        #timerAccentBar
+      #controlBtns
+        button#surrenderBtn 🏳️
+        //- button#settingBtn ⚙️
+      #damage
+      #inventoryWrapper
+        table #inventory
+          tbody#items
+            tr.row
+              td#inventory-0-0.inventoryCell
+              td#inventory-0-1.inventoryCell
+            tr.row
+              td#inventory-1-0.inventoryCell
+              td#inventory-1-1.inventoryCell
+            tr.row
+              td#inventory-2-0.inventoryCell
+              td#inventory-2-1.inventoryCell
+            tr.row
+              td#moneyWrapper(colspan="2")
+                span 💰
+                span#money
       #rightWrapper
         #playersHp
       #synergies
@@ -157,4 +157,4 @@ block content
         button#surrender.modalBtn 🏳️
     #waiting
       .modalRow
-        span Looking for a match...
+        span#matchingTime

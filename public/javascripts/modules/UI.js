@@ -16,6 +16,19 @@ export default class UI {
     static hydrate() {
         document.getElementById("playBtn").addEventListener("click", () => {
             Socket.sendMsg("startMatching", "");
+            const t = document.getElementById("matchingTime");
+            t.innerHTML = "00:00";
+            let matchingTime = 0;
+            UI.interval = setInterval(() => {
+                console.log(matchingTime);
+                matchingTime++;
+                const minute = Math.floor(matchingTime / 60);
+                const second = matchingTime % 60;
+                document.getElementById("matchingTime").innerHTML = `${
+                    minute < 10 ? "0" + minute : minute
+                }:${second < 10 ? "0" + second : second}`;
+            }, 1000);
+
             this.openModal(
                 document.getElementById("waiting").innerHTML,
                 cancelMatching
@@ -33,7 +46,17 @@ export default class UI {
                 }
             });
 
-        //TODO modal close callback
+        document.getElementById("soundBtn").addEventListener("click", () => {
+            let soundBtn = document.getElementById("soundBtn");
+            if (UI.muted)
+                soundBtn.innerHTML =
+                    "<img id='soundImg' src='/images/home/sound.png' />";
+            else
+                soundBtn.innerHTML =
+                    "<img id='soundImg' src='/images/home/mutedSound.png' />";
+            UI.muted = !UI.muted;
+        });
+
         document.getElementById("modalClose").addEventListener("click", () => {
             document.getElementById("modal").style.display = "none";
             if (UI.callback) {
@@ -279,4 +302,5 @@ function shopPointerUp(event) {
 
 function cancelMatching() {
     Socket.sendMsg("cancelMatching", "");
+    clearInterval(UI.interval);
 }
