@@ -66,7 +66,7 @@ DONE
 -   modal UI 개선
 -   modal close callback 구현
 
-<img src="./devHistory/images/0.1.0.png" width="92%" style="margin:4%" />
+<img src="./devHistory/images/0.1.0.png" width="92%" style="margin:8%" />
 
 TODO
 
@@ -89,9 +89,9 @@ TODO
 DONE
 
 -   ingame time, inventory UI 구현
-    <img src="./devHistory/images/home2_0.1.5.png" width="92%" style="margin:4%" />
-    <img src="./devHistory/images/home_modal_0.1.5.png" width="92%" style="margin:4%" />
-    <img src="./devHistory/images/game_0.1.5.png" width="92%" style="margin:4%" />
+    <img src="./devHistory/images/home2_0.1.5.png" width="92%" style="margin:8%" />
+    <img src="./devHistory/images/home_modal_0.1.5.png" width="92%" style="margin:8%" />
+    <img src="./devHistory/images/game_0.1.5.png" width="92%" style="margin:8%" />
 
 TODO
 
