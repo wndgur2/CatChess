@@ -90,10 +90,12 @@ DONE
 
 -   ingame time, inventory UI 구현
     <img src="./devHistory/images/home_0.1.5.png" width="80%" />
+    <img src="./devHistory/images/home_modal_0.1.5.png" width="80%" />
     <img src="./devHistory/images/game_0.1.5.png" width="80%" />
 
 TODO
 
 -   ingame UI 개선
+-   Queens Gambit과 같은 Chess UX 구현 고민하기
 
 ### 3.2
