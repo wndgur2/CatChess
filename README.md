@@ -89,7 +89,7 @@ TODO
 DONE
 
 -   ingame time, inventory UI 구현
-    <img src="./devHistory/images/home_0.1.5.png" width="80%" />
+    <img src="./devHistory/images/home2_0.1.5.png" width="80%" />
     <img src="./devHistory/images/home_modal_0.1.5.png" width="80%" />
     <img src="./devHistory/images/game_0.1.5.png" width="80%" />
 
