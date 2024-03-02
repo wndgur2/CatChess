@@ -3,6 +3,7 @@ import Game from "./Game.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
 import Painter from "./Painter.js";
+import Sound from "./Sound.js";
 
 export default class UI {
     static draggingId;
@@ -15,6 +16,9 @@ export default class UI {
     }
 
     static hydrate() {
+        document.onclick = (event) => {
+            Sound.playBeep();
+        };
         // document.getElementById("test").addEventListener("click", () => {
         //     document.getElementById("home").style.display = "inline-block";
         // });
