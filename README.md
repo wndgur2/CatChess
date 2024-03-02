@@ -66,7 +66,7 @@ DONE
 -   modal UI 개선
 -   modal close callback 구현
 
-<img src="./devHistory/images/0.1.0.png" width="80%" />
+<img src="./devHistory/images/0.1.0.png" width="92%" style="margin:4%" />
 
 TODO
 
@@ -89,13 +89,17 @@ TODO
 DONE
 
 -   ingame time, inventory UI 구현
-    <img src="./devHistory/images/home2_0.1.5.png" width="80%" />
-    <img src="./devHistory/images/home_modal_0.1.5.png" width="80%" />
-    <img src="./devHistory/images/game_0.1.5.png" width="80%" />
+    <img src="./devHistory/images/home2_0.1.5.png" width="92%" style="margin:4%" />
+    <img src="./devHistory/images/home_modal_0.1.5.png" width="92%" style="margin:4%" />
+    <img src="./devHistory/images/game_0.1.5.png" width="92%" style="margin:4%" />
 
 TODO
 
--   ingame UI 개선
--   Queens Gambit과 같은 Chess UX 구현 고민하기
+-   ingame UI 개선(damage stastics, bottomWrapper, system btns)
+-   Queens Gambit과 같은 Chess UX 구현 고민하기 (sound, visuality, functionality)
 
 ### 3.2
+
+DONE
+
+-   sound 고민
