@@ -4,7 +4,7 @@ Nodejs, Express, Three.js 사용
 
 기록
 
-## 12.1 Cat chess 3인 개발 시작
+### 12.1 Cat chess 3인 개발 시작
 
 역할
 
@@ -12,14 +12,14 @@ Nodejs, Express, Three.js 사용
 -   유규빈: three js로 effect 구현 담당
 -   오준묵: react js 로 frontend 담당
 
-## 1.15 cat chess 1인 개발 시작
+### 1.15 cat chess 1인 개발 시작
 
 -   react에서 express로 프레임워크 변경  
     왜? (개발할 page가 많지 않아 spa에서 얻는 이득이 적고, 일반적인 웹 UI와 게임 UI가 요구하는 게 다르기 때문에 vanilla로 디테일하게 개발하기 위함)
 
 ## ~ commit 참고 ~
 
-## 1.29 서버-클라이언트 통신 방식 개선 실패
+### 1.29 서버-클라이언트 통신 방식 개선 실패
 
 -   unit을 참조할 때, 좌표 참조형 방식에서 unit.uid 참조형 방식으로 변경을 시도함.  
     -> client 측에서 game state에 따라 같은 unit을 다양한 목적으로 활용하고 있었다는 것을 간과함.  
@@ -32,7 +32,7 @@ Nodejs, Express, Three.js 사용
 
 ## ~ commit 참고 ~
 
-## 2.11
+### 2.11
 
 DONE
 
@@ -44,7 +44,7 @@ TODO
 
 ## ~ commit 참고 ~
 
-## 2.26
+### 2.26
 
 로직은 웬만큼 다 한 것 같다. 스킬 제외
 
@@ -58,21 +58,22 @@ TODO
 -   modal UI 개선
 -   in Game UI 개선
 
-2.27
+### 2.27
 
 DONE
 
 -   home UI 개선
 -   modal UI 개선
 -   modal close callback 구현
-    ![img](./devHistory/images/0.1.0.png)
+
+<img src="./devHistory/images/0.1.0.png" width="80%" />
 
 TODO
 
 -   ingame UI 개선 (inventory)
 -   ~~surrender 구현~~
 
-2.29
+### 2.29
 
 DONE
 
@@ -83,7 +84,16 @@ TODO
 
 -   ingame UI 설계 확정 및 구현
 
-3.1
+### 3.1
+
 DONE
 
 -   ingame time, inventory UI 구현
+    <img src="./devHistory/images/home_0.1.5.png" width="80%" />
+    <img src="./devHistory/images/game_0.1.5.png" width="80%" />
+
+TODO
+
+-   ingame UI 개선
+
+### 3.2
