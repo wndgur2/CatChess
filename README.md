@@ -111,6 +111,7 @@ TODO
 DONE
 
 -   shopList UI 개선
+    <img src="./devHistory/images/game_0.1.5_2.png" width="92%"/>
 -   source (coin / Poeir) 추가
 
 TODO
