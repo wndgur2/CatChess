@@ -1,8 +1,8 @@
 ## 롤토체스 (Team Fight Tactics) 방식 웹 게임
 
-Nodejs, Express, Three.js 사용
+### Nodejs, Express, Three.js 사용
 
-기록
+## 기록
 
 ### 12.1 Cat chess 3인 개발 시작
 
@@ -100,6 +100,8 @@ TODO
 
 ### 3.2
 
-DONE
+sound pixaby?
 
--   sound pixaby?
+TODO
+
+-   홈 화면 ambient sound

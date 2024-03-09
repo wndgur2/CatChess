@@ -84,19 +84,19 @@ export default class Player {
     set _shop(newShop) {
         this.shop = newShop;
         if (this.id !== Socket.id) return;
-        let shopListEl = document.getElementById("shoplist").children;
+        let shopListEl = document.getElementsByClassName("shopListWrapper");
         for (let i = 0; i < newShop.length; i++) {
             if (!newShop[i]) {
                 shopListEl[i].style.visibility = "hidden";
                 continue;
             }
             shopListEl[i].style.visibility = "visible";
-            shopListEl[i].style.border = `1px solid ${
-                COST_COLORS[newShop[i].cost]
-            }`;
             let shopImageWrapper =
                 shopListEl[i].getElementsByClassName("shopImageWrapper")[0];
             shopImageWrapper.style.backgroundImage = `url(/images/units/${newShop[i].id}.jpg)`;
+
+            let cost = shopListEl[i].getElementsByClassName("shopUnitCost")[0];
+            cost.innerHTML = newShop[i].cost;
 
             let name = shopListEl[i].getElementsByClassName("shopUnitName")[0];
             name.innerHTML = newShop[i].name;
@@ -110,10 +110,6 @@ export default class Player {
             for (let synergy of newShop[i].synergies) {
                 synergiesEl.appendChild(Synergy.getSynergy(synergy).display());
             }
-
-            let cost = shopListEl[i].getElementsByClassName("shopUnitCost")[0];
-
-            cost.innerHTML = newShop[i].cost + "💰";
         }
     }
 
