@@ -105,3 +105,17 @@ sound pixaby?
 TODO
 
 -   홈 화면 ambient sound
+
+### 3.9
+
+DONE
+
+-   shopList UI 개선
+-   source (coin / Poeir) 추가
+
+TODO
+
+-   기획(item/cats)
+-   스킬 구현
+-   사운드 소스
+-   메인 페이지 이미지 소스
