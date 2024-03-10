@@ -30,7 +30,81 @@
     height: auto;
 }
 
-#homeDisplayLayer {
+#cardOpenerLayer {
+    position: absolute;
+    top: 32dvh;
+    width: 100%;
+    height: 36dvh;
+}
+
+#cardOpenerWrapper {
+    width: 100%;
+    height: 100%;
+}
+
+#cards {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.closedCard {
+    width: 13dvw;
+    height: 100%;
+    background-color: #1f1f33;
+    border: 0.2dvh solid #e1c573;
+    box-shadow: 0px 0px 3px 3px #00000044;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 2s;
+}
+
+.card {
+    width: 98%;
+    height: 98%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 1%;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 1s;
+}
+
+.cardImgWrapper {
+    width: 100%;
+    height: 50%;
+    border-radius: 100dvh 100dvh 0 0;
+    border: 0.2dvh solid #807253;
+    overflow: hidden;
+}
+
+.cardImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+.cardDesc {
+    width: 100%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5dvh;
+    color: #e1c573;
+    background-color: #232330;
+    border: 0.2dvh solid #807253;
+}
+
+#homePlaceholdLayer {
+    width: 100%;
     height: 50%;
 }
 

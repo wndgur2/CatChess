@@ -1,9 +1,5 @@
 const SimpleCat = require("./unit/SimpleCat");
-const {
-    SHOP_POSSIBILITIES,
-    GAME_STATES,
-    TESTING,
-} = require("./constants/CONSTS");
+const { SHOP_POSSIBILITIES, GAME_STATES } = require("./constants/CONSTS");
 const { sendMsg, addPlayer } = require("./utils");
 
 const IN_QUEUE = 3;
@@ -24,9 +20,9 @@ class Player {
     init() {
         this.level = 1;
         this.exp = -2;
-        this.money = TESTING ? 100 : 2;
+        this.money = process.env.NODE_ENV === "development" ? 100 : 2;
         this.maxExp = 4;
-        this.maxHp = TESTING ? 20 : 100;
+        this.maxHp = process.env.NODE_ENV === "development" ? 20 : 100;
         this.hp = this.maxHp;
 
         this.board = [

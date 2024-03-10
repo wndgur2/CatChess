@@ -1,5 +1,4 @@
-const TESTING = true;
-const TIME_STEP = TESTING ? 80 : 100; // bigger is slower (a step per a TIME_STEP)
+const TIME_STEP = process.env.NODE_ENV === "development" ? 80 : 100; // bigger is slower (a step per a TIME_STEP)
 const PLAYER_NUM = 2;
 const DIRECTIONS = [
     [
@@ -42,5 +41,4 @@ module.exports = {
     PLAYER_NUM,
     DIRECTIONS,
     SHOP_POSSIBILITIES,
-    TESTING,
 };

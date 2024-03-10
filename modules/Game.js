@@ -1,5 +1,5 @@
 const { sendMsg, getPlayerById, removePlayer } = require("./utils.js");
-const { GAME_STATES, PLAYER_NUM, TESTING } = require("./constants/CONSTS.js");
+const { GAME_STATES, PLAYER_NUM } = require("./constants/CONSTS.js");
 const CREEP_ROUNDS = require("./constants/CREEP_ROUNDS.js");
 const Player = require("./Player.js");
 const Battle = require("./Battle.js");
@@ -118,7 +118,7 @@ class Game {
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = TESTING ? 12 : 20;
+        this.time = process.env.NODE_ENV === "development" ? 12 : 20;
         this.updateState();
 
         // 결과 지급, 리로드

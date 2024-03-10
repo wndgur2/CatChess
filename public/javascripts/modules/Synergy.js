@@ -29,7 +29,6 @@ export default class Synergy {
             ++i;
         }
 
-        //TODO 여기 말고 display에서 active인지 판단하기?
         let result = "";
         descs.forEach((d, j) => {
             result = result.concat(
@@ -42,12 +41,18 @@ export default class Synergy {
     }
 
     display(amount = 0) {
+        const isActive = amount >= parseInt(Object.keys(this.desc)[0]);
+        console.log(amount, parseInt(Object.keys(this.desc)[0]));
         let synergyEl = document.createElement("div");
         synergyEl.className = "synergy";
         synergyEl.id = this.id;
         synergyEl.style.background = `url(/images/synergies/${this.id}.jpg)`;
         synergyEl.style.backgroundSize = "cover";
         synergyEl.style.backgroundPosition = "center";
+        synergyEl.style.border = isActive
+            ? "0.14dvh solid #E1C573"
+            : "0.14dvh solid #807253";
+        synergyEl.style.color = isActive ? "#fff" : "#aaa";
 
         let synergyName = document.createElement("span");
         synergyName.innerHTML = this.id;

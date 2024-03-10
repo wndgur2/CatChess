@@ -226,17 +226,14 @@
     justify-content: space-around;
     align-items: center;
     border-radius: 24%;
-    color: #fff;
     aspect-ratio: 1;
 }
 
 .synergyActive {
     color: #fff;
-    /* border: 2px solid #e1c573; */
 }
 .synergyInactive {
     color: #aaa;
-    /* border: 2px solid #807253; */
 }
 
 .synergy span {

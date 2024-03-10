@@ -87,7 +87,6 @@ a:visited {
     justify-content: center;
     align-items: center;
     background-color: #1f1f33;
-    color: #f5e4af;
     z-index: 1;
     pointer-events: none;
 }

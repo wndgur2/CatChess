@@ -13,10 +13,12 @@ export default class UI {
 
     static init() {
         this.hydrate();
+        this.initCardOpener();
     }
 
     static hydrate() {
         document.onclick = (event) => {
+            if (UI.muted) return;
             Sound.playBeep();
         };
         // document.getElementById("test").addEventListener("click", () => {
@@ -28,7 +30,6 @@ export default class UI {
             t.innerHTML = "00:00";
             let matchingTime = 0;
             UI.interval = setInterval(() => {
-                console.log(matchingTime);
                 matchingTime++;
                 const minute = Math.floor(matchingTime / 60);
                 const second = matchingTime % 60;
@@ -141,6 +142,7 @@ export default class UI {
         const modalEl = document.getElementById("modal");
         modalEl.style.opacity = "1";
         modalEl.style.visibility = "visible";
+
         const modalBodyEl = document.getElementById("modalBody");
         modalBodyEl.innerHTML = content;
         if (callback) UI.callback = callback;
@@ -235,6 +237,14 @@ export default class UI {
         document.getElementById("home").style.display = "inline-block";
         Painter.clear();
     }
+
+    static initCardOpener() {
+        const card = newClosedCard();
+        document.getElementById("cards").appendChild(card);
+        setTimeout(() => {
+            card.style.opacity = "1";
+        }, 0);
+    }
 }
 
 function inventoryDragStart(event) {
@@ -311,4 +321,35 @@ function shopPointerUp(event) {
 function cancelMatching() {
     Socket.sendMsg("cancelMatching", "");
     clearInterval(UI.interval);
+}
+
+function newClosedCard() {
+    let card = document.createElement("div");
+    card.className = "closedCard";
+    card.appendChild(newCard("ida"));
+    card.addEventListener("click", () => {
+        card.getElementsByClassName("card")[0].style.opacity = "1";
+    });
+    return card;
+}
+
+function newCard(idd) {
+    let card = document.createElement("div");
+    card.className = "card";
+    card.id = idd;
+
+    let cardImgWrapper = document.createElement("div");
+    cardImgWrapper.className = "cardImgWrapper";
+    card.appendChild(cardImgWrapper);
+
+    let cardImg = document.createElement("img");
+    cardImg.className = "cardImg";
+    cardImg.src = `/images/units/catCard.jpg`;
+    cardImgWrapper.appendChild(cardImg);
+
+    let cardDesc = document.createElement("div");
+    cardDesc.className = "cardDesc";
+    card.appendChild(cardDesc);
+
+    return card;
 }

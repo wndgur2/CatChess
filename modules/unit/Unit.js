@@ -1,5 +1,4 @@
 const Item = require("../Item");
-const { TESTING } = require("../constants/CONSTS");
 const SKILLS = require("../constants/SKILLS");
 const { getPlayerById } = require("../utils");
 
@@ -122,7 +121,7 @@ class Unit {
             // item drop
             if (target.owner.split("-")[0] == "creep") {
                 getPlayerById(this.owner).pushItem(Item.getRandomItem());
-                if (TESTING)
+                if (process.env.NODE_ENV === "development")
                     getPlayerById(this.owner).pushItem(Item.getRandomItem());
             }
         }
