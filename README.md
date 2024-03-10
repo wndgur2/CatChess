@@ -120,3 +120,19 @@ TODO
 -   스킬 구현
 -   사운드 소스
 -   메인 페이지 이미지 소스
+
+### 3.10
+
+DONE
+
+-   home Card elements 초안
+-   synergy UI
+-   synergy 소스 변경
+-   NODE_ENV 활용
+
+TODO
+
+-   home 페이지 구현: Card Opener, 개요, Synergy 별 설명
+-   Unit 기획
+-   스킬 구현
+-   사운드 소스
