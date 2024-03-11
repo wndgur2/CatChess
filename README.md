@@ -148,6 +148,8 @@ DONE
 
 -   Card opener 구현
 
+![0 1 7rec](https://github.com/wndgur2/CatChess/assets/65120311/5596ad44-7198-48ee-b8a2-9a2f274ac720)
+
 TODO
 
 -   home 페이지 구현: 개요, Synergy 별 설명
