@@ -11,13 +11,14 @@ export default class Socket {
     static id = localStorage.getItem(CATCHESS_ID);
 
     static init() {
-        Socket.socket = new WebSocket("ws://localhost:8080");
-        // Socket.socket = new WebSocket(
-        //     "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080"
-        // );
+        // Socket.socket = new WebSocket("ws://localhost:8080");
+        Socket.socket = new WebSocket(
+            "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080"
+        );
 
         Socket.socket.onopen = function (event) {
             console.log("web socket connected.");
+            UI.initCardOpener();
             if (!Socket.id) Socket.sendMsg("reqNewId", null);
             else {
                 readyToPlay();
@@ -35,6 +36,10 @@ export default class Socket {
                     Socket.id = data;
                     localStorage.setItem(CATCHESS_ID, data);
                     readyToPlay();
+                    break;
+                }
+                case "resNewCard": {
+                    UI.newCard(data);
                     break;
                 }
                 case "gameMatched": {
@@ -140,6 +145,11 @@ export default class Socket {
                     Battle.itemUpdate(unit);
                     break;
                 }
+                case "synergiesUpdate": {
+                    Player.getPlayerById(data.player)._synergies =
+                        data.synergies;
+                    break;
+                }
                 case "winningUpdate": {
                     Player.getPlayerById(data.player)._winning = data.winning;
                     break;
@@ -152,11 +162,6 @@ export default class Socket {
                     UI.gameEnd();
                     if (data.winner === Socket.id) alert("승리!");
                     else alert("패배!");
-                    break;
-                }
-                case "synergiesUpdate": {
-                    Player.getPlayerById(data.player)._synergies =
-                        data.synergies;
                     break;
                 }
             }

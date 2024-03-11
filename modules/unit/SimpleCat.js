@@ -4,10 +4,22 @@ const CATS = require("../constants/CATS");
 class SimpleCat extends Unit {
     static prototypes = CATS;
 
-    static getRandomCatTypeByCost(cost) {
+    static getRandomCatType(cost) {
+        let candidates;
+        if (cost)
+            candidates = Object.values(SimpleCat.prototypes).filter(
+                (cat) => cat.cost === cost
+            );
+        else candidates = Object.values(SimpleCat.prototypes);
+        return candidates[Math.floor(Math.random() * candidates.length)];
+    }
+
+    static getRandomCatTypeExcept(excetps) {
+        if (!excetps) return this.getRandomCatType();
         let candidates = Object.values(SimpleCat.prototypes).filter(
-            (cat) => cat.cost === cost
+            (cat) => !excetps.includes(cat.id)
         );
+        if (candidates.length === 0) return this.getRandomCatType();
         return candidates[Math.floor(Math.random() * candidates.length)];
     }
 

@@ -30,10 +30,40 @@
     height: auto;
 }
 
+#deck {
+    position: absolute;
+    top: 28dvh;
+    left: -4dvw;
+    width: 13dvw;
+    height: 36dvh;
+    padding: 0px;
+    border: 0.2dvh solid #e1c573;
+    box-shadow: 0px 0px 4px 4px #00000044;
+    background-image: url("/images/home/deck.png");
+    background-size: cover;
+    background-position: center;
+    transition: left 0.2s, top 0.2s, height 0.2s, width 0.2s, box-shadow 0.2s;
+}
+
+#deck:hover {
+    top: 27.5dvh;
+    width: 14dvw;
+    height: 38dvh;
+}
+
+#deck:active {
+    left: -3.2dvw;
+    top: 28.2dvh;
+    width: 12.6dvw;
+    height: 35dvh;
+    box-shadow: inset 0px 0px 4px 4px #000000aa, 0px 0px 4px 4px #00000044;
+}
+
 #cardOpenerLayer {
     position: absolute;
-    top: 32dvh;
-    width: 100%;
+    top: 28dvh;
+    margin-left: 12dvw;
+    width: 88dvw;
     height: 36dvh;
 }
 
@@ -47,34 +77,43 @@
     height: 100%;
     display: flex;
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: start;
     align-items: center;
 }
 
-.closedCard {
-    width: 13dvw;
+.cardWrapper {
+    width: 0px;
     height: 100%;
+    margin: 0px 2dvw;
     background-color: #1f1f33;
     border: 0.2dvh solid #e1c573;
-    box-shadow: 0px 0px 3px 3px #00000044;
+    box-shadow: 0px 0px 4px 4px #00000044;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: opacity 2s;
+    font-size: calc(8px + 1dvh);
+    transition: opacity 0.6s, width 0.6s, height 0.6s, font-size 0.6s,
+        box-shadow 0.6s;
+}
+
+.cardWrapper:hover {
+    height: 136%;
+    font-size: calc(10px + 1.3dvh);
+    box-shadow: 0px 0px 4dvw 1dvh #000a;
 }
 
 .card {
-    width: 98%;
+    width: 96%;
     height: 98%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     gap: 1%;
     align-items: center;
-    opacity: 0;
-    transition: opacity 1s;
+
+    pointer-events: none;
 }
 
 .cardImgWrapper {
@@ -91,16 +130,21 @@
     object-fit: cover;
     object-position: center;
 }
-.cardDesc {
+.cardDescWrapper {
     width: 100%;
     height: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5dvh;
-    color: #e1c573;
     background-color: #232330;
     border: 0.2dvh solid #807253;
+    overflow: scroll;
+}
+.cardDesc {
+    padding: 4%;
+    color: #e1c573;
+    text-align: center;
+    word-break: break-all;
 }
 
 #homePlaceholdLayer {

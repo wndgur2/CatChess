@@ -2,6 +2,7 @@ const Player = require("./Player.js");
 const Game = require("./Game.js");
 const { sendMsg, getPlayerById, getPlayerByWs } = require("./utils.js");
 const webSocket = require("ws");
+const SimpleCat = require("./unit/SimpleCat.js");
 
 module.exports = (server) => {
     const wss = new webSocket.Server({ server });
@@ -16,6 +17,14 @@ module.exports = (server) => {
             switch (type) {
                 case "reqNewId": {
                     sendMsg(ws, "resNewId", Player.getNewId());
+                    break;
+                }
+                case "reqNewCard": {
+                    const newCard = SimpleCat.getRandomCatTypeExcept(
+                        data.cards
+                    );
+                    console.log(newCard);
+                    sendMsg(ws, "resNewCard", newCard);
                     break;
                 }
                 case "startMatching": {

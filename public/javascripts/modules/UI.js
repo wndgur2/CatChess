@@ -13,7 +13,6 @@ export default class UI {
 
     static init() {
         this.hydrate();
-        this.initCardOpener();
     }
 
     static hydrate() {
@@ -21,9 +20,23 @@ export default class UI {
             if (UI.muted) return;
             Sound.playBeep();
         };
-        // document.getElementById("test").addEventListener("click", () => {
-        //     document.getElementById("home").style.display = "inline-block";
-        // });
+        document.getElementById("deck").onclick = (event) => {
+            const cards = document.getElementById("cards");
+            if (cards.children.length > 4) {
+                const i = cards.children.length - 5;
+                cards.children[i].setAttribute(
+                    "style",
+                    "width: 0px; margin:0px; opacity: 0; pointer-events: none;"
+                );
+                setTimeout(() => {
+                    if (cards.children.length > 4)
+                        cards.removeChild(cards.children[0]);
+                }, 600);
+            }
+            Socket.sendMsg("reqNewCard", {
+                cards: [...cards.children].map((card) => card.id),
+            });
+        };
         document.getElementById("playBtn").addEventListener("click", () => {
             Socket.sendMsg("startMatching", "");
             const t = document.getElementById("matchingTime");
@@ -239,11 +252,50 @@ export default class UI {
     }
 
     static initCardOpener() {
-        const card = newClosedCard();
-        document.getElementById("cards").appendChild(card);
+        Socket.sendMsg("reqNewCard", "");
+    }
+
+    static newCard(cat) {
+        let cardWrapper = document.createElement("div");
+        cardWrapper.className = "cardWrapper";
+        cardWrapper.id = cat.id;
+
+        let card = document.createElement("div");
+        card.className = "card";
+        cardWrapper.appendChild(card);
+
+        let cardImgWrapper = document.createElement("div");
+        cardImgWrapper.className = "cardImgWrapper";
+        card.appendChild(cardImgWrapper);
+
+        let cardImg = document.createElement("img");
+        cardImg.className = "cardImg";
+        cardImg.src = `/images/units/${cat.id}.jpg`;
+        cardImgWrapper.appendChild(cardImg);
+
+        let cardDescWrapper = document.createElement("div");
+        cardDescWrapper.className = "cardDescWrapper";
+
+        let cardDesc = document.createElement("span");
+        cardDesc.className = "cardDesc";
+        cardDesc.innerHTML = cat.desc;
+        cardDescWrapper.appendChild(cardDesc);
+
+        card.appendChild(cardDescWrapper);
+
+        let cards = document.getElementById("cards");
+        cards.appendChild(cardWrapper);
+
         setTimeout(() => {
-            card.style.opacity = "1";
-        }, 0);
+            cardWrapper.style.opacity = "1";
+            cardWrapper.style.width = "13dvw";
+            cardWrapper.onmouseover = (e) => {
+                cardWrapper.style.width = "17.5dvw";
+            };
+            cardWrapper.onmouseout = (e) => {
+                cardWrapper.style.width = "13dvw";
+            };
+        }, 100);
     }
 }
 
@@ -321,35 +373,4 @@ function shopPointerUp(event) {
 function cancelMatching() {
     Socket.sendMsg("cancelMatching", "");
     clearInterval(UI.interval);
-}
-
-function newClosedCard() {
-    let card = document.createElement("div");
-    card.className = "closedCard";
-    card.appendChild(newCard("ida"));
-    card.addEventListener("click", () => {
-        card.getElementsByClassName("card")[0].style.opacity = "1";
-    });
-    return card;
-}
-
-function newCard(idd) {
-    let card = document.createElement("div");
-    card.className = "card";
-    card.id = idd;
-
-    let cardImgWrapper = document.createElement("div");
-    cardImgWrapper.className = "cardImgWrapper";
-    card.appendChild(cardImgWrapper);
-
-    let cardImg = document.createElement("img");
-    cardImg.className = "cardImg";
-    cardImg.src = `/images/units/catCard.jpg`;
-    cardImgWrapper.appendChild(cardImg);
-
-    let cardDesc = document.createElement("div");
-    cardDesc.className = "cardDesc";
-    card.appendChild(cardDesc);
-
-    return card;
 }

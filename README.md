@@ -136,3 +136,18 @@ TODO
 -   Unit 기획
 -   스킬 구현
 -   사운드 소스
+
+### 3.11
+
+home Card opener 구현 중, cat img와 desc를 불러오기 위해서, 모든 CATS를 받아와야 함.  
+이렇게 받아왔다면, Unit 인스턴스를 생성할 때, cat preset을 가져올 필요가 없음. (skill, synergies 등)
+
+아니면 현재 방식을 유지하는 방법으로, Unit 인스턴스를 활용해서 Card Opener를 구현하는 방법이 있다.
+
+DONE
+
+-   Card opener 구현
+
+TODO
+
+-   home 페이지 구현: 개요, Synergy 별 설명

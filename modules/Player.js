@@ -322,7 +322,7 @@ class Player {
             let randomValue = Math.random() * 100;
             for (let cost = 1; cost <= 4; ++cost) {
                 if (randomValue <= possibilities[cost - 1]) {
-                    result.push(SimpleCat.getRandomCatTypeByCost(cost));
+                    result.push(SimpleCat.getRandomCatType(cost));
                     break;
                 }
                 randomValue -= possibilities[cost - 1];
