@@ -4,6 +4,7 @@ import Player from "./Player.js";
 import Socket from "./Socket.js";
 import Painter from "./Painter.js";
 import Sound from "./Sound.js";
+import Unit from "./Unit.js";
 
 export default class UI {
     static draggingId;
@@ -12,6 +13,7 @@ export default class UI {
     static muted = true;
 
     static init() {
+        injectUnitData();
         this.hydrate();
     }
 
@@ -22,15 +24,16 @@ export default class UI {
         };
         document.getElementById("deck").onclick = (event) => {
             const cards = document.getElementById("cards");
-            if (cards.children.length > 4) {
-                const i = cards.children.length - 5;
+            const maxAmount = 5;
+            if (cards.children.length > maxAmount) {
+                const i = cards.children.length - maxAmount;
                 cards.children[i].setAttribute(
                     "style",
                     "width: 0px; margin:0px; opacity: 0; pointer-events: none;"
                 );
                 setTimeout(() => {
-                    if (cards.children.length > 4)
-                        cards.removeChild(cards.children[0]);
+                    if (cards.children.length > maxAmount)
+                        cards.removeChild(cards.children[1]);
                 }, 600);
             }
             Socket.sendMsg("reqNewCard", {
@@ -288,14 +291,14 @@ export default class UI {
 
         setTimeout(() => {
             cardWrapper.style.opacity = "1";
-            cardWrapper.style.width = "13dvw";
+            cardWrapper.style.width = "12dvw";
             cardWrapper.onmouseover = (e) => {
                 cardWrapper.style.width = "17.5dvw";
             };
             cardWrapper.onmouseout = (e) => {
-                cardWrapper.style.width = "13dvw";
+                cardWrapper.style.width = "12dvw";
             };
-        }, 100);
+        }, 20);
     }
 }
 
@@ -373,4 +376,10 @@ function shopPointerUp(event) {
 function cancelMatching() {
     Socket.sendMsg("cancelMatching", "");
     clearInterval(UI.interval);
+}
+
+function injectUnitData() {
+    // TODO 시작할 때 모든 유닛 정보 어차피 필요
+    // 불러와서 Unit에 저장하기 ?
+    const poeir = document.getElementById("poeir");
 }

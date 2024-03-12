@@ -23,7 +23,6 @@ module.exports = (server) => {
                     const newCard = SimpleCat.getRandomCatTypeExcept(
                         data.cards
                     );
-                    console.log(newCard);
                     sendMsg(ws, "resNewCard", newCard);
                     break;
                 }

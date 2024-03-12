@@ -17,7 +17,9 @@ body {
     overflow-x: hidden;
     background-color: #27273a;
 }
-
+img {
+    pointer-events: none;
+}
 .timesFont {
     font-family: "Times New Roman", Times, serif;
 }

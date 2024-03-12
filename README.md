@@ -114,7 +114,7 @@ DONE
     <img src="./devHistory/images/game_0.1.5_2.png" width="92%"/>
 -   source (coin / Poeir) 추가
 
-TODO
+TODO(big)
 
 -   기획(item/cats)
 -   스킬 구현
@@ -130,7 +130,7 @@ DONE
 -   synergy 소스 변경
 -   NODE_ENV 활용
 
-TODO
+TODO(big)
 
 -   home 페이지 구현: Card Opener, 개요, Synergy 별 설명
 -   Unit 기획
@@ -153,3 +153,13 @@ DONE
 TODO
 
 -   home 페이지 구현: 개요, Synergy 별 설명
+
+### 3.12
+
+DONE
+
+-   Card opener 마무리, home content( country desciption ) 아웃라인
+
+TODO
+
+-   시작 시, 모든 유닛 desc 받아오기

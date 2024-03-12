@@ -5,13 +5,13 @@ block content
     //- button#test
     //-   h1 TEST
     #home
-      #homeContent
+      #homeMain
         #logoWrapper
           img#logo(src="images/home/logo.png" alt="logo")
-        button#deck
         #cardOpenerLayer
           #cardOpenerWrapper
             #cards
+              button#deck
         #homePlaceholdLayer
         #homeBtnLayer
           div
@@ -20,9 +20,33 @@ block content
               span Waiting for connection...
           div
             button#fullscreenBtn
-              img(src="images/home/fullscreen.png" alt="fullscreen" width="24" height="24")
+              //- img(src="images/home/fullscreen.png" alt="fullscreen" width="24" height="24")
         #homeAccentBar
       #triangle
+      #homeContentWrapper
+        #homeContent
+          .country
+            h1.countryName Poeir
+            .countryDescWrapper
+              .countryImgWrapper 
+                img(src="images/synergies/poeir.jpg" alt="poeir")
+              span.countryDesc Description of Poeir
+            #poeir.units
+          .country
+            h1.countryName Therme
+            .countryDescWrapper
+              .countryImgWrapper 
+                img(src="images/synergies/therme.jpg" alt="poeir")
+              span.countryDesc Description of Therme
+            #therme.units
+          .country
+            h1.countryName Nature
+            .countryDescWrapper
+              .countryImgWrapper 
+                img(src="images/synergies/nature.jpg" alt="poeir")
+              span.countryDesc Description of Nature
+            #nature.units
+
       #footer
         #client
           span#id.timesFont unknown
