@@ -13,7 +13,7 @@ export default class UI {
     static muted = true;
 
     static init() {
-        injectUnitData();
+        this.newCard();
         this.hydrate();
     }
 
@@ -23,42 +23,10 @@ export default class UI {
             Sound.playBeep();
         };
         document.getElementById("deck").onclick = (event) => {
-            const cards = document.getElementById("cards");
-            const maxAmount = 5;
-            if (cards.children.length > maxAmount) {
-                const i = cards.children.length - maxAmount;
-                cards.children[i].setAttribute(
-                    "style",
-                    "width: 0px; margin:0px; opacity: 0; pointer-events: none;"
-                );
-                setTimeout(() => {
-                    if (cards.children.length > maxAmount)
-                        cards.removeChild(cards.children[1]);
-                }, 600);
-            }
-            Socket.sendMsg("reqNewCard", {
-                cards: [...cards.children].map((card) => card.id),
-            });
+            this.newCard();
         };
-        document.getElementById("playBtn").addEventListener("click", () => {
-            Socket.sendMsg("startMatching", "");
-            const t = document.getElementById("matchingTime");
-            t.innerHTML = "00:00";
-            let matchingTime = 0;
-            UI.interval = setInterval(() => {
-                matchingTime++;
-                const minute = Math.floor(matchingTime / 60);
-                const second = matchingTime % 60;
-                document.getElementById("matchingTime").innerHTML = `${
-                    minute < 10 ? "0" + minute : minute
-                }:${second < 10 ? "0" + second : second}`;
-            }, 1000);
 
-            this.openModal(
-                document.getElementById("waiting").innerHTML,
-                cancelMatching
-            );
-        });
+        document.getElementById("playBtn").onclick = startMatching;
 
         document
             .getElementById("fullscreenBtn")
@@ -255,50 +223,71 @@ export default class UI {
     }
 
     static initCardOpener() {
-        Socket.sendMsg("reqNewCard", "");
+        // Socket.sendMsg("reqNewCard", "");
     }
 
-    static newCard(cat) {
-        let cardWrapper = document.createElement("div");
-        cardWrapper.className = "cardWrapper";
-        cardWrapper.id = cat.id;
+    static newCard() {
+        const MAX_AMOUNT = 5;
+        const cards = document.getElementById("cards");
+        const currentCats = [...cards.children].map((card) => card.id);
+        const keys = Object.keys(Unit.CATS).filter(
+            (key) => !currentCats.includes(key)
+        );
+        if (keys.length > 0) {
+            if (cards.children.length > MAX_AMOUNT) {
+                const i = cards.children.length - MAX_AMOUNT;
+                cards.children[i].setAttribute(
+                    "style",
+                    "width: 0px; margin:0px; opacity: 0; pointer-events: none;"
+                );
+                setTimeout(() => {
+                    if (cards.children.length > MAX_AMOUNT)
+                        cards.removeChild(cards.children[1]);
+                }, 600);
+            }
 
-        let card = document.createElement("div");
-        card.className = "card";
-        cardWrapper.appendChild(card);
+            const cat =
+                Unit.CATS[keys[Math.floor(Math.random() * keys.length)]];
 
-        let cardImgWrapper = document.createElement("div");
-        cardImgWrapper.className = "cardImgWrapper";
-        card.appendChild(cardImgWrapper);
+            let cardWrapper = document.createElement("div");
+            cardWrapper.className = "cardWrapper";
+            cardWrapper.id = cat.id;
 
-        let cardImg = document.createElement("img");
-        cardImg.className = "cardImg";
-        cardImg.src = `/images/units/${cat.id}.jpg`;
-        cardImgWrapper.appendChild(cardImg);
+            let card = document.createElement("div");
+            card.className = "card";
+            cardWrapper.appendChild(card);
 
-        let cardDescWrapper = document.createElement("div");
-        cardDescWrapper.className = "cardDescWrapper";
+            let cardImgWrapper = document.createElement("div");
+            cardImgWrapper.className = "cardImgWrapper";
+            card.appendChild(cardImgWrapper);
 
-        let cardDesc = document.createElement("span");
-        cardDesc.className = "cardDesc";
-        cardDesc.innerHTML = cat.desc;
-        cardDescWrapper.appendChild(cardDesc);
+            let cardImg = document.createElement("img");
+            cardImg.className = "cardImg";
+            cardImg.src = `/images/units/${cat.id}.jpg`;
+            cardImgWrapper.appendChild(cardImg);
 
-        card.appendChild(cardDescWrapper);
+            let cardDescWrapper = document.createElement("div");
+            cardDescWrapper.className = "cardDescWrapper";
 
-        let cards = document.getElementById("cards");
-        cards.appendChild(cardWrapper);
+            let cardDesc = document.createElement("span");
+            cardDesc.className = "cardDesc";
+            cardDesc.innerHTML = cat.desc;
+            cardDescWrapper.appendChild(cardDesc);
 
-        setTimeout(() => {
-            cardWrapper.style.opacity = "1";
-            cardWrapper.style.width = "12dvw";
-            cardWrapper.onmouseover = (e) => {
-                cardWrapper.style.width = "17.5dvw";
-            };
-            cardWrapper.onmouseout = (e) => {
+            card.appendChild(cardDescWrapper);
+            cards.appendChild(cardWrapper);
+
+            setTimeout(() => {
+                cardWrapper.style.opacity = "1";
                 cardWrapper.style.width = "12dvw";
-            };
-        }, 20);
+                cardWrapper.onmouseover = (e) => {
+                    cardWrapper.style.width = "17.5dvw";
+                };
+                cardWrapper.onmouseout = (e) => {
+                    cardWrapper.style.width = "12dvw";
+                };
+            }, 20);
+        }
     }
 }
 
@@ -373,13 +362,51 @@ function shopPointerUp(event) {
     Player.player._shop = Player.player.shop;
 }
 
+function startMatching() {
+    Socket.sendMsg("startMatching", "");
+
+    const playBtn = document.getElementById("playBtn");
+    const playBtnText = document.getElementById("playBtnText");
+
+    let mouseOver = false;
+    let matchingTime = 0;
+    let timeText = "00:00";
+
+    playBtnText.innerHTML = timeText;
+    UI.interval = setInterval(() => {
+        matchingTime++;
+        const minute = Math.floor(matchingTime / 60);
+        const second = matchingTime % 60;
+        timeText = `${minute < 10 ? "0" + minute : minute}:${
+            second < 10 ? "0" + second : second
+        }`;
+        if (mouseOver) return;
+        playBtnText.innerHTML = timeText;
+    }, 1000);
+
+    playBtn.className = "btnMatching";
+    playBtn.onclick = () => {
+        cancelMatching();
+        playBtn.onclick = startMatching;
+    };
+    playBtn.onmouseover = () => {
+        mouseOver = true;
+        playBtnText.innerHTML = "Cancel Matching";
+    };
+    playBtn.onmouseout = () => {
+        mouseOver = false;
+        playBtnText.innerHTML = timeText;
+    };
+}
+
 function cancelMatching() {
     Socket.sendMsg("cancelMatching", "");
     clearInterval(UI.interval);
-}
 
-function injectUnitData() {
-    // TODO 시작할 때 모든 유닛 정보 어차피 필요
-    // 불러와서 Unit에 저장하기 ?
-    const poeir = document.getElementById("poeir");
+    const playBtn = document.getElementById("playBtn");
+    playBtn.className = "btnActive";
+    playBtn.onmouseover = null;
+    playBtn.onmouseout = null;
+    const playBtnText = document.getElementById("playBtnText");
+    playBtnText.innerHTML = "Match";
 }
