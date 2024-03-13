@@ -7,6 +7,21 @@ import THREE_CONSTS from "./constants/THREE_CONSTS.js";
 import { getBoardCoords } from "./utils.js";
 
 export default class Unit {
+    static async fetchData() {
+        await fetch("/api/cats")
+            .then((res) => res.json())
+            .then((data) => {
+                Unit.CATS = data;
+                return data;
+            });
+        await fetch("/api/creeps")
+            .then((res) => res.json())
+            .then((data) => {
+                Unit.CREEPS = data;
+                return data;
+            });
+    }
+
     static imageEls = {};
     static skillImageEls = {};
     constructor(data) {

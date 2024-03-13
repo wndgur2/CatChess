@@ -19,13 +19,6 @@ module.exports = (server) => {
                     sendMsg(ws, "resNewId", Player.getNewId());
                     break;
                 }
-                case "reqNewCard": {
-                    const newCard = SimpleCat.getRandomCatTypeExcept(
-                        data.cards
-                    );
-                    sendMsg(ws, "resNewCard", newCard);
-                    break;
-                }
                 case "startMatching": {
                     Game.startMatching(from, ws);
                     break;

@@ -18,7 +18,9 @@ export default class Socket {
 
         Socket.socket.onopen = function (event) {
             console.log("web socket connected.");
+
             UI.initCardOpener();
+
             if (!Socket.id) Socket.sendMsg("reqNewId", null);
             else {
                 readyToPlay();
@@ -36,10 +38,6 @@ export default class Socket {
                     Socket.id = data;
                     localStorage.setItem(CATCHESS_ID, data);
                     readyToPlay();
-                    break;
-                }
-                case "resNewCard": {
-                    UI.newCard(data);
                     break;
                 }
                 case "gameMatched": {
@@ -190,5 +188,7 @@ function readyToPlay() {
     document.getElementById("id").innerHTML = Socket.id;
     const playBtn = document.getElementById("playBtn");
     playBtn.className = "btnActive";
-    playBtn.innerHTML = "<span>Match</span>";
+
+    const playBtnText = document.getElementById("playBtnText");
+    playBtnText.innerHTML = "<span>Match</span>";
 }

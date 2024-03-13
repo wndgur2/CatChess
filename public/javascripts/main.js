@@ -1,6 +1,7 @@
 import Painter from "./modules/Painter.js";
 import Socket from "./modules/Socket.js";
 import UI from "./modules/UI.js";
+import Unit from "./modules/Unit.js";
 
 window.onload = () => {
     init();
@@ -8,6 +9,8 @@ window.onload = () => {
 
 function init() {
     Socket.init();
-    UI.init();
-    Painter.init();
+    Unit.fetchData().then(() => {
+        UI.init();
+        Painter.init();
+    });
 }
