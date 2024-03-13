@@ -39,7 +39,6 @@ class Game {
     }
 
     static cancelMatching(pid) {
-        console.log("cancelMatching", pid);
         let player = getPlayerById(pid);
         let i = Game.matchingPlayers.indexOf(player);
         if (player && i >= 0) Game.matchingPlayers.splice(i, 1);
