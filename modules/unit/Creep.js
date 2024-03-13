@@ -1,5 +1,5 @@
 const Unit = require("./Unit");
-const CREEPS = require("../constants/CREEPS.js");
+const CREEPS = require("../constants/creeps.json");
 
 class Creep extends Unit {
     static prototypes = CREEPS;

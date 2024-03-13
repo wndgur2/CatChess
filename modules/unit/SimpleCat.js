@@ -1,5 +1,5 @@
 const Unit = require("./Unit");
-const CATS = require("../constants/CATS");
+const CATS = require("../constants/cats.json");
 
 class SimpleCat extends Unit {
     static prototypes = CATS;
@@ -11,15 +11,6 @@ class SimpleCat extends Unit {
                 (cat) => cat.cost === cost
             );
         else candidates = Object.values(SimpleCat.prototypes);
-        return candidates[Math.floor(Math.random() * candidates.length)];
-    }
-
-    static getRandomCatTypeExcept(excetps) {
-        if (!excetps) return this.getRandomCatType();
-        let candidates = Object.values(SimpleCat.prototypes).filter(
-            (cat) => !excetps.includes(cat.id)
-        );
-        if (candidates.length === 0) return this.getRandomCatType();
         return candidates[Math.floor(Math.random() * candidates.length)];
     }
 
