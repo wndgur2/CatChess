@@ -22,6 +22,7 @@ export default class UI {
         document.onclick = (event) => {
             if (UI.muted) return;
             Sound.playClick();
+            Sound.playBgm();
         };
         document.getElementById("deck").onclick = (event) => {
             newMainCard();
@@ -42,8 +43,13 @@ export default class UI {
 
         document.getElementById("soundBtn").addEventListener("click", () => {
             let soundImg = document.getElementById("soundImg");
-            if (UI.muted) soundImg.setAttribute("src", "/images/home/note.png");
-            else soundImg.setAttribute("src", "/images/home/note2.png");
+            if (UI.muted) {
+                soundImg.setAttribute("src", "/images/home/note.png");
+                Sound.unMute();
+            } else {
+                soundImg.setAttribute("src", "/images/home/note2.png");
+                Sound.mute();
+            }
             UI.muted = !UI.muted;
         });
 
