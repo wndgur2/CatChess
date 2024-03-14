@@ -103,6 +103,19 @@
         "armor": 1,
         "range": 4
     },
+    "someCat": {
+        "id": "someCat",
+        "name": "Some Cat",
+        "synergies": ["Nature"],
+        "desc": "description of Some Cat.",
+        "cost": 3,
+        "skill": "roar",
+        "ad": 17,
+        "speed": 20,
+        "hp": 140,
+        "armor": 1,
+        "range": 4
+    },
     "catKing": {
         "id": "catKing",
         "name": "Cat King",

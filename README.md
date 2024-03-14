@@ -163,3 +163,16 @@ DONE
 TODO
 
 -   시작 시, 모든 유닛 desc 받아오기
+
+### 3.13
+
+DONE
+
+-   data fetching 단계 추가
+
+### 3.14
+
+TODO
+
+-   description에 Unit cards 추가
+-   Creep 설명 추가 (Other creatures?)

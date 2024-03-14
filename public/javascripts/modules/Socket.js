@@ -19,8 +19,6 @@ export default class Socket {
         Socket.socket.onopen = function (event) {
             console.log("web socket connected.");
 
-            UI.initCardOpener();
-
             if (!Socket.id) Socket.sendMsg("reqNewId", null);
             else {
                 readyToPlay();

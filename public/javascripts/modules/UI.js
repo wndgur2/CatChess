@@ -13,17 +13,18 @@ export default class UI {
     static muted = true;
 
     static init() {
-        this.newCard();
+        createUnitCards();
+
         this.hydrate();
     }
 
     static hydrate() {
         document.onclick = (event) => {
             if (UI.muted) return;
-            Sound.playBeep();
+            Sound.playClick();
         };
         document.getElementById("deck").onclick = (event) => {
-            this.newCard();
+            newMainCard();
         };
 
         document.getElementById("playBtn").onclick = startMatching;
@@ -40,13 +41,9 @@ export default class UI {
             });
 
         document.getElementById("soundBtn").addEventListener("click", () => {
-            let soundBtn = document.getElementById("soundBtn");
-            if (UI.muted)
-                soundBtn.innerHTML =
-                    "<img id='soundImg' src='/images/home/sound.png' />";
-            else
-                soundBtn.innerHTML =
-                    "<img id='soundImg' src='/images/home/mutedSound.png' />";
+            let soundImg = document.getElementById("soundImg");
+            if (UI.muted) soundImg.setAttribute("src", "/images/home/note.png");
+            else soundImg.setAttribute("src", "/images/home/note2.png");
             UI.muted = !UI.muted;
         });
 
@@ -221,74 +218,6 @@ export default class UI {
         document.getElementById("home").style.display = "inline-block";
         Painter.clear();
     }
-
-    static initCardOpener() {
-        // Socket.sendMsg("reqNewCard", "");
-    }
-
-    static newCard() {
-        const MAX_AMOUNT = 5;
-        const cards = document.getElementById("cards");
-        const currentCats = [...cards.children].map((card) => card.id);
-        const keys = Object.keys(Unit.CATS).filter(
-            (key) => !currentCats.includes(key)
-        );
-        if (keys.length > 0) {
-            if (cards.children.length > MAX_AMOUNT) {
-                const i = cards.children.length - MAX_AMOUNT;
-                cards.children[i].setAttribute(
-                    "style",
-                    "width: 0px; margin:0px; opacity: 0; pointer-events: none;"
-                );
-                setTimeout(() => {
-                    if (cards.children.length > MAX_AMOUNT)
-                        cards.removeChild(cards.children[1]);
-                }, 600);
-            }
-
-            const cat =
-                Unit.CATS[keys[Math.floor(Math.random() * keys.length)]];
-
-            let cardWrapper = document.createElement("div");
-            cardWrapper.className = "cardWrapper";
-            cardWrapper.id = cat.id;
-
-            let card = document.createElement("div");
-            card.className = "card";
-            cardWrapper.appendChild(card);
-
-            let cardImgWrapper = document.createElement("div");
-            cardImgWrapper.className = "cardImgWrapper";
-            card.appendChild(cardImgWrapper);
-
-            let cardImg = document.createElement("img");
-            cardImg.className = "cardImg";
-            cardImg.src = `/images/units/${cat.id}.jpg`;
-            cardImgWrapper.appendChild(cardImg);
-
-            let cardDescWrapper = document.createElement("div");
-            cardDescWrapper.className = "cardDescWrapper";
-
-            let cardDesc = document.createElement("span");
-            cardDesc.className = "cardDesc";
-            cardDesc.innerHTML = cat.desc;
-            cardDescWrapper.appendChild(cardDesc);
-
-            card.appendChild(cardDescWrapper);
-            cards.appendChild(cardWrapper);
-
-            setTimeout(() => {
-                cardWrapper.style.opacity = "1";
-                cardWrapper.style.width = "12dvw";
-                cardWrapper.onmouseover = (e) => {
-                    cardWrapper.style.width = "17.5dvw";
-                };
-                cardWrapper.onmouseout = (e) => {
-                    cardWrapper.style.width = "12dvw";
-                };
-            }, 20);
-        }
-    }
 }
 
 function inventoryDragStart(event) {
@@ -409,4 +338,110 @@ function cancelMatching() {
     playBtn.onmouseout = null;
     const playBtnText = document.getElementById("playBtnText");
     playBtnText.innerHTML = "Match";
+}
+
+function createUnitCards() {
+    newMainCard();
+    loadDescCards();
+}
+
+function newMainCard() {
+    const MAX_AMOUNT = 5;
+    const cards = document.getElementById("cards");
+    const currentCats = [...cards.children].map((card) => card.id);
+    const keys = Object.keys(Unit.CATS).filter(
+        (key) => !currentCats.includes(key)
+    );
+    if (keys.length > 0) {
+        if (cards.children.length > MAX_AMOUNT) {
+            const i = cards.children.length - MAX_AMOUNT;
+            cards.children[i].setAttribute(
+                "style",
+                "width: 0px; margin:0px; opacity: 0; pointer-events: none;"
+            );
+            setTimeout(() => {
+                if (cards.children.length > MAX_AMOUNT)
+                    cards.removeChild(cards.children[1]);
+            }, 600);
+        }
+
+        const cat = Unit.CATS[keys[Math.floor(Math.random() * keys.length)]];
+
+        let cardWrapper = document.createElement("div");
+        cardWrapper.className = "mainCardWrapper";
+        cardWrapper.id = cat.id;
+
+        let card = document.createElement("div");
+        card.className = "mainCard";
+        cardWrapper.appendChild(card);
+
+        let cardImgWrapper = document.createElement("div");
+        cardImgWrapper.className = "cardImgWrapper";
+        card.appendChild(cardImgWrapper);
+
+        let cardImg = document.createElement("img");
+        cardImg.className = "cardImg";
+        cardImg.src = `/images/units/${cat.id}.jpg`;
+        cardImgWrapper.appendChild(cardImg);
+
+        let cardDescWrapper = document.createElement("div");
+        cardDescWrapper.className = "cardDescWrapper";
+
+        let cardDesc = document.createElement("span");
+        cardDesc.className = "cardDesc";
+        cardDesc.innerHTML = cat.desc;
+        cardDescWrapper.appendChild(cardDesc);
+
+        card.appendChild(cardDescWrapper);
+        cards.appendChild(cardWrapper);
+
+        setTimeout(() => {
+            cardWrapper.style.opacity = "1";
+            cardWrapper.style.width = "12dvw";
+            cardWrapper.onmouseover = (e) => {
+                cardWrapper.style.width = "17.5dvw";
+            };
+            cardWrapper.onmouseout = (e) => {
+                cardWrapper.style.width = "12dvw";
+            };
+        }, 20);
+    }
+}
+
+function loadDescCards() {
+    console.log("loadDescCards");
+    ["Poeir", "Therme", "Nature"].forEach((synergy) => {
+        const cats = Object.values(Unit.CATS).filter((cat) =>
+            cat.synergies.includes(synergy)
+        );
+        cats.forEach((cat) => {
+            let cardWrapper = document.createElement("div");
+            cardWrapper.className = "cardWrapper";
+            cardWrapper.id = cat.id;
+
+            let card = document.createElement("div");
+            card.className = "card";
+            cardWrapper.appendChild(card);
+
+            let cardImgWrapper = document.createElement("div");
+            cardImgWrapper.className = "cardImgWrapper";
+            card.appendChild(cardImgWrapper);
+
+            let cardImg = document.createElement("img");
+            cardImg.className = "cardImg";
+            cardImg.src = `/images/units/${cat.id}.jpg`;
+            cardImgWrapper.appendChild(cardImg);
+
+            let cardDescWrapper = document.createElement("div");
+            cardDescWrapper.className = "cardDescWrapper";
+
+            let cardDesc = document.createElement("span");
+            cardDesc.className = "cardDesc";
+            cardDesc.innerHTML = cat.desc;
+            cardDescWrapper.appendChild(cardDesc);
+
+            card.appendChild(cardDescWrapper);
+            document.getElementById(synergy).appendChild(cardWrapper);
+        });
+    });
 }
