@@ -1,7 +1,8 @@
 export default class Sound {
-    static beep = new Audio("/audio/clog.mp3");
-    static playBeep() {
-        Sound.beep.currentTime = 0;
-        Sound.beep.play();
+    static click = new Audio("/audio/click.mp3");
+    static playClick() {
+        Sound.click.currentTime = 0;
+        this.click.volume = 0.5;
+        Sound.click.play();
     }
 }
