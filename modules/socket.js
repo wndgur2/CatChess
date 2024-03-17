@@ -8,7 +8,7 @@ module.exports = (server) => {
     const wss = new webSocket.Server({ server });
 
     wss.on("connection", (ws, req) => {
-        console.log("새로운 클라이언트 접속");
+        console.log("New client connected");
 
         ws.on("message", (message) => {
             let msg = JSON.parse(message);
@@ -68,8 +68,9 @@ module.exports = (server) => {
         ws.on("error", (error) => {
             console.error(error);
         });
+
         ws.on("close", () => {
-            console.log("클라이언트 접속 해제");
+            console.log("Client disconnected");
             const p = getPlayerByWs(ws);
             if (p) {
                 // removePlayer(p.id);

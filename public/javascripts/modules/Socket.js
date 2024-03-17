@@ -164,7 +164,8 @@ export default class Socket {
         };
 
         Socket.socket.onclose = function (event) {
-            console.log("웹 소켓 연결 해제");
+            console.log("Socket disconnected, attempting another shot...");
+            Socket.init();
         };
         Socket.socket.onerror = function (event) {
             console.error(event);

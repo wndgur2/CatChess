@@ -93,8 +93,8 @@
     align-items: center;
     opacity: 0;
     font-size: calc(8px + 1dvh);
-    transition: opacity 0.6s, width 0.6s, height 0.6s, font-size 0.6s,
-        box-shadow 0.6s, margin 0.6s;
+    transition: opacity 0.4s, width 0.4s, height 0.4s, font-size 0.4s,
+        box-shadow 0.4s, margin 0.4s;
 }
 
 .mainCardWrapper:hover {

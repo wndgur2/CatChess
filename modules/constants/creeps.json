@@ -2,6 +2,7 @@
     "crab": {
         "id": "crab",
         "name": "게",
+        "desc": "description of crab",
         "synergies": [],
         "cost": 1,
         "skill": "roar",
@@ -14,6 +15,7 @@
     "eel": {
         "id": "eel",
         "name": "뱀장어",
+        "desc": "description of eel",
         "synergies": [],
         "cost": 2,
         "skill": "roar",
@@ -26,6 +28,7 @@
     "frog": {
         "id": "frog",
         "name": "개구리",
+        "desc": "description of frog",
         "synergies": [],
         "cost": 1,
         "skill": "roar",
@@ -38,13 +41,14 @@
     "zara": {
         "id": "zara",
         "name": "자라",
+        "desc": "description of zara",
         "synergies": [],
         "cost": 1,
         "skill": "roar",
-        "ad": 48,
+        "ad": 60,
         "speed": 10,
-        "hp": 10000,
-        "armor": 10,
+        "hp": 12000,
+        "armor": 8,
         "range": 1
     }
 }

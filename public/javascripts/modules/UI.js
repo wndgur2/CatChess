@@ -368,7 +368,7 @@ function newMainCard() {
             setTimeout(() => {
                 if (cards.children.length > MAX_AMOUNT)
                     cards.removeChild(cards.children[1]);
-            }, 600);
+            }, 400);
         }
 
         const cat = Unit.CATS[keys[Math.floor(Math.random() * keys.length)]];
@@ -415,39 +415,47 @@ function newMainCard() {
 }
 
 function loadDescCards() {
-    console.log("loadDescCards");
     ["Poeir", "Therme", "Nature"].forEach((synergy) => {
         const cats = Object.values(Unit.CATS).filter((cat) =>
             cat.synergies.includes(synergy)
         );
         cats.forEach((cat) => {
-            let cardWrapper = document.createElement("div");
-            cardWrapper.className = "cardWrapper";
-            cardWrapper.id = cat.id;
-
-            let card = document.createElement("div");
-            card.className = "card";
-            cardWrapper.appendChild(card);
-
-            let cardImgWrapper = document.createElement("div");
-            cardImgWrapper.className = "cardImgWrapper";
-            card.appendChild(cardImgWrapper);
-
-            let cardImg = document.createElement("img");
-            cardImg.className = "cardImg";
-            cardImg.src = `/images/units/${cat.id}.jpg`;
-            cardImgWrapper.appendChild(cardImg);
-
-            let cardDescWrapper = document.createElement("div");
-            cardDescWrapper.className = "cardDescWrapper";
-
-            let cardDesc = document.createElement("span");
-            cardDesc.className = "cardDesc";
-            cardDesc.innerHTML = cat.desc;
-            cardDescWrapper.appendChild(cardDesc);
-
-            card.appendChild(cardDescWrapper);
-            document.getElementById(synergy).appendChild(cardWrapper);
+            document.getElementById(synergy).appendChild(newCard(cat));
         });
     });
+
+    const creeps = Unit.CREEPS;
+    for (const creep in creeps) {
+        document.getElementById("Creep").appendChild(newCard(creeps[creep]));
+    }
+}
+
+function newCard(cat) {
+    let cardWrapper = document.createElement("div");
+    cardWrapper.className = "cardWrapper";
+    cardWrapper.id = cat.id;
+
+    let card = document.createElement("div");
+    card.className = "card";
+    cardWrapper.appendChild(card);
+
+    let cardImgWrapper = document.createElement("div");
+    cardImgWrapper.className = "cardImgWrapper";
+    card.appendChild(cardImgWrapper);
+
+    let cardImg = document.createElement("img");
+    cardImg.className = "cardImg";
+    cardImg.src = `/images/units/${cat.id}.jpg`;
+    cardImgWrapper.appendChild(cardImg);
+
+    let cardDescWrapper = document.createElement("div");
+    cardDescWrapper.className = "cardDescWrapper";
+
+    let cardDesc = document.createElement("span");
+    cardDesc.className = "cardDesc";
+    cardDesc.innerHTML = cat.desc;
+    cardDescWrapper.appendChild(cardDesc);
+
+    card.appendChild(cardDescWrapper);
+    return cardWrapper;
 }
