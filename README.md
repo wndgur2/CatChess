@@ -1,4 +1,4 @@
-## 롤토체스 (Team Fight Tactics) 방식 웹 게임
+## 실시간 온라인 전략 웹 대전 게임
 
 ### Nodejs, Express, Three.js 사용
 
