@@ -53,7 +53,7 @@ export default class Unit {
 
         if (!Unit.imageEls[this.id]) {
             this.imageEl = document.createElement("img");
-            this.imageEl.src = `/images/units/${this.id}.jpg`;
+            this.imageEl.src = `/images/portraits/${this.id}.jpg`;
             this.imageEl.id = "unitImg";
             Unit.imageEls[this.id] = this.imageEl;
         } else this.imageEl = Unit.imageEls[this.id];

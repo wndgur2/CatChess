@@ -177,9 +177,9 @@ TODO
 -   description에 Unit cards 추가
 -   Creep 설명 추가 (Other creatures?)
 
-### 3.17
+### 3.18
 
 TODO
 
--
--
+-   unit design
+-   KOREAN

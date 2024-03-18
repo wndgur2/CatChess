@@ -71,9 +71,11 @@
     align-items: center;
     gap: 2%;
 }
+
 #unitSynergies .synergy {
     border: 2px solid #fff;
 }
+
 #unitSynergies .synergy span {
     display: none;
 }

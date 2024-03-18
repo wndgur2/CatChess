@@ -93,7 +93,7 @@ export default class Player {
             shopListEl[i].style.visibility = "visible";
             let shopImageWrapper =
                 shopListEl[i].getElementsByClassName("shopImageWrapper")[0];
-            shopImageWrapper.style.backgroundImage = `url(/images/units/${newShop[i].id}.jpg)`;
+            shopImageWrapper.style.backgroundImage = `url(/images/portraits/${newShop[i].id}.jpg)`;
 
             let cost = shopListEl[i].getElementsByClassName("shopUnitCost")[0];
             cost.innerHTML = newShop[i].cost;

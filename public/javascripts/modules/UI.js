@@ -387,11 +387,17 @@ function newMainCard() {
 
         let cardImg = document.createElement("img");
         cardImg.className = "cardImg";
-        cardImg.src = `/images/units/${cat.id}.jpg`;
+        cardImg.src = `/images/portraits/${cat.id}.jpg`;
         cardImgWrapper.appendChild(cardImg);
 
         let cardDescWrapper = document.createElement("div");
         cardDescWrapper.className = "cardDescWrapper";
+        cardDescWrapper.style.wordBreak = "break-all";
+
+        let cardName = document.createElement("span");
+        cardName.className = "cardName";
+        cardName.innerHTML = cat.name;
+        cardDescWrapper.appendChild(cardName);
 
         let cardDesc = document.createElement("span");
         cardDesc.className = "cardDesc";
@@ -420,7 +426,24 @@ function loadDescCards() {
             cat.synergies.includes(synergy)
         );
         cats.forEach((cat) => {
-            document.getElementById(synergy).appendChild(newCard(cat));
+            const cardWrapper = newCard(cat);
+            cardWrapper.onmouseenter = () => {
+                // show full body image on the right
+                const popUp = document.getElementById("unitPopUpWrapper");
+                popUp.style.display = "flex";
+                popUp.style.left = "50dvw";
+                popUp.style.top = "0dvh";
+                const popUpImage = document.getElementById("popUpImage");
+                popUpImage.setAttribute(
+                    "src",
+                    `/images/fullbody/${cat.id}.jpg`
+                );
+            };
+            cardWrapper.onmouseleave = () => {
+                const popUp = document.getElementById("unitPopUpWrapper");
+                popUp.style.display = "none";
+            };
+            document.getElementById(synergy).appendChild(cardWrapper);
         });
     });
 
@@ -445,11 +468,16 @@ function newCard(cat) {
 
     let cardImg = document.createElement("img");
     cardImg.className = "cardImg";
-    cardImg.src = `/images/units/${cat.id}.jpg`;
+    cardImg.src = `/images/portraits/${cat.id}.jpg`;
     cardImgWrapper.appendChild(cardImg);
 
     let cardDescWrapper = document.createElement("div");
     cardDescWrapper.className = "cardDescWrapper";
+
+    let cardName = document.createElement("span");
+    cardName.className = "cardName";
+    cardName.innerHTML = cat.name;
+    cardDescWrapper.appendChild(cardName);
 
     let cardDesc = document.createElement("span");
     cardDesc.className = "cardDesc";

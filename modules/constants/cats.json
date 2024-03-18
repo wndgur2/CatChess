@@ -116,11 +116,11 @@
         "armor": 1,
         "range": 4
     },
-    "catKing": {
-        "id": "catKing",
-        "name": "Cat King",
+    "lionheartClawson": {
+        "id": "lionheartClawson",
+        "name": "Lionheart Clawson",
         "synergies": ["Poeir"],
-        "desc": "description of Cat King.",
+        "desc": "A noble and courageous knight of the empire of Poeir.",
         "cost": 4,
         "skill": "roar",
         "ad": 30,

@@ -278,7 +278,7 @@ export default class Painter {
         //body
         if (!this.textures[unit.id]) {
             this.textures[unit.id] = this.textureLodaer.load(
-                `/images/units/${unit.id}.jpg`
+                `/images/portraits/${unit.id}.jpg`
             );
         }
         unit.mesh = new THREE.Group();
