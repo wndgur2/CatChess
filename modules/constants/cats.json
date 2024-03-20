@@ -25,11 +25,11 @@
         "armor": 1,
         "range": 1
     },
-    "arherCat": {
-        "id": "arherCat",
-        "name": "Arher Cat",
+    "ironcladCrusader": {
+        "id": "ironcladCrusader",
+        "name": "Ironclad Crusader",
         "synergies": ["Poeir"],
-        "desc": "description of Arher Cat.",
+        "desc": "Formidable warrior clad in impenetrable steel armor forged from the abundant resources of Poeir's foundries.",
         "cost": 1,
         "skill": "roar",
         "ad": 10,
