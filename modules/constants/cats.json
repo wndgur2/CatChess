@@ -1,9 +1,9 @@
 {
-    "wildCat": {
-        "id": "wildCat",
-        "name": "Wild Cat",
+    "stealthyStalker": {
+        "id": "stealthyStalker",
+        "name": "Stealthy Stalker",
         "synergies": ["Nature"],
-        "desc": "description of Wild Cat.",
+        "desc": "Expert hunter who utilize own natural camouflage and feline agility to track prey silently.",
         "cost": 1,
         "skill": "roar",
         "ad": 10,
@@ -64,11 +64,11 @@
         "armor": 3,
         "range": 1
     },
-    "longCat": {
-        "id": "longCat",
-        "name": "Long Cat",
+    "cosmos": {
+        "id": "cosmos",
+        "name": "Cosmos",
         "synergies": ["Nature"],
-        "desc": "description of Long Cat.",
+        "desc": "The revered shaman of the Nature tribe defending their kin with cosmic fury and celestial might.",
         "cost": 2,
         "skill": "roar",
         "ad": 10,
@@ -77,11 +77,11 @@
         "armor": 1,
         "range": 3
     },
-    "tankCat": {
-        "id": "tankCat",
-        "name": "Tank Cat",
+    "royalBellyRubber": {
+        "id": "royalBellyRubber",
+        "name": "Royal Belly Rubber",
         "synergies": ["Poeir"],
-        "desc": "description of Tank Cat.",
+        "desc": "Skilled masseurs trained in the art of giving luxurious belly rubs to the empire's noble cats.",
         "cost": 3,
         "skill": "roar",
         "ad": 15,
@@ -103,11 +103,11 @@
         "armor": 1,
         "range": 4
     },
-    "someCat": {
-        "id": "someCat",
-        "name": "Some Cat",
+    "dreamweaver": {
+        "id": "dreamweaver",
+        "name": "Dreamweaver",
         "synergies": ["Nature"],
-        "desc": "description of Some Cat.",
+        "desc": "Visionary artists who draw inspiration from the twinkling night sky",
         "cost": 3,
         "skill": "roar",
         "ad": 17,
@@ -129,11 +129,11 @@
         "armor": 10,
         "range": 1
     },
-    "unknownCat": {
-        "id": "unknownCat",
-        "name": "Unknown Cat",
+    "greatClaw": {
+        "id": "greatClaw",
+        "name": "Greatclaw",
         "synergies": ["Nature"],
-        "desc": "description of Unknown Cat.",
+        "desc": "Protector of sacred groves and ancient landmarks, sworn to defend the balance of nature.",
         "cost": 4,
         "skill": "roar",
         "ad": 25,

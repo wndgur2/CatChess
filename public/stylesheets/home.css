@@ -142,6 +142,7 @@
 
     color: #e1c573;
     text-align: center;
+    overflow: hidden;
 }
 
 .cardName {
@@ -346,7 +347,7 @@
 }
 
 .cardWrapper {
-    width: 12dvw;
+    width: 14dvw;
     aspect-ratio: 3/5;
     margin: 0px 4dvw 0px 0px;
     background-color: #1f1f33;
@@ -392,8 +393,8 @@
 #popUpForground {
     position: fixed;
     top: 0;
-    left: 50dvw;
-    width: 50dvw;
+    left: 70dvw;
+    width: 30dvw;
     height: 100dvh;
     background: linear-gradient(to right, #0000, #000a);
 }

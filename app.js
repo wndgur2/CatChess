@@ -10,3 +10,5 @@ app.get("/", (req, res, next) => res.render("index"));
 app.use("/api", router);
 
 module.exports = app;
+
+console.log("ENV: ", process.env.NODE_ENV);
