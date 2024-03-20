@@ -134,11 +134,9 @@
     height: 50%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
     align-items: center;
     background-color: #232330;
     border: 0.2dvh solid #807253;
-    overflow: scroll;
 
     color: #e1c573;
     text-align: center;
@@ -146,10 +144,11 @@
 }
 
 .cardName {
+    margin-top: 4%;
     /* font-size: calc(8px + 1.5dvh); */
 }
 .cardDesc {
-    padding: 2% 6% 8% 6%;
+    padding: 4% 6% 8% 6%;
 }
 
 #homePlaceholdLayer {

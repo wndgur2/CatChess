@@ -38,11 +38,11 @@
         "armor": 1,
         "range": 3
     },
-    "fatCat": {
-        "id": "fatCat",
-        "name": "Fat Cat",
+    "princeAurelius": {
+        "id": "princeAurelius",
+        "name": "Prince Aurelius",
         "synergies": ["Poeir"],
-        "desc": "description of Fat Cat.",
+        "desc": "A symbol of inspiration for the future of Poeir, a beacon of strength and resilience.",
         "cost": 2,
         "skill": "roar",
         "ad": 25,

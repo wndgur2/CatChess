@@ -434,11 +434,10 @@ function loadDescCards() {
                 popUp.style.left = "50dvw";
                 popUp.style.top = "0dvh";
                 const popUpImage = document.getElementById("popUpImage");
-
-                popUpImage.src = `/images/fullbody/${cat.id}.jpg`;
                 popUpImage.onerror = () => {
                     popUpImage.src = `/images/portraits/${cat.id}.jpg`;
                 };
+                popUpImage.src = `/images/fullbody/${cat.id}.jpg`;
             };
             cardWrapper.onmouseleave = () => {
                 const popUp = document.getElementById("unitPopUpWrapper");
