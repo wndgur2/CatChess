@@ -2,8 +2,8 @@
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 100vw;
-    height: 100vh;
+    width: 100dvw;
+    height: 100dvh;
     /* display: flex; */
     display: none;
     flex-direction: column;
@@ -111,12 +111,12 @@
 }
 
 #damage {
+    z-index: 2;
     position: absolute;
     top: 0;
     left: 0;
-    width: 30dvw;
-    height: 40dvh;
-    background-color: #212121aa;
+    width: 32dvw;
+    height: 32dvh;
 }
 
 #inventoryWrapper {
@@ -437,4 +437,35 @@
 
 .shopSynergies .synergy span {
     visibility: hidden;
+}
+
+#popUp {
+    position: absolute;
+    padding: 1%;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #1f1f33;
+    z-index: 100;
+    pointer-events: none;
+    color: #fff;
+}
+
+#tutorial {
+    position: absolute;
+    top: 100dvh;
+    left: 0px;
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    color: #fff;
+    font-size: 2.5dvh;
+    padding: 2dvh;
+    text-align: center;
+    z-index: 1;
 }

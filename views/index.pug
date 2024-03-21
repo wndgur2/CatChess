@@ -62,16 +62,9 @@ block content
           img#popUpImage
           #popUpForground
         #loading
-          span#loadingText Fetching Data.
-      #footer
-        #client
-          span#id.timesFont unknown
-          button#soundBtn
-            img#soundImg(src="images/home/note2.png" alt="sound")
-        #app
-          span.timesFont v0.2.1
-          a(href = "https://github.com/wndgur2") @wndgur2
+          span#loadingText Fetching Data...
     #game
+      #popUp
       #timerWrapper
         span#timer 0
         #timerAccentBar
@@ -201,8 +194,34 @@ block content
               .item#0
               .item#1
               .item#2
+      #tutorial
+        span 고양이를 매수해 적 고양이를 모두 파괴하세요.
+        br
+        span F를 눌러 경험치를 구매하세요. (4마리의 쥐가 필요합니다.)
+        br
+        span 높은 레벨은 더 많은 고양이를 출전시킬 수 있으며, 더 강한 고양이를 구매할 수 있습니다.
+        br
+        span D를 눌러 상점을 초기화하세요. (2마리의 쥐가 필요합니다.)
+        br
+        span 같은 고양이를 3마리 보유하면, 한 단계 높은 고양이가 나타납니다.
+        br
+        span Creep을 처치하면, 아이템을 획득합니다.
+        br
+        span 아이템을 고양이에 드래그하여 장착하세요.
+        br
+        span 고양이를 클릭하여 스탯과 스킬을 확인하세요.
+        br
+        span 고양이 시너지를 모아 출전한 고양이들을 강화하세요.
+
+    #footer
+      #client
+        span#id.timesFont unknown
+        button#soundBtn
+          img#soundImg(src="images/home/note2.png" alt="sound")
+      #app
+        span.timesFont v0.2.1
+        a(href = "https://github.com/wndgur2") @wndgur2
   #hid
-    #popUp
     #modal
       #modalBackdrop
       #modalContent

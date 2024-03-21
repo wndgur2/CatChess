@@ -33,12 +33,8 @@ export default class UI {
         document
             .getElementById("fullscreenBtn")
             .addEventListener("click", () => {
-                let elem = document.documentElement;
-                if (document.fullscreenElement) {
-                    document.exitFullscreen();
-                } else {
-                    elem.requestFullscreen();
-                }
+                const el = document.documentElement;
+                fullscreen(el);
             });
 
         document.getElementById("soundBtn").addEventListener("click", () => {
@@ -215,11 +211,13 @@ export default class UI {
         UI.closeModal();
         document.getElementById("home").style.display = "none";
         document.getElementById("game").style.display = "flex";
+        fullscreen(document.getElementById("game"));
 
         Painter.startRendering();
     }
 
     static gameEnd() {
+        cancelMatching();
         document.getElementById("game").style.display = "none";
         document.getElementById("home").style.display = "inline-block";
         Painter.clear();
@@ -486,4 +484,9 @@ function newCard(cat) {
 
     card.appendChild(cardDescWrapper);
     return cardWrapper;
+}
+
+function fullscreen(el) {
+    if (document.fullscreenElement) document.exitFullscreen();
+    else el.requestFullscreen();
 }

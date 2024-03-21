@@ -202,8 +202,10 @@ TO LEARN in free time
 TODO
 
 -   Threme Units << spellai coin 쌓이면
--   Unit design (details)
+-   Unit detail design
 
 DONE
 
 -   Source fetch loading
+-   인게임 UI 개선
+-   게임 배경 개선
