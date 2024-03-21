@@ -34,7 +34,7 @@ async function fetchImages() {
             console.log("loaded", ++count);
             document.querySelector(
                 "#loadingText"
-            ).innerHTML = `Data Fetching. ${count}/${data.length}`;
+            ).innerHTML = `Fetching Data. ${count}/${data.length}`;
         };
     });
 }
