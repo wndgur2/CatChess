@@ -183,3 +183,27 @@ TODO
 
 -   unit design
 -   KOREAN
+
+### 3.20
+
+TODO
+
+-   Source fetch loading
+-   Therme Units
+-   Item
+-   Skill
+
+### 3.21
+
+TO LEARN in free time
+
+-   js document
+
+TODO
+
+-   Threme Units << spellai coin 쌓이면
+-   Unit design (details)
+
+DONE
+
+-   Source fetch loading

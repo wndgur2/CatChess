@@ -1,7 +1,7 @@
 {
     "crab": {
         "id": "crab",
-        "name": "게",
+        "name": "Crab",
         "desc": "description of crab",
         "synergies": [],
         "cost": 1,
@@ -14,7 +14,7 @@
     },
     "eel": {
         "id": "eel",
-        "name": "뱀장어",
+        "name": "Eel",
         "desc": "description of eel",
         "synergies": [],
         "cost": 2,
@@ -27,7 +27,7 @@
     },
     "frog": {
         "id": "frog",
-        "name": "개구리",
+        "name": "Frog",
         "desc": "description of frog",
         "synergies": [],
         "cost": 1,
@@ -40,7 +40,7 @@
     },
     "zara": {
         "id": "zara",
-        "name": "자라",
+        "name": "Terrapin",
         "desc": "description of zara",
         "synergies": [],
         "cost": 1,

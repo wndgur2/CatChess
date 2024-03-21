@@ -20,13 +20,13 @@ const ITEMS = {
         desc: "단단해 보이는 투구",
         armor: 4,
     },
-    recurveBow: {
-        id: "recurveBow",
-        name: "Recurve Bow",
-        img: "🏹",
-        desc: "견고해 보이는 활",
-        range: 1,
-    },
+    // recurveBow: {
+    //     id: "recurveBow",
+    //     name: "Recurve Bow",
+    //     img: "🏹",
+    //     desc: "견고해 보이는 활",
+    //     range: 1,
+    // },
     boots: {
         id: "boots",
         name: "Boots",

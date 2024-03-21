@@ -11,13 +11,12 @@ export default class Socket {
     static id = localStorage.getItem(CATCHESS_ID);
 
     static init() {
-        // Socket.socket = new WebSocket("ws://localhost:8080");
-        Socket.socket = new WebSocket(
-            "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080"
-        );
+        const url = "ws://localhost:8080";
+        // const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
+        Socket.socket = new WebSocket(url);
 
         Socket.socket.onopen = function (event) {
-            console.log("web socket connected.");
+            console.log(`web socket connected to ${url}.`);
 
             if (!Socket.id) Socket.sendMsg("reqNewId", null);
             else {

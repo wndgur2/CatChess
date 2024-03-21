@@ -20,7 +20,6 @@ block content
               span#playBtnText Waiting for connection...
           div
             button#fullscreenBtn
-              //- img(src="images/home/fullscreen.png" alt="fullscreen" width="24" height="24")
         #homeAccentBar
       #triangle
       #homeContentWrapper
@@ -57,18 +56,20 @@ block content
           .country
             h2.countryName Others
             .countryDescWrapper
-              span.countryDesc Description of Others
+              span.countryDesc Creatures that are not with cats.
             #Creep.units
         #unitPopUpWrapper 
           img#popUpImage
           #popUpForground
+        #loading
+          span#loadingText Fetching Data.
       #footer
         #client
           span#id.timesFont unknown
           button#soundBtn
             img#soundImg(src="images/home/note2.png" alt="sound")
         #app
-          span.timesFont v0.1.9
+          span.timesFont v0.2.1
           a(href = "https://github.com/wndgur2") @wndgur2
     #game
       #timerWrapper

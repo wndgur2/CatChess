@@ -404,6 +404,21 @@
     object-fit: contain;
 }
 
+#loading {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #00000088;
+    z-index: 1;
+    color: #fff;
+    font-size: larger;
+}
+
 #footer {
     position: fixed;
     left: 2dvw;
