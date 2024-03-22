@@ -219,6 +219,7 @@ TODO
 -   세계관 작성
 -   DB 연결
 
+-   MP bar
 -   KOREAN
 -   Push alarm
 -   intersection observer
