@@ -73,8 +73,10 @@ module.exports = (server) => {
             console.log("Client disconnected");
             const p = getPlayerByWs(ws);
             if (p) {
-                // removePlayer(p.id);
-                if (Game.matchingPlayers.includes(p)) Game.cancelMatching(p.id);
+                if (Game.matchingPlayers.includes(p)) {
+                    Game.cancelMatching(p.id);
+                    console.log("Matching canceled", Game.matchingPlayers);
+                }
             }
         });
     });

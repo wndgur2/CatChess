@@ -38,11 +38,11 @@
         "armor": 1,
         "range": 3
     },
-    "princeAurelius": {
-        "id": "princeAurelius",
-        "name": "Prince Aurelius",
+    "padoPoe": {
+        "id": "padoPoe",
+        "name": "Pado Poe",
         "synergies": ["Poeir"],
-        "desc": "A symbol of inspiration for the future of Poeir, a beacon of strength and resilience.",
+        "desc": "221th child of the king of the Poeir, who started the second great war against the Therme empire.",
         "cost": 2,
         "skill": "roar",
         "ad": 25,

@@ -1,5 +1,7 @@
 ## 실시간 온라인 전략 웹 대전 게임
 
+http://catchess.ap-northeast-2.elasticbeanstalk.com/
+
 ### Nodejs, Express, Three.js 사용
 
 ## 기록
@@ -208,4 +210,19 @@ DONE
 
 -   Source fetch loading
 -   인게임 UI 개선
--   게임 배경 개선
+-   게임 튜토리얼 작성
+
+### 3.22
+
+TODO
+
+-   KOREAN
+-   세계관 작성
+-   Push alarm
+-   DB 연결
+-   intersection observer
+-   beacon
+
+DONE
+
+-   세계관 개요, Pado 도입부 작성

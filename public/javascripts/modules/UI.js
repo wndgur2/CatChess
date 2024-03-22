@@ -19,6 +19,11 @@ export default class UI {
     }
 
     static hydrate() {
+        document.addEventListener("visibilitychange", () => {
+            if (document.hidden) console.log("hidden");
+            else console.log("visible");
+        });
+
         document.onclick = (event) => {
             if (UI.muted) return;
             Sound.playClick();
@@ -369,40 +374,9 @@ function newMainCard() {
             }, 400);
         }
 
+        //TODO: Duplicated code
         const cat = Unit.CATS[keys[Math.floor(Math.random() * keys.length)]];
-
-        let cardWrapper = document.createElement("div");
-        cardWrapper.className = "mainCardWrapper";
-        cardWrapper.id = cat.id;
-
-        let card = document.createElement("div");
-        card.className = "mainCard";
-        cardWrapper.appendChild(card);
-
-        let cardImgWrapper = document.createElement("div");
-        cardImgWrapper.className = "cardImgWrapper";
-        card.appendChild(cardImgWrapper);
-
-        let cardImg = document.createElement("img");
-        cardImg.className = "cardImg";
-        cardImg.src = `/images/portraits/${cat.id}.jpg`;
-        cardImgWrapper.appendChild(cardImg);
-
-        let cardDescWrapper = document.createElement("div");
-        cardDescWrapper.className = "cardDescWrapper";
-        cardDescWrapper.style.wordBreak = "break-all";
-
-        let cardName = document.createElement("span");
-        cardName.className = "cardName";
-        cardName.innerHTML = cat.name;
-        cardDescWrapper.appendChild(cardName);
-
-        let cardDesc = document.createElement("span");
-        cardDesc.className = "cardDesc";
-        cardDesc.innerHTML = cat.desc;
-        cardDescWrapper.appendChild(cardDesc);
-
-        card.appendChild(cardDescWrapper);
+        const cardWrapper = newCard("main", cat);
         cards.appendChild(cardWrapper);
 
         setTimeout(() => {
@@ -424,7 +398,7 @@ function loadDescCards() {
             cat.synergies.includes(synergy)
         );
         cats.forEach((cat) => {
-            const cardWrapper = newCard(cat);
+            const cardWrapper = newCard("desc", cat);
             cardWrapper.onmouseenter = () => {
                 // show full body image on the right
                 const popUp = document.getElementById("unitPopUpWrapper");
@@ -447,17 +421,18 @@ function loadDescCards() {
 
     const creeps = Unit.CREEPS;
     for (const creep in creeps) {
-        document.getElementById("Creep").appendChild(newCard(creeps[creep]));
+        document
+            .getElementById("Creep")
+            .appendChild(newCard("desc", creeps[creep]));
     }
 }
 
-function newCard(cat) {
+function newCard(type, cat) {
     let cardWrapper = document.createElement("div");
-    cardWrapper.className = "cardWrapper";
-    cardWrapper.id = cat.id;
+    cardWrapper.className = type == "main" ? "mainCardWrapper" : "cardWrapper";
 
     let card = document.createElement("div");
-    card.className = "card";
+    card.className = type == "main" ? "mainCard" : "card";
     cardWrapper.appendChild(card);
 
     let cardImgWrapper = document.createElement("div");
@@ -471,6 +446,7 @@ function newCard(cat) {
 
     let cardDescWrapper = document.createElement("div");
     cardDescWrapper.className = "cardDescWrapper";
+    cardDescWrapper.style.wordBreak = "break-all";
 
     let cardName = document.createElement("span");
     cardName.className = "cardName";
@@ -483,6 +459,7 @@ function newCard(cat) {
     cardDescWrapper.appendChild(cardDesc);
 
     card.appendChild(cardDescWrapper);
+
     return cardWrapper;
 }
 
