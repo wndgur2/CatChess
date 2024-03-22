@@ -216,10 +216,11 @@ DONE
 
 TODO
 
--   KOREAN
 -   세계관 작성
--   Push alarm
 -   DB 연결
+
+-   KOREAN
+-   Push alarm
 -   intersection observer
 -   beacon
 

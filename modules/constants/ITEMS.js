@@ -3,7 +3,7 @@ const ITEMS = {
         id: "longSword",
         name: "Long Sword",
         img: "🗡️",
-        desc: "강력해 보이는 검",
+        desc: "무거워 보이는 검",
         ad: 5,
     },
     rubyCrystal: {
@@ -17,7 +17,7 @@ const ITEMS = {
         id: "helmet",
         name: "Helmet",
         img: "🪖",
-        desc: "단단해 보이는 투구",
+        desc: "반짝이는 투구",
         armor: 4,
     },
     // recurveBow: {
@@ -31,7 +31,7 @@ const ITEMS = {
         id: "boots",
         name: "Boots",
         img: "👢",
-        desc: "질겨 보이는 장화",
+        desc: "낡아 보이는 장화",
         speed: 3,
     },
 };

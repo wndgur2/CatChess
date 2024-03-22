@@ -31,6 +31,7 @@ class Game {
         Game.matchingPlayers.push(player);
         if (Game.matchingPlayers.length === PLAYER_NUM) {
             Game.matchingPlayers.forEach((player) => {
+                //TODO no need
                 sendMsg(player.ws, "areYouReady", {});
             });
 
@@ -74,7 +75,7 @@ class Game {
         });
         this.round = 1;
         this.stage = 0;
-        this.arrangeState();
+
         this.timer = setInterval(() => {
             if (this.time <= 0) return;
             this.time = this.time - 1;
@@ -82,6 +83,12 @@ class Game {
                 time: this.time,
             });
         }, 1000);
+
+        try {
+            this.arrangeState();
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     sendGameData(from) {
