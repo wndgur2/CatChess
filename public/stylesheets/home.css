@@ -15,17 +15,79 @@
     border-bottom: none;
 }
 
-#logoWrapper {
+#homeTopLayer {
     width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
 }
 
 #logo {
     padding: 4dvh;
     width: 13dvw;
     height: auto;
+}
+
+#signinWrapper {
+    height: 8dvh;
+    width: 19dvw;
+    margin-right: 4dvh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#signinInputs {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#signinInputs > input {
+    width: 12dvw;
+    height: 42%;
+
+    background-color: #232330;
+    border: 0.1dvh solid #807253;
+    color: #cebb82;
+}
+
+#signinInputs > input::placeholder {
+    color: #807253;
+    font-size: small;
+}
+#signinInputs > input:focus {
+    background-color: #1f1f33;
+    border: 0.1dvh solid #dac378;
+    outline: none;
+}
+#signinInputs > input:hover {
+    background-color: #1f1f33;
+    border: 0.1dvh solid #dac378;
+}
+
+#signinBtnWrapper {
+    height: 100%;
+    width: 6dvw;
+
+    display: flex;
+    justify-content: center;
+
+    background-color: #1f1f33;
+    border: 0.1dvh solid #dac378;
+}
+
+#signinBtn {
+    height: 100%;
+    color: #cebb82;
+}
+
+#signinBtn:focus {
+    outline: none;
 }
 
 #deck {
@@ -303,7 +365,7 @@
     gap: 6dvh;
 
     border: 0.2dvh solid #e1c573;
-    box-shadow: 0px 0px 4px 4px #00000044;
+    box-shadow: 0px 0px 2px 2px #00000044;
 
     transition: width 0.2s, background-color 0.2s, border 0.2s, box-shadow 0.2s;
     color: #e1c573;
@@ -313,15 +375,15 @@
     width: 90%;
     background-color: #1f1f33;
     border: 0.3dvh solid #e1c573;
-    box-shadow: 0px 0px 6px 6px #00000066;
+    box-shadow: 0px 0px 4px 4px #00000066;
 }
 
 .countryName {
-    margin: 0px 0px 0px 1dvw;
+    margin: 0px 0px 0px 0.5dvw;
     font-size: calc(22px + 2.6dvh);
     font-weight: 400;
     letter-spacing: 2px;
-    text-shadow: 2px 2px 2px #000000ff;
+    text-shadow: 2px 2px 3px #000000ff;
 }
 
 .countryImgWrapper {
