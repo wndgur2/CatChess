@@ -29,6 +29,33 @@ export default class UI {
             Sound.playClick();
             Sound.playBgm();
         };
+
+        document.querySelector("#signinBtn").onclick = () => {
+            const id = document.querySelector("#id").value;
+            const pw = document.querySelector("#pw").value;
+            window.crypto.subtle
+                .generateKey(
+                    {
+                        name: "AES-GCM",
+                        length: 256,
+                    },
+                    true,
+                    ["encrypt", "decrypt"]
+                )
+                .then((keyPair) => {
+                    console.log(keyPair);
+                });
+        };
+
+        document.querySelector("#id").onkeypress = (event) => {
+            if (event.key === "Enter") document.querySelector("#pw").focus();
+        };
+
+        document.querySelector("#pw").onkeypress = (event) => {
+            if (event.key === "Enter")
+                document.querySelector("#signinBtn").click();
+        };
+
         document.getElementById("deck").onclick = (event) => {
             newMainCard();
         };

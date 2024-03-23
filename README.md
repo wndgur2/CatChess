@@ -234,3 +234,13 @@ NOTE
 -   시간에 쫓기는 게 좀.
 
 ### 3.23
+
+encryption
+https route5s DNS
+window.crypto.subtle
+AES symmetric, RSA asymmetric
+
+로그인 안전에 대한 내용
+client-암호화 -> server-복호화/해싱 -> db
+
+Cat editor : 정형화된 변수들로 만드는 cat img/render
