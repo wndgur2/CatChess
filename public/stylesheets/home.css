@@ -294,9 +294,13 @@
 }
 
 .country {
-    width: 92%;
-    padding: 3%;
+    width: 88%;
+    padding: 4%;
     margin-top: 8dvh;
+
+    display: flex;
+    flex-direction: column;
+    gap: 6dvh;
 
     border: 0.2dvh solid #e1c573;
     box-shadow: 0px 0px 4px 4px #00000044;
@@ -306,19 +310,23 @@
 }
 
 .country:hover {
-    width: 94%;
+    width: 90%;
     background-color: #1f1f33;
     border: 0.3dvh solid #e1c573;
     box-shadow: 0px 0px 6px 6px #00000066;
 }
 
 .countryName {
-    margin: 0px 0px 2dvh 0px;
+    margin: 0px 0px 0px 1dvw;
+    font-size: calc(22px + 2.6dvh);
+    font-weight: 400;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 2px #000000ff;
 }
 
 .countryImgWrapper {
-    width: 12dvw;
-    height: 12dvw;
+    width: 14dvw;
+    height: 14dvw;
 
     border: 0.2dvh solid #807253;
 }
@@ -337,6 +345,7 @@
 .countryDesc {
     width: 80%;
     font-size: large;
+    font-weight: 300;
 }
 
 .units {
@@ -377,10 +386,14 @@
     left: 50dvw;
     width: 50dvw;
     height: 100dvh;
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
     pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+
+    transition: opacity 0.2s;
 }
 
 #popUpImage {

@@ -19,9 +19,7 @@ export default class Socket {
             console.log(`web socket connected to ${url}.`);
 
             if (!Socket.id) Socket.sendMsg("reqNewId", null);
-            else {
-                readyToPlay();
-            }
+            else readyToPlay();
         };
 
         Socket.socket.onmessage = function (event) {

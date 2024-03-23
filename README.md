@@ -217,7 +217,6 @@ DONE
 TODO
 
 -   세계관 작성
--   DB 연결
 
 -   MP bar
 -   KOREAN
@@ -228,7 +227,10 @@ TODO
 DONE
 
 -   세계관 개요, Pado 도입부 작성
+-   DB 연결
 
 NOTE
 
 -   시간에 쫓기는 게 좀.
+
+### 3.23

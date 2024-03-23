@@ -374,7 +374,6 @@ function newMainCard() {
             }, 400);
         }
 
-        //TODO: Duplicated code
         const cat = Unit.CATS[keys[Math.floor(Math.random() * keys.length)]];
         const cardWrapper = newCard("main", cat);
         cards.appendChild(cardWrapper);
@@ -393,6 +392,7 @@ function newMainCard() {
 }
 
 function loadDescCards() {
+    var timeout;
     ["Poeir", "Therme", "Nature"].forEach((synergy) => {
         const cats = Object.values(Unit.CATS).filter((cat) =>
             cat.synergies.includes(synergy)
@@ -400,11 +400,11 @@ function loadDescCards() {
         cats.forEach((cat) => {
             const cardWrapper = newCard("desc", cat);
             cardWrapper.onmouseenter = () => {
+                if (timeout) clearTimeout(timeout);
                 // show full body image on the right
                 const popUp = document.getElementById("unitPopUpWrapper");
-                popUp.style.display = "flex";
-                popUp.style.left = "50dvw";
-                popUp.style.top = "0dvh";
+                popUp.style.visibility = "visible";
+                popUp.style.opacity = "1";
                 const popUpImage = document.getElementById("popUpImage");
                 popUpImage.onerror = () => {
                     popUpImage.src = `/images/portraits/${cat.id}.jpg`;
@@ -413,7 +413,10 @@ function loadDescCards() {
             };
             cardWrapper.onmouseleave = () => {
                 const popUp = document.getElementById("unitPopUpWrapper");
-                popUp.style.display = "none";
+                popUp.style.opacity = "0";
+                timeout = setTimeout(() => {
+                    popUp.style.visibility = "hidden";
+                }, 200);
             };
             document.getElementById(synergy).appendChild(cardWrapper);
         });
@@ -429,6 +432,7 @@ function loadDescCards() {
 
 function newCard(type, cat) {
     let cardWrapper = document.createElement("div");
+    cardWrapper.id = cat.id;
     cardWrapper.className = type == "main" ? "mainCardWrapper" : "cardWrapper";
 
     let card = document.createElement("div");
