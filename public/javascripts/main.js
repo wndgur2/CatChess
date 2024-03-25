@@ -31,7 +31,6 @@ async function fetchImages() {
         const img = new Image();
         img.src = `/images/portraits/${key}.jpg`;
         img.onload = () => {
-            console.log("loaded", ++count);
             document.querySelector(
                 "#loadingText"
             ).innerHTML = `Fetching Data... ${count}/${data.length}`;

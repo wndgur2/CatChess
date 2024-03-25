@@ -29,14 +29,8 @@ class Game {
         }
 
         Game.matchingPlayers.push(player);
-        if (Game.matchingPlayers.length === PLAYER_NUM) {
-            Game.matchingPlayers.forEach((player) => {
-                //TODO no need
-                sendMsg(player.ws, "areYouReady", {});
-            });
-
+        if (Game.matchingPlayers.length === PLAYER_NUM)
             new Game(Game.matchingPlayers.splice(0, PLAYER_NUM));
-        }
     }
 
     static cancelMatching(pid) {

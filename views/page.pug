@@ -8,12 +8,19 @@ block content
       #homeMain
         #homeTopLayer
           img#logo(src="images/home/logo.png" alt="logo")
-          #signinWrapper
-            #signinInputs
-              input#id(type="text" placeholder="id" autocomplete="off")
-              input#pw(type="password" placeholder="password")
-            #signinBtnWrapper
-              button#signinBtn Sign in
+          #placeholder
+          #placeholder
+          #placeholder
+          #userInfoWrapper
+            span#userName
+            br
+            span#record record: 
+            br
+            span#winRate 
+          #signinBtnWrapper
+            a#signinBtn(href="/auth/google") Sign In with Google
+              img#googleLogo(src="images/home/google.png" alt="google")
+            button#signoutBtn Sign Out
         #cardOpenerLayer
           #cardOpenerWrapper
             #cards
