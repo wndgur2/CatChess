@@ -1,5 +1,6 @@
 export default class User {
     static getData(key) {
+// TODO
         if (!getCookie(key)) this.signOut();
         return getCookie(key);
     }
