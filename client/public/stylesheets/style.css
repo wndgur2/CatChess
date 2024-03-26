@@ -3,6 +3,7 @@ body {
     margin: 0px;
     overflow-x: hidden;
     background-color: #27273a;
+    color: #dac378;
 }
 img {
     pointer-events: none;

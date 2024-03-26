@@ -48,9 +48,5 @@ function isPlayableDevice() {
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
             navigator.userAgent
         );
-    if (isMobile) {
-        alert("Mobile devices are not supported.");
-        return false;
-    }
-    return true;
+    return !isMobile;
 }

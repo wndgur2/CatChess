@@ -216,8 +216,6 @@
     align-items: center;
     background-color: #232330;
     border: 0.2dvh solid #807253;
-
-    color: #e1c573;
     text-align: center;
     overflow: hidden;
 }
@@ -351,7 +349,6 @@
     box-shadow: 0px 0px 2px 2px #00000044;
 
     transition: width 0.2s, background-color 0.2s, border 0.2s, box-shadow 0.2s;
-    color: #e1c573;
 }
 
 .country:hover {
@@ -363,7 +360,7 @@
 
 .countryName {
     margin: 0px 0px 0px 0.5dvw;
-    font-size: calc(22px + 2.6dvh);
+    font-size: calc(12px + 1.5dvh + 1.5dvw);
     font-weight: 400;
     letter-spacing: 2px;
     text-shadow: 2px 2px 3px #000000ff;

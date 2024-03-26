@@ -95,21 +95,20 @@ export default class Player {
                 shopListEl[i].getElementsByClassName("shopImageWrapper")[0];
             shopImageWrapper.style.backgroundImage = `url(/images/portraits/${newShop[i].id}.jpg)`;
 
-            let cost = shopListEl[i].getElementsByClassName("shopUnitCost")[0];
-            cost.innerHTML = newShop[i].cost;
-
             let name = shopListEl[i].getElementsByClassName("shopUnitName")[0];
             name.innerHTML = newShop[i].name;
             name.style.color = COST_COLORS[newShop[i].cost];
+
+            let cost = shopListEl[i].getElementsByClassName("shopUnitCost")[0];
+            cost.innerHTML = newShop[i].cost;
 
             let synergiesEl =
                 shopListEl[i].getElementsByClassName("shopSynergies")[0];
 
             synergiesEl.innerHTML = "";
 
-            for (let synergy of newShop[i].synergies) {
+            for (let synergy of newShop[i].synergies)
                 synergiesEl.appendChild(Synergy.getSynergy(synergy).display());
-            }
         }
     }
 
