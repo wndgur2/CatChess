@@ -262,3 +262,5 @@ TOOD
 DONE
 
 -   디렉토리 구조 변경
+-   packaging for AWS 자동화
+-   0.2.4 배포
