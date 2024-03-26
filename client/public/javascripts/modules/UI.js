@@ -328,7 +328,7 @@ function startMatching() {
         playBtnText.innerHTML = timeText;
     }, 1000);
 
-    playBtn.className = "btnMatching";
+    playBtn.className = "btnMatching btn";
     playBtn.onclick = () => {
         cancelMatching();
         playBtn.onclick = startMatching;
@@ -348,7 +348,7 @@ function cancelMatching() {
     clearInterval(UI.interval);
 
     const playBtn = document.getElementById("playBtn");
-    playBtn.className = "btnActive";
+    playBtn.className = `btnActive btn`;
     playBtn.onmouseover = null;
     playBtn.onmouseout = null;
     const playBtnText = document.getElementById("playBtnText");
@@ -388,7 +388,7 @@ function newMainCard() {
             cardWrapper.style.opacity = "1";
             cardWrapper.style.width = "12dvw";
             cardWrapper.onmouseover = (e) => {
-                cardWrapper.style.width = "17.5dvw";
+                cardWrapper.style.width = "14dvw";
             };
             cardWrapper.onmouseout = (e) => {
                 cardWrapper.style.width = "12dvw";

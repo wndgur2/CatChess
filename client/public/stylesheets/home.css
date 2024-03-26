@@ -36,7 +36,24 @@
 
 #userInfoWrapper {
     display: none;
-    color: #e1c573;
+    color: #dac378;
+}
+
+.btn {
+    color: #dac378;
+    border: 0.2dvh solid #dac378;
+    box-shadow: 1px 1px 2px 2px #00000044;
+    background-color: #26263f;
+}
+
+.btn:hover {
+    box-shadow: 0px 0px 3px 3px #ffffff08;
+    filter: brightness(1.1);
+}
+
+.btn:active {
+    box-shadow: inset 0px 0px 4px 2px #00000088, 0px 0px 4px 4px #ffffff08;
+    filter: brightness(0.8);
 }
 
 #signinBtnWrapper {
@@ -45,9 +62,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background-color: #1f1f33;
-    border: 0.2dvh solid #dac378;
 }
 
 #signinBtnWrapper button,
@@ -62,7 +76,6 @@
     align-items: center;
     gap: 4%;
 
-    color: #cebb82;
     font-size: large;
     text-decoration: none;
     text-align: center;
@@ -105,8 +118,8 @@
 }
 
 #deck:hover {
-    border: 0.2dvh solid #f7e5ab;
-    box-shadow: 0px 0px 4px 8px #4441;
+    border: 0.2dvh solid #f1dfa4;
+    box-shadow: 0px 0px 6px 6px #4441;
     filter: brightness(1.1);
 }
 
@@ -115,7 +128,7 @@
     width: 11.8dvw;
     height: 98%;
     border: 0.2dvh solid #e1c573;
-    box-shadow: inset 0px 0px 24px 12px #00000066;
+    box-shadow: inset 0px 0px 8px 4px #00000066;
 }
 
 #cardOpenerLayer {
@@ -153,14 +166,14 @@
     justify-content: center;
     align-items: center;
     opacity: 0;
-    font-size: calc(8px + 1dvh);
-    transition: opacity 0.4s, width 0.4s, height 0.4s, font-size 0.4s,
-        box-shadow 0.4s, margin 0.4s;
+    font-size: calc(6px + 0.7dvw);
+    transition: opacity 0.4s, width 0.4s, height 0.4s, box-shadow 0.4s,
+        margin 0.4s;
 }
 
 .mainCardWrapper:hover {
-    height: 150%;
-    font-size: calc(10px + 1.3dvh);
+    height: 120%;
+    font-size: calc(7px + 0.8dvw);
     box-shadow: 0px 0px 1dvh 0.5dvh #0006;
 }
 
@@ -248,30 +261,8 @@
     font-size: large;
     letter-spacing: 0.15dvw;
 
-    color: #cebb82;
-    background-color: #2a2a48;
     border: 0.3dvh solid #dac378;
-    box-shadow: 0px 0px 3px 3px #00000044;
-
-    transition: opacity 0.2s, width 0.6s, color 0.2s, border 0.2s,
-        box-shadow 0.2s, background-color 0.2s;
-}
-
-#playBtn:hover {
-    color: #eddaa1;
-    border: 0.3dvh solid #f7e5ab;
-    box-shadow: 0px 0px 4px 4px #ffffff08;
-    background-color: #2d2d4a;
-}
-
-#playBtn:active {
-    transition: opacity 0s, color 0s, border 0s, box-shadow 0s,
-        background-color 0s;
-    box-shadow: inset 0px 0px 4px 2px #00000066;
-    background-color: #2a2a48;
-    border: 0.3dvh solid #dac378;
-    color: #cebb82aa;
-    filter: brightness(0.9);
+    transition: opacity 0.2s, width 0.6s, box-shadow 0.2s, filter 0.1s;
 }
 
 .btnActive {
@@ -304,20 +295,11 @@
     /* font-weight: bold; */
     letter-spacing: 0.15dvw;
     background-image: url("/images/home/fullscreen.png");
-    background-color: #2e2e46;
     background-size: 52% 52%;
     background-position: center;
     background-repeat: no-repeat;
 
-    color: #cebb82;
-    border: 0.2dvh solid #dac378;
     box-shadow: 0px 0px 2px 2px #00000022;
-}
-
-#fullscreenBtn:active {
-    box-shadow: inset 0px 0px 4px 2px #00000066;
-    /* border: 0.2dvh solid #dac378aa; */
-    filter: brightness(0.9);
 }
 
 #homeAccentBar {

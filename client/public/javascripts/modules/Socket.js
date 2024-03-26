@@ -10,7 +10,7 @@ export default class Socket {
     static socket = null;
     static id = localStorage.getItem(CATCHESS_ID);
 
-    static init() {
+    static async init() {
         const url = "ws://localhost:8080";
         // const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
         Socket.socket = new WebSocket(url);
@@ -164,6 +164,7 @@ export default class Socket {
             console.log("Socket disconnected, attempting another shot...");
             Socket.init();
         };
+
         Socket.socket.onerror = function (event) {
             console.error(event);
         };
@@ -183,7 +184,7 @@ export default class Socket {
 function readyToPlay() {
     document.getElementById("id").innerHTML = Socket.id;
     const playBtn = document.getElementById("playBtn");
-    playBtn.className = "btnActive";
+    playBtn.className = "btnActive btn";
 
     const playBtnText = document.getElementById("playBtnText");
     playBtnText.innerHTML = "<span>Match</span>";

@@ -7,20 +7,17 @@ window.onload = () => {
     init();
 };
 
-function init() {
+async function init() {
     Socket.init();
-    fetchResource().then(() => {
-        UI.init();
-
-        endLoading();
-
-        Painter.init();
-    });
+    await fetchResource();
+    UI.init();
+    endLoading();
+    Painter.init();
 }
 
 async function fetchResource() {
     await Unit.fetchData();
-    await fetchImages();
+    fetchImages();
 }
 
 async function fetchImages() {
