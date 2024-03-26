@@ -11,6 +11,8 @@ const redirectUri =
         ? "http://catchess.ap-northeast-2.elasticbeanstalk.com/auth/google/callback"
         : "http://localhost:8080/auth/google/callback";
 
+console.log(redirectUri);
+
 const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
@@ -23,8 +25,6 @@ const authorizationUrl = oauth2Client.generateAuthUrl({
     include_granted_scopes: true,
 });
 
-const gmail = google.gmail({ version: "v1", auth: oauth2Client });
-
 router.get("/google", (req, res) => {
     res.redirect(authorizationUrl);
 });
@@ -35,7 +35,7 @@ router.get("/google/callback", async (req, res) => {
     oauth2Client.getToken(code, (err, token) => {
         if (err) {
             console.error("Error exchanging code for tokens:", err.message);
-            res.status(500).send("Error exchanging code for tokens");
+            return res.redirect("/");
         }
         try {
             oauth2Client.setCredentials(token);
@@ -50,7 +50,7 @@ router.get("/google/callback", async (req, res) => {
             //TODO : store/get user data from database
             res.cookie("record", "r");
         } catch (error) {
-            console.error("Error exchanging code for token:", error.message);
+            console.error("Error getting id_token data:", error.message);
         } finally {
             res.redirect("/");
         }

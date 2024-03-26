@@ -3,9 +3,10 @@ const router = require("./routes/api");
 const authRouter = require("./routes/auth");
 let app = express();
 
-app.set("views", __dirname + "/views");
+app.use(express.static(__dirname + "/../client/public"));
+
 app.set("view engine", "pug");
-app.use(express.static(__dirname + "/public"));
+app.set("views", __dirname + "/../client/views");
 
 app.get("/", (req, res, next) => res.render("page"));
 

@@ -244,3 +244,19 @@ AES symmetric, RSA asymmetric
 client-암호화 -> server-복호화/해싱 -> db
 
 Cat editor : 정형화된 변수들로 만드는 cat img/render
+
+### 3.25
+
+DONE
+
+-   google Oauth
+
+TOOD
+
+-   KST. log configuartion in .ebextensions
+
+### 3.26
+
+DONE
+
+-   디렉토리 구조 변경
