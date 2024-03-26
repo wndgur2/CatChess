@@ -65,10 +65,10 @@ TODO
 DONE
 
 -   home UI 개선
+    <img width="1440" alt="0 1 0" src="https://github.com/wndgur2/CatChess/assets/65120311/0d7e2329-f187-4da7-bcf2-18816215912b">
+
 -   modal UI 개선
 -   modal close callback 구현
-
-<img src="./devHistory/images/0.1.0.png" width="92%"/>
 
 TODO
 
@@ -91,9 +91,10 @@ TODO
 DONE
 
 -   ingame time, inventory UI 구현
-    <img src="./devHistory/images/home2_0.1.5.png" width="92%"/>
-    <img src="./devHistory/images/home_modal_0.1.5.png" width="92%"/>
-    <img src="./devHistory/images/game_0.1.5.png" width="92%"/>
+
+    <img width="1440" alt="game_0 1 5" src="https://github.com/wndgur2/CatChess/assets/65120311/4ab1ff4d-096e-41be-90a5-580d4c829940">
+    <img width="1440" alt="home_modal_0 1 5" src="https://github.com/wndgur2/CatChess/assets/65120311/ae3e7135-5780-4260-920a-3cd58a25a09e">
+    <img width="1440" alt="home2_0 1 5" src="https://github.com/wndgur2/CatChess/assets/65120311/8793fbc5-0ecc-47bb-8235-5f38a97912c4">
 
 TODO
 
@@ -113,7 +114,8 @@ TODO
 DONE
 
 -   shopList UI 개선
-    <img src="./devHistory/images/game_0.1.5_2.png" width="92%"/>
+
+<img width="1440" alt="game_0 1 5_2" src="https://github.com/wndgur2/CatChess/assets/65120311/61045a95-1877-4126-bd05-22ccf3d26ca4">
 -   source (coin / Poeir) 추가
 
 TODO(big)
