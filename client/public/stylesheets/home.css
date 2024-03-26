@@ -36,14 +36,19 @@
 
 #userInfoWrapper {
     display: none;
-    color: #dac378;
 }
 
 .btn {
-    color: #dac378;
     border: 0.2dvh solid #dac378;
     box-shadow: 1px 1px 2px 2px #00000044;
     background-color: #26263f;
+
+    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
+        sans-serif;
+    color: #dac378;
+    font-size: large;
+    text-decoration: none;
+    text-align: center;
 }
 
 .btn:hover {
@@ -75,12 +80,6 @@
     justify-content: center;
     align-items: center;
     gap: 4%;
-
-    font-size: large;
-    text-decoration: none;
-    text-align: center;
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
-        sans-serif;
 }
 
 #signinBtn {
@@ -100,6 +99,12 @@
 #googleLogo {
     width: 3dvh;
     height: 3dvh;
+}
+
+@media (max-width: 1200px) {
+    #googleLogo {
+        display: none;
+    }
 }
 
 #deck {
@@ -255,9 +260,6 @@
 
 #playBtn {
     height: 11dvh;
-
-    font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
-        sans-serif;
     font-size: large;
     letter-spacing: 0.15dvw;
 
@@ -277,7 +279,7 @@
     opacity: 0.6;
 }
 
-.btnMatching {
+.btnWide {
     width: 100%;
 
     filter: brightness(0.85);

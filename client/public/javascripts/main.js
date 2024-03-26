@@ -4,15 +4,15 @@ import UI from "./modules/UI.js";
 import Unit from "./modules/Unit.js";
 
 window.onload = () => {
-    init();
+    init(isPlayableDevice());
 };
 
-async function init() {
-    Socket.init();
+async function init(playable) {
+    Socket.init(playable);
     await fetchResource();
     UI.init();
     endLoading();
-    Painter.init();
+    if (playable) Painter.init();
 }
 
 async function fetchResource() {
@@ -41,4 +41,16 @@ function startLoading() {
 
 function endLoading() {
     document.querySelector("#loading").style.display = "none";
+}
+
+function isPlayableDevice() {
+    const isMobile =
+        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+            navigator.userAgent
+        );
+    if (isMobile) {
+        alert("Mobile devices are not supported.");
+        return false;
+    }
+    return true;
 }

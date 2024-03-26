@@ -311,6 +311,7 @@ function startMatching() {
 
     const playBtn = document.getElementById("playBtn");
     const playBtnText = document.getElementById("playBtnText");
+    playBtn.className = "btnWide btn";
 
     let mouseOver = false;
     let matchingTime = 0;
@@ -328,7 +329,6 @@ function startMatching() {
         playBtnText.innerHTML = timeText;
     }, 1000);
 
-    playBtn.className = "btnMatching btn";
     playBtn.onclick = () => {
         cancelMatching();
         playBtn.onclick = startMatching;
