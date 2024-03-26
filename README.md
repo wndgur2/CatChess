@@ -6,45 +6,55 @@ http://catchess.ap-northeast-2.elasticbeanstalk.com/
 
 ## 기록
 
-### 12.1 Cat chess 3인 개발 시작
+### 2023.12.1 ~ 2024.1.14 3인 개발
 
-역할
+유규빈: three.js, effect 구현  
+오준묵: react, frontend 개발  
+이중혁(나): nodeJs, backend 개발
 
--   이중혁: node.js로 backend 담당
--   유규빈: three js로 effect 구현 담당
--   오준묵: react js 로 frontend 담당
+DONE
 
-### 1.15 cat chess 1인 개발 시작
+-   socket 세션 관리를 통해 실시간 온라인 로직 구현
+-   Player, Game, Unit 모듈을 중심으로 게임 로직 구현
 
--   react에서 express로 프레임워크 변경  
-    왜? (개발할 page가 많지 않아 spa에서 얻는 이득이 적고, 일반적인 웹 UI와 게임 UI가 요구하는 게 다르기 때문에 vanilla로 디테일하게 개발하기 위함)
+#### 주요 게임 모듈
 
-## ~ commit 참고 ~
+-   Player: 세션 정보, 체력, 돈, 보유 유닛 등 게임 데이터와 유저 데이터를 관리
+-   Game: 플레이어 2명의 정보, 해당 게임의 stage, state(준비, 전투, 결과, 대기) flow를 담당
+-   Unit: 각 유닛의 스탯, 스킬 등 관리
+-   Battle: 전투 로직 수행
 
-### 1.29 서버-클라이언트 통신 방식 개선 실패
+#### front display는 server 테스트를 위해 threejs 없이 html, js, css로만 구현함
 
--   unit을 참조할 때, 좌표 참조형 방식에서 unit.uid 참조형 방식으로 변경을 시도함.  
-    -> client 측에서 game state에 따라 같은 unit을 다양한 목적으로 활용하고 있었다는 것을 간과함.  
+### 2024.1.15 ~ 1인 개발
+
+-   react에서 express로 프레임워크 변경
+
+## ~ commit history 참고 ~
+
+### 1.29 서버-클라이언트 통신 방식 개선 시도
+
+-   Unit 참조 시, 좌표 참조형 방식에서 unit.uid 참조형 방식으로 변경을 시도함.  
+    -> client 측에서 game state에 따라 같은 Unit을 다양한 목적으로 활용하고 있었다는 것을 간과함. (목적이 모호했음)  
     -> 한 인스턴스를 참조하게 되면서 다양한 목적을 하나의 인스턴스가 해결해야 하기 때문에 복잡한 코드가 마구 생겨버림.  
     -> 결국 처음에 의도한 간결한 알고리즘이 되지 않아 개선을 철회함.  
-    -> 내일, client에서 같은 uid의 여러 Unit을 다루면서 서버와 클라이언트가 uid로 소통할 수 있게 개선해볼 예정.  
-    배운 점: 많은 코드에 손이 가는, 통신 구조 변경과 같은 수정 사항은 그 여파를 고려해보고, 이 시스템을 처음 설계한 의도와 걸맞는지 판단한 후에 적용하기
+    -> 이후, client에서 같은 uid의 여러 Unit을 다루면서 서버와 클라이언트가 uid로 소통할 수 있게 개선
 
-이후 적절한 곳에 uid 사용하여 개선함
+배운 점: 많은 코드에 손이 가는, 통신 구조 변경과 같은 수정 사항은 그 여파를 고려해보고, 이 시스템을 처음 설계한 의도와 걸맞는지 판단한 후에 적용하기
 
-## ~ commit 참고 ~
+## ~ commit history 참고 ~
 
 ### 2.11
 
 DONE
 
--   아마존 배포.
+-   aws beanstalk(ec2) 배포.
 
 TODO
 
 -   기획, mesh, UI, sound
 
-## ~ commit 참고 ~
+## ~ commit history 참고 ~
 
 ### 2.26
 
@@ -103,7 +113,7 @@ TODO
 
 ### 3.2
 
-sound pixaby?
+sound from pixaby?
 
 TODO
 
