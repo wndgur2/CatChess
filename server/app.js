@@ -1,6 +1,7 @@
 let express = require("express");
 const router = require("./routes/api");
 const authRouter = require("./routes/auth");
+require("./db/mongoDB.js");
 let app = express();
 
 app.use(express.static(__dirname + "/../client/public"));

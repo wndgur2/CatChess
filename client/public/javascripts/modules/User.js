@@ -1,10 +1,4 @@
 export default class User {
-    static getData(key) {
-// TODO
-        if (!getCookie(key)) this.signOut();
-        return getCookie(key);
-    }
-
     static authenticate() {
         let token = getCookie("token");
         if (!token) return;
@@ -13,13 +7,11 @@ export default class User {
 
         document.querySelector("#userInfoWrapper").style.display =
             "inline-block";
-        document.querySelector("#userName").innerHTML = User.getData("email");
-        document.querySelector("#record").innerHTML = User.getData("record");
+        document.querySelector("#userName").innerHTML = getCookie("email");
+        document.querySelector("#record").innerHTML = getCookie("record");
     }
 
     static signOut() {
-        console.log("sign out");
-
         const cookies = document.cookie.split(";");
 
         for (let i = 0; i < cookies.length; i++) {
@@ -31,7 +23,6 @@ export default class User {
         location.reload();
     }
 }
-
 function getCookie(key) {
     let cookie = decodeURIComponent(document.cookie);
     let cookieArr = cookie.split("; ");

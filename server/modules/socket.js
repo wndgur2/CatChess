@@ -2,7 +2,7 @@ const Player = require("./Player.js");
 const Game = require("./Game.js");
 const { sendMsg, getPlayerById, getPlayerByWs } = require("./utils.js");
 const webSocket = require("ws");
-const { client } = require("../db/connection.js");
+const { client } = require("../db/mongoDB.js");
 
 module.exports = (server) => {
     const wss = new webSocket.Server({ server });

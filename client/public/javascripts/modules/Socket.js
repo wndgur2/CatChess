@@ -11,9 +11,9 @@ export default class Socket {
     static id = localStorage.getItem(CATCHESS_ID);
 
     static async init(playable) {
-        if (!playable) return blockPlayBtn();
-        // const url = "ws://localhost:8080";
-        const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
+        if (!playable) return blockPlayBtn("Not supported device");
+        const url = "ws://localhost:8080";
+        // const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
         Socket.socket = new WebSocket(url);
 
         Socket.socket.onopen = function (event) {
@@ -162,8 +162,9 @@ export default class Socket {
         };
 
         Socket.socket.onclose = function (event) {
+            blockPlayBtn("Waiting for connection...");
             console.log("Socket disconnected, attempting another shot...");
-            Socket.init();
+            Socket.init(true);
         };
 
         Socket.socket.onerror = function (event) {
@@ -191,11 +192,11 @@ function readyToPlay() {
     playBtnText.innerHTML = "<span>Match</span>";
 }
 
-function blockPlayBtn() {
+function blockPlayBtn(text) {
     const playBtn = document.getElementById("playBtn");
     playBtn.className = "btnInactive btn btnWide";
     playBtn.disabled = true;
 
     const playBtnText = document.getElementById("playBtnText");
-    playBtnText.innerHTML = "<span>Not supported device</span>";
+    playBtnText.innerHTML = `<span>${text}</span>`;
 }

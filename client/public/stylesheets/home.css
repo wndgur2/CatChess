@@ -28,14 +28,15 @@
     height: 9dvh;
 }
 
-#logo {
-    padding: 4dvh;
-    width: 13dvw;
-    height: auto;
-}
-
 #userInfoWrapper {
     display: none;
+    font-size: large;
+}
+
+#logo {
+    padding: 4dvh;
+    width: calc(20% - 8dvh);
+    height: auto;
 }
 
 .btn {
