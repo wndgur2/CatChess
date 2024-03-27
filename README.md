@@ -288,7 +288,6 @@ DONE
 -   User Info UI
 -   Google email로 User 조회/생성
 -   Therme Units source 입력
--   logging browser info in database.
 -   body-parser middleware
 
     NOTE
@@ -299,3 +298,4 @@ TODO
 -   Painter 완성도 손보기
 -   threejs(text display, cat model, range attack motion ...)
 -   Skills
+-   logging browser info in database.
