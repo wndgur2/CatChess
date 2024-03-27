@@ -1,4 +1,4 @@
-## 실시간 온라인 전략 웹 대전 게임
+## 실시간 웹 대전 게임
 
 http://catchess.ap-northeast-2.elasticbeanstalk.com/
 
@@ -287,4 +287,7 @@ DONE
 
 -   User Info UI
 -   Google email로 User 조회/생성
--   db에서 User record 불러오기
+-   Therme Units source 입력
+
+    NOTE
+    understanding of history & religion

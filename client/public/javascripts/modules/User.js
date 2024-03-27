@@ -20,11 +20,9 @@ export default class User {
                 }
             )
                 .then((res) => {
-                    console.log("RES:", res);
                     return res.json();
                 })
                 .then((data) => {
-                    console.log("DATA:", data);
                     document.cookie = `record=${encodeURIComponent(
                         getRecord(data.win, data.loss)
                     )}`;

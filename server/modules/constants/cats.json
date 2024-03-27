@@ -12,11 +12,11 @@
         "armor": 3,
         "range": 1
     },
-    "thiefCat": {
-        "id": "thiefCat",
-        "name": "Thief Cat",
+    "vibrato": {
+        "id": "vibrato",
+        "name": "Vibrato",
         "synergies": ["Therme"],
-        "desc": "description of Thief Cat.",
+        "desc": "Creative souls who harness the vibrations of the underground world to create mesmerizing art.",
         "cost": 1,
         "skill": "neckBite",
         "ad": 12,
@@ -51,11 +51,11 @@
         "armor": 2,
         "range": 1
     },
-    "strongCat": {
-        "id": "strongCat",
-        "name": "Strong Cat",
+    "blink": {
+        "id": "blink",
+        "name": "Blink",
         "synergies": ["Therme"],
-        "desc": "description of Strong Cat.",
+        "desc": "Resourceful hunters who stalk prey in the darkness of the underground.",
         "cost": 2,
         "skill": "neckBite",
         "ad": 25,
@@ -90,11 +90,11 @@
         "armor": 6,
         "range": 2
     },
-    "adCat": {
-        "id": "adCat",
-        "name": "AD Cat",
+    "magmaWarden": {
+        "id": "magmaWarden",
+        "name": "Magma Warden",
         "synergies": ["Therme"],
-        "desc": "description of AD Cat.",
+        "desc": "Protectors of Therme, using abilities to create defensive barriers and shield their fellow felines from harm.",
         "cost": 3,
         "skill": "roar",
         "ad": 17,
@@ -142,11 +142,11 @@
         "armor": 7,
         "range": 1
     },
-    "assassinCat": {
-        "id": "assassinCat",
-        "name": "Assassin Cat",
+    "moltenShadow": {
+        "id": "moltenShadow",
+        "name": "Molten Shadow",
         "synergies": ["Therme"],
-        "desc": "description of Assassin Cat.",
+        "desc": "Hunter who thrives in the fiery depths of volcanic regions. \"Ashes to ashes, dust to dust.\"",
         "cost": 4,
         "skill": "roar",
         "ad": 60,
