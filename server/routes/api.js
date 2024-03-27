@@ -8,6 +8,13 @@ router.get("/cats", (req, res, next) => {
 router.get("/creeps", (req, res, next) => {
     res.json(require("../modules/constants/creeps.json"));
 });
+router.get("/init", (req, res, next) => {
+    res.send(req.ip);
+});
+router.post("/log/browser", (req, res, next) => {
+    console.log("Browser info:", req.body);
+    res.send("success");
+});
 
 // seperate db apis
 router.get("/user/init", async (req, res, next) => {

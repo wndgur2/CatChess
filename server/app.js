@@ -1,11 +1,12 @@
 let express = require("express");
+const bodyParser = require("body-parser");
 const router = require("./routes/api");
 const authRouter = require("./routes/auth");
 require("./db/mongoDB.js");
 let app = express();
 
+app.use(bodyParser.json());
 app.use(express.static(__dirname + "/../client/public"));
-
 app.set("view engine", "pug");
 app.set("views", __dirname + "/../client/views");
 
