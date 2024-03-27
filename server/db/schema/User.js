@@ -2,10 +2,10 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const userSchema = new Schema({
     username: String,
-    password: { type: String, required: true },
     email: { type: String, required: true, unique: true },
-    wins: { type: Number, default: 0 },
-    losses: { type: Number, default: 0 },
+    win: { type: Number, default: 0 },
+    loss: { type: Number, default: 0 },
+    isOnline: { type: Boolean, default: false },
     createdAt: { type: Date, default: Date.now },
 });
 
