@@ -247,24 +247,28 @@ NOTE
 
 ### 3.23
 
-encryption
-https route5s DNS
-window.crypto.subtle
-AES symmetric, RSA asymmetric
+    NOTE
 
-로그인 안전에 대한 내용
-client-암호화 -> server-복호화/해싱 -> db
+    encryption
+    https route5s DNS
+    window.crypto.subtle
+    AES symmetric, RSA asymmetric
 
-Cat editor : 정형화된 변수들로 만드는 cat img/render
+    로그인 안전에 대한 내용
+    client-암호화 -> server-복호화/해싱 -> db
+    ==>> google open authentication
+
+    Cat editor : 정형화된 변수들로 만드는 cat img/render
+
+DONE
+
+-   Sign in UI
 
 ### 3.25
 
 DONE
 
--   google Oauth
-
-TOOD
-
+-   google OAuth. token handling
 -   KST. log configuartion in .ebextensions
 
 ### 3.26
@@ -274,3 +278,13 @@ DONE
 -   디렉토리 구조 변경
 -   packaging for AWS 자동화
 -   0.2.4 배포
+-   User schema 작성
+-   Supported Device check logic
+
+### 3.27
+
+DONE
+
+-   User Info UI
+-   Google email로 User 조회/생성
+-   db에서 User record 불러오기
