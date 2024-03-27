@@ -1,5 +1,4 @@
 const express = require("express");
-const https = require("https");
 require("dotenv").config();
 const { google } = require("googleapis");
 const jwt = require("jsonwebtoken");
@@ -46,9 +45,6 @@ router.get("/google/callback", async (req, res) => {
             userInfo.email = tokenData.email;
             res.cookie("name", userInfo.name);
             res.cookie("email", userInfo.email);
-
-            //TODO : store/get user data from database
-            res.cookie("record", "r");
         } catch (error) {
             console.error("Error getting id_token data:", error.message);
         } finally {
