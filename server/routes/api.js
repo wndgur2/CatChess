@@ -18,7 +18,7 @@ router.get("/user/init", async (req, res, next) => {
 
 async function initUser(email) {
     const User = mongoDB.model("User");
-    const user = await User.findOne({
+    let user = await User.findOne({
         email: email,
     });
     if (!user) {
