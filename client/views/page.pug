@@ -2,24 +2,19 @@ extends layout
 
 block content
   #container
-    //- button#test
-    //-   h1 TEST
     #home
       #homeMain
         #homeTopLayer
           img#logo(src="images/home/logo.png" alt="logo")
-          #placeholder
-          #placeholder
-          #userInfoWrapper
-            span#userName
-            br
-            span#record record: 
-            br
-            span#winRate 
-          #signinBtnWrapper
-            a#signinBtn(href="/auth/google").btn Sign In with Google
-              img#googleLogo(src="images/home/google.png" alt="google")
-            button#signoutBtn.btn Sign Out
+          #authWrapper
+            #userInfoWrapper
+              #userInfo
+                span#userName
+                span#record record: 
+              button#signoutBtn.insideBtn Log out
+            #signinBtnWrapper
+              a#signinBtn(href="/auth/google").btn Sign In with Google
+                img#googleLogo(src="images/home/google.png" alt="google")
         #cardOpenerLayer
           #cardOpenerWrapper
             #cards
@@ -233,7 +228,7 @@ block content
         button#soundBtn
           img#soundImg(src="images/home/note2.png" alt="sound")
       #app
-        span.timesFont v0.2.4 beta
+        span.timesFont v0.2.5 beta
         a(href = "https://github.com/wndgur2") @wndgur2
   #hid
     #modal
