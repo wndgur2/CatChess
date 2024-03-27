@@ -2,10 +2,7 @@ require("dotenv").config();
 const mongoose = require("mongoose");
 require("./schema/User");
 
-mongoose.connect(process.env.DB_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-});
+mongoose.connect(process.env.DB_URI);
 
 const db = mongoose.connection;
 db.on("error", (error) => {
