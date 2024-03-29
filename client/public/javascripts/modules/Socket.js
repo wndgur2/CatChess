@@ -193,6 +193,7 @@ function readyToPlay() {
     document.getElementById("id").innerHTML = Socket.id;
     const playBtn = document.getElementById("playBtn");
     playBtn.className = "btnActive btn";
+    playBtn.disabled = false;
 
     const playBtnText = document.getElementById("playBtnText");
     playBtnText.innerHTML = "<span>Match</span>";
