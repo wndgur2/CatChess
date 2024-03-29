@@ -13,7 +13,7 @@ block content
                 span#record record: 
               button#signoutBtn.insideBtn Log out
             #signinBtnWrapper
-              a#signinBtn(href="/auth/google").btn Sign In with Google
+              button#signinBtn.btn Sign In with Google
                 img#googleLogo(src="images/home/google.png" alt="google")
         #cardOpenerLayer
           #cardOpenerWrapper
@@ -77,9 +77,8 @@ block content
       #timerWrapper
         span#timer 0
         #timerAccentBar
-      #controlBtns
-        button#surrenderBtn 🏳️
-        //- button#settingBtn ⚙️
+      //- #controlBtns
+      button#surrenderBtn 🏳️
       #damage
       #inventoryWrapper
         table#inventory
@@ -203,6 +202,23 @@ block content
               .item#0
               .item#1
               .item#2
+      #hid
+        #modal
+          #modalBackdrop
+          #modalContent
+            #modalHeader
+              button#modalClose
+                img(src="images/home/x.png" alt="close" width="20" height="20")
+            #modalBody
+            #modalFooter
+        #surrenderWrapper
+          .modalRow
+            span Are you sure you want to surrender?
+          .modalRow
+            button#surrenderConfirm.modalBtn.insideBtn Yes
+        #waiting
+          .modalRow
+            span#matchingTime
       #tutorial
         span 고양이를 매수해 적 고양이를 모두 파괴하세요.
         br
@@ -228,24 +244,5 @@ block content
         button#soundBtn
           img#soundImg(src="images/home/note2.png" alt="sound")
       #app
-        span.timesFont v0.2.5 beta
+        span.timesFont v0.2.6 beta
         a(href = "https://github.com/wndgur2") @wndgur2
-  #hid
-    #modal
-      #modalBackdrop
-      #modalContent
-        #modalHeader
-          button#modalClose
-            img(src="images/home/x.png" alt="close" width="20" height="20")
-        #modalBody
-        #modalFooter
-    //- #settingWrapper
-    //-   .modalRow
-    //-     button#language.modalBtn 🌎
-    //-     button#volume.modalBtn 🔉
-    #surrenderWrapper
-      .modalRow
-        button#surrender.modalBtn 🏳️
-    #waiting
-      .modalRow
-        span#matchingTime

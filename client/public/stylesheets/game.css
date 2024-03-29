@@ -95,8 +95,14 @@
 }
 
 #surrenderBtn {
-    background: none;
-    border: none;
+    position: absolute;
+    top: 3dvh;
+    right: 2dvw;
+    width: calc(2dvw + 3vh);
+    height: calc(2dvw + 3vh);
+    border: 0.2dvh solid #807253;
+    background-color: #232330;
+    z-index: 2;
 }
 
 .cat {
@@ -117,6 +123,7 @@
     left: 0;
     width: 32dvw;
     height: 32dvh;
+    padding: 4%;
 }
 
 #inventoryWrapper {

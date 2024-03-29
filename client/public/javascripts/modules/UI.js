@@ -31,6 +31,10 @@ export default class UI {
             Sound.playBgm();
         };
 
+        document.querySelector("#signinBtn").onclick = () => {
+            User.signIn();
+        };
+
         document.querySelector("#signoutBtn").onclick = () => {
             User.signOut();
         };
@@ -74,6 +78,12 @@ export default class UI {
             .addEventListener("click", () => {
                 const surrenderEl = document.getElementById("surrenderWrapper");
                 UI.openModal(surrenderEl.innerHTML);
+                document
+                    .getElementById("surrenderConfirm")
+                    .addEventListener("click", () => {
+                        Socket.sendMsg("reqSurrender", "");
+                        UI.closeModal();
+                    });
             });
 
         document.getElementById("reload").addEventListener("click", () => {
@@ -81,12 +91,26 @@ export default class UI {
         });
 
         document.addEventListener("keypress", (event) => {
-            if (event.key.toUpperCase() === "D")
-                Socket.sendMsg("reqReload", "");
-            else if (event.key.toUpperCase() === "F")
-                Socket.sendMsg("reqBuyExp", "");
-            else if (event.key.toUpperCase() === "E")
-                Painter.sellUnitOnKeypress();
+            switch (event.key.toUpperCase()) {
+                case "D":
+                    Socket.sendMsg("reqReload", "");
+                    break;
+                case "ㅇ":
+                    Socket.sendMsg("reqReload", "");
+                    break;
+                case "F":
+                    Socket.sendMsg("reqBuyExp", "");
+                    break;
+                case "ㄹ":
+                    Socket.sendMsg("reqBuyExp", "");
+                    break;
+                case "E":
+                    Painter.sellUnitOnKeypress();
+                    break;
+                case "ㄷ":
+                    Painter.sellUnitOnKeypress();
+                    break;
+            }
         });
 
         document.getElementById("buyExp").addEventListener("click", () => {
@@ -133,6 +157,7 @@ export default class UI {
     }
 
     static openModal(content, callback) {
+        console.log("open modal");
         const modalEl = document.getElementById("modal");
         modalEl.style.opacity = "1";
         modalEl.style.visibility = "visible";
@@ -231,6 +256,7 @@ export default class UI {
         cancelMatching();
         document.getElementById("game").style.display = "none";
         document.getElementById("home").style.display = "inline-block";
+        User.authenticate();
         Painter.clear();
     }
 }
