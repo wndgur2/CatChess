@@ -12,9 +12,10 @@ function sendMsg(ws, type, data) {
 }
 
 /**
- * 플레이어 생명주기 : (게임 매칭 요청) ~ (해당 게임 종료)
+ * 플레이어 생명끈 : (게임 매칭 요청) ~ (해당 게임 종료)
  * @returns {Player}
  */
+
 function getPlayerById(id) {
     return players.find((player) => player.id === id);
 }
