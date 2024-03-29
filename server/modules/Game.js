@@ -12,8 +12,8 @@ class Game {
      */
     static games = [];
     static startMatching(from, ws) {
-        if (Game.matchingPlayers.find((player) => player.id === from)) return;
         let player = getPlayerById(from);
+        if (Game.matchingPlayers.find((player) => player.id === from)) return;
         if (player) {
             player.ws = ws;
             // 재접속
