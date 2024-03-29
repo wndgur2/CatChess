@@ -9,9 +9,6 @@ module.exports = (server) => {
 
     wss.on("connection", (ws, req) => {
         console.log("New client connected");
-        // getMovies()
-        //     .catch(console.error)
-        //     .then((res) => console.log(res));
 
         ws.on("message", (message) => {
             let msg = JSON.parse(message);
@@ -31,7 +28,7 @@ module.exports = (server) => {
                         Game.cancelMatching(from);
                         break;
                     }
-                    case "surrender": {
+                    case "reqSurrender": {
                         const p = getPlayerById(from);
                         if (p) p.surrender();
                         break;
@@ -88,11 +85,3 @@ module.exports = (server) => {
         });
     });
 };
-
-async function getMovies() {
-    await client.connect();
-    return await client
-        .db("sample_mflix")
-        .collection("movies")
-        .findOne({ title: "Back to the Future" });
-}
