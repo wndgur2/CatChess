@@ -299,3 +299,18 @@ TODO
 -   threejs(text display, cat model, range attack motion ...)
 -   Skills
 -   logging browser info in database.
+
+### 3.28
+
+### 3.29
+
+TODO
+
+-   게임 종료 화면
+-   첫 로그인이라면 greeting, local 기록 저장할지
+
+DONE
+
+-   로그인했다면, Player id를 email address로.
+-   게임 종료 시 결과 DB에 저장
+-   surrender 구현
