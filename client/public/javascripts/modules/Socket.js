@@ -4,6 +4,7 @@ import Item from "./Item.js";
 import Player from "./Player.js";
 import UI from "./UI.js";
 import Unit from "./Unit.js";
+import User from "./User.js";
 import { CATCHESS_ID } from "./constants/CONSTS.js";
 
 export default class Socket {
@@ -12,8 +13,8 @@ export default class Socket {
 
     static async init(playable) {
         if (!playable) return blockPlayBtn("Not supported device");
-        const url = "ws://localhost:8080";
-        // const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
+        // const url = "ws://localhost:8080";
+        const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
         Socket.socket = new WebSocket(url);
 
         Socket.socket.onopen = function (event) {
@@ -153,9 +154,14 @@ export default class Socket {
                     break;
                 }
                 case "gameEnd": {
+                    if (data.winner === Socket.id) {
+                        if (User.isAuthenticated()) User.saveLog("win");
+                        alert("You win.");
+                    } else {
+                        if (User.isAuthenticated()) User.saveLog("lose");
+                        alert("You lose.");
+                    }
                     UI.gameEnd();
-                    if (data.winner === Socket.id) alert("승리!");
-                    else alert("패배!");
                     break;
                 }
             }

@@ -1,3 +1,6 @@
+import Socket from "./Socket.js";
+import { CATCHESS_ID } from "./constants/CONSTS.js";
+
 export default class User {
     static isAuthenticated() {
         let token = getCookie("token");
@@ -7,18 +10,17 @@ export default class User {
 
     static authenticate() {
         if (User.isAuthenticated()) {
-            const userData = fetch(
-                `/api/user/init?email=${encodeURIComponent(
-                    getCookie("email")
-                )}`,
-                {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        Authorization: `Bearer ${getCookie("token")}`,
-                    },
-                }
-            )
+            Socket.id = getCookie("email").split("@")[0];
+            localStorage.setItem(CATCHESS_ID, Socket.id);
+            document.getElementById("id").innerHTML = Socket.id;
+
+            fetch(`/api/user/init`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${getCookie("token")}`,
+                },
+            })
                 .then((res) => {
                     return res.json();
                 })
@@ -32,9 +34,7 @@ export default class User {
 
                     document.querySelector("#userInfoWrapper").style.display =
                         "flex";
-                    document.querySelector("#userName").innerHTML = `${
-                        getCookie("email").split("@")[0]
-                    }`;
+                    document.querySelector("#userName").innerHTML = Socket.id;
                     document.querySelector("#record").innerHTML = `${getCookie(
                         "record"
                     )}`;
@@ -43,6 +43,10 @@ export default class User {
             document.querySelector("#signinBtnWrapper").style.display = "flex";
             document.querySelector("#userInfoWrapper").style.display = "none";
         }
+    }
+
+    static signIn() {
+        window.location.href = "/auth/google";
     }
 
     static signOut() {
@@ -54,7 +58,20 @@ export default class User {
             const key = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
             document.cookie = key + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
         }
+
+        localStorage.removeItem(CATCHESS_ID);
+
         location.reload();
+    }
+
+    static saveLog(winOrLose) {
+        fetch(`/api/user/${winOrLose}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${getCookie("token")}`,
+            },
+        });
     }
 }
 function getCookie(key) {
