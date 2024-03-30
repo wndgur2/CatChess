@@ -9,15 +9,17 @@ router.get("/cats", (req, res, next) => {
 router.get("/creeps", (req, res, next) => {
     res.json(require("../modules/constants/creeps.json"));
 });
-router.get("/init", (req, res, next) => {
-    res.send(req.ip);
-});
 router.post("/log/browser", (req, res, next) => {
-    // console.log("Browser info:", req.body);
-    res.send("success");
+    const device = req.body;
+    device.ip = req.ip;
+    const Device = mongoDB.model("Device");
+    const newDevice = new Device(device);
+    newDevice.save();
+
+    res.sendStatus(200);
 });
 
-// seperate db apis
+// db apis
 router.get("/user/init", async (req, res, next) => {
     const id_token = req.headers.authorization
         .split('"id_token":"')[1]

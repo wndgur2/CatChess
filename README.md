@@ -352,4 +352,6 @@ DONE
 
 ### 3.30
 
-last two days?
+DONE
+
+-   db에 접속 log 남기기 (device info)

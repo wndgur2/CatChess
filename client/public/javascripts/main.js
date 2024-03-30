@@ -4,7 +4,7 @@ import UI from "./modules/UI.js";
 import Unit from "./modules/Unit.js";
 
 window.onload = () => {
-    getBrwoserInfo();
+    logDeviceInfo();
     init(isPlayableDevice());
 };
 
@@ -52,26 +52,17 @@ function isPlayableDevice() {
     return !isMobile;
 }
 
-function getBrwoserInfo() {
+function logDeviceInfo() {
     const browserInfo = {
         userAgent: navigator.userAgent,
         language: navigator.language || navigator.userLanguage,
     };
 
-    fetch("/api/init")
-        .then((res) => res.text())
-        .then((data) => {
-            browserInfo.ip = data;
-        })
-        .finally(() => {
-            fetch("/api/log/browser", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(browserInfo),
-            }).then((res) => {
-                console.log("RES of log:", res);
-            });
-        });
+    fetch("/api/log/browser", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(browserInfo),
+    });
 }
