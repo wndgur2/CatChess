@@ -4,35 +4,67 @@ http://catchess.ap-northeast-2.elasticbeanstalk.com/
 
 ### Nodejs, Express, Three.js 사용
 
+### 서버측 주요 모듈
+
+-   Player.js: 세션 정보, 체력, 돈, 보유 유닛 등 게임 데이터와 유저 데이터를 관리
+-   Game.js: 플레이어 2명의 정보, 해당 게임의 stage, state(준비, 전투, 결과, 대기) flow를 담당
+-   Unit.js: 각 유닛의 스탯, 스킬 등 관리
+-   Battle.js: 전투 로직 수행
+
+### 클라이언트측 주요 모듈
+
+-   UI.js: event listeners, element 변화 관리
+-   Painter.js: three.js display 담당
+-   User.js: authentication token 관리
+
+### 페이지 구조
+
+-   page.pug: google auth를 제외한 모든 어플리케이션 기능을 담당.
+-   #home/#game 으로 게임 시작 전/후를 나눔
+
 ## 기록
 
-### 2023.12.1 ~ 2024.1.14 3인 개발
-
-유규빈: three.js, effect 구현  
-오준묵: react, frontend 개발  
-이중혁(나): nodeJs, backend 개발
+### ~ 2024.1.14
 
 DONE
 
 -   socket 세션 관리를 통해 실시간 온라인 로직 구현
 -   Player, Game, Unit 모듈을 중심으로 게임 로직 구현
 
-#### 주요 게임 모듈
-
--   Player: 세션 정보, 체력, 돈, 보유 유닛 등 게임 데이터와 유저 데이터를 관리
--   Game: 플레이어 2명의 정보, 해당 게임의 stage, state(준비, 전투, 결과, 대기) flow를 담당
--   Unit: 각 유닛의 스탯, 스킬 등 관리
--   Battle: 전투 로직 수행
-
-#### front display는 server 테스트를 위해 threejs 없이 html, js, css로만 구현함
-
-### 2024.1.15 ~ 1인 개발
+### 1인 개발 시작
 
 -   react에서 express로 프레임워크 변경
 
-## ~ commit history 참고 ~
+## 1.15 ~ 1.28
+
+-   threejs 구현 시작
+-   socket message type 세분화(update board/queue)
+
+-   3d display(boards, units)
+
+-   유닛 이동, 체력바 구현
+-   드래그 이벤트 리스너 구현
+-   서버 로직 개선
+
+-   아이템 부여 구현
+-   blood effect 적용
+
+-   아이템 팝업 설명, 유닛 판매, 유닛 움직임 애니메이션 구현
+
+-   unit info UI 개선
+
+-   giveItem bug fix
+
+-   UI 개선
+
+-   시너지 구현
+-   단축키 구현
+
+-   스킬 구현
 
 ### 1.29 서버-클라이언트 통신 방식 개선 시도
+
+## 1.29 ~ 2.2
 
 -   Unit 참조 시, 좌표 참조형 방식에서 unit.uid 참조형 방식으로 변경을 시도함.  
     -> client 측에서 game state에 따라 같은 Unit을 다양한 목적으로 활용하고 있었다는 것을 간과함. (목적이 모호했음)  
@@ -42,7 +74,8 @@ DONE
 
 배운 점: 많은 코드에 손이 가는, 통신 구조 변경과 같은 수정 사항은 그 여파를 고려해보고, 이 시스템을 처음 설계한 의도와 걸맞는지 판단한 후에 적용하기
 
-## ~ commit history 참고 ~
+-   uid 적용
+-   테스트
 
 ### 2.11
 
@@ -312,5 +345,11 @@ TODO
 DONE
 
 -   로그인했다면, Player id를 email address로.
--   게임 종료 시 결과 DB에 저장
+-   게임 종료 시 결과 User DB에 저장
 -   surrender 구현
+
+<img width="1440" alt="image" src="https://github.com/wndgur2/CatChess/assets/65120311/13147a8f-1c7e-4dc6-a6dc-8920535836b8">
+
+### 3.30
+
+last two days?
