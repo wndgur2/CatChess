@@ -13,7 +13,6 @@ export default class Socket {
 
     static async init(playable) {
         if (!playable) return blockPlayBtn("Not supported device");
-        // const url = "ws://localhost:8080";
         const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
         Socket.socket = new WebSocket(url);
 
