@@ -14,8 +14,8 @@ http://catchess.ap-northeast-2.elasticbeanstalk.com/
 ### 클라이언트측 주요 모듈
 
 -   UI.js: event listeners, element 변화 관리
--   Painter.js: three.js display 담당
--   User.js: authentication token 관리
+-   Painter.js: 3D display/interface 담당
+-   User.js: authentication 관리
 
 ### 페이지 구조
 
@@ -37,7 +37,7 @@ DONE
 
 ## 1.15 ~ 1.28
 
--   threejs 구현 시작
+-   3D display 구현 시작
 -   socket message type 세분화(update board/queue)
 
 -   3d display(boards, units)
@@ -349,9 +349,14 @@ DONE
 -   surrender 구현
 
 <img width="1440" alt="image" src="https://github.com/wndgur2/CatChess/assets/65120311/13147a8f-1c7e-4dc6-a6dc-8920535836b8">
+<img width="1440" alt="Screenshot 2024-03-31 at 16 29 58" src="https://github.com/wndgur2/CatChess/assets/65120311/e84ca6e8-b0a2-45bf-ade5-d3f8b2b2c843">
 
 ### 3.30
 
 DONE
 
 -   db에 접속 log 남기기 (device info)
+
+TODO
+
+-   유저 순위, 시너지별 순위?
