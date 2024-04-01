@@ -180,9 +180,7 @@ class Game {
                 );
                 this.battles.push(new Battle(player, this.creeps[i], true));
             });
-        } else {
-            this.battles.push(new Battle(this.players[0], this.players[1]));
-        }
+        } else this.battles.push(new Battle(this.players[0], this.players[1]));
     }
 
     battleState() {

@@ -6,11 +6,8 @@ export default class Synergy {
     static instances = {};
 
     static getSynergy(id) {
-        if (Synergy.instances[id]) {
-            return Synergy.instances[id];
-        } else {
-            return new Synergy({ id: id });
-        }
+        if (Synergy.instances[id]) return Synergy.instances[id];
+        else return new Synergy({ id: id });
     }
 
     constructor(data) {

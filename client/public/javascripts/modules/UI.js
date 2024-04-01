@@ -1,9 +1,9 @@
+import Painter from "./Painter.js";
 import Battle from "./Battle.js";
-import Game from "./Game.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
-import Painter from "./Painter.js";
 import Sound from "./Sound.js";
+import Game from "./Game.js";
 import Unit from "./Unit.js";
 import User from "./User.js";
 

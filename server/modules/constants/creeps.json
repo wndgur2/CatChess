@@ -8,8 +8,8 @@
         "skill": "roar",
         "ad": 10,
         "speed": 10,
-        "hp": 90,
-        "armor": 3,
+        "hp": 110,
+        "armor": 2,
         "range": 1
     },
     "eel": {
@@ -21,7 +21,7 @@
         "skill": "roar",
         "ad": 20,
         "speed": 25,
-        "hp": 65,
+        "hp": 130,
         "armor": 1,
         "range": 3
     },
