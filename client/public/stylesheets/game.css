@@ -124,6 +124,7 @@
     width: 32dvw;
     height: 32dvh;
     padding: 4%;
+    pointer-events: none;
 }
 
 #inventoryWrapper {
