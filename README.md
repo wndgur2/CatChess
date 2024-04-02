@@ -1,13 +1,15 @@
 ## 실시간 웹 대전 게임
 
-http://catchess.ap-northeast-2.elasticbeanstalk.com/
+[Cat Chess 접속](http://catchess.ap-northeast-2.elasticbeanstalk.com/)
+[Figma: 기획, 화면 설계](https://www.figma.com/file/UTLu1K2qiGxK4XhZFt7q1h/catChess?type=design&node-id=0%3A1&mode=design&t=4keMP4w5z6JixYat-1)
+[Drawio: 로직 설계](https://drive.google.com/file/d/1AHRsH_nBJkpwJ-txst1yUMQeNCm4xSDl/view?usp=drive_link)
 
 ### Nodejs, Express, Three.js 사용
 
 ### 서버측 주요 모듈
 
 -   Player.js: 세션 정보, 체력, 돈, 보유 유닛 등 게임 데이터와 유저 데이터를 관리
--   Game.js: 플레이어 2명의 정보, 해당 게임의 stage, state(준비, 전투, 결과, 대기) flow를 담당
+-   Game.js: 매칭된 플레이어 2명의 정보, 해당 게임의 stage, state(준비, 전투, 결과, 대기) flow 담당
 -   Unit.js: 각 유닛의 스탯, 스킬 등 관리
 -   Battle.js: 전투 로직 수행
 
