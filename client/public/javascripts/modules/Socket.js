@@ -9,12 +9,12 @@ import { CATCHESS_ID } from "./constants/CONSTS.js";
 
 export default class Socket {
     static socket = null;
-    static id = localStorage.getItem(CATCHESS_ID);
+    static id;
 
     static async init(playable) {
         if (!playable) return blockPlayBtn("Not supported device");
-        // const url = "ws://localhost:8080";
-        const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
+        const url = "ws://localhost:8080";
+        // const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
         Socket.socket = new WebSocket(url);
 
         Socket.socket.onopen = function (event) {
