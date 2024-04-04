@@ -20,11 +20,6 @@ export default class UI {
     }
 
     static hydrate() {
-        // document.addEventListener("visibilitychange", () => {
-        //     if (document.hidden) console.log("hidden");
-        //     else console.log("visible");
-        // });
-
         document.onclick = (event) => {
             if (UI.muted) return;
             Sound.playClick();
