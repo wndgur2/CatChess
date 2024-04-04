@@ -12,7 +12,7 @@
 
 <img width="1292" alt="image" src="https://github.com/wndgur2/CatChess/assets/65120311/26d4e8b4-8e0a-4c7e-8c68-ebda08d2b904">
 
-### Nodejs, Express, Three.js 사용
+### 주요 스택: Nodejs, Express, Three.js
 
 ### 서버측 주요 모듈
 
