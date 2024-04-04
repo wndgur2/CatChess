@@ -344,9 +344,9 @@
 }
 
 .country {
-    width: 88%;
+    width: 80%;
     padding: 4%;
-    margin-top: 8dvh;
+    margin-top: 14dvh;
 
     display: flex;
     flex-direction: column;
@@ -359,7 +359,7 @@
 }
 
 .country:hover {
-    width: 90%;
+    width: 82%;
     background-color: #1f1f33;
     border: 0.3dvh solid #e1c573;
     box-shadow: 0px 0px 4px 4px #00000066;
@@ -395,6 +395,7 @@
     width: 80%;
     font-size: large;
     font-weight: 300;
+    letter-spacing: 0.1dvw;
 }
 
 .units {
