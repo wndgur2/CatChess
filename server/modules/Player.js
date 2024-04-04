@@ -20,7 +20,7 @@ class Player {
     init() {
         this.level = 1;
         this.exp = -2;
-        this.money = process.env.NODE_ENV === "development" ? 100 : 2;
+        this.money = process.env.NODE_ENV === "development" ? 100 : 0;
         this.maxExp = 4;
         this.maxHp = process.env.NODE_ENV === "development" ? 20 : 100;
         this.hp = this.maxHp;
@@ -382,13 +382,13 @@ class Player {
 
     reward() {
         this.reload(true);
-
-        let income = 5;
+        let income = 4;
         income += Math.min(parseInt(this.money / 10), 5);
-        if (this.winning >= 2 && this.winning < 4) income += 1;
-        else if (this.winning == 4) income += 2;
-        else income += 3;
+
+        if (this.winning >= 4) income += 2;
+        else if (this.winning >= 2) income += 1;
         income += this.losing;
+
         this._money = this.money + income;
 
         this._exp += 2;
