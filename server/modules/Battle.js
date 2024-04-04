@@ -93,13 +93,19 @@ class Battle {
 
         if (p1Cats.length > 0 && p2Cats.length > 0)
             units.forEach((c) => c.update());
-        else this.finish();
+        else {
+            this.end();
+            this.punish();
+        }
     }
 
-    finish() {
-        if (this.fisnished) return;
+    end() {
+        if (this.finished) return;
         clearInterval(this.battleInterval);
+    }
 
+    punish() {
+        if (this.finished) return;
         let p1Units = this.battleField.getCats(this.player1.id).length,
             p2Units = this.battleField.getCats(this.player2.id).length,
             damage;
@@ -134,9 +140,9 @@ class Battle {
             });
         });
 
-        this.fisnished = true;
+        this.finished = true;
 
-        if (this.game.battles.every((battle) => battle.fisnished))
+        if (this.game.battles.every((battle) => battle.finished))
             this.game.finishState();
     }
 }

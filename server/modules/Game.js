@@ -24,9 +24,7 @@ class Game {
                 player.game.sendGameData(from);
                 return;
             }
-        } else {
-            player = new Player(from, ws);
-        }
+        } else player = new Player(from, ws);
 
         Game.matchingPlayers.push(player);
         if (Game.matchingPlayers.length === PLAYER_NUM)
@@ -201,7 +199,10 @@ class Game {
         this.time = 1;
         this.updateState();
 
-        this.battles.forEach((battle) => battle.finish());
+        this.battles.forEach((battle) => {
+            battle.end();
+            battle.punish();
+        });
 
         let isEnd = false;
         this.players.forEach((player) => {
@@ -220,6 +221,8 @@ class Game {
     endState() {
         clearTimeout(this.timeout);
         clearInterval(this.timer);
+
+        this.battles.forEach((battle) => battle.end());
 
         this.sendMsgToAll("gameEnd", {
             winner:
