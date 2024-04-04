@@ -2,7 +2,7 @@
     "crab": {
         "id": "crab",
         "name": "Crab",
-        "desc": "Arctic crab in north.",
+        "desc": "A crab in north ocean.",
         "synergies": [],
         "cost": 1,
         "skill": "roar",
@@ -15,7 +15,7 @@
     "devilCat": {
         "id": "devilCat",
         "name": "Devil cat",
-        "desc": "Abandoned cat who have modified genes.",
+        "desc": "A feline with modified genes.",
         "synergies": [],
         "cost": 2,
         "skill": "roar",
@@ -28,7 +28,7 @@
     "eel": {
         "id": "eel",
         "name": "Eel",
-        "desc": "Electrical eel in Doo river.",
+        "desc": "An electrical eel in Doo river.",
         "synergies": [],
         "cost": 2,
         "skill": "neckBite",
@@ -41,7 +41,7 @@
     "frog": {
         "id": "frog",
         "name": "Frog",
-        "desc": "Mischievous frog with a poison.",
+        "desc": "A mischievous frog with a poison.",
         "synergies": [],
         "cost": 1,
         "skill": "roar",
@@ -51,10 +51,10 @@
         "armor": 0,
         "range": 1
     },
-    "terrapin": {
-        "id": "terrapin",
-        "name": "Terrapin",
-        "desc": "Old terrapin. Nobody knows how old it is.",
+    "mrTerry": {
+        "id": "mrTerry",
+        "name": "Mr. Terry",
+        "desc": "\"Hey! I could be a cat.\"",
         "synergies": [],
         "cost": 1,
         "skill": "roar",

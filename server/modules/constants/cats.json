@@ -20,7 +20,7 @@
         "cost": 1,
         "skill": "neckBite",
         "ad": 12,
-        "speed": 16,
+        "speed": 15,
         "hp": 100,
         "armor": 1,
         "range": 1
@@ -38,11 +38,11 @@
         "armor": 1,
         "range": 3
     },
-    "padoPoe": {
-        "id": "padoPoe",
-        "name": "Pado Poe",
+    "royalBellyRubber": {
+        "id": "royalBellyRubber",
+        "name": "Royal Belly Rubber",
         "synergies": ["Poeir"],
-        "desc": "221th child of the king of the Poeir, who started the second great war against the Therme empire.",
+        "desc": "Skilled masseurs trained in the art of giving luxurious belly rubs to the empire's noble cats.",
         "cost": 2,
         "skill": "roar",
         "ad": 25,
@@ -77,11 +77,11 @@
         "armor": 1,
         "range": 3
     },
-    "royalBellyRubber": {
-        "id": "royalBellyRubber",
-        "name": "Royal Belly Rubber",
+    "padoPoe": {
+        "id": "padoPoe",
+        "name": "Pado Poe",
         "synergies": ["Poeir"],
-        "desc": "Skilled masseurs trained in the art of giving luxurious belly rubs to the empire's noble cats.",
+        "desc": "221th child of the king of the Poeir, who started the second great war against the Therme empire.",
         "cost": 3,
         "skill": "roar",
         "ad": 15,
@@ -103,9 +103,9 @@
         "armor": 1,
         "range": 4
     },
-    "dreamweaver": {
-        "id": "dreamweaver",
-        "name": "Dreamweaver",
+    "twinky": {
+        "id": "twinky",
+        "name": "Twinky",
         "synergies": ["Nature"],
         "desc": "Visionary artists who draw inspiration from the twinkling night sky",
         "cost": 3,
