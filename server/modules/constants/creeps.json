@@ -6,11 +6,24 @@
         "synergies": [],
         "cost": 1,
         "skill": "roar",
-        "ad": 10,
+        "ad": 8,
         "speed": 10,
         "hp": 110,
-        "armor": 2,
+        "armor": 1,
         "range": 1
+    },
+    "devilCat": {
+        "id": "devilCat",
+        "name": "Devil cat",
+        "desc": "description of eel",
+        "synergies": [],
+        "cost": 2,
+        "skill": "roar",
+        "ad": 12,
+        "speed": 40,
+        "hp": 240,
+        "armor": 2,
+        "range": 3
     },
     "eel": {
         "id": "eel",
@@ -18,11 +31,11 @@
         "desc": "description of eel",
         "synergies": [],
         "cost": 2,
-        "skill": "roar",
+        "skill": "neckBite",
         "ad": 20,
         "speed": 25,
         "hp": 130,
-        "armor": 1,
+        "armor": 0,
         "range": 3
     },
     "frog": {
@@ -38,10 +51,10 @@
         "armor": 0,
         "range": 1
     },
-    "zara": {
-        "id": "zara",
+    "terrapin": {
+        "id": "terrapin",
         "name": "Terrapin",
-        "desc": "description of zara",
+        "desc": "description of Terrapin",
         "synergies": [],
         "cost": 1,
         "skill": "roar",

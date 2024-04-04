@@ -5,9 +5,9 @@ const CREEP_ROUNDS = {
         [null, null, null, null, null],
     ],
     2: [
-        [null, null, "crab", null, null],
+        [null, null, "devilCat", null, null],
         [null, null, null, null, null],
-        [null, , "eel", null, null],
+        [null, "eel", null, "eel", null],
     ],
     3: [
         ["frog", "frog", "frog", "frog", "frog"],
@@ -21,7 +21,7 @@ const CREEP_ROUNDS = {
     ],
     5: [
         [null, null, null, null, null],
-        [null, null, "zara", null, null],
+        [null, null, "terrapin", null, null],
         [null, null, null, null, null],
     ],
 };
