@@ -229,10 +229,13 @@
 
 .cardName {
     margin-top: 4%;
-    /* font-size: calc(8px + 1.5dvh); */
+    font-size: calc(3px + 0.2dvh + 0.9dvw);
 }
 .cardDesc {
     padding: 4% 6% 8% 6%;
+    font-size: calc(3px + 0.2dvh + 0.8dvw);
+    letter-spacing: 0.1dvh;
+    line-height: 124%;
 }
 
 #homePlaceholdLayer {
@@ -345,37 +348,40 @@
 
 .country {
     width: 80%;
-    padding: 4%;
-    margin: 8dvh 0px;
+    padding: 5dvh 3dvw;
+    margin: 7dvh 0px;
 
     display: flex;
     flex-direction: column;
-    gap: 6dvh;
+    align-items: center;
+    justify-content: center;
+    gap: 4dvh;
 
     border: 0.2dvh solid #e1c573;
     box-shadow: 0px 0px 2px 2px #00000044;
+    background-color: #27273a44;
 
     transition: width 0.2s, background-color 0.2s, border 0.2s, box-shadow 0.2s;
 }
 
 .country:hover {
     width: 82%;
-    background-color: #1f1f33;
+    background-color: #000a;
     border: 0.3dvh solid #e1c573;
     box-shadow: 0px 0px 4px 4px #00000066;
 }
 
 .countryName {
     margin: 0px 0px 0px 0.5dvw;
-    font-size: calc(12px + 1.5dvh + 1.5dvw);
+    font-size: calc(9px + 1.2dvh + 1.2dvw);
     font-weight: 400;
     letter-spacing: 2px;
     text-shadow: 2px 2px 3px #000000ff;
 }
 
 .countryImgWrapper {
-    width: 14dvw;
-    height: 14dvw;
+    width: calc(8.5dvw + 8.5dvh);
+    height: calc(8.5dvw + 8.5dvh);
 
     border: 0.2dvh solid #807253;
 }
@@ -385,30 +391,27 @@
     height: 100%;
 }
 
-.countryDescWrapper {
-    display: flex;
-    flex-direction: row;
-    gap: 4%;
-}
-
 .countryDesc {
-    width: 80%;
+    width: 76%;
     font-size: large;
     font-weight: 300;
     letter-spacing: 0.1dvw;
+    text-align: center;
+    line-height: 160%;
 }
 
 .units {
     width: 100%;
-    padding-top: 4%;
+    margin-top: 4dvh;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .cardWrapper {
-    width: 14dvw;
+    width: 13dvw;
     aspect-ratio: 3/5;
-    margin: 0px 4dvw 0px 0px;
-    background-color: #1f1f33;
+    /* background-color: #1f1f33; */
     border: 0.2dvh solid #e1c573;
     box-shadow: 0px 0px 4px 4px #00000044;
     display: flex;
@@ -428,6 +431,10 @@
     align-items: center;
 
     pointer-events: none;
+}
+
+.card .cardDescWrapper {
+    background: none;
 }
 
 #unitPopUpWrapper {

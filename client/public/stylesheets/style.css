@@ -2,7 +2,7 @@ body {
     padding: 0px;
     margin: 0px;
     overflow-x: hidden;
-    background-color: #27273a;
+    background: linear-gradient(#27273a 90dvh, #202030 160dvh, #000 420dvh);
     color: #dac378;
 }
 img {
