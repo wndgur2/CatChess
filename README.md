@@ -370,3 +370,20 @@ DONE
 TODO
 
 -   유저 순위, 시너지별 순위?
+
+### 4.4
+
+enhancements
+
+-   consts (images, text):
+    item image
+    korean
+
+-   UI home/ingame
+    ingame button styles
+    language detection, setting
+    level visibility
+    item combination
+    unitInfo UI
+    winning, losing streak
+    skill effect(text: like WOW)

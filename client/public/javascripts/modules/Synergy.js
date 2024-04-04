@@ -39,7 +39,6 @@ export default class Synergy {
 
     display(amount = 0) {
         const isActive = amount >= parseInt(Object.keys(this.desc)[0]);
-        console.log(amount, parseInt(Object.keys(this.desc)[0]));
         let synergyEl = document.createElement("div");
         synergyEl.className = "synergy";
         synergyEl.id = this.id;
