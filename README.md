@@ -394,3 +394,15 @@ enhancements
     skill effect(text: like WOW)
 
 -   home 제국 wrapper 높이 지정 후 배경 다르게
+
+### 4.5
+
+언어 설정 시도
+
+DONE
+
+-   home setting UI
+-   server rendering language
+
+client 측 언어 설정 실패
+data fetch api를 수정해야할듯 -> data 구조를 바꿔야할수도있음. units 테이블에서 desc를 분리해서 언어별로 불러올 수 있도록

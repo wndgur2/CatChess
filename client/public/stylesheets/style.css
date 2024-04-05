@@ -163,9 +163,9 @@ body::-webkit-scrollbar {
 #footer {
     z-index: 100;
     position: fixed;
-    left: 2dvw;
+    left: 1.4dvw;
     bottom: 0px;
-    width: 96dvw;
+    width: 97.2dvw;
     height: 5dvh;
 
     display: flex;
@@ -174,31 +174,78 @@ body::-webkit-scrollbar {
     color: #e1c573;
 }
 
-#footer div {
+#footer > div {
     height: 100%;
 
     display: flex;
     flex-direction: row;
     align-items: center;
 
-    gap: 2dvw;
+    gap: 1.4dvw;
     text-shadow: 0px 0px 2px #000000ff;
 }
 
-#soundBtn {
+.footerBtn {
     height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6dvw;
+    font-size: medium;
 }
 
-#soundImg {
-    height: 80%;
-    max-width: 32px;
+.footerImg {
+    height: 72%;
     object-fit: cover;
 }
 
-a {
-    color: #f0dea3;
+#languageText {
+    height: fit-content;
+    color: #e1c573;
 }
 
-a:visited {
+#developerBtn {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.2dvw;
+    font-size: medium;
+}
+
+#developerBtn > span {
     color: #f0dea3;
+    text-decoration-line: underline;
+}
+
+#languagePopUp {
+    position: fixed;
+    width: fit-content;
+    bottom: 5.2dvh;
+    left: 1.4dvw;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    background-color: #27273a;
+    border: 0.2dvh solid #e1c573;
+    z-index: 1;
+
+    /* shadow */
+    box-shadow: 0px 0px 1dvh 1dvw #0000001a;
+}
+
+#languagePopUp > button {
+    width: fit-content;
+    padding: 2dvh;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    color: #e1c573;
+    font-size: small;
+}
+
+#languagePopUp > button:hover {
+    background-color: #00000044;
 }

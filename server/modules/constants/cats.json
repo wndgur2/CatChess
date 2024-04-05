@@ -1,9 +1,12 @@
 {
     "stealthyStalker": {
         "id": "stealthyStalker",
-        "name": "Stealthy Stalker",
+        "name": { "en": "Stealthy Stalker", "ko": "은밀한 추적자" },
         "synergies": ["Nature"],
-        "desc": "Expert hunter who utilize own natural camouflage and feline agility to track prey silently.",
+        "desc": {
+            "en": "Expert hunter who utilize own natural camouflage and feline agility to track prey silently.",
+            "ko": "은폐가 뛰어난 사냥꾼. 바스락 소리 조차 없다."
+        },
         "cost": 1,
         "skill": "roar",
         "ad": 10,
@@ -14,9 +17,12 @@
     },
     "vibrato": {
         "id": "vibrato",
-        "name": "Vibrato",
+        "name": { "en": "Vibrato", "ko": "탐지묘" },
         "synergies": ["Therme"],
-        "desc": "Creative souls who harness the vibrations of the underground world to create mesmerizing art.",
+        "desc": {
+            "en": "Creative souls who harness the vibrations of the underground world to create mesmerizing art.",
+            "ko": "미세한 진동도 감지하는 예민한 고양이."
+        },
         "cost": 1,
         "skill": "neckBite",
         "ad": 12,
@@ -27,9 +33,12 @@
     },
     "ironcladCrusader": {
         "id": "ironcladCrusader",
-        "name": "Ironclad Crusader",
+        "name": { "en": "Ironclad Crusader", "ko": "근위병" },
         "synergies": ["Poeir"],
-        "desc": "Formidable warrior clad in impenetrable steel armor forged from the abundant resources of Poeir's foundries.",
+        "desc": {
+            "en": "Formidable warrior clad in impenetrable steel armor forged from the abundant resources of Poeir's foundries.",
+            "ko": "포에르산 강철로 무장한 전사."
+        },
         "cost": 1,
         "skill": "roar",
         "ad": 10,
@@ -40,9 +49,12 @@
     },
     "royalBellyRubber": {
         "id": "royalBellyRubber",
-        "name": "Royal Belly Rubber",
+        "name": { "en": "Royal Belly Rubber", "ko": "궁디팡팡사" },
         "synergies": ["Poeir"],
-        "desc": "Skilled masseurs trained in the art of giving luxurious belly rubs to the empire's noble cats.",
+        "desc": {
+            "en": "Skilled masseurs trained in the art of giving luxurious belly rubs to the empire's noble cats.",
+            "ko": "포에르 귀족 고양이의 궁디를 책임지는 궁디팡팡사."
+        },
         "cost": 2,
         "skill": "roar",
         "ad": 25,
@@ -53,9 +65,12 @@
     },
     "blink": {
         "id": "blink",
-        "name": "Blink",
+        "name": { "en": "Blink", "ko": "잽싸냥" },
         "synergies": ["Therme"],
-        "desc": "Resourceful hunters who stalk prey in the darkness of the underground.",
+        "desc": {
+            "en": "Resourceful hunters who stalk prey in the darkness of the underground.",
+            "ko": "지하의 사냥꾼."
+        },
         "cost": 2,
         "skill": "neckBite",
         "ad": 25,
@@ -66,9 +81,12 @@
     },
     "cosmos": {
         "id": "cosmos",
-        "name": "Cosmos",
+        "name": { "en": "Cosmos", "ko": "코스모스" },
         "synergies": ["Nature"],
-        "desc": "The revered shaman of the Nature tribe defending their kin with cosmic fury and celestial might.",
+        "desc": {
+            "en": "The revered shaman of the Nature tribe defending their kin with cosmic fury and celestial might.",
+            "ko": "우주의 분노와 천상의 힘으로 동족을 보호하는 자연 부족의 주술사."
+        },
         "cost": 2,
         "skill": "roar",
         "ad": 10,
@@ -79,9 +97,12 @@
     },
     "padoPoe": {
         "id": "padoPoe",
-        "name": "Pado Poe",
+        "name": { "en": "Pado Poe", "ko": "파도 왕자" },
         "synergies": ["Poeir"],
-        "desc": "221th child of the king of the Poeir, who started the second great war against the Therme empire.",
+        "desc": {
+            "en": "221th child of the king of the Poeir, who started the second great war against the Therme empire.",
+            "ko": "테르메 제국과 2차 자원 전쟁을 일으킨 포에르 5세의 221번째 아들."
+        },
         "cost": 3,
         "skill": "roar",
         "ad": 15,
@@ -92,9 +113,12 @@
     },
     "magmaWarden": {
         "id": "magmaWarden",
-        "name": "Magma Warden",
+        "name": { "en": "Magma Warden", "ko": "마그마 근위병" },
         "synergies": ["Therme"],
-        "desc": "Protectors of Therme, using abilities to create defensive barriers and shield their fellow felines from harm.",
+        "desc": {
+            "en": "Protectors of Therme, using abilities to create defensive barriers and shield their fellow felines from harm.",
+            "ko": "부글부글 끓습니다. 뜨겁다는 뜻일까요?"
+        },
         "cost": 3,
         "skill": "roar",
         "ad": 17,
@@ -105,9 +129,12 @@
     },
     "twinky": {
         "id": "twinky",
-        "name": "Twinky",
+        "name": { "en": "Twinky", "ko": "트윙키" },
         "synergies": ["Nature"],
-        "desc": "Visionary artists who draw inspiration from the twinkling night sky",
+        "desc": {
+            "en": "Visionary artist who draw inspiration from the twinkling night sky.",
+            "ko": "반짝반짝 빛나는 밤하늘에서 영감을 이끌어내는 선견지명의 예술가."
+        },
         "cost": 3,
         "skill": "roar",
         "ad": 17,
@@ -118,9 +145,12 @@
     },
     "lionheartClawson": {
         "id": "lionheartClawson",
-        "name": "Lionheart Clawson",
+        "name": { "en": "Lionheart Clawson", "ko": "클로손 장군" },
         "synergies": ["Poeir"],
-        "desc": "A noble and courageous knight of the empire of Poeir.",
+        "desc": {
+            "en": "A noble and courageous knight of the empire of Poeir.",
+            "ko": "용맹한 포에르의 정예 기사."
+        },
         "cost": 4,
         "skill": "roar",
         "ad": 30,
@@ -131,9 +161,12 @@
     },
     "greatClaw": {
         "id": "greatClaw",
-        "name": "Greatclaw",
+        "name": { "en": "Greatclaw", "ko": "자연 파수꾼" },
         "synergies": ["Nature"],
-        "desc": "Protector of sacred groves and ancient landmarks, sworn to defend the balance of nature.",
+        "desc": {
+            "en": "Protector of sacred groves and ancient landmarks, sworn to defend the balance of nature.",
+            "ko": "자연을 지키기로 맹세한 고대의 수호자."
+        },
         "cost": 4,
         "skill": "roar",
         "ad": 25,
@@ -144,9 +177,12 @@
     },
     "moltenShadow": {
         "id": "moltenShadow",
-        "name": "Molten Shadow",
+        "name": { "en": "Molten Shadow", "ko": "그림자 사냥꾼" },
         "synergies": ["Therme"],
-        "desc": "Hunter who thrives in the fiery depths of volcanic regions. \"Ashes to ashes, dust to dust.\"",
+        "desc": {
+            "en": "Hunter who thrives in the fiery depths of volcanic regions. \"Ashes to ashes, dust to dust.\"",
+            "ko": "화산 깊은 곳에 서식하는 사냥꾼. \"재는 재로, 먼지는 먼지로.\""
+        },
         "cost": 4,
         "skill": "roar",
         "ad": 60,

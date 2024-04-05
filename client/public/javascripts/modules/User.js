@@ -7,6 +7,9 @@ export default class User {
         if (!token) return false;
         return true;
     }
+    static init() {
+        User.authenticate();
+    }
 
     static authenticate() {
         if (User.isAuthenticated()) {
@@ -46,7 +49,7 @@ export default class User {
     }
 
     static signIn() {
-        window.location.href = "/auth/google";
+        window.location.href = `/auth/google`;
     }
 
     static signOut() {
@@ -56,7 +59,9 @@ export default class User {
             const cookie = cookies[i];
             const eqPos = cookie.indexOf("=");
             const key = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-            document.cookie = key + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            if (key !== "fixedLanguage" && key !== "preferLanguage")
+                document.cookie =
+                    key + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
         }
 
         localStorage.removeItem(CATCHESS_ID);
@@ -74,6 +79,7 @@ export default class User {
         });
     }
 }
+
 function getCookie(key) {
     try {
         let cookie = decodeURIComponent(document.cookie);
@@ -91,5 +97,6 @@ function getCookie(key) {
 function getRecord(win, loss) {
     let rate = 0;
     if (win + loss > 0) rate = (win / (win + loss)) * 100;
+
     return `${win}W ${loss}L (${rate.toFixed(0)}%)`;
 }

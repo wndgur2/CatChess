@@ -41,7 +41,6 @@
 #authWrapper {
     width: 24dvw;
     height: 100%;
-    padding-right: 3dvw;
 
     display: flex;
     flex-direction: row;
@@ -54,6 +53,7 @@
     width: 100%;
     height: 60%;
     padding: 0% 4%;
+    margin-right: 3dvw;
 
     flex-direction: row;
     justify-content: space-between;
@@ -80,23 +80,24 @@
 
 #signinBtnWrapper {
     height: 9dvh;
-    width: 20dvw;
+    width: fit-content;
     display: flex;
     justify-content: end;
     align-items: center;
 }
 
 #signinBtn {
-    padding: 0px;
     margin: 0px;
-    width: 100%;
+    padding: 2dvh 2dvw;
+    width: fit-content;
     height: 100%;
+    white-space: nowrap;
 
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    gap: 4%;
+    gap: 1dvw;
 }
 
 #signinBtn:focus {

@@ -4,6 +4,7 @@ import UI from "./modules/UI.js";
 import Unit from "./modules/Unit.js";
 
 window.onload = () => {
+    // setLanguage();
     logDeviceInfo();
     init(isPlayableDevice());
 };

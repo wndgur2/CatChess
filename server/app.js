@@ -10,7 +10,22 @@ app.use(express.static(__dirname + "/../client/public"));
 app.set("view engine", "pug");
 app.set("views", __dirname + "/../client/views");
 
-app.get("/", (req, res, next) => res.render("page"));
+const languageMiddleware = (req, res, next) => {
+    const lang = req.headers["accept-language"];
+    if (lang.includes("ko")) req.preferLanguage = "ko";
+    else req.preferLanguage = "en";
+    next();
+};
+
+// Register middleware globally
+app.use(languageMiddleware);
+
+app.get("/", (req, res, next) => {
+    let lang = req.query.lang;
+    if (lang != "ko") lang = "en";
+
+    res.render("page", { language: lang });
+});
 
 app.use("/api", router);
 app.use("/auth", authRouter);

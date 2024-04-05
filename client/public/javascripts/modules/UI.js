@@ -15,7 +15,7 @@ export default class UI {
 
     static init() {
         createUnitCards();
-        User.authenticate();
+        User.init();
         this.hydrate();
     }
 
@@ -47,6 +47,16 @@ export default class UI {
                 fullscreen(el);
             });
 
+        //footer
+        document
+            .getElementById("languageBtn")
+            .addEventListener("click", languageBtnClick);
+        document.getElementById("ko").addEventListener("click", () => {
+            languageChange("ko");
+        });
+        document.getElementById("en").addEventListener("click", () => {
+            languageChange("en");
+        });
         document.getElementById("soundBtn").addEventListener("click", () => {
             let soundImg = document.getElementById("soundImg");
             if (UI.muted) {
@@ -58,6 +68,12 @@ export default class UI {
             }
             UI.muted = !UI.muted;
         });
+
+        document
+            .getElementById("developerBtn")
+            .addEventListener("click", () =>
+                window.open("https://github.com/wndgur2/CatChess")
+            );
 
         document.getElementById("modalClose").addEventListener("click", () => {
             this.closeModal();
@@ -481,12 +497,14 @@ function newCard(type, cat) {
 
     let cardName = document.createElement("span");
     cardName.className = "cardName";
-    cardName.innerHTML = cat.name;
+    // cardName.innerHTML = cat.name[language];
+    cardName.innerHTML = cat.name.en;
     cardDescWrapper.appendChild(cardName);
 
     let cardDesc = document.createElement("span");
     cardDesc.className = "cardDesc";
-    cardDesc.innerHTML = cat.desc;
+    // cardDesc.innerHTML = cat.desc[language];
+    cardDesc.innerHTML = cat.desc.en;
     cardDescWrapper.appendChild(cardDesc);
 
     card.appendChild(cardDescWrapper);
@@ -497,4 +515,15 @@ function newCard(type, cat) {
 function fullscreen(el) {
     if (document.fullscreenElement) document.exitFullscreen();
     else el.requestFullscreen();
+}
+
+function languageBtnClick() {
+    const language = document.getElementById("languagePopUp");
+    if (language.style.display === "flex") language.style.display = "none";
+    else language.style.display = "flex";
+}
+
+function languageChange(language) {
+    document.cookie = `fixedLanguage=${language}`;
+    location.href = "/?lang=" + language;
 }

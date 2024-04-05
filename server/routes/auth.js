@@ -10,8 +10,6 @@ const redirectUri =
         ? "http://catchess.ap-northeast-2.elasticbeanstalk.com/auth/google/callback"
         : "http://localhost:8080/auth/google/callback";
 
-console.log(redirectUri);
-
 const oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
     process.env.GOOGLE_CLIENT_SECRET,
@@ -25,7 +23,7 @@ const authorizationUrl = oauth2Client.generateAuthUrl({
 });
 
 router.get("/google", (req, res) => {
-    res.redirect(authorizationUrl);
+    res.lang = req.query.lang;
 });
 
 router.get("/google/callback", async (req, res) => {
@@ -48,7 +46,7 @@ router.get("/google/callback", async (req, res) => {
         } catch (error) {
             console.error("Error getting id_token data:", error.message);
         } finally {
-            res.redirect("/");
+            res.redirect(`/?lang=${req.lang}`);
         }
     });
 });

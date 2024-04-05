@@ -1,8 +1,8 @@
 {
     "crab": {
         "id": "crab",
-        "name": "Crab",
-        "desc": "A crab in north ocean.",
+        "name": { "en": "Crab", "ko": "북해 게" },
+        "desc": { "en": "A crab in north ocean.", "ko": "북해의 게이다." },
         "synergies": [],
         "cost": 1,
         "skill": "roar",
@@ -14,8 +14,11 @@
     },
     "devilCat": {
         "id": "devilCat",
-        "name": "Devil cat",
-        "desc": "A feline with modified genes.",
+        "name": { "en": "Devil cat", "ko": "악묘" },
+        "desc": {
+            "en": "A feline with modified genes.",
+            "ko": "조작된 유전자의 고양잇과 동물이다."
+        },
         "synergies": [],
         "cost": 2,
         "skill": "roar",
@@ -27,8 +30,11 @@
     },
     "eel": {
         "id": "eel",
-        "name": "Eel",
-        "desc": "An electrical eel in Doo river.",
+        "name": { "en": "Eel", "ko": "장어" },
+        "desc": {
+            "en": "An electrical eel in Doo river.",
+            "ko": "두강에 사는 전기뱀장어."
+        },
         "synergies": [],
         "cost": 2,
         "skill": "neckBite",
@@ -40,8 +46,11 @@
     },
     "frog": {
         "id": "frog",
-        "name": "Frog",
-        "desc": "A mischievous frog with a poison.",
+        "name": { "en": "Frog", "ko": "독개구리" },
+        "desc": {
+            "en": "A mischievous frog with a poison.",
+            "ko": "장난끼가 많은 개구리."
+        },
         "synergies": [],
         "cost": 1,
         "skill": "roar",
@@ -53,8 +62,11 @@
     },
     "mrTerry": {
         "id": "mrTerry",
-        "name": "Mr. Terry",
-        "desc": "\"Hey! I could be a cat.\"",
+        "name": { "en": "Mr. Terry", "ko": "김씨" },
+        "desc": {
+            "en": "\"Hey! I could be a cat.\"",
+            "ko": "\"이봐! 나도 고양이라네.\""
+        },
         "synergies": [],
         "cost": 1,
         "skill": "roar",
