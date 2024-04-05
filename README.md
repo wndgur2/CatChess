@@ -3,7 +3,8 @@
 ### Cat Chess home [링크](http://catchess.ap-northeast-2.elasticbeanstalk.com/)
 
 <img width="1440" alt="image" src="https://github.com/wndgur2/CatChess/assets/65120311/75a2bb18-af28-4f4e-9b35-992c2a457548">
-  
+<img width="1920" alt="image" src="https://github.com/wndgur2/CatChess/assets/65120311/2dedbbe7-e11c-4fd4-885e-4791b6e3b3cb">
+
 ### Figma: 기획, 화면 설계 [링크](https://www.figma.com/file/UTLu1K2qiGxK4XhZFt7q1h/catChess?type=design&node-id=0%3A1&mode=design&t=4keMP4w5z6JixYat-1)
 
 <img width="1440" alt="image" src="https://github.com/wndgur2/CatChess/assets/65120311/32380036-5096-427a-83c6-a50344274caa">
@@ -387,3 +388,5 @@ enhancements
     unitInfo UI
     winning, losing streak
     skill effect(text: like WOW)
+
+-   home 제국 wrapper 높이 지정 후 배경 다르게
