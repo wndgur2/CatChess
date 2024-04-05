@@ -5,6 +5,10 @@
 <img width="1440" alt="image" src="https://github.com/wndgur2/CatChess/assets/65120311/75a2bb18-af28-4f4e-9b35-992c2a457548">
 <img width="1920" alt="image" src="https://github.com/wndgur2/CatChess/assets/65120311/2dedbbe7-e11c-4fd4-885e-4791b6e3b3cb">
 
+### 0.2.9 Demo video [링크](https://www.youtube.com/watch?v=07bcqwNsibg&t=314s)
+
+![0:2:8capt](https://github.com/wndgur2/CatChess/assets/65120311/713951bb-b64e-4fb0-92ce-ae3a41c3149b)
+
 ### Figma: 기획, 화면 설계 [링크](https://www.figma.com/file/UTLu1K2qiGxK4XhZFt7q1h/catChess?type=design&node-id=0%3A1&mode=design&t=4keMP4w5z6JixYat-1)
 
 <img width="1440" alt="image" src="https://github.com/wndgur2/CatChess/assets/65120311/32380036-5096-427a-83c6-a50344274caa">
