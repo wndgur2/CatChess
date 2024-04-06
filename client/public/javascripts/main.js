@@ -4,7 +4,6 @@ import UI from "./modules/UI.js";
 import Unit from "./modules/Unit.js";
 
 window.onload = () => {
-    // setLanguage();
     logDeviceInfo();
     init(isPlayableDevice());
 };
@@ -23,16 +22,19 @@ async function fetchResource() {
 }
 
 async function fetchImages() {
-    const data = Object.keys(Unit.CATS).concat(Object.keys(Unit.CREEPS));
+    const data = Object.values(Unit.CATS).concat(Object.values(Unit.CREEPS));
     let count = 0;
     startLoading();
-    data.forEach((key) => {
+    data.forEach((unit) => {
         const img = new Image();
-        img.src = `/images/portraits/${key}.jpg`;
+        img.src = `/images/portraits/${unit.id}.jpg`;
         img.onload = () => {
             document.querySelector(
                 "#loadingText"
             ).innerHTML = `Fetching Data... ${count}/${data.length}`;
+        };
+        img.onerror = () => {
+            console.log("Error fetching image.");
         };
     });
 }
@@ -60,11 +62,11 @@ function logDeviceInfo() {
         language: navigator.language || navigator.userLanguage,
     };
 
-    fetch("/api/log/browser", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(browserInfo),
-    });
+    // fetch("/user/log/browser", {
+    //     method: "POST",
+    //     headers: {
+    //         "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(browserInfo),
+    // });
 }

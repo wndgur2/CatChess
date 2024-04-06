@@ -8,16 +8,18 @@ import { getBoardCoords } from "./utils.js";
 
 export default class Unit {
     static async fetchData() {
-        await fetch("/api/cats")
+        await fetch("/data/cats")
             .then((res) => res.json())
             .then((data) => {
                 Unit.CATS = data;
+                console.log("Cat data fetched.");
                 return data;
             });
-        await fetch("/api/creeps")
+        await fetch("/data/creeps")
             .then((res) => res.json())
             .then((data) => {
                 Unit.CREEPS = data;
+                console.log("Creep data fetched.");
                 return data;
             });
     }

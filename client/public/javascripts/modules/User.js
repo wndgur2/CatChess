@@ -7,6 +7,7 @@ export default class User {
         if (!token) return false;
         return true;
     }
+
     static init() {
         User.authenticate();
     }
@@ -17,7 +18,7 @@ export default class User {
             localStorage.setItem(CATCHESS_ID, Socket.id);
             document.getElementById("id").innerHTML = Socket.id;
 
-            fetch(`/api/user/init`, {
+            fetch(`/user/init`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -59,7 +60,7 @@ export default class User {
             const cookie = cookies[i];
             const eqPos = cookie.indexOf("=");
             const key = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-            if (key !== "fixedLanguage" && key !== "preferLanguage")
+            if (key !== "lang")
                 document.cookie =
                     key + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
         }
@@ -70,7 +71,7 @@ export default class User {
     }
 
     static saveLog(winOrLose) {
-        fetch(`/api/user/${winOrLose}`, {
+        fetch(`/user/${winOrLose}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

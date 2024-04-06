@@ -497,14 +497,12 @@ function newCard(type, cat) {
 
     let cardName = document.createElement("span");
     cardName.className = "cardName";
-    // cardName.innerHTML = cat.name[language];
-    cardName.innerHTML = cat.name.en;
+    cardName.innerHTML = cat.name;
     cardDescWrapper.appendChild(cardName);
 
     let cardDesc = document.createElement("span");
     cardDesc.className = "cardDesc";
-    // cardDesc.innerHTML = cat.desc[language];
-    cardDesc.innerHTML = cat.desc.en;
+    cardDesc.innerHTML = cat.desc;
     cardDescWrapper.appendChild(cardDesc);
 
     card.appendChild(cardDescWrapper);
@@ -524,6 +522,6 @@ function languageBtnClick() {
 }
 
 function languageChange(language) {
-    document.cookie = `fixedLanguage=${language}`;
+    document.cookie = `lang=${language}`;
     location.href = "/?lang=" + language;
 }

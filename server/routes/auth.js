@@ -23,7 +23,7 @@ const authorizationUrl = oauth2Client.generateAuthUrl({
 });
 
 router.get("/google", (req, res) => {
-    res.lang = req.query.lang;
+    res.redirect(authorizationUrl);
 });
 
 router.get("/google/callback", async (req, res) => {
@@ -46,7 +46,7 @@ router.get("/google/callback", async (req, res) => {
         } catch (error) {
             console.error("Error getting id_token data:", error.message);
         } finally {
-            res.redirect(`/?lang=${req.lang}`);
+            res.redirect(`/`);
         }
     });
 });

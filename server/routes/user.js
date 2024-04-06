@@ -3,12 +3,6 @@ const router = express.Router();
 const mongoDB = require("../db/mongoDB");
 const jwt = require("jsonwebtoken");
 
-router.get("/cats", (req, res, next) => {
-    res.json(require("../modules/constants/cats.json"));
-});
-router.get("/creeps", (req, res, next) => {
-    res.json(require("../modules/constants/creeps.json"));
-});
 router.post("/log/browser", (req, res, next) => {
     const device = req.body;
     device.ip = req.ip;
@@ -20,7 +14,7 @@ router.post("/log/browser", (req, res, next) => {
 });
 
 // db apis
-router.get("/user/init", async (req, res, next) => {
+router.get("/init", async (req, res, next) => {
     const id_token = req.headers.authorization
         .split('"id_token":"')[1]
         .split('"')[0];
@@ -45,7 +39,7 @@ async function initUser(email) {
     return user;
 }
 
-router.put("/user/win", async (req, res, next) => {
+router.put("/win", async (req, res, next) => {
     const id_token = req.headers.authorization
         .split('"id_token":"')[1]
         .split('"')[0];
@@ -54,7 +48,7 @@ router.put("/user/win", async (req, res, next) => {
     res.json(user);
 });
 
-router.put("/user/lose", async (req, res, next) => {
+router.put("/lose", async (req, res, next) => {
     const id_token = req.headers.authorization
         .split('"id_token":"')[1]
         .split('"')[0];
