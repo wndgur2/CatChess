@@ -33,7 +33,7 @@
     },
     "ironcladCrusader": {
         "id": "ironcladCrusader",
-        "name": { "en": "Ironclad Crusader", "ko": "근위병" },
+        "name": { "en": "Ironclad Knight", "ko": "철갑 기사" },
         "synergies": ["Poeir"],
         "desc": {
             "en": "Formidable warrior in impenetrable steel armor forged from the Poeir's foundries.",

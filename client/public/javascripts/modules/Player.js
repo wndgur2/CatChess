@@ -62,8 +62,8 @@ export default class Player {
     }
 
     set _board(newBoard) {
-// 여기랑 큐 client data에서 생성하도록?
-// 2성은? ... 언어 설정(디바이스 설정) 때문에
+        // 여기랑 큐 client data에서 생성하도록?
+        // 2성은? ... 언어 설정(디바이스 설정) 때문에
         this.board = newBoard.map((row) =>
             row.map((cat) => (cat ? new Unit(cat) : null))
         );
@@ -93,17 +93,20 @@ export default class Player {
                 shopListEl[i].style.visibility = "hidden";
                 continue;
             }
+            const unitPrototype = Unit.CATS.find(
+                (cat) => cat.id === newShop[i].id
+            );
             shopListEl[i].style.visibility = "visible";
             let shopImageWrapper =
                 shopListEl[i].getElementsByClassName("shopImageWrapper")[0];
-            shopImageWrapper.style.backgroundImage = `url(/images/portraits/${newShop[i].id}.jpg)`;
+            shopImageWrapper.style.backgroundImage = `url(/images/portraits/${unitPrototype.id}.jpg)`;
 
             let name = shopListEl[i].getElementsByClassName("shopUnitName")[0];
-            name.innerHTML = newShop[i].name;
-            name.style.color = COST_COLORS[newShop[i].cost];
+            name.innerHTML = unitPrototype.name;
+            name.style.color = COST_COLORS[unitPrototype.cost];
 
             let cost = shopListEl[i].getElementsByClassName("shopUnitCost")[0];
-            cost.innerHTML = newShop[i].cost;
+            cost.innerHTML = unitPrototype.cost;
 
             let synergiesEl =
                 shopListEl[i].getElementsByClassName("shopSynergies")[0];
