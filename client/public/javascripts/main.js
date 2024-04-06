@@ -9,9 +9,9 @@ window.onload = () => {
 };
 
 async function init(playable) {
-    Socket.init(playable);
     await fetchResource();
     UI.init();
+    Socket.init(playable);
     endLoading();
     if (playable) Painter.init();
 }

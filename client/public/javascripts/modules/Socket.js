@@ -36,6 +36,7 @@ export default class Socket {
 
             switch (type) {
                 case "resNewId": {
+                    if (Socket.id) return;
                     Socket.id = data;
                     localStorage.setItem(CATCHESS_ID, data);
                     readyToPlay();
