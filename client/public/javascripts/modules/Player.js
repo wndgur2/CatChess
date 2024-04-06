@@ -62,6 +62,8 @@ export default class Player {
     }
 
     set _board(newBoard) {
+// 여기랑 큐 client data에서 생성하도록?
+// 2성은? ... 언어 설정(디바이스 설정) 때문에
         this.board = newBoard.map((row) =>
             row.map((cat) => (cat ? new Unit(cat) : null))
         );
