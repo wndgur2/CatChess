@@ -4,11 +4,12 @@ import UI from "./modules/UI.js";
 import Unit from "./modules/Unit.js";
 
 window.onload = () => {
-    logDeviceInfo();
-    init(isPlayableDevice());
+    init();
 };
 
-async function init(playable) {
+async function init() {
+    const playable = isPlayableDevice();
+
     await fetchResource();
     UI.init();
     Socket.init(playable);
@@ -54,19 +55,4 @@ function isPlayableDevice() {
         );
     if (isMobile) alert("Mobile devices are not supported.");
     return !isMobile;
-}
-
-function logDeviceInfo() {
-    const browserInfo = {
-        userAgent: navigator.userAgent,
-        language: navigator.language || navigator.userLanguage,
-    };
-
-    // fetch("/user/log/browser", {
-    //     method: "POST",
-    //     headers: {
-    //         "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(browserInfo),
-    // });
 }
