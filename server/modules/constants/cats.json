@@ -4,8 +4,8 @@
         "name": { "en": "Stealthy Stalker", "ko": "은밀한 추적자" },
         "synergies": ["Nature"],
         "desc": {
-            "en": "Expert hunter who utilize own natural camouflage and feline agility to track prey silently.",
-            "ko": "은폐가 뛰어난 사냥꾼. 바스락 소리 조차 없다."
+            "en": "Expert hunter who utilize own natural camouflage.",
+            "ko": "은폐가 뛰어난 사냥꾼. 있을 수도 있고 없을 수도 있습니다."
         },
         "cost": 1,
         "skill": "roar",
@@ -36,7 +36,7 @@
         "name": { "en": "Ironclad Crusader", "ko": "근위병" },
         "synergies": ["Poeir"],
         "desc": {
-            "en": "Formidable warrior clad in impenetrable steel armor forged from the abundant resources of Poeir's foundries.",
+            "en": "Formidable warrior in impenetrable steel armor forged from the Poeir's foundries.",
             "ko": "포에르산 강철로 무장한 전사."
         },
         "cost": 1,
@@ -69,7 +69,7 @@
         "synergies": ["Therme"],
         "desc": {
             "en": "Resourceful hunters who stalk prey in the darkness of the underground.",
-            "ko": "지하의 사냥꾼."
+            "ko": "지하의 날렵한 사냥꾼."
         },
         "cost": 2,
         "skill": "neckBite",
@@ -84,8 +84,8 @@
         "name": { "en": "Cosmos", "ko": "코스모스" },
         "synergies": ["Nature"],
         "desc": {
-            "en": "The revered shaman of the Nature tribe defending their kin with cosmic fury and celestial might.",
-            "ko": "우주의 분노와 천상의 힘으로 동족을 보호하는 자연 부족의 주술사."
+            "en": "The revered shaman of the Nature tribe defending their kin with celestial might.",
+            "ko": "천상의 힘으로 동족을 보호하는 자연 부족의 주술사."
         },
         "cost": 2,
         "skill": "roar",
@@ -100,7 +100,7 @@
         "name": { "en": "Pado Poe", "ko": "파도 왕자" },
         "synergies": ["Poeir"],
         "desc": {
-            "en": "221th child of the king of the Poeir, who started the second great war against the Therme empire.",
+            "en": "221th child of the king of the Poeir, who started the second great war against Therme.",
             "ko": "테르메 제국과 2차 자원 전쟁을 일으킨 포에르 5세의 221번째 아들."
         },
         "cost": 3,
@@ -116,7 +116,7 @@
         "name": { "en": "Magma Warden", "ko": "마그마 근위병" },
         "synergies": ["Therme"],
         "desc": {
-            "en": "Protectors of Therme, using abilities to create defensive barriers and shield their fellow felines from harm.",
+            "en": "Plop-plop. Would it be hot?",
             "ko": "부글부글 끓습니다. 뜨겁다는 뜻일까요?"
         },
         "cost": 3,
@@ -164,7 +164,7 @@
         "name": { "en": "Greatclaw", "ko": "자연 파수꾼" },
         "synergies": ["Nature"],
         "desc": {
-            "en": "Protector of sacred groves and ancient landmarks, sworn to defend the balance of nature.",
+            "en": "Protector of sacred groves and ancient landmarks, sworn to defend the nature.",
             "ko": "자연을 지키기로 맹세한 고대의 수호자."
         },
         "cost": 4,
