@@ -53,7 +53,7 @@
         "synergies": ["Poeir"],
         "desc": {
             "en": "Skilled masseurs trained in the art of giving luxurious belly rubs to the empire's noble cats.",
-            "ko": "포에르 귀족 고양이의 궁디를 책임지는 궁디팡팡사."
+            "ko": "포에르 귀족 고양이의 궁디 책임자."
         },
         "cost": 2,
         "skill": "roar",
@@ -133,7 +133,7 @@
         "synergies": ["Nature"],
         "desc": {
             "en": "Visionary artist who draw inspiration from the twinkling night sky.",
-            "ko": "반짝반짝 빛나는 밤하늘에서 영감을 이끌어내는 선견지명의 예술가."
+            "ko": "빛나는 밤하늘에서 영감을 이끌어내는 선지자."
         },
         "cost": 3,
         "skill": "roar",
