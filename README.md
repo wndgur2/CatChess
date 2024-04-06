@@ -435,3 +435,5 @@ TODO
 
 -   규빈 피드백: 메인 페이지 card opener 개선 -> 공간의 중요도에 비해 정보량이나 보는 즐거움이 적음
 -   mobile UI 개선
+
+-! ingame 언어 불러오기 설정 안함: Error 
