@@ -27,6 +27,7 @@ export default class Unit {
     static imageEls = {};
     static skillImageEls = {};
     constructor(data) {
+// 스태틱 데이터는 client에 fetch된 데이터서, 나머진 서버에서 불러오기
         this.id = data.id;
         this.uid = data.uid;
         this.tier = data.tier;
