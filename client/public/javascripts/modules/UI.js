@@ -401,10 +401,10 @@ function newMainCard() {
     const MAX_AMOUNT = 5;
     const cards = document.getElementById("cards");
     const currentCats = [...cards.children].map((card) => card.id);
-    const keys = Object.keys(Unit.CATS).filter(
-        (key) => !currentCats.includes(key)
+    const values = Object.values(Unit.CATS).filter(
+        (value) => !currentCats.includes(value.id)
     );
-    if (keys.length > 0) {
+    if (values.length > 0) {
         if (cards.children.length > MAX_AMOUNT) {
             const i = cards.children.length - MAX_AMOUNT;
             cards.children[i].setAttribute(
@@ -417,7 +417,7 @@ function newMainCard() {
             }, 400);
         }
 
-        const cat = Unit.CATS[keys[Math.floor(Math.random() * keys.length)]];
+        const cat = values[Math.floor(Math.random() * values.length)];
         const cardWrapper = newCard("main", cat);
         cards.appendChild(cardWrapper);
 
