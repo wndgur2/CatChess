@@ -46,7 +46,7 @@ router.get("/google/callback", async (req, res) => {
         } catch (error) {
             console.error("Error getting id_token data:", error.message);
         } finally {
-            res.redirect(`/`);
+            res.redirect(`/?lang=${req.cookies.lang}`);
         }
     });
 });
