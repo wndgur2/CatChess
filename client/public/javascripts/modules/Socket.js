@@ -17,8 +17,8 @@ export default class Socket {
             // if (langauge === "ko") text = "지원하지 않는 기기입니다.";
             return blockPlayBtn(text);
         }
-        // const url = "ws://localhost:8080";
-        const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
+        const url = "ws://localhost:8080";
+        // const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
         Socket.socket = new WebSocket(url);
 
         Socket.socket.onopen = function (event) {

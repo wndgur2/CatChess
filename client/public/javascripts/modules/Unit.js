@@ -12,14 +12,12 @@ export default class Unit {
             .then((res) => res.json())
             .then((data) => {
                 Unit.CATS = data;
-                console.log("Cat data fetched.");
                 return data;
             });
         await fetch("/data/creeps")
             .then((res) => res.json())
             .then((data) => {
                 Unit.CREEPS = data;
-                console.log("Creep data fetched.");
                 return data;
             });
     }
@@ -27,14 +25,18 @@ export default class Unit {
     static imageEls = {};
     static skillImageEls = {};
     constructor(data) {
-// 스태틱 데이터는 client에 fetch된 데이터서, 나머진 서버에서 불러오기
+        // 스태틱 데이터는 client에 fetch된 데이터서, 나머진 서버에서 불러오기
+        this.name = Unit.CATS.concat(Unit.CREEPS).find(
+            (unit) => unit.id === data.id
+        ).name;
+        this.desc = Unit.CATS.concat(Unit.CREEPS).find(
+            (unit) => unit.id === data.id
+        ).desc;
         this.id = data.id;
         this.uid = data.uid;
         this.tier = data.tier;
-        this.name = data.name;
         this.skill = data.skill;
         this.synergies = data.synergies;
-        this.desc = data.desc;
         this.ad = data.ad;
         this.speed = data.speed;
         this.range = data.range;

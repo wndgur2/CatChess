@@ -84,6 +84,7 @@ export default class Player {
     }
 
     set _shop(newShop) {
+        // id만 받아와서 클라이언트 이름 사용하도록 개선
         this.shop = newShop;
         if (this.id !== Socket.id) return;
         let shopListEl = document.getElementsByClassName("shopListWrapper");
