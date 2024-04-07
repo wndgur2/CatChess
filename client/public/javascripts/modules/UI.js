@@ -6,6 +6,7 @@ import Sound from "./Sound.js";
 import Game from "./Game.js";
 import Unit from "./Unit.js";
 import User from "./User.js";
+import { getCookie } from "./utils.js";
 
 export default class UI {
     static draggingId;
@@ -389,7 +390,7 @@ function cancelMatching() {
     playBtn.onmouseover = null;
     playBtn.onmouseout = null;
     const playBtnText = document.getElementById("playBtnText");
-    playBtnText.innerHTML = "Match";
+    playBtnText.innerHTML = getCookie("lang") == "ko" ? "게임 매칭" : "Match";
 }
 
 function createUnitCards() {
