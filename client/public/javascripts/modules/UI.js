@@ -15,6 +15,7 @@ export default class UI {
     static muted = true;
 
     static init() {
+        scroll();
         createUnitCards();
         User.init();
         this.hydrate();
@@ -393,6 +394,12 @@ function cancelMatching() {
     playBtnText.innerHTML = getCookie("lang") == "ko" ? "게임 매칭" : "Match";
 }
 
+function scroll() {
+    if (!getCookie("scroll")) return;
+    window.scrollTo(0, parseInt(getCookie("scroll")));
+    document.cookie = "scroll=0";
+}
+
 function createUnitCards() {
     newMainCard();
     loadDescCards();
@@ -523,6 +530,7 @@ function languageBtnClick() {
 }
 
 function languageChange(language) {
+    document.cookie = `scroll=${window.scrollY}`;
     document.cookie = `lang=${language}`;
-    location.href = "/?lang=" + language;
+    location.href = `/?lang=${language}`;
 }

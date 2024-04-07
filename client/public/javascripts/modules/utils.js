@@ -30,6 +30,10 @@ function getCookie(key) {
     cookieArr.forEach((cookie) => {
         if (cookie.includes(key)) value = cookie.split("=")[1];
     });
+    if (!value) {
+        console.log("getCookie: invalid key");
+        return null;
+    }
     return value;
 }
 
