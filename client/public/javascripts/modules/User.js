@@ -1,5 +1,6 @@
 import Socket from "./Socket.js";
 import { CATCHESS_ID } from "./constants/CONSTS.js";
+import { getCookie } from "./utils.js";
 
 export default class User {
     static isAuthenticated() {
@@ -78,20 +79,6 @@ export default class User {
                 Authorization: `Bearer ${getCookie("token")}`,
             },
         });
-    }
-}
-
-function getCookie(key) {
-    try {
-        let cookie = decodeURIComponent(document.cookie);
-        let cookieArr = cookie.split("; ");
-        let value = "";
-        cookieArr.forEach((cookie) => {
-            if (cookie.includes(key)) value = cookie.split("=")[1];
-        });
-        return value;
-    } catch {
-        User.signOut();
     }
 }
 

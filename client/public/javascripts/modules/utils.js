@@ -23,4 +23,14 @@ function getBoardCoords(x, y) {
     }
 }
 
-export { getBoardCoords };
+function getCookie(key) {
+    let cookie = decodeURIComponent(document.cookie);
+    let cookieArr = cookie.split("; ");
+    let value = "";
+    cookieArr.forEach((cookie) => {
+        if (cookie.includes(key)) value = cookie.split("=")[1];
+    });
+    return value;
+}
+
+export { getBoardCoords, getCookie };
