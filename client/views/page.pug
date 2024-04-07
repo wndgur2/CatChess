@@ -125,7 +125,7 @@ block content
         //- #streak
         #bottomRow
           #buyBtns
-            button#reload Reload [D] 2💰
+            button#reload #{language == "ko"? "새로고침":"Reload"} [D] 2💰
             button#buyExp
               #levelInfo
                 span Lv.
@@ -134,7 +134,7 @@ block content
                 span#curExp
                 span /
                 span#maxExp
-              span Exp [F] 4💰
+              span  #{language == "ko"? "경험치":"Exp"} [F] 4💰
           #shop
             #sell
             #shoplist
@@ -234,30 +234,49 @@ block content
             #modalFooter
         #surrenderWrapper
           .modalRow
-            span Are you sure you want to surrender?
+            span  #{language == "ko"? "항복하시겠습니까?":"Are you going to surrender?"}
           .modalRow
-            button#surrenderConfirm.modalBtn.insideBtn Yes
+            button#surrenderConfirm.modalBtn.insideBtn #{language == "ko"?"예":"Yes"}
         #waiting
           .modalRow
             span#matchingTime
       #tutorial
-        span 고양이를 매수해 적 고양이를 모두 파괴하세요.
-        br
-        span F를 눌러 경험치를 구매하세요. (4마리의 쥐가 필요합니다.)
-        br
-        span 높은 레벨은 더 많은 고양이를 출전시킬 수 있으며, 더 강한 고양이를 구매할 수 있습니다.
-        br
-        span D를 눌러 상점을 초기화하세요. (2마리의 쥐가 필요합니다.)
-        br
-        span 같은 고양이를 3마리 보유하면, 한 단계 높은 고양이가 나타납니다.
-        br
-        span Creep을 처치하면, 아이템을 획득합니다.
-        br
-        span 아이템을 고양이에 드래그하여 장착하세요.
-        br
-        span 고양이를 클릭하여 스탯과 스킬을 확인하세요.
-        br
-        span 고양이 시너지를 모아 출전한 고양이들을 강화하세요.
+        if(language == "ko")
+          li 고양이를 매수해 적 고양이를 모두 파괴하세요.
+          br
+          li F를 눌러 경험치를 구매하세요. (4마리의 쥐가 필요합니다.)
+          br
+          li 높은 레벨은 더 많은 고양이를 출전시킬 수 있으며, 더 강한 고양이를 구매할 수 있습니다.
+          br
+          li D를 눌러 상점을 초기화하세요. (2마리의 쥐가 필요합니다.)
+          br
+          li 같은 고양이를 3마리 보유하면, 한 단계 높은 고양이가 나타납니다.
+          br
+          li Creep을 처치하면, 아이템을 획득합니다.
+          br
+          li 아이템을 고양이에 드래그하여 장착하세요.
+          br
+          li 고양이를 클릭하여 스탯과 스킬을 확인하세요.
+          br
+          li 고양이 시너지를 모아 출전한 고양이들을 강화하세요.
+        else
+          li Buy cats to destroy all enemies.
+          br
+          li Press F to buy experience. (You need 4 mice.)
+          br
+          li Higher levels allow you to deploy more cats and purchase stronger cats.
+          br
+          li Press D to reset the shop. (You need 2 mice.)
+          br
+          li Owning 3 of the same cat will upgrade it to a higher tier.
+          br
+          li Defeating Creeps will grant you items.
+          br
+          li Drag items to your cats to equip them.
+          br
+          li Click on a cat to view its stats and skills.
+          br
+          li Collect cat synergies to enhance your deployed cats.
 
     #footer
       #client
