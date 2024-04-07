@@ -175,7 +175,7 @@ body::-webkit-scrollbar {
     display: flex;
     justify-content: space-between;
 
-    color: #e1c573;
+    color: #dac378;
 }
 
 #footer > div {
@@ -205,7 +205,7 @@ body::-webkit-scrollbar {
 
 #languageText {
     height: fit-content;
-    color: #e1c573;
+    color: #dac378;
 }
 
 #developerBtn {
@@ -246,7 +246,7 @@ body::-webkit-scrollbar {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    color: #e1c573;
+    color: #dac378;
     font-size: small;
 }
 

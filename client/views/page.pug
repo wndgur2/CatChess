@@ -125,16 +125,18 @@ block content
         //- #streak
         #bottomRow
           #buyBtns
-            button#reload #{language == "ko"? "새로고침":"Reload"} [D] 2💰
-            button#buyExp
-              #levelInfo
-                span Lv.
-                span#level
-                span &nbsp
-                span#curExp
-                span /
-                span#maxExp
-              span  #{language == "ko"? "경험치":"Exp"} [F] 4💰
+            #reloadWrapper
+              button.btn#reload #{language == "ko"? "새로고침":"Reload"} [D] 2💰
+            #buyExpWrapper
+              button.btn#buyExp
+                #levelInfo
+                  span Lv.
+                  span#level
+                  span &nbsp
+                  span#curExp
+                  span /
+                  span#maxExp
+                span  #{language == "ko"? "경험치":"Exp"} [F] 4💰
           #shop
             #sell
             #shoplist
