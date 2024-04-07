@@ -1,5 +1,4 @@
 import Socket from "./Socket.js";
-import { CATCHESS_ID } from "./constants/CONSTS.js";
 import { getCookie } from "./utils.js";
 
 export default class User {
@@ -16,7 +15,6 @@ export default class User {
     static authenticate() {
         if (User.isAuthenticated()) {
             Socket.id = getCookie("email").split("@")[0];
-            localStorage.setItem(CATCHESS_ID, Socket.id);
             document.getElementById("id").innerHTML = Socket.id;
 
             fetch(`/user/init`, {
@@ -65,8 +63,6 @@ export default class User {
                 document.cookie =
                     key + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
         }
-
-        localStorage.removeItem(CATCHESS_ID);
 
         location.reload();
     }

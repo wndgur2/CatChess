@@ -8,7 +8,6 @@ const DRAGGING_TYPES = {
     ITEM: "item",
     UNIT: "unit",
 };
-const CATCHESS_ID = "CATCHESS_ID";
 
 const SYNERGIES = {
     Poeir: {
@@ -41,4 +40,4 @@ const COST_COLORS = {
     5: "#cccc21",
 };
 
-export { GAME_STATES, DRAGGING_TYPES, CATCHESS_ID, COST_COLORS, SYNERGIES };
+export { GAME_STATES, DRAGGING_TYPES, COST_COLORS, SYNERGIES };
