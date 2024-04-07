@@ -6,15 +6,15 @@ import UI from "./UI.js";
 import Unit from "./Unit.js";
 import User from "./User.js";
 import { CATCHESS_ID } from "./constants/CONSTS.js";
+import { getCookie } from "./utils.js";
 
 export default class Socket {
     static socket = null;
-    static id;
+    static id = getCookie("tempId");
 
     static async init(playable) {
         if (!playable) {
             let text = "Not supported device";
-            // if (langauge === "ko") text = "지원하지 않는 기기입니다.";
             return blockPlayBtn(text);
         }
         const url = "ws://localhost:8080";
@@ -38,7 +38,7 @@ export default class Socket {
                 case "resNewId": {
                     if (Socket.id) return;
                     Socket.id = data;
-                    localStorage.setItem(CATCHESS_ID, data);
+                    document.cookie = `tempId=${encodeURIComponent(data)}`;
                     readyToPlay();
                     break;
                 }
@@ -202,8 +202,10 @@ function readyToPlay() {
 
     const playBtnText = document.getElementById("playBtnText");
 
-    // if (language === "ko") playBtnText.innerHTML = "<span>매칭 시작</span>";
-    playBtnText.innerHTML = "<span>Match</span>";
+    playBtnText.innerHTML =
+        getCookie("lang") == "ko"
+            ? "<span>게임 시작</span>"
+            : "<span>Match</span>";
 }
 
 function blockPlayBtn(text) {
