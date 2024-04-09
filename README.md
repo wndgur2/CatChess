@@ -446,3 +446,30 @@ DONE
 -   인게임 언어 설정 반영, 한글 추가
 -   튜토리얼 UI, 영어
 -   인게임 버튼 배경 개선
+
+### 4.8
+
+자잘한 것만 건드리고, 큰 개선을 미루고 있었던 것 같다.
+
+    큰 개선
+
+    - 3d
+    - 스킬 텍스트
+
+TODO
+
+-   threejs 개선
+
+DOING
+
+-   cat modeling function
+
+DONE
+
+-   OutlineEffect
+
+### 4.9
+
+DONE
+
+-   고양이 모델 적용
