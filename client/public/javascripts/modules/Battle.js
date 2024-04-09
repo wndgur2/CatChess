@@ -1,6 +1,6 @@
 import Game from "./Game.js";
 import Item from "./Item.js";
-import Painter from "./Painter.js";
+import Painter from "./3D/Painter.js";
 import Player from "./Player.js";
 import { GAME_STATES } from "./constants/CONSTS.js";
 
@@ -96,6 +96,7 @@ class Battle {
     }
 
     static useSkill(uid) {
+        // TODO: display skill text
         let cat = this.getUnitByUid(uid);
         if (!cat) return;
         cat._mp = cat.mp - cat.maxMp;

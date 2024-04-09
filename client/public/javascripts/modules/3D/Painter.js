@@ -1,15 +1,22 @@
 import * as THREE from "three";
-import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
-import THREE_CONSTS from "./constants/THREE_CONSTS.js";
-import Player from "./Player.js";
-import Socket from "./Socket.js";
-import UI from "./UI.js";
-import { objectPool } from "./effects/objectPool.js";
-import blood from "./effects/blood.js";
-import { getBoardCoords } from "./utils.js";
+import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
+// import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+// import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+
+import UI from "../UI.js";
+import Player from "../Player.js";
+import Socket from "../Socket.js";
+import blood from "../effects/blood.js";
+import THREE_CONSTS from "../constants/THREE_CONSTS.js";
+import { objectPool } from "../effects/objectPool.js";
+import { getBoardCoords } from "../utils.js";
+import { CAT_PARTS } from "../constants/CONSTS.js";
+import Part from "./Part.js";
+import Cat from "./Cat.js";
 
 export default class Painter {
+    // map과 unit 분리하기
+    // 값과 function 분리하기
     static board = new Array(6).fill(null).map(() => new Array(5).fill(null));
     static enemyQueue = new Array(7).fill(null);
     static allyQueue = new Array(7).fill(null);
@@ -19,6 +26,7 @@ export default class Painter {
     static running = false;
 
     static init() {
+        //scene
         this.scene = new THREE.Scene();
         this.clock = new THREE.Clock();
 
@@ -63,17 +71,21 @@ export default class Painter {
         this.renderer.setClearColor(0xeeeeee, 0.5);
         document.getElementById("game").appendChild(this.renderer.domElement);
 
-        // passes
-        const renderScene = new RenderPass(this.scene, this.camera);
+        this.outlineEffect = new OutlineEffect(Painter.renderer);
 
-        // composer
-        this.composer = new EffectComposer(this.renderer);
-        this.composer.addPass(renderScene);
+        // passes
+        // const renderScene = new RenderPass(this.scene, this.camera);
+
+        // // composer
+        // this.composer = new EffectComposer(this.renderer);
+        // this.composer.addPass(renderScene);
+        // this.composer.addPass(renderOutline);
 
         // interaction
         this.mouse = new THREE.Vector2();
         this.raycaster = new THREE.Raycaster();
 
+        // 항상켜져있음 ,,
         window.addEventListener("resize", onResize);
         window.addEventListener("pointerdown", onPointerDown);
         window.addEventListener("pointermove", onPointerMove);
@@ -105,7 +117,7 @@ export default class Painter {
         );
 
         // board & queue
-        this.drawPlates();
+        this.drawBoard();
     }
 
     static clear() {
@@ -127,10 +139,11 @@ export default class Painter {
         requestAnimationFrame(Painter.animate);
         const dt = Painter.clock.getDelta();
         Painter.hitObjectPool.Update(dt);
-        Painter.composer.render();
+        Painter.outlineEffect.render(Painter.scene, Painter.camera);
+        // Painter.composer.render();
     }
 
-    static drawPlates() {
+    static drawBoard() {
         // background
         const backgroundGeometry = new THREE.PlaneGeometry(
             THREE_CONSTS.PLATE_RADIUS * 50,
@@ -283,14 +296,17 @@ export default class Painter {
         }
         unit.mesh = new THREE.Group();
         unit.mesh.name = "unitG";
-        let bodyMesh = new THREE.Mesh(
-            new THREE.BoxGeometry(
-                THREE_CONSTS.PLATE_RADIUS / 1.5,
-                THREE_CONSTS.CAT_HEIGHT,
-                THREE_CONSTS.PLATE_RADIUS / 1.5
-            ),
-            new THREE.MeshStandardMaterial({
-                map: this.textures[unit.id],
+
+        const bodyMesh = new Cat(
+            Object.values(CAT_PARTS).map((part) => {
+                return new Part(
+                    part.width,
+                    part.height,
+                    part.depth,
+                    part.position,
+                    part.rotation,
+                    `/images/portraits/${unit.id}.jpg`
+                );
             })
         );
         bodyMesh.name = "unit";
@@ -360,7 +376,7 @@ export default class Painter {
     }
 
     static createItemMesh(unit) {
-        // 이미 갖고있던 아이템도 중첩되서 만들고 있음
+        // TODO: 이미 갖고있던 아이템도 중첩되서 만들고 있음
         unit.items.forEach((item, i) => {
             const itemMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(
@@ -394,11 +410,11 @@ export default class Painter {
         );
         intersects.forEach((intersect) => {
             const object = intersect.object;
-            if (object.name === "unit") {
-                if (object.unit.owner !== Player.player.id) return;
-                if (object.unit.inBattle) return;
+            if (object.parent.name === "unit") {
+                if (object.parent.unit.owner !== Player.player.id) return;
+                if (object.parent.unit.inBattle) return;
                 Socket.sendMsg("reqSellCat", {
-                    uid: object.unit.uid,
+                    uid: object.parent.unit.uid,
                 });
             }
         });
@@ -417,6 +433,7 @@ function onResize() {
 }
 
 function onPointerDown(event) {
+    // console.log("pointerdown");
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
@@ -428,10 +445,10 @@ function onPointerDown(event) {
     );
     intersects.forEach((intersect) => {
         const object = intersect.object;
-        if (object.name === "unit") {
-            if (object.unit.inBattle) return;
+        if (object.parent.name === "unit") {
+            if (object.parent.unit.inBattle) return;
             Painter.isDragging = true;
-            Painter.draggingObject = object;
+            Painter.draggingObject = object.parent;
         }
     });
     UI.hideUnitInfo();
@@ -521,9 +538,8 @@ function onPointerClick(event) {
     );
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
-        if (object.name === "unit") {
-            console.log(object);
-            UI.showUnitInfo(object.unit);
+        if (object.parent.name === "unit") {
+            UI.showUnitInfo(object.parent.unit);
             return;
         }
     }
@@ -544,16 +560,17 @@ function onDrop(event) {
         Painter.scene.children
     );
 
+    //TODO :이거 추상화
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
-        if (object.name === "unit") {
-            if (object.unit.owner !== Player.player.id) return;
+        if (object.parent.name === "unit") {
+            if (object.parent.unit.owner !== Player.player.id) return;
             Socket.sendMsg("reqGiveItem", {
                 item: {
                     x: parseInt(UI.draggingId.split("-")[2]),
                     y: parseInt(UI.draggingId.split("-")[1]),
                 },
-                uid: object.unit.uid,
+                uid: object.parent.unit.uid,
             });
             break;
         }

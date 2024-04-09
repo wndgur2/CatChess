@@ -1,4 +1,4 @@
-import Painter from "./modules/Painter.js";
+import Painter from "./modules/3D/Painter.js";
 import Socket from "./modules/Socket.js";
 import UI from "./modules/UI.js";
 import Unit from "./modules/Unit.js";

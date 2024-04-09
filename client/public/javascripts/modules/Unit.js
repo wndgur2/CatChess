@@ -1,6 +1,6 @@
 import * as THREE from "three";
 import Item from "./Item.js";
-import Painter from "./Painter.js";
+import Painter from "./3D/Painter.js";
 import Synergy from "./Synergy.js";
 import { COST_COLORS } from "./constants/CONSTS.js";
 import THREE_CONSTS from "./constants/THREE_CONSTS.js";

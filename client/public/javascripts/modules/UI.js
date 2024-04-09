@@ -1,4 +1,4 @@
-import Painter from "./Painter.js";
+import Painter from "./3D/Painter.js";
 import Battle from "./Battle.js";
 import Player from "./Player.js";
 import Socket from "./Socket.js";
