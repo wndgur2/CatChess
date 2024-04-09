@@ -290,7 +290,7 @@
     height: 100%;
     align-items: center;
     justify-content: space-around;
-    background-color: #000;
+    background-color: #1f1f33;
 }
 
 #buyBtns {
@@ -365,7 +365,6 @@
     justify-content: space-evenly;
     align-items: center;
     pointer-events: initial;
-    background-color: #1f1f33;
 }
 
 #shoplist button {
