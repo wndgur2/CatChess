@@ -479,3 +479,15 @@ TODO
 -   고양이 모델 rotation/position 정상화
 -   skill text display
 -   mana bar
+
+### 4.10
+
+ON
+
+-   cat texture
+
+DONE
+
+-   rotation bugfix
+-   mana bar
+-   item bug fix
