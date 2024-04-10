@@ -121,8 +121,10 @@ class Unit {
             // item drop
             if (target.owner.split("-")[0] == "creep") {
                 getPlayerById(this.owner).pushItem(Item.getRandomItem());
-                if (process.env.NODE_ENV === "development")
+                if (process.env.NODE_ENV === "development") {
                     getPlayerById(this.owner).pushItem(Item.getRandomItem());
+                    getPlayerById(this.owner).pushItem(Item.getRandomItem());
+                }
             }
         }
     }
