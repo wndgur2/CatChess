@@ -183,18 +183,16 @@ export default class Unit {
     }
 
     move(nextX, nextY) {
-        // TODO: 상대방 rotation z 반대
         const beforeCoords = getBoardCoords(this.x, this.y);
         const nextCoords = getBoardCoords(nextX, nextY);
         const nextLocation = new THREE.Vector3(...nextCoords);
-        console.log("NEXT LOCATION: ", nextLocation);
         const bodyMesh = this.mesh.getObjectByName("unitBody");
-
+        nextLocation.setY(
+            new THREE.Box3()
+                .setFromObject(bodyMesh)
+                .getCenter(new THREE.Vector3()).y
+        );
         bodyMesh.lookAt(nextLocation);
-
-        // TODO: LOOKAT을 사용하면 rotation이 이상하게 됨
-        // bodyMesh.rotation.x = 0;
-        // bodyMesh.rotation.z = 0;
 
         const toMoveCoords = {
             x: nextCoords[0] - beforeCoords[0],
