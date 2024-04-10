@@ -134,7 +134,7 @@ export default class Painter {
 
     static clear() {
         this.scene.children.forEach((child) => {
-            if (child.name === "unitG") this.scene.remove(child);
+            if (child.name === "unit") this.scene.remove(child);
         });
         this.running = false;
     }
@@ -308,7 +308,7 @@ export default class Painter {
         // }
 
         unit.mesh = new THREE.Group();
-        unit.mesh.name = "unitG";
+        unit.mesh.name = "unit";
 
         const bodyMesh = new Cat(
             Object.values(CAT_PARTS).map((part) => {
@@ -322,59 +322,70 @@ export default class Painter {
                 );
             })
         );
-        bodyMesh.name = "unit";
+        bodyMesh.name = "unitBody";
         bodyMesh.unit = unit;
         unit.mesh.add(bodyMesh);
         console.log("BODY Y", bodyMesh.position.y);
 
         // health bar
+        const healthBarY =
+            THREE_CONSTS.CAT_HEIGHT +
+            THREE_CONSTS.ITEM_WIDTH +
+            THREE_CONSTS.MANABAR_HEIGHT +
+            THREE_CONSTS.STATS_GAP * 2;
+
         const healthBarBackgroundMesh = new THREE.Mesh(
             new THREE.BoxGeometry(
                 THREE_CONSTS.HEALTHBAR_WIDTH,
                 THREE_CONSTS.HEALTHBAR_HEIGHT,
-                THREE_CONSTS.HEALTHBAR_HEIGHT / 10
+                THREE_CONSTS.HEALTHBAR_DEPTH / 3
             ),
             new THREE.MeshBasicMaterial({ color: 0x00000 })
         );
         healthBarBackgroundMesh.name = "healthBarBackground";
-        healthBarBackgroundMesh.position.set(
-            0,
-            THREE_CONSTS.CAT_HEIGHT + THREE_CONSTS.HEALTHBAR_HEIGHT,
-            0
-        );
+        healthBarBackgroundMesh.position.set(0, healthBarY, 0);
         unit.mesh.add(healthBarBackgroundMesh);
 
         const damagedHealthMesh = new THREE.Mesh(
             new THREE.BoxGeometry(
                 THREE_CONSTS.HEALTHBAR_WIDTH,
                 THREE_CONSTS.HEALTHBAR_HEIGHT,
-                THREE_CONSTS.HEALTHBAR_HEIGHT / 10
+                THREE_CONSTS.HEALTHBAR_DEPTH / 2
             ),
             new THREE.MeshBasicMaterial({ color: 0xcc0000 })
         );
-        damagedHealthMesh.name = "damagedHealth";
-        damagedHealthMesh.position.set(
-            0,
-            THREE_CONSTS.CAT_HEIGHT + THREE_CONSTS.HEALTHBAR_HEIGHT,
-            0
-        );
+        damagedHealthMesh.name = "damagedHealthBar";
+        damagedHealthMesh.position.set(0, healthBarY, 0);
         unit.mesh.add(damagedHealthMesh);
 
         const healthBarMesh = new THREE.Mesh(
             new THREE.BoxGeometry(
                 THREE_CONSTS.HEALTHBAR_WIDTH,
                 THREE_CONSTS.HEALTHBAR_HEIGHT,
-                THREE_CONSTS.HEALTHBAR_HEIGHT / 10
+                THREE_CONSTS.HEALTHBAR_DEPTH
             ),
             new THREE.MeshBasicMaterial({ color: 0x00aa00 })
         );
         healthBarMesh.name = "healthBar";
-        healthBarMesh.position.set(
+        healthBarMesh.position.set(0, healthBarY, 0);
+        unit.mesh.add(healthBarMesh);
+
+        const manaBarMesh = new THREE.Mesh(
+            new THREE.BoxGeometry(
+                THREE_CONSTS.MANABAR_WIDTH,
+                THREE_CONSTS.MANABAR_HEIGHT,
+                THREE_CONSTS.MANABAR_HEIGHT / 10
+            ),
+            new THREE.MeshBasicMaterial({ color: 0x0044aa })
+        );
+        manaBarMesh.name = "manaBar";
+        manaBarMesh.position.set(
             0,
-            THREE_CONSTS.CAT_HEIGHT + THREE_CONSTS.HEALTHBAR_HEIGHT,
+            healthBarY - THREE_CONSTS.HEALTHBAR_HEIGHT - THREE_CONSTS.STATS_GAP,
             0
         );
-        unit.mesh.add(healthBarMesh);
+        unit.mesh.add(manaBarMesh);
+
         // if (unit.owner != Player.player.id) unit.mesh.rotateY(Math.PI);
         if (unit.owner != Player.player.id) bodyMesh.rotateY(Math.PI);
 
@@ -408,10 +419,8 @@ export default class Painter {
             );
             itemMesh.name = "item";
             itemMesh.position.set(
-                (1 - i) * (THREE_CONSTS.ITEM_WIDTH + THREE_CONSTS.ITEM_GAP),
-                THREE_CONSTS.CAT_HEIGHT +
-                    THREE_CONSTS.HEALTHBAR_HEIGHT -
-                    THREE_CONSTS.ITEM_WIDTH,
+                (1 - i) * (THREE_CONSTS.ITEM_WIDTH + THREE_CONSTS.STATS_GAP),
+                THREE_CONSTS.CAT_HEIGHT,
                 0
             );
             itemMesh.item = item;
@@ -426,7 +435,7 @@ export default class Painter {
         );
         intersects.forEach((intersect) => {
             const object = intersect.object;
-            if (object.parent.name === "unit") {
+            if (object.parent.name === "unitBody") {
                 if (object.parent.unit.owner !== Player.player.id) return;
                 if (object.parent.unit.inBattle) return;
                 Socket.sendMsg("reqSellCat", {
@@ -492,7 +501,7 @@ function onPointerDown(event) {
     );
     intersects.forEach((intersect) => {
         const object = intersect.object;
-        if (object.parent.name === "unit") {
+        if (object.parent.name === "unitBody") {
             if (object.parent.unit.inBattle) return;
             Painter.isDragging = true;
             Painter.draggingObject = object.parent;
@@ -585,7 +594,7 @@ function onPointerClick(event) {
     );
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
-        if (object.parent.name === "unit") {
+        if (object.parent.name === "unitBody") {
             UI.showUnitInfo(object.parent.unit);
             return;
         }
@@ -610,7 +619,7 @@ function onDrop(event) {
     //TODO :이거 추상화
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
-        if (object.parent.name === "unit") {
+        if (object.parent.name === "unitBody") {
             if (object.parent.unit.owner !== Player.player.id) return;
             Socket.sendMsg("reqGiveItem", {
                 item: {
