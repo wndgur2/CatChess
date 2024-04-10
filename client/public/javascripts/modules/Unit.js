@@ -116,8 +116,7 @@ export default class Unit {
         let itemEls = document.getElementsByClassName("item");
         for (let i = 0; i < itemEls.length; i++) {
             itemEls[i].innerHTML = "";
-            if (!this.items[i]) return;
-            itemEls[i].appendChild(this.items[i].imageEl);
+            if (this.items[i]) itemEls[i].appendChild(this.items[i].imageEl);
         }
     }
 
@@ -156,6 +155,7 @@ export default class Unit {
     }
 
     set _mp(newMp) {
+        if (newMp < 0) newMp = 0;
         if (newMp > this.maxMp) newMp = this.maxMp;
         this.mp = newMp;
         if (this.focused) document.getElementById("mp").innerHTML = this.mp;
