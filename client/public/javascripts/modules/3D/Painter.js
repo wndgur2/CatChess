@@ -12,8 +12,6 @@ import blood from "../effects/blood.js";
 import THREE_CONSTS from "../constants/THREE_CONSTS.js";
 import { objectPool } from "../effects/objectPool.js";
 import { getBoardCoords } from "../utils.js";
-import { CAT_PARTS } from "../constants/CONSTS.js";
-import Part from "./Part.js";
 import Cat from "./Cat.js";
 
 export default class Painter {
@@ -300,32 +298,14 @@ export default class Painter {
     }
 
     static createUnitMesh(unit) {
-        // texture
-        // if (!this.textures[unit.id]) {
-        //     this.textures[unit.id] = this.textureLodaer.load(
-        //         `/images/portraits/${unit.id}.jpg`
-        //     );
-        // }
-
         unit.mesh = new THREE.Group();
         unit.mesh.name = "unit";
 
-        const bodyMesh = new Cat(
-            Object.values(CAT_PARTS).map((part) => {
-                return new Part(
-                    part.width,
-                    part.height,
-                    part.depth,
-                    part.position,
-                    part.rotation,
-                    `/images/portraits/${unit.id}.jpg`
-                );
-            })
-        );
+        const bodyMesh = new Cat(unit.id);
         bodyMesh.name = "unitBody";
         bodyMesh.unit = unit;
+        if (unit.owner != Player.player.id) bodyMesh.rotateY(Math.PI);
         unit.mesh.add(bodyMesh);
-        console.log("BODY Y", bodyMesh.position.y);
 
         // health bar
         const healthBarY =
@@ -386,25 +366,18 @@ export default class Painter {
         );
         unit.mesh.add(manaBarMesh);
 
-        // if (unit.owner != Player.player.id) unit.mesh.rotateY(Math.PI);
-        if (unit.owner != Player.player.id) bodyMesh.rotateY(Math.PI);
-
         // items
         this.createItemMesh(unit);
     }
 
-    static hitEffect(attacker, target, damage) {
-        this.scene.add(
-            this.hitObjectPool.GetObject(
-                target.mesh.position,
-                attacker.mesh.position
-            ).object
-        );
-    }
-
     static createItemMesh(unit) {
         // TODO: 이미 갖고있던 아이템도 중첩되서 만들고 있음
+        let count = 0;
+        unit.mesh.children.forEach((child) => {
+            if (child.name === "item") count++;
+        });
         unit.items.forEach((item, i) => {
+            if (i < count) return;
             const itemMesh = new THREE.Mesh(
                 new THREE.BoxGeometry(
                     THREE_CONSTS.ITEM_WIDTH,
@@ -426,6 +399,15 @@ export default class Painter {
             itemMesh.item = item;
             unit.mesh.add(itemMesh);
         });
+    }
+
+    static hitEffect(attacker, target, damage) {
+        this.scene.add(
+            this.hitObjectPool.GetObject(
+                target.mesh.position,
+                attacker.mesh.position
+            ).object
+        );
     }
 
     static sellUnitOnKeypress() {
