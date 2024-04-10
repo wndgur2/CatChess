@@ -473,3 +473,9 @@ DONE
 DONE
 
 -   고양이 모델 적용
+
+TODO
+
+-   고양이 모델 rotation/position 정상화
+-   skill text display
+-   mana bar
