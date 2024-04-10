@@ -134,7 +134,7 @@ export default class Unit {
         healthBarMesh.position.x =
             ((1 - this.hp / this.maxHp) * THREE_CONSTS.HEALTHBAR_WIDTH) / 2;
 
-        const damagedHealthMesh = this.mesh.getObjectByName("damagedHealth");
+        const damagedHealthMesh = this.mesh.getObjectByName("damagedHealthBar");
 
         function animateHealthDamage() {
             if (damagedHealthMesh.scale.x > healthBarMesh.scale.x) {
@@ -156,13 +156,19 @@ export default class Unit {
     }
 
     set _mp(newMp) {
+        if (newMp > this.maxMp) newMp = this.maxMp;
         this.mp = newMp;
         if (this.focused) document.getElementById("mp").innerHTML = this.mp;
+
+        const manaBarMesh = this.mesh.getObjectByName("manaBar");
+        manaBarMesh.scale.x = this.mp / this.maxMp;
+        manaBarMesh.position.x =
+            ((1 - this.mp / this.maxMp) * THREE_CONSTS.MANABAR_WIDTH) / 2;
     }
 
     attack(target) {
         // rotate unit toward target
-        const bodyMesh = this.mesh.getObjectByName("unit");
+        const bodyMesh = this.mesh.getObjectByName("unitBody");
         bodyMesh.lookAt(target.mesh.position);
 
         // move unit to target
@@ -182,7 +188,7 @@ export default class Unit {
         const nextCoords = getBoardCoords(nextX, nextY);
         const nextLocation = new THREE.Vector3(...nextCoords);
         console.log("NEXT LOCATION: ", nextLocation);
-        const bodyMesh = this.mesh.getObjectByName("unit");
+        const bodyMesh = this.mesh.getObjectByName("unitBody");
 
         bodyMesh.lookAt(nextLocation);
 
