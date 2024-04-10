@@ -95,11 +95,11 @@ class Battle {
         cat.y = nextY;
     }
 
-    static useSkill(uid) {
-        // TODO: display skill text
+    static cast(uid) {
         let cat = this.getUnitByUid(uid);
         if (!cat) return;
         cat._mp = cat.mp - cat.maxMp;
+        cat.cast();
     }
 
     static itemUpdate(data) {

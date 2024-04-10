@@ -16,8 +16,8 @@ export default class Socket {
             let text = "Not supported device";
             return blockPlayBtn(text);
         }
-        // const url = "ws://localhost:8080";
-        const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
+        const url = "ws://localhost:8080";
+        // const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
         Socket.socket = new WebSocket(url);
 
         Socket.socket.onopen = function (event) {
@@ -30,8 +30,8 @@ export default class Socket {
         Socket.socket.onmessage = function (event) {
             const { type, data } = JSON.parse(event.data);
 
-            if (type !== "timeUpdate")
-                console.log(type, JSON.parse(JSON.stringify(data)));
+            // if (type !== "timeUpdate")
+            //     console.log(type, JSON.parse(JSON.stringify(data)));
 
             switch (type) {
                 case "resNewId": {
@@ -120,10 +120,10 @@ export default class Socket {
                     Battle.attack(attacker, target, damage);
                     break;
                 }
-                case "unitUseSkill": {
+                case "unitCast": {
                     let { battleId, uid } = data;
                     if (Battle.id != battleId) return;
-                    Battle.useSkill(uid);
+                    Battle.cast(uid);
                     break;
                 }
                 case "unitMove": {
@@ -203,7 +203,7 @@ function readyToPlay() {
 
     playBtnText.innerHTML =
         getCookie("lang") == "ko"
-            ? "<span>게임 시작</span>"
+            ? "<span>게임 매칭</span>"
             : "<span>Match</span>";
 }
 

@@ -46,7 +46,7 @@ class Unit {
 
         if (this.mp >= this.maxMp) {
             this.delay = this.speed;
-            return this.useSkill();
+            return this.cast();
         }
 
         if (this.delay > 0) {
@@ -85,10 +85,10 @@ class Unit {
         return stat * ratio;
     }
 
-    useSkill() {
+    cast() {
         this.skill.execute(this);
         this.mp -= this.maxMp;
-        this.sendMsgToGame("unitUseSkill", {
+        this.sendMsgToGame("unitCast", {
             uid: this.uid,
         });
     }

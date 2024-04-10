@@ -1,10 +1,10 @@
 import * as THREE from "three";
 import Item from "./Item.js";
-import Painter from "./3D/Painter.js";
 import Synergy from "./Synergy.js";
-import { COST_COLORS } from "./constants/CONSTS.js";
+import Painter from "./3D/Painter.js";
 import THREE_CONSTS from "./constants/THREE_CONSTS.js";
 import { getBoardCoords } from "./utils.js";
+import { COST_COLORS } from "./constants/CONSTS.js";
 
 export default class Unit {
     static async fetchData() {
@@ -177,16 +177,18 @@ export default class Unit {
     }
 
     move(nextX, nextY) {
+        // TODO: 상대방 rotation z 반대
         const beforeCoords = getBoardCoords(this.x, this.y);
         const nextCoords = getBoardCoords(nextX, nextY);
+        const nextLocation = new THREE.Vector3(...nextCoords);
+        console.log("NEXT LOCATION: ", nextLocation);
+        const bodyMesh = this.mesh.getObjectByName("unit");
 
-        this.mesh
-            .getObjectByName("unit")
-            .lookAt(new THREE.Vector3(...nextCoords));
+        bodyMesh.lookAt(nextLocation);
 
-        this.mesh
-            .getObjectByName("unit")
-            .rotation.set(0, this.mesh.getObjectByName("unit").rotation.y, 0);
+        // TODO: LOOKAT을 사용하면 rotation이 이상하게 됨
+        // bodyMesh.rotation.x = 0;
+        // bodyMesh.rotation.z = 0;
 
         const toMoveCoords = {
             x: nextCoords[0] - beforeCoords[0],
@@ -203,5 +205,9 @@ export default class Unit {
         };
 
         animateMove();
+    }
+
+    cast() {
+        Painter.castEffect(this);
     }
 }

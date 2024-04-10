@@ -1,4 +1,6 @@
 import * as THREE from "three";
+import { FontLoader } from "three/addons/loaders/FontLoader.js";
+import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
 // import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 // import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
@@ -114,6 +116,16 @@ export default class Painter {
         );
         this.textures.queue = this.textureLodaer.load(
             "/images/grounds/queue.jpg"
+        );
+
+        //font
+
+        var loader = new FontLoader();
+        loader.load(
+            "https://cdn.jsdelivr.net/npm/three/examples/fonts/helvetiker_regular.typeface.json",
+            (font) => {
+                Painter.font = font;
+            }
         );
 
         // board & queue
@@ -288,12 +300,13 @@ export default class Painter {
     }
 
     static createUnitMesh(unit) {
-        //body
-        if (!this.textures[unit.id]) {
-            this.textures[unit.id] = this.textureLodaer.load(
-                `/images/portraits/${unit.id}.jpg`
-            );
-        }
+        // texture
+        // if (!this.textures[unit.id]) {
+        //     this.textures[unit.id] = this.textureLodaer.load(
+        //         `/images/portraits/${unit.id}.jpg`
+        //     );
+        // }
+
         unit.mesh = new THREE.Group();
         unit.mesh.name = "unitG";
 
@@ -312,6 +325,7 @@ export default class Painter {
         bodyMesh.name = "unit";
         bodyMesh.unit = unit;
         unit.mesh.add(bodyMesh);
+        console.log("BODY Y", bodyMesh.position.y);
 
         // health bar
         const healthBarBackgroundMesh = new THREE.Mesh(
@@ -361,6 +375,8 @@ export default class Painter {
             0
         );
         unit.mesh.add(healthBarMesh);
+        // if (unit.owner != Player.player.id) unit.mesh.rotateY(Math.PI);
+        if (unit.owner != Player.player.id) bodyMesh.rotateY(Math.PI);
 
         // items
         this.createItemMesh(unit);
@@ -418,6 +434,37 @@ export default class Painter {
                 });
             }
         });
+    }
+
+    static castEffect(unit) {
+        const textGeo = new TextGeometry(unit.skill.name + "!", {
+            font: Painter.font,
+            size: 0.6,
+            depth: 0.1,
+        });
+        const textMaterial = new THREE.MeshBasicMaterial({
+            color: 0xcc4444,
+        });
+        const textMesh = new THREE.Mesh(textGeo, textMaterial);
+        textMesh.rotateY(Math.PI);
+        textMesh.position.set(
+            unit.mesh.position.x + THREE_CONSTS.PLATE_RADIUS / 2,
+            THREE_CONSTS.CAT_HEIGHT * 2,
+            unit.mesh.position.z
+        );
+        Painter.scene.add(textMesh);
+
+        // move unit to target
+        const duration = 33;
+        let i = 0;
+        function moveText() {
+            if (i++ < duration) {
+                textMesh.translateY(0.05);
+                textMesh.material.opacity -= 0.03;
+                requestAnimationFrame(moveText);
+            } else Painter.scene.remove(textMesh);
+        }
+        moveText();
     }
 }
 
