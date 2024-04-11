@@ -20,9 +20,9 @@ class Player {
     init() {
         this.level = 1;
         this.exp = -2;
-        this.money = process.env.NODE_ENV === "development" ? 100 : 0;
+        this.money = process.env.NODE_ENV === "development" ? 1500 : 0;
         this.maxExp = 4;
-        this.maxHp = process.env.NODE_ENV === "development" ? 20 : 100;
+        this.maxHp = process.env.NODE_ENV === "development" ? 40 : 100;
         this.hp = this.maxHp;
 
         this.board = [
@@ -230,8 +230,9 @@ class Player {
             return false;
         }
 
-        let unitToMove = this.getUnitByUid(uid),
-            unitToSwap;
+        let unitToMove = this.getUnitByUid(uid);
+        let unitToSwap;
+
         if (!unitToMove) {
             this.updateBoard();
             this.updateQueue();
