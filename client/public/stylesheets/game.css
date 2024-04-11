@@ -55,7 +55,7 @@
     align-items: center;
     justify-content: space-evenly;
 
-    background-image: url("/images/game/pentagon.jpg");
+    background-image: url("/images/game/pentagon.png");
     object-fit: cover;
 
     background-size: 100% 100%;
