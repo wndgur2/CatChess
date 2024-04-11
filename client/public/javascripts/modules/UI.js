@@ -62,10 +62,8 @@ export default class UI {
             let soundImg = document.getElementById("soundImg");
             if (UI.muted) {
                 soundImg.setAttribute("src", "/images/home/note.png");
-                Sound.unMute();
             } else {
                 soundImg.setAttribute("src", "/images/home/note2.png");
-                Sound.mute();
             }
             UI.muted = !UI.muted;
         });

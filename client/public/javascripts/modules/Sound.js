@@ -5,14 +5,6 @@ export default class Sound {
         const randIdx = Math.floor(Math.random() * 7);
         Sound.taps[randIdx].play();
     }
-
-    static mute() {
-        this.bgm.volume = 0;
-    }
-
-    static unMute() {
-        this.bgm.volume = 0.5;
-    }
 }
 
 for (let i = 0; i < 7; i++) {
