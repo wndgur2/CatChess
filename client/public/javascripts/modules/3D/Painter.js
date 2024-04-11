@@ -2,21 +2,17 @@ import * as THREE from "three";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
-// import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
-// import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 
 import UI from "../UI.js";
+import Cat from "./Cat.js";
 import Player from "../Player.js";
 import Socket from "../Socket.js";
 import blood from "../effects/blood.js";
 import THREE_CONSTS from "../constants/THREE_CONSTS.js";
-import { objectPool } from "../effects/objectPool.js";
 import { getBoardCoords } from "../utils.js";
-import Cat from "./Cat.js";
+import { objectPool } from "../effects/objectPool.js";
 
 export default class Painter {
-    // map과 unit 분리하기
-    // 값과 function 분리하기
     static board = new Array(6).fill(null).map(() => new Array(5).fill(null));
     static enemyQueue = new Array(7).fill(null);
     static allyQueue = new Array(7).fill(null);
@@ -68,18 +64,9 @@ export default class Painter {
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.domElement.id = "scene";
-        this.renderer.setClearColor(0xeeeeee, 0.5);
         document.getElementById("game").appendChild(this.renderer.domElement);
 
         this.outlineEffect = new OutlineEffect(Painter.renderer);
-
-        // passes
-        // const renderScene = new RenderPass(this.scene, this.camera);
-
-        // // composer
-        // this.composer = new EffectComposer(this.renderer);
-        // this.composer.addPass(renderScene);
-        // this.composer.addPass(renderOutline);
 
         // interaction
         this.mouse = new THREE.Vector2();
@@ -87,9 +74,9 @@ export default class Painter {
 
         // 항상켜져있음 ,,
         window.addEventListener("resize", onResize);
-        window.addEventListener("pointerdown", onPointerDown);
-        window.addEventListener("pointermove", onPointerMove);
-        window.addEventListener("pointerup", onPointerUp);
+        this.renderer.domElement.addEventListener("pointerdown", onPointerDown);
+        this.renderer.domElement.addEventListener("pointermove", onPointerMove);
+        this.renderer.domElement.addEventListener("pointerup", onPointerUp);
         this.renderer.domElement.addEventListener("dragover", onDragOver);
         this.renderer.domElement.addEventListener("drop", onDrop);
 
@@ -301,7 +288,7 @@ export default class Painter {
         unit.mesh = new THREE.Group();
         unit.mesh.name = "unit";
 
-        const bodyMesh = new Cat(unit.id);
+        const bodyMesh = new Cat(unit);
         bodyMesh.name = "unitBody";
         bodyMesh.unit = unit;
         if (unit.owner != Player.player.id) bodyMesh.rotateY(Math.PI);
