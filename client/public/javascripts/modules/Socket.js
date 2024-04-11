@@ -16,8 +16,8 @@ export default class Socket {
             let text = "Not supported device";
             return blockPlayBtn(text);
         }
-        const url = "ws://localhost:8080";
-        // const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
+        // const url = "ws://localhost:8080";
+        const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
         Socket.socket = new WebSocket(url);
 
         Socket.socket.onopen = function (event) {

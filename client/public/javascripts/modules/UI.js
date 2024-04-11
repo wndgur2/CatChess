@@ -25,7 +25,6 @@ export default class UI {
         document.onclick = (event) => {
             if (UI.muted) return;
             Sound.playClick();
-            Sound.playBgm();
         };
 
         document.querySelector("#signinBtn").onclick = () => {
