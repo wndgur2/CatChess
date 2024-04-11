@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { CAT_PARTS } from "../constants/CONSTS.js";
+import { CAT_PARTS } from "../constants/THREE_CONSTS.js";
 import Part from "./Part.js";
 export default class Cat {
     constructor(unit) {

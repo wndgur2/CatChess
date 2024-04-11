@@ -2,7 +2,7 @@ import * as THREE from "three";
 import Item from "./Item.js";
 import Synergy from "./Synergy.js";
 import Painter from "./3D/Painter.js";
-import THREE_CONSTS from "./constants/THREE_CONSTS.js";
+import { THREE_CONSTS } from "./constants/THREE_CONSTS.js";
 import { getBoardCoords } from "./utils.js";
 import { COST_COLORS } from "./constants/CONSTS.js";
 

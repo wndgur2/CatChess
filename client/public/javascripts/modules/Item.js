@@ -5,7 +5,7 @@ export default class Item {
         this.desc = data.desc;
         this.img = data.img;
         this.imageEl = document.createElement("img");
-        this.imageEl.src = `/images/items/${this.id}.jpg`;
+        this.imageEl.src = `/images/items/${this.id}.png`;
         this.imageEl.className = "itemImg";
         this.ad = data.ad;
         this.hp = data.hp;
