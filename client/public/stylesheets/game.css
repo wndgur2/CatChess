@@ -55,7 +55,7 @@
     align-items: center;
     justify-content: space-evenly;
 
-    background-image: url("/images/game/pentagon.png");
+    background-image: url("/images/game/pentagon.jpg");
     object-fit: cover;
 
     background-size: 100% 100%;
@@ -137,6 +137,7 @@
 
     background-color: #1f1f33;
     border: 2px solid #e1c573;
+    pointer-events: none;
 }
 
 #inventory {
@@ -148,6 +149,7 @@
     height: 7dvw;
     border: 1px solid #807253;
     background-color: #232330;
+    pointer-events: all;
 }
 
 .inventoryCell:hover {
@@ -323,10 +325,10 @@
 }
 
 #reloadWrapper {
-    background-image: url("/images/game/reload.png");
+    background-image: url("/images/game/reload.jpg");
 }
 #buyExpWrapper {
-    background-image: url("/images/game/exp.png");
+    background-image: url("/images/game/exp.jpg");
 }
 #buyExp {
     display: flex;

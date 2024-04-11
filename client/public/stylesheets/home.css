@@ -123,7 +123,7 @@
     padding: 0px;
     border: 0.2dvh solid #e1c573;
     box-shadow: 0px 0px 4px 4px #00000044;
-    background-image: url("/images/home/deck.png");
+    background-image: url("/images/home/deck.jpg");
     background-size: cover;
     background-position: center;
     transition: width 0.1s, height 0.1s, box-shadow 0.2s, border 0.2s,
