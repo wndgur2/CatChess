@@ -491,3 +491,13 @@ DONE
 -   rotation bugfix
 -   mana bar
 -   item bug fix
+
+### 4.11
+
+DONE
+
+-   이미지 경량화
+
+TODO
+
+-   리팩토링
