@@ -11,7 +11,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    border: 0.4dvh solid #e1c573;
+    border: calc(0.2dvw + 0.1dvh) solid #e1c573;
     border-bottom: none;
 }
 
@@ -30,7 +30,6 @@
 }
 
 #authWrapper {
-    width: 24dvw;
     height: 100%;
 
     display: flex;
@@ -41,7 +40,7 @@
 
 #userInfoWrapper {
     display: none;
-    width: 100%;
+    width: 24dvw;
     height: 60%;
     padding: 0% 4%;
     margin-right: 3dvw;
@@ -70,11 +69,12 @@
 }
 
 #signinBtnWrapper {
-    height: 9dvh;
+    height: calc(6dvh + 2.5dvw);
     width: fit-content;
     display: flex;
     justify-content: end;
     align-items: center;
+    margin-right: 3dvw;
 }
 
 #signinBtn {
