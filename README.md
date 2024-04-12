@@ -501,3 +501,8 @@ DONE
 TODO
 
 -   리팩토링
+-   cat texture
+
+### 4.12
+
+-   language 별 text 가져오기
