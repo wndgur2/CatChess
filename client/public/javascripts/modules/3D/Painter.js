@@ -68,7 +68,7 @@ export default class Painter {
         this.renderer.domElement.id = "scene";
         document.getElementById("game").appendChild(this.renderer.domElement);
 
-        // TODO: CONTROLS. drag tilt
+        // TODO: CONTROL
         // controls;
         // Painter.controls = new OrbitControls(
         //     this.camera,
