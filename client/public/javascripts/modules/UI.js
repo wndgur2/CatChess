@@ -7,7 +7,11 @@ import Game from "./Game.js";
 import Unit from "./Unit.js";
 import User from "./User.js";
 import { getCookie, getText } from "./utils.js";
-import { CANCEL_MATCHING, MATCH } from "./constants/texts.js";
+import {
+    CANCEL_MATCHING,
+    MATCH,
+    NOT_SUPPORTED_DEVICE,
+} from "./constants/texts.js";
 
 export default class UI {
     static draggingId;
@@ -15,89 +19,69 @@ export default class UI {
     static infoUnit;
     static muted = true;
 
-    static init() {
+    static init(playable = true) {
         scroll();
         createUnitCards();
         User.init();
-        this.hydrate();
+        this.hydrate(playable);
     }
 
-    static hydrate() {
-        document.onclick = (event) => {
-            if (UI.muted) return;
-            Sound.playClick();
+    static hydrate(playable) {
+        document.onclick = Sound.playClick;
+
+        document.querySelector("#signinBtn").onclick = User.signIn;
+        document.querySelector("#signoutBtn").onclick = User.signOut;
+        document.querySelector("#deck").onclick = newMainCard;
+        document.querySelector("#fullscreenBtn").onclick = () => {
+            fullscreen(document.documentElement);
         };
-
-        document.querySelector("#signinBtn").onclick = () => {
-            User.signIn();
-        };
-
-        document.querySelector("#signoutBtn").onclick = () => {
-            User.signOut();
-        };
-
-        document.getElementById("deck").onclick = (event) => {
-            newMainCard();
-        };
-
-        document.getElementById("playBtn").onclick = startMatching;
-
-        document
-            .getElementById("fullscreenBtn")
-            .addEventListener("click", () => {
-                const el = document.documentElement;
-                fullscreen(el);
-            });
 
         //footer
-        document
-            .getElementById("languageBtn")
-            .addEventListener("click", languageBtnClick);
-        document.getElementById("ko").addEventListener("click", () => {
+        document.querySelector("#languageBtn").onclick = languageBtnClick;
+
+        document.querySelector("#ko").onclick = () => {
             languageChange("ko");
-        });
-        document.getElementById("en").addEventListener("click", () => {
+        };
+        document.querySelector("#en").onclick = () => {
             languageChange("en");
-        });
-        document.getElementById("soundBtn").addEventListener("click", () => {
-            let soundImg = document.getElementById("soundImg");
-            if (UI.muted) {
-                soundImg.setAttribute("src", "/images/home/note.png");
-            } else {
+        };
+        document.querySelector("#soundBtn").addEventListener("click", () => {
+            let soundImg = document.querySelector("#soundImg");
+            Sound.mute();
+            if (Sound.muted)
                 soundImg.setAttribute("src", "/images/home/note2.png");
-            }
-            UI.muted = !UI.muted;
+            else soundImg.setAttribute("src", "/images/home/note.png");
         });
 
-        document
-            .getElementById("developerBtn")
-            .addEventListener("click", () =>
-                window.open("https://github.com/wndgur2/CatChess")
-            );
+        document.querySelector("#developerBtn").onclick = () => {
+            window.open("https://github.com/wndgur2/CatChess");
+        };
 
-        document.getElementById("modalClose").addEventListener("click", () => {
-            this.closeModal();
-        });
-        document
-            .getElementById("modalBackdrop")
-            .addEventListener("click", () => {
-                this.closeModal();
-            });
+        if (!playable) {
+            document.querySelector("#playBtnText").innerHTML =
+                getText(NOT_SUPPORTED_DEVICE);
+            return;
+        }
+
+        document.querySelector("#playBtn").onclick = startMatching;
+
+        document.querySelector("#modalClose").onclick = UI.closeModal;
+        document.querySelector("#modalBackdrop").onclick = UI.closeModal;
 
         document
-            .getElementById("surrenderBtn")
+            .querySelector("#surrenderBtn")
             .addEventListener("click", () => {
-                const surrenderEl = document.getElementById("surrenderWrapper");
+                const surrenderEl = document.querySelector("#surrenderWrapper");
                 UI.openModal(surrenderEl.innerHTML);
                 document
-                    .getElementById("surrenderConfirm")
+                    .querySelector("#surrenderConfirm")
                     .addEventListener("click", () => {
                         Socket.sendMsg("reqSurrender", "");
                         UI.closeModal();
                     });
             });
 
-        document.getElementById("reload").addEventListener("click", () => {
+        document.querySelector("#reload").addEventListener("click", () => {
             Socket.sendMsg("reqReload", "");
         });
 
@@ -124,16 +108,16 @@ export default class UI {
             }
         });
 
-        document.getElementById("buyExp").addEventListener("click", () => {
+        document.querySelector("#buyExp").addEventListener("click", () => {
             Socket.sendMsg("reqBuyExp", "");
         });
 
-        let shopEl = document.getElementById("shop");
+        let shopEl = document.querySelector("#shop");
         shopEl.addEventListener("mouseenter", shopMouseEnter);
         shopEl.addEventListener("mouseleave", shopMouseLeave);
         shopEl.addEventListener("pointerup", shopPointerUp);
 
-        let shoplistEl = document.getElementById("shoplist");
+        let shoplistEl = document.querySelector("#shoplist");
         for (let i = 0; i < shoplistEl.children.length; ++i) {
             shoplistEl.children[i].addEventListener("click", () => {
                 if (!Player.player.shop[i]) return;
@@ -147,7 +131,7 @@ export default class UI {
         // 2 x 3 inventory
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 2; j++) {
-                let item = document.getElementById(`inventory-${i}-${j}`);
+                let item = document.querySelector(`#inventory-${i}-${j}`);
                 item.addEventListener("dragstart", inventoryDragStart);
                 item.draggable = false;
                 item.addEventListener("mousemove", inventoryItemMouseMove);
@@ -260,7 +244,7 @@ export default class UI {
         document.getElementById("game").style.display = "flex";
         fullscreen(document.getElementById("game"));
 
-        Painter.startRendering();
+        Painter.startRender();
     }
 
     static gameEnd() {
@@ -268,7 +252,7 @@ export default class UI {
         document.getElementById("game").style.display = "none";
         document.getElementById("home").style.display = "inline-block";
         User.authenticate();
-        Painter.clear();
+        Painter.clearUnits();
     }
 }
 
