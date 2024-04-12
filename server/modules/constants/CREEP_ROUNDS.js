@@ -21,7 +21,7 @@ const CREEP_ROUNDS = {
     ],
     5: [
         [null, null, null, null, null],
-        [null, null, "terrapin", null, null],
+        [null, null, "mrTerry", null, null],
         [null, null, null, null, null],
     ],
 };
