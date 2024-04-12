@@ -117,14 +117,14 @@ export default class Painter {
         this.drawBoard();
     }
 
-    static clear() {
+    static clearUnits() {
         this.scene.children.forEach((child) => {
             if (child.name === "unit") this.scene.remove(child);
         });
         this.running = false;
     }
 
-    static startRendering() {
+    static startRender() {
         if (!this.running) {
             this.running = true;
             this.animate();
@@ -137,7 +137,6 @@ export default class Painter {
         const dt = Painter.clock.getDelta();
         Painter.hitObjectPool.Update(dt);
         Painter.outlineEffect.render(Painter.scene, Painter.camera);
-        // Painter.composer.render();
     }
 
     static drawBoard() {
@@ -358,7 +357,6 @@ export default class Painter {
     }
 
     static createItemMesh(unit) {
-        // TODO: 이미 갖고있던 아이템도 중첩되서 만들고 있음
         let count = 0;
         unit.mesh.children.forEach((child) => {
             if (child.name === "item") count++;
@@ -462,18 +460,12 @@ function onPointerDown(event) {
 
     Painter.dragStart = Painter.mouse.clone();
 
-    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
-    const intersects = Painter.raycaster.intersectObjects(
-        Painter.scene.children
-    );
-    intersects.forEach((intersect) => {
-        const object = intersect.object;
-        if (object.parent.name === "unitBody") {
-            if (object.parent.unit.inBattle) return;
-            Painter.isDragging = true;
-            Painter.draggingObject = object.parent;
-        }
-    });
+    const unitObject = getRaycastedUnitObject();
+    if (unitObject) {
+        if (unitObject.unit.inBattle) return;
+        Painter.isDragging = true;
+        Painter.draggingObject = unitObject;
+    }
     UI.hideUnitInfo();
 }
 
@@ -488,56 +480,40 @@ function onPointerMove(event) {
         return;
     }
 
-    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
-    const intersects = Painter.raycaster.intersectObjects(
-        Painter.scene.children
-    );
-    for (let i = 0; i < intersects.length; ++i) {
-        const object = intersects[i].object;
-        if (object.name === "floor") {
-            Painter.draggingObject.parent.position.set(
-                intersects[i].point.x,
-                THREE_CONSTS.CAT_HEIGHT / 1.5,
-                intersects[i].point.z
-            );
-            break;
-        }
+    const floor = getRaycastedIntersect("floor");
+    if (floor) {
+        Painter.draggingObject.parent.position.set(
+            floor.point.x,
+            THREE_CONSTS.CAT_HEIGHT / 1.5,
+            floor.point.z
+        );
     }
 }
 
 function onPointerUp(event) {
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // click 판정
     if (
-        // click 판정
         Painter.mouse.x <= Painter.dragStart.x + 0.1 &&
         Painter.mouse.x >= Painter.dragStart.x - 0.1 &&
         Painter.mouse.y <= Painter.dragStart.y + 0.1 &&
         Painter.mouse.y >= Painter.dragStart.y - 0.1
-    ) {
+    )
         onPointerClick(event);
-    }
 
     if (!Painter.isDragging) return;
 
-    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
-    const intersects = Painter.raycaster.intersectObjects(
-        Painter.scene.children,
-        false
-    );
-    for (let i = 0; i < intersects.length; ++i) {
-        const object = intersects[i].object;
-        if (object.name === "allyPlate") {
-            Socket.sendMsg("reqPutCat", {
-                uid: Painter.draggingObject.unit.uid,
-                to: {
-                    x: object.boardCoords.x,
-                    y: object.boardCoords.y - 3,
-                },
-            });
-            return;
-        }
-    }
+    const allyPlate = getRaycastedIntersect("allyPlate").object;
+    if (allyPlate)
+        Socket.sendMsg("reqPutCat", {
+            uid: Painter.draggingObject.unit.uid,
+            to: {
+                x: allyPlate.boardCoords.x,
+                y: allyPlate.boardCoords.y - 3,
+            },
+        });
     cancelDragging();
 }
 
@@ -555,17 +531,8 @@ function onPointerClick(event) {
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
-    const intersects = Painter.raycaster.intersectObjects(
-        Painter.scene.children
-    );
-    for (let i = 0; i < intersects.length; ++i) {
-        const object = intersects[i].object;
-        if (object.parent.name === "unitBody") {
-            UI.showUnitInfo(object.parent.unit);
-            return;
-        }
-    }
+    const unitObject = getRaycastedUnitObject();
+    if (unitObject) UI.showUnitInfo(unitObject.unit);
 }
 
 function onDragOver(event) {
@@ -578,26 +545,41 @@ function onDrop(event) {
     Painter.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     Painter.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
+    const unitObject = getRaycastedUnitObject();
+    if (unitObject) {
+        if (unitObject.unit.owner !== Player.player.id) return;
+        Socket.sendMsg("reqGiveItem", {
+            item: {
+                x: parseInt(UI.draggingId.split("-")[2]),
+                y: parseInt(UI.draggingId.split("-")[1]),
+            },
+            uid: unitObject.unit.uid,
+        });
+    }
+
+    UI.isDragging = false;
+}
+
+function getRaycastedUnitObject() {
     Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
     const intersects = Painter.raycaster.intersectObjects(
         Painter.scene.children
     );
-
-    //TODO :이거 추상화
     for (let i = 0; i < intersects.length; ++i) {
         const object = intersects[i].object;
-        if (object.parent.name === "unitBody") {
-            if (object.parent.unit.owner !== Player.player.id) return;
-            Socket.sendMsg("reqGiveItem", {
-                item: {
-                    x: parseInt(UI.draggingId.split("-")[2]),
-                    y: parseInt(UI.draggingId.split("-")[1]),
-                },
-                uid: object.parent.unit.uid,
-            });
-            break;
-        }
+        if (object.parent.name === "unitBody") return object.parent;
     }
+    return null;
+}
 
-    UI.isDragging = false;
+function getRaycastedIntersect(name) {
+    Painter.raycaster.setFromCamera(Painter.mouse, Painter.camera);
+    const intersects = Painter.raycaster.intersectObjects(
+        Painter.scene.children
+    );
+    for (let i = 0; i < intersects.length; ++i) {
+        const object = intersects[i].object;
+        if (object.name === name) return intersects[i];
+    }
+    return null;
 }
