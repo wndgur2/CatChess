@@ -458,7 +458,7 @@ export default class Painter {
         manaBarMesh.name = "manaBar";
         manaBarMesh.position.set(
             0,
-            healthBarY - THREE_CONSTS.HEALTHBAR_HEIGHT - THREE_CONSTS.STATS_GAP,
+            healthBarY - THREE_CONSTS.HEALTHBAR_HEIGHT,
             0
         );
         unit.mesh.add(manaBarMesh);
