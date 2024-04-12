@@ -10,6 +10,10 @@
 
 ![0:2:8capt](https://github.com/wndgur2/CatChess/assets/65120311/713951bb-b64e-4fb0-92ce-ae3a41c3149b)
 
+### 0.3.2 스크린샷
+
+![Screenshot 2024-04-13 at 0 48 39 Large](https://github.com/wndgur2/CatChess/assets/65120311/eb590ed3-3648-44cf-9023-5c222df2dde4)
+
 ### Figma: 기획, 화면 설계 [링크](https://www.figma.com/file/UTLu1K2qiGxK4XhZFt7q1h/catChess?type=design&node-id=0%3A1&mode=design&t=4keMP4w5z6JixYat-1)
 
 <img width="1440" alt="image" src="https://github.com/wndgur2/CatChess/assets/65120311/32380036-5096-427a-83c6-a50344274caa">
@@ -512,6 +516,7 @@ DONE
 
 TODO
 
+-   orbit control
 -   Cat Animation
 -   more skills
 -   show Unit Info UI 개선
