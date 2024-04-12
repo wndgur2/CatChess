@@ -8,11 +8,14 @@ window.onload = () => {
 };
 
 async function init() {
-    if (!isPlayableDevice()) return;
     await fetchResource();
-    UI.init();
-    Socket.init();
-    Painter.init();
+    if (!isPlayableDevice()) {
+        UI.init(false);
+        return;
+    }
+    [UI, Socket, Painter].forEach((module) => {
+        module.init();
+    });
 }
 
 async function fetchResource() {
@@ -52,6 +55,5 @@ function isPlayableDevice() {
         /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
             navigator.userAgent
         );
-    if (isMobile) alert("Mobile devices are not supported.");
     return !isMobile;
 }
