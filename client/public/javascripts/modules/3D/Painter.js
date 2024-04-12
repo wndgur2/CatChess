@@ -2,6 +2,8 @@ import * as THREE from "three";
 import { FontLoader } from "three/addons/loaders/FontLoader.js";
 import { TextGeometry } from "three/addons/geometries/TextGeometry.js";
 import { OutlineEffect } from "three/addons/effects/OutlineEffect.js";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 
 import UI from "../UI.js";
 import Cat from "./Cat.js";
@@ -66,6 +68,14 @@ export default class Painter {
         this.renderer.domElement.id = "scene";
         document.getElementById("game").appendChild(this.renderer.domElement);
 
+        // TODO: CONTROLS. drag tilt
+        // controls;
+        // Painter.controls = new OrbitControls(
+        //     this.camera,
+        //     this.renderer.domElement
+        // );
+
+        //effect
         this.outlineEffect = new OutlineEffect(Painter.renderer);
 
         // interaction
@@ -115,28 +125,7 @@ export default class Painter {
 
         // board & queue
         this.drawBoard();
-    }
-
-    static clearUnits() {
-        this.scene.children.forEach((child) => {
-            if (child.name === "unit") this.scene.remove(child);
-        });
-        this.running = false;
-    }
-
-    static startRender() {
-        if (!this.running) {
-            this.running = true;
-            this.animate();
-        }
-    }
-
-    static animate() {
-        if (!Painter.running) return;
-        requestAnimationFrame(Painter.animate);
-        const dt = Painter.clock.getDelta();
-        Painter.hitObjectPool.Update(dt);
-        Painter.outlineEffect.render(Painter.scene, Painter.camera);
+        this.drawBackground();
     }
 
     static drawBoard() {
@@ -236,6 +225,128 @@ export default class Painter {
             cube.name = "enemyPlate";
             this.scene.add(cube);
         });
+    }
+
+    static drawBackground() {
+        const loader = new GLTFLoader();
+
+        loader.load(
+            "models/concrete_fence/scene.gltf",
+            function (gltf) {
+                let object = gltf.scene.clone();
+
+                object.scale.set(0.05, 0.05, 0.05);
+                object.rotateY(-Math.PI + 0.1);
+                object.position.set(-27, 0, 7);
+                Painter.scene.add(object);
+
+                object = gltf.scene.clone();
+                object.scale.set(0.05, 0.05, 0.05);
+                object.rotateY(-Math.PI);
+                object.position.set(-23, 0, 5);
+                Painter.scene.add(object);
+
+                object = gltf.scene.clone();
+                object.scale.set(0.05, 0.05, 0.05);
+                object.rotateY(-Math.PI - 0.1);
+                object.position.set(-19, 0, 1);
+                Painter.scene.add(object);
+
+                object = gltf.scene.clone();
+                object.scale.set(0.05, 0.05, 0.05);
+                object.rotateY(Math.PI - 0.2);
+                object.position.set(-18, 0, -10);
+                Painter.scene.add(object);
+            },
+            undefined,
+            function (error) {
+                console.error(error);
+            }
+        );
+
+        loader.load(
+            "models/box/scene.gltf",
+            function (gltf) {
+                let object = gltf.scene;
+                object.scale.set(0.05, 0.05, 0.05);
+                object.position.set(20, 0, -4);
+                object.rotateY(-(Math.PI / 2) + 0.1);
+                Painter.scene.add(object);
+            },
+            undefined,
+            function (error) {
+                console.error(error);
+            }
+        );
+        loader.load(
+            "models/elec/scene.gltf",
+            function (gltf) {
+                let object = gltf.scene.clone();
+                object.scale.set(2, 2, 2);
+                object.position.set(-12, 0, 9);
+                object.rotateY(Math.PI / 20);
+                Painter.scene.add(object);
+
+                object = gltf.scene.clone();
+                object.scale.set(2, 2, 2);
+                object.position.set(-15, 0, 9);
+                object.rotateY(-Math.PI / 12);
+                Painter.scene.add(object);
+
+                object = gltf.scene.clone();
+                object.scale.set(2, 2, 2);
+                object.position.set(12, 0, -11);
+                object.rotateY(Math.PI);
+                Painter.scene.add(object);
+
+                object = gltf.scene.clone();
+                object.scale.set(2, 2, 2);
+                object.position.set(16, 0, 11);
+                object.rotateY(Math.PI / 12);
+                Painter.scene.add(object);
+            },
+            undefined,
+            function (error) {
+                console.error(error);
+            }
+        );
+
+        loader.load(
+            "models/cabinet/scene.gltf",
+            function (gltf) {
+                let object = gltf.scene;
+                object.scale.set(8, 8, 8);
+                object.position.set(0, 16, 22);
+                object.rotateY(-Math.PI);
+                Painter.scene.add(object);
+            },
+            undefined,
+            function (error) {
+                console.error(error);
+            }
+        );
+    }
+
+    static clearUnits() {
+        this.scene.children.forEach((child) => {
+            if (child.name === "unit") this.scene.remove(child);
+        });
+        this.running = false;
+    }
+
+    static startRender() {
+        if (!this.running) {
+            this.running = true;
+            this.animate();
+        }
+    }
+
+    static animate() {
+        if (!Painter.running) return;
+        requestAnimationFrame(Painter.animate);
+        const dt = Painter.clock.getDelta();
+        Painter.hitObjectPool.Update(dt);
+        Painter.outlineEffect.render(Painter.scene, Painter.camera);
     }
 
     static set _board(newBoard) {
