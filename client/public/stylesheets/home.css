@@ -1,12 +1,3 @@
-.test {
-    color: red;
-
-    width: 10dvw;
-    height: 10dvh;
-    background-color: #000000;
-    z-index: 1;
-}
-
 #home {
     display: inline-block;
     width: 96dvw;
@@ -15,7 +6,7 @@
 
 #homeMain {
     width: 100%;
-    height: 90dvh;
+    aspect-ratio: 16/8;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -115,10 +106,27 @@
     }
 }
 
-#deck {
-    position: absolute;
-    left: 4dvw;
+#cardOpenerLayer {
+    width: 100%;
+    height: 34dvh;
+    margin: 2dvh 0px 5dvh 0px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+#deckWrapper {
+    height: 34dvh;
     width: 12dvw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#deck {
+    width: 100%;
     height: 100%;
     padding: 0px;
     border: 0.2dvh solid #e1c573;
@@ -138,24 +146,15 @@
 
 #deck:active {
     transition: width 0s, height 0s, box-shadow 0s, border 0s, filter 0s;
-    width: 11.8dvw;
     height: 98%;
+    width: 98%;
     border: 0.2dvh solid #e1c573;
     box-shadow: inset 0px 0px 8px 4px #00000066;
 }
 
-#cardOpenerLayer {
-    position: absolute;
-    top: 32dvh;
-    left: 0dvw;
-    width: 100%;
-    height: 34%;
-}
-
 #cardOpenerWrapper {
-    margin-left: 17dvw;
-    width: 100%;
-    height: 100%;
+    width: 78dvw;
+    height: 34dvh;
 }
 
 #cards {
@@ -185,7 +184,7 @@
 }
 
 .mainCardWrapper:hover {
-    height: 120%;
+    height: 112%;
     font-size: calc(7px + 0.8dvw);
     box-shadow: 0px 0px 1dvh 0.5dvh #0006;
 }
@@ -324,9 +323,8 @@
 
 #triangle {
     margin-top: -0.1%;
-    /* margin-left: -0.2%; */
     width: 100.4%;
-    height: 48vh;
+    aspect-ratio: 3/1;
     position: relative;
 
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="50%" y2="100%" stroke="rgb(225,197,115)" stroke-width= "3" /></svg>'),
