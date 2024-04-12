@@ -2,7 +2,7 @@ import Game from "./Game.js";
 import Item from "./Item.js";
 import Painter from "./3D/Painter.js";
 import Player from "./Player.js";
-import { GAME_STATES } from "./constants/CONSTS.js";
+import { GAME_STATES } from "./constants/consts.js";
 
 class Battle {
     static board = [];

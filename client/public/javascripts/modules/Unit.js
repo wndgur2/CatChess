@@ -2,9 +2,9 @@ import * as THREE from "three";
 import Item from "./Item.js";
 import Synergy from "./Synergy.js";
 import Painter from "./3D/Painter.js";
-import { THREE_CONSTS } from "./constants/THREE_CONSTS.js";
+import { THREE_CONSTS } from "./constants/threeConsts.js";
 import { getBoardCoords } from "./utils.js";
-import { COST_COLORS } from "./constants/CONSTS.js";
+import { COST_COLORS } from "./constants/consts.js";
 
 export default class Unit {
     static async fetchData() {

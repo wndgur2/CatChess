@@ -1,7 +1,7 @@
 import Battle from "./Battle.js";
 import Game from "./Game.js";
-import { GAME_STATES } from "./constants/CONSTS.js";
-import { THREE_CONSTS } from "./constants/THREE_CONSTS.js";
+import { GAME_STATES } from "./constants/consts.js";
+import { THREE_CONSTS } from "./constants/threeConsts.js";
 
 function getBoardCoords(x, z) {
     switch (Game.state) {
@@ -34,4 +34,8 @@ function getCookie(key) {
     return value;
 }
 
-export { getBoardCoords, getCookie };
+function getText(text) {
+    return text[getCookie("lang") || "en"];
+}
+
+export { getBoardCoords, getCookie, getText };

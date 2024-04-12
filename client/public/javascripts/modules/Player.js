@@ -1,7 +1,7 @@
 import Game from "./Game.js";
 import Unit from "./Unit.js";
 import Socket from "./Socket.js";
-import { COST_COLORS, GAME_STATES } from "./constants/CONSTS.js";
+import { COST_COLORS, GAME_STATES } from "./constants/consts.js";
 import Painter from "./3D/Painter.js";
 import Synergy from "./Synergy.js";
 

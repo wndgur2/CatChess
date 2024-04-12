@@ -6,7 +6,8 @@ import Sound from "./Sound.js";
 import Game from "./Game.js";
 import Unit from "./Unit.js";
 import User from "./User.js";
-import { getCookie } from "./utils.js";
+import { getCookie, getText } from "./utils.js";
+import { CANCEL_MATCHING, MATCH } from "./constants/texts.js";
 
 export default class UI {
     static draggingId;
@@ -371,7 +372,7 @@ function startMatching() {
     };
     playBtn.onmouseover = () => {
         mouseOver = true;
-        playBtnText.innerHTML = "Cancel Matching";
+        playBtnText.innerHTML = getText(CANCEL_MATCHING);
     };
     playBtn.onmouseout = () => {
         mouseOver = false;
@@ -388,7 +389,7 @@ function cancelMatching() {
     playBtn.onmouseover = null;
     playBtn.onmouseout = null;
     const playBtnText = document.getElementById("playBtnText");
-    playBtnText.innerHTML = getCookie("lang") == "ko" ? "게임 매칭" : "Match";
+    playBtnText.innerHTML = getText(MATCH);
 }
 
 function scroll() {
@@ -410,7 +411,7 @@ function newMainCard() {
         (value) => !currentCats.includes(value.id)
     );
     if (values.length > 0) {
-        if (cards.children.length > MAX_AMOUNT) {
+        if (cards.children.length >= MAX_AMOUNT) {
             const i = cards.children.length - MAX_AMOUNT;
             cards.children[i].setAttribute(
                 "style",
@@ -418,7 +419,7 @@ function newMainCard() {
             );
             setTimeout(() => {
                 if (cards.children.length > MAX_AMOUNT)
-                    cards.removeChild(cards.children[1]);
+                    cards.removeChild(cards.children[0]);
             }, 400);
         }
 
@@ -428,12 +429,12 @@ function newMainCard() {
 
         setTimeout(() => {
             cardWrapper.style.opacity = "1";
-            cardWrapper.style.width = "12dvw";
+            cardWrapper.style.width = "11dvw";
             cardWrapper.onmouseover = (e) => {
-                cardWrapper.style.width = "14dvw";
+                cardWrapper.style.width = "12dvw";
             };
             cardWrapper.onmouseout = (e) => {
-                cardWrapper.style.width = "12dvw";
+                cardWrapper.style.width = "11dvw";
             };
         }, 20);
     }

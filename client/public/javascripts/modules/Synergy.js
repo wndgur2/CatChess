@@ -1,6 +1,6 @@
 import Player from "./Player.js";
 import UI from "./UI.js";
-import { SYNERGIES } from "./constants/CONSTS.js";
+import { SYNERGIES } from "./constants/consts.js";
 
 export default class Synergy {
     static instances = {};

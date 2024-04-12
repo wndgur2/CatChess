@@ -8,7 +8,7 @@ import Cat from "./Cat.js";
 import Player from "../Player.js";
 import Socket from "../Socket.js";
 import blood from "../effects/blood.js";
-import { THREE_CONSTS } from "../constants/THREE_CONSTS.js";
+import { THREE_CONSTS } from "../constants/threeConsts.js";
 import { getBoardCoords } from "../utils.js";
 import { objectPool } from "../effects/objectPool.js";
 

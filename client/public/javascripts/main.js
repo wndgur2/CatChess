@@ -8,18 +8,17 @@ window.onload = () => {
 };
 
 async function init() {
-    const playable = isPlayableDevice();
-
+    if (!isPlayableDevice()) return;
     await fetchResource();
     UI.init();
-    Socket.init(playable);
-    endLoading();
-    if (playable) Painter.init();
+    Socket.init();
+    Painter.init();
 }
 
 async function fetchResource() {
     await Unit.fetchData();
-    fetchImages();
+    await fetchImages();
+    endLoading();
 }
 
 async function fetchImages() {
