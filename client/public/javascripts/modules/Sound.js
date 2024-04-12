@@ -1,9 +1,13 @@
 export default class Sound {
-    static activated = false;
+    static muted = true;
     static taps = [];
     static playClick() {
+        if (Sound.muted) return;
         const randIdx = Math.floor(Math.random() * 7);
         Sound.taps[randIdx].play();
+    }
+    static mute() {
+        Sound.muted = !Sound.muted;
     }
 }
 
