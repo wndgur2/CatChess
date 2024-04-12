@@ -1,5 +1,6 @@
 #home {
     display: inline-block;
+    /* display: none; */
     width: 96dvw;
     padding: 2dvw 2dvw 12dvh 2dvw;
 }
