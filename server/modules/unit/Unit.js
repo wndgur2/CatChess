@@ -5,6 +5,10 @@ const { getPlayerById } = require("../utils");
 class Unit {
     static number = 0;
     constructor(proto, playerId, x, y, tier) {
+        if (!proto) {
+            console.log("PROTOTYPE ID ERROR");
+            return;
+        }
         this.uid = Unit.number++;
         this.tier = tier;
         this.id = proto.id;
