@@ -449,11 +449,11 @@ DONE
 
 ### 4.8
 
-자잘한 것만 건드리고, 큰 개선을 미루고 있었던 것 같다.
+자잘한 것만 건드리고, 큰 개선을 미루고 있었다.
 
     큰 개선
 
-    - 3d
+    - 3d model
     - 스킬 텍스트
 
 TODO
@@ -505,4 +505,14 @@ TODO
 
 ### 4.12
 
--   language 별 text 가져오기
+DONE
+
+-   language 별 text 가져오는 함수, text constants
+-   load background models
+
+TODO
+
+-   Cat Animation
+-   more skills
+-   show Unit Info UI 개선
+-   background textures size 경량화
