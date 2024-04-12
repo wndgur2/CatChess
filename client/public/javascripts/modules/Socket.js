@@ -5,19 +5,16 @@ import Player from "./Player.js";
 import UI from "./UI.js";
 import Unit from "./Unit.js";
 import User from "./User.js";
-import { getCookie } from "./utils.js";
+import { LOSE, MATCH, WAITING_FOR_CONNECTION, WIN } from "./constants/texts.js";
+import { getCookie, getText } from "./utils.js";
 
 export default class Socket {
     static socket = null;
     static id = getCookie("tempId");
 
-    static async init(playable) {
-        if (!playable) {
-            let text = "Not supported device";
-            return blockPlayBtn(text);
-        }
-        // const url = "ws://localhost:8080";
-        const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
+    static async init() {
+        const url = "ws://localhost:8080";
+        // const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
         Socket.socket = new WebSocket(url);
 
         Socket.socket.onopen = function (event) {
@@ -160,10 +157,10 @@ export default class Socket {
                 case "gameEnd": {
                     if (data.winner === Socket.id) {
                         if (User.isAuthenticated()) User.saveLog("win");
-                        alert("You win.");
+                        alert(getText(WIN));
                     } else {
                         if (User.isAuthenticated()) User.saveLog("lose");
-                        alert("You lose.");
+                        alert(getText(LOSE));
                     }
                     UI.gameEnd();
                     break;
@@ -172,9 +169,9 @@ export default class Socket {
         };
 
         Socket.socket.onclose = function (event) {
-            blockPlayBtn("Waiting for connection...");
-            console.log("Socket disconnected, attempting another shot...");
-            Socket.init(true);
+            blockPlayBtn(getText(WAITING_FOR_CONNECTION));
+            console.log("Socket disconnected, reconnection on progress...");
+            Socket.init();
         };
 
         Socket.socket.onerror = function (event) {
@@ -201,10 +198,7 @@ function readyToPlay() {
 
     const playBtnText = document.getElementById("playBtnText");
 
-    playBtnText.innerHTML =
-        getCookie("lang") == "ko"
-            ? "<span>게임 매칭</span>"
-            : "<span>Match</span>";
+    playBtnText.innerHTML = `<span>${getText(MATCH)}</span>`;
 }
 
 function blockPlayBtn(text) {
