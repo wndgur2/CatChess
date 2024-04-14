@@ -9,30 +9,9 @@ export default class Part {
             this.depth,
             this.height
         );
-
-        //TODO
-        const index = Math.floor((width + depth + height) * 100);
-        console.log(index);
-        const img = new Image();
-        img.src = image;
-        img.onload = (e) => {
-            const canvas = document.createElement("canvas");
-            const ctx = canvas.getContext("2d");
-            canvas.width = img.width;
-            canvas.height = img.height;
-            ctx.drawImage(img, 0, 0);
-            const imageData = ctx.getImageData(0, 0, img.width, img.height);
-            const color = `#${normalizeColor(
-                imageData.data[index * 4]
-            )}${normalizeColor(imageData.data[index * 4 + 1])}${normalizeColor(
-                imageData.data[index * 4 + 2]
-            )}`;
-            console.log(color);
-            this.material.color = new THREE.Color(color);
-        };
-
+        const texture = new THREE.TextureLoader().load(image);
         this.material = new THREE.MeshBasicMaterial({
-            color: "#000",
+            map: texture,
         });
         this.mesh = new THREE.Mesh(this.geometry, this.material);
 
