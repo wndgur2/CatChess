@@ -123,30 +123,11 @@ export default class Painter {
             }
         );
 
-        // board & queue
-        this.drawBoard();
         this.drawBackground();
+        this.drawBoard();
     }
 
     static drawBoard() {
-        // background
-        const backgroundGeometry = new THREE.PlaneGeometry(
-            THREE_CONSTS.PLATE_RADIUS * 50,
-            THREE_CONSTS.PLATE_RADIUS * 50
-        );
-        const backgroundMaterial = new THREE.MeshLambertMaterial({
-            map: this.textures.background,
-            side: THREE.DoubleSide,
-        });
-        const background = new THREE.Mesh(
-            backgroundGeometry,
-            backgroundMaterial
-        );
-        background.rotateX(Math.PI / 2);
-        background.position.set(0, -THREE_CONSTS.PLATE_RADIUS / 10, 0);
-        background.name = "background";
-        this.scene.add(background);
-
         // floor
         const floorGeometry = new THREE.PlaneGeometry(
             THREE_CONSTS.PLATE_RADIUS * 50,
@@ -228,6 +209,23 @@ export default class Painter {
     }
 
     static drawBackground() {
+        const backgroundGeometry = new THREE.PlaneGeometry(
+            THREE_CONSTS.PLATE_RADIUS * 50,
+            THREE_CONSTS.PLATE_RADIUS * 50
+        );
+        const backgroundMaterial = new THREE.MeshLambertMaterial({
+            map: this.textures.background,
+            side: THREE.DoubleSide,
+        });
+        const background = new THREE.Mesh(
+            backgroundGeometry,
+            backgroundMaterial
+        );
+        background.rotateX(Math.PI / 2);
+        background.position.set(0, -THREE_CONSTS.PLATE_RADIUS / 10, 0);
+        background.name = "background";
+        this.scene.add(background);
+
         const loader = new GLTFLoader();
 
         loader.load(
@@ -461,6 +459,8 @@ export default class Painter {
             healthBarY - THREE_CONSTS.HEALTHBAR_HEIGHT,
             0
         );
+        manaBarMesh.position.x = THREE_CONSTS.MANABAR_WIDTH / 2;
+        manaBarMesh.scale.x = 0;
         unit.mesh.add(manaBarMesh);
 
         // items

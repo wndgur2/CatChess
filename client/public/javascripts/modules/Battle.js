@@ -15,6 +15,7 @@ class Battle {
             row.forEach((cat) => {
                 if (!cat) return;
                 cat.inBattle = true;
+                cat.mp = 0;
             });
         });
         Painter._board = Battle.board;
@@ -32,22 +33,6 @@ class Battle {
             });
         });
         return unit;
-    }
-
-    static init(timeStep) {
-        if (this.interval) clearInterval(this.interval);
-        this.interval = setInterval(() => {
-            if (Game.state !== GAME_STATES.BATTLE) {
-                clearInterval(this.interval);
-                return;
-            }
-            this.board.forEach((row) => {
-                row.forEach((cat) => {
-                    if (!cat) return;
-                    cat._mp = cat.mp + 1;
-                });
-            });
-        }, timeStep);
     }
 
     static attack(attacker, target, damage) {
@@ -100,6 +85,12 @@ class Battle {
         if (!cat) return;
         cat._mp = cat.mp - cat.maxMp;
         cat.cast();
+    }
+
+    static manaGen(uid, mp) {
+        let cat = this.getUnitByUid(uid);
+        if (!cat) return;
+        cat._mp = mp;
     }
 
     static itemUpdate(data) {

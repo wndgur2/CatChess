@@ -108,7 +108,7 @@ export default class Socket {
                     break;
                 }
                 case "battleInit": {
-                    Battle.init(data.timeStep);
+                    console.log("battle started.");
                     break;
                 }
                 case "unitAttack": {
@@ -121,6 +121,12 @@ export default class Socket {
                     let { battleId, uid } = data;
                     if (Battle.id != battleId) return;
                     Battle.cast(uid);
+                    break;
+                }
+                case "unitManaGen": {
+                    let { battleId, uid, mp } = data;
+                    if (Battle.id != battleId) return;
+                    Battle.manaGen(uid, mp);
                     break;
                 }
                 case "unitMove": {

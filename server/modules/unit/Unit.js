@@ -45,7 +45,7 @@ class Unit {
     update() {
         if (this.die) return;
 
-        this.mp += 1;
+        // this.mp += 1;
         this.updateModifiers();
 
         if (this.mp >= this.maxMp) {
@@ -98,7 +98,13 @@ class Unit {
     }
 
     ordinaryAttack(target) {
+        this.mp += 5;
         this.attack(target, this.getStat("ad") - target.getStat("armor"));
+
+        this.sendMsgToGame("unitManaGen", {
+            uid: this.uid,
+            mp: this.mp,
+        });
     }
 
     attack(target, damage) {

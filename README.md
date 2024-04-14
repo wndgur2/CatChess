@@ -523,5 +523,12 @@ TODO
 -   background textures size 경량화
 
 ### 4.13
-new big Todo
-- cat texture
+
+TODO
+
+-   cat texture
+-   게임 진행 안내 시의성
+
+DONE
+
+-   dynamic mana gen
