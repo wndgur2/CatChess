@@ -45,13 +45,13 @@ export default class UI {
         document.querySelector("#en").onclick = () => {
             languageChange("en");
         };
-        document.querySelector("#soundBtn").addEventListener("click", () => {
+        document.querySelector("#soundBtn").onclick = () => {
             let soundImg = document.querySelector("#soundImg");
             Sound.mute();
             if (Sound.muted)
                 soundImg.setAttribute("src", "/images/home/note2.png");
             else soundImg.setAttribute("src", "/images/home/note.png");
-        });
+        };
 
         document.querySelector("#developerBtn").onclick = () => {
             window.open("https://github.com/wndgur2/CatChess");
@@ -68,24 +68,20 @@ export default class UI {
         document.querySelector("#modalClose").onclick = UI.closeModal;
         document.querySelector("#modalBackdrop").onclick = UI.closeModal;
 
-        document
-            .querySelector("#surrenderBtn")
-            .addEventListener("click", () => {
-                const surrenderEl = document.querySelector("#surrenderWrapper");
-                UI.openModal(surrenderEl.innerHTML);
-                document
-                    .querySelector("#surrenderConfirm")
-                    .addEventListener("click", () => {
-                        Socket.sendMsg("reqSurrender", "");
-                        UI.closeModal();
-                    });
-            });
+        document.querySelector("#surrenderBtn").onclick = () => {
+            const surrenderEl = document.querySelector("#surrenderWrapper");
+            UI.openModal(surrenderEl.innerHTML);
+            document.querySelector("#surrenderConfirm").onclick = () => {
+                Socket.sendMsg("reqSurrender", "");
+                UI.closeModal();
+            };
+        };
 
-        document.querySelector("#reload").addEventListener("click", () => {
+        document.querySelector("#reload").onclick = () => {
             Socket.sendMsg("reqReload", "");
-        });
+        };
 
-        document.addEventListener("keypress", (event) => {
+        document.onkeypress = (event) => {
             switch (event.key.toUpperCase()) {
                 case "D":
                     Socket.sendMsg("reqReload", "");
@@ -106,49 +102,53 @@ export default class UI {
                     Painter.sellUnitOnKeypress();
                     break;
             }
-        });
+        };
 
-        document.querySelector("#buyExp").addEventListener("click", () => {
+        document.querySelector("#buyExp").onclick = () => {
             Socket.sendMsg("reqBuyExp", "");
-        });
+        };
 
         let shopEl = document.querySelector("#shop");
-        shopEl.addEventListener("mouseenter", shopMouseEnter);
-        shopEl.addEventListener("mouseleave", shopMouseLeave);
-        shopEl.addEventListener("pointerup", shopPointerUp);
+        shopEl.onmouseenter = shopMouseEnter;
+        shopEl.onmouseleave = shopMouseLeave;
+        shopEl.onpointerup = shopPointerUp;
 
         let shoplistEl = document.querySelector("#shoplist");
         for (let i = 0; i < shoplistEl.children.length; ++i) {
-            shoplistEl.children[i].addEventListener("click", () => {
+            shoplistEl.children[i].onclick = () => {
                 if (!Player.player.shop[i]) return;
                 Socket.sendMsg("reqBuyCat", {
                     index: i,
                 });
                 UI.popDown();
-            });
+            };
         }
 
         // 2 x 3 inventory
         for (let i = 0; i < 3; i++) {
             for (let j = 0; j < 2; j++) {
                 let item = document.querySelector(`#inventory-${i}-${j}`);
-                item.addEventListener("dragstart", inventoryDragStart);
+                item.ondragstart = inventoryDragStart;
                 item.draggable = false;
-                item.addEventListener("mousemove", inventoryItemMouseMove);
-                item.addEventListener("mouseleave", inventoryItemMouseLeave);
+                item.onmousemove = inventoryItemMouseMove;
+                item.onmouseleave = inventoryItemMouseLeave;
             }
         }
 
         // unit info
         let itemEls = document.getElementsByClassName("item");
         for (let i = 0; i < itemEls.length; i++) {
-            itemEls[i].addEventListener("mousemove", itemMouseMove);
-            itemEls[i].addEventListener("mouseout", itemMouseLeave);
+            itemEls[i].onmousemove = itemMouseMove;
+            itemEls[i].onmouseout = itemMouseLeave;
         }
 
         let skillEl = document.getElementById("unitSkillWrapper");
-        skillEl.addEventListener("mousemove", skillMouseMove);
-        skillEl.addEventListener("mouseout", skillMouseLeave);
+        skillEl.onmousemove = skillMouseMove;
+        skillEl.onmouseout = skillMouseLeave;
+
+        onclose = () => {
+            Painter.running = false;
+        };
     }
 
     static openModal(content, callback) {
@@ -248,6 +248,7 @@ export default class UI {
     }
 
     static gameEnd() {
+        Painter.running = false;
         cancelMatching();
         document.getElementById("game").style.display = "none";
         document.getElementById("home").style.display = "inline-block";

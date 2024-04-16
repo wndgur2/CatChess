@@ -258,7 +258,7 @@ export default class Painter {
             },
             undefined,
             function (error) {
-                console.error(error);
+                console.log(error);
             }
         );
 

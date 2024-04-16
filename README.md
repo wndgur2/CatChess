@@ -532,3 +532,7 @@ TODO
 DONE
 
 -   dynamic mana gen
+
+### 4.16
+
+게임 시작 후 크롬 안 꺼지는 버그
