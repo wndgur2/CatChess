@@ -325,7 +325,7 @@
 #triangle {
     margin-top: -0.1%;
     width: 100.4%;
-    aspect-ratio: 3/1;
+    aspect-ratio: 4/1;
     position: relative;
 
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg"><line x1="0" y1="0" x2="50%" y2="100%" stroke="rgb(225,197,115)" stroke-width= "3" /></svg>'),
@@ -338,7 +338,7 @@
 
 #homeContent {
     width: 100%;
-    margin-top: 12dvh;
+    margin-top: 6dvh;
 
     display: flex;
 

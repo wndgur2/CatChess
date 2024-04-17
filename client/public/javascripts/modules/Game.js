@@ -38,7 +38,6 @@ export default class Game {
 
     static set _state(newState) {
         this.state = newState;
-        // document.getElementById("state").innerHTML = newState;
     }
 
     static set _time(newTime) {

@@ -1,6 +1,7 @@
 import Player from "./Player.js";
 import UI from "./UI.js";
 import { SYNERGIES } from "./constants/consts.js";
+import { getText } from "./utils.js";
 
 export default class Synergy {
     static instances = {};
@@ -22,7 +23,7 @@ export default class Synergy {
         let i = 0;
         for (const [a, d] of Object.entries(this.desc)) {
             if (amount >= parseInt(a)) active = i;
-            descs.push(`${a} : ${d}`);
+            descs.push(`${a} : ${getText(d)}`);
             ++i;
         }
 
