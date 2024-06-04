@@ -5,7 +5,7 @@ export default class Cat {
     constructor(unit) {
         this.mesh = new THREE.Group();
         Object.values(CAT_PARTS).forEach((part) => {
-            // TODO: bitmap 활용해서 각 파트에 맞는 이미지 주기
+            // TODO: textures
             this.mesh.add(
                 new Part(
                     part.width,

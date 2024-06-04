@@ -13,8 +13,8 @@ export default class Socket {
     static id = getCookie("tempId");
 
     static async init() {
-        const url = "ws://localhost:8080";
-        // const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
+        // const url = "ws://localhost:8080";
+        const url = "ws://catchess.ap-northeast-2.elasticbeanstalk.com:8080";
         Socket.socket = new WebSocket(url);
 
         Socket.socket.onopen = function (event) {

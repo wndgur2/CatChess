@@ -233,7 +233,6 @@ class Game {
 
         this.players.forEach((player) => {
             player.game = null;
-            removePlayer(player.id);
         });
 
         this.creeps.forEach((creep) => {
@@ -242,7 +241,7 @@ class Game {
         });
 
         Game.games.splice(Game.games.indexOf(this), 1);
-
+        
         delete this.players;
         delete this;
     }

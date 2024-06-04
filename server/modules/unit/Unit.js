@@ -176,6 +176,7 @@ class Unit {
 
     sendMsgToGame(type, data) {
         const p = getPlayerById(this.owner);
+        if(!p.battle.id) return;
         p.game.sendMsgToAll(type, { ...data, battleId: p.battle.id });
     }
 
