@@ -116,7 +116,7 @@ class Game {
 
         this._stage = this.stage + 1;
         this.state = GAME_STATES.ARRANGE;
-        this.time = process.env.NODE_ENV === "development" ? 12 : 20;
+        this.time = process.env.NODE_ENV === "development" ? 8 : 12;
         this.updateState();
 
         // 결과 지급, 리로드
@@ -185,7 +185,7 @@ class Game {
         clearTimeout(this.timeout);
 
         this.state = GAME_STATES.BATTLE;
-        this.time = 30;
+        this.time = 25;
         this.updateState();
 
         this.battles.forEach((battle) => battle.initBattle());
