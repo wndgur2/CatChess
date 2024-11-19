@@ -57,15 +57,26 @@ function isPlayableDevice() {
 }
 
 async function fetchUserLog() {
+  console.log('Logging user info...')
   const browserInfo = {
     userAgent: navigator.userAgent,
     language: navigator.language || navigator.userLanguage,
   }
-  fetch('/api/log/browser', {
+  fetch('/user/log/browser', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(browserInfo),
   })
+    .then((res) => {
+      if (res.status !== 200) {
+        console.log('Failed to log user info.')
+      } else {
+        console.log('User info logged.')
+      }
+    })
+    .catch((err) => {
+      console.error(err)
+    })
 }
