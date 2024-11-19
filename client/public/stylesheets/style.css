@@ -8,12 +8,14 @@ body {
     padding: 0px;
     margin: 0px;
     overflow-x: hidden;
-    background: linear-gradient(#27273a 90dvh, #202030 160dvh, #000 420dvh);
+    background: linear-gradient(#27273a 90vh, #202030 160vh, #000 420vh);
     color: #dac378;
 }
+
 img {
     pointer-events: none;
 }
+
 .timesFont {
     font-family: "Times New Roman", Times, serif;
 }
@@ -27,7 +29,7 @@ button {
 }
 
 .btn {
-    border: 0.2dvh solid #dac378;
+    border: 0.2vh solid #dac378;
     box-shadow: 1px 1px 2px 2px #00000044;
     background-color: #26263f;
 
@@ -49,7 +51,7 @@ button {
 }
 
 .insideBtn {
-    border: 0.2dvh solid #807253;
+    border: 0.2vh solid #807253;
     background-color: #232330;
 
     font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS",
@@ -61,6 +63,7 @@ button {
 body::-webkit-scrollbar {
     display: none;
 }
+
 #container {
     display: flex;
     flex-direction: column;
@@ -105,11 +108,11 @@ body::-webkit-scrollbar {
     align-items: center;
     justify-content: space-between;
     background-color: #27273a;
-    border: 0.2dvh solid #e1c573;
+    border: 0.2vh solid #e1c573;
     z-index: 1;
 
     /* shadow */
-    box-shadow: 0px 0px 1dvh 1dvw #0000001a;
+    box-shadow: 0px 0px 1vh 1dvw #0000001a;
 }
 
 #modalHeader {
@@ -161,6 +164,7 @@ body::-webkit-scrollbar {
     padding: 4%;
     font-size: 24px;
 }
+
 #settingWrapper {
     display: none;
 }
@@ -171,7 +175,7 @@ body::-webkit-scrollbar {
     left: 1.4dvw;
     bottom: 0px;
     width: 97.2dvw;
-    height: 5dvh;
+    height: 5vh;
 
     display: flex;
     justify-content: space-between;
@@ -179,7 +183,7 @@ body::-webkit-scrollbar {
     color: #dac378;
 }
 
-#footer > div {
+#footer>div {
     height: 100%;
 
     display: flex;
@@ -218,7 +222,7 @@ body::-webkit-scrollbar {
     font-size: medium;
 }
 
-#developerBtn > span {
+#developerBtn>span {
     color: #f0dea3;
     text-decoration-line: underline;
 }
@@ -226,23 +230,23 @@ body::-webkit-scrollbar {
 #languagePopUp {
     position: fixed;
     width: fit-content;
-    bottom: 5.2dvh;
+    bottom: 5.2vh;
     left: 1.4dvw;
     display: none;
     flex-direction: column;
     align-items: center;
     justify-content: space-around;
     background-color: #27273a;
-    border: 0.2dvh solid #e1c573;
+    border: 0.2vh solid #e1c573;
     z-index: 1;
 
     /* shadow */
-    box-shadow: 0px 0px 1dvh 1dvw #0000001a;
+    box-shadow: 0px 0px 1vh 1dvw #0000001a;
 }
 
-#languagePopUp > button {
+#languagePopUp>button {
     width: fit-content;
-    padding: 2dvh;
+    padding: 2vh;
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -251,6 +255,6 @@ body::-webkit-scrollbar {
     font-size: small;
 }
 
-#languagePopUp > button:hover {
+#languagePopUp>button:hover {
     background-color: #00000044;
 }
