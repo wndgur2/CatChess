@@ -57,10 +57,11 @@ function isPlayableDevice() {
 }
 
 async function fetchUserLog() {
-  console.log('Logging user info...')
+  console.log('Logging user info...', new Date().toLocaleString())
   const browserInfo = {
     userAgent: navigator.userAgent,
     language: navigator.language || navigator.userLanguage,
+    createdAtLocale: new Date().toLocaleString(),
   }
   fetch('/user/log/browser', {
     method: 'POST',
