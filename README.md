@@ -1,4 +1,4 @@
-## 실시간 웹 대전 게임
+## 실시간 3D 웹 대전 게임
 
 ### Cat Chess home [링크](http://catchess.ap-northeast-2.elasticbeanstalk.com/)
 
@@ -44,15 +44,24 @@
 
 ## 기록
 
-### ~ 2024.1.14
+### ~ 2024.12.09
+
+DONE
+
+- 접속 log 남기기
+- 3D models 추가
+
+TODO
+
+- 3D models preloading
+
+### 2024.1.14
 
 DONE
 
 - socket 세션 관리를 통해 실시간 온라인 로직 구현
 - Player, Game, Unit 모듈을 중심으로 게임 로직 구현
-
-### 1인 개발 시작
-
+- 1인 개발 시작
 - react에서 express로 프레임워크 변경
 
 ## 1.15 ~ 1.28
