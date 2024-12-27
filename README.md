@@ -10,6 +10,10 @@
 
 ![0:2:8capt](https://github.com/wndgur2/CatChess/assets/65120311/713951bb-b64e-4fb0-92ce-ae3a41c3149b)
 
+### 0.3.4 스크린샷
+
+<img width="1440" alt="Screenshot 2024-12-12 at 13 53 38" src="https://github.com/user-attachments/assets/c83d8e9c-acf6-47d8-bd14-163b70201edd" />
+
 ### 0.3.2 스크린샷
 
 ![Screenshot 2024-04-13 at 0 48 39 Large](https://github.com/wndgur2/CatChess/assets/65120311/eb590ed3-3648-44cf-9023-5c222df2dde4)
