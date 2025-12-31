@@ -3,7 +3,7 @@
   "outputDirectory": "client/public",
   "functions": {
     "dist/www.js": {
-      "runtime": "nodejs18.x"
+      "runtime": "nodejs20"
     }
   }
 }
