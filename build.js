@@ -18,6 +18,6 @@ await build({
   platform: 'browser',
   format: 'esm',
   target: 'es2020',
-  outfile: 'public/javascripts/main.js',
+  outfile: 'client/dist/main.js',
   external: ['three', 'three/addons/*', 'three/nodes'],
 })
