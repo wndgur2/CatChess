@@ -14,7 +14,7 @@ export default class Socket {
 
   static async init() {
     // const url = 'ws://localhost:8080'
-    const url = `ws://cat-chess.vercel.app`
+    const url = `wss://cat-chess.vercel.app`
     Socket.socket = new WebSocket(url)
 
     Socket.socket.onopen = function (event) {
