@@ -4,7 +4,7 @@ build({
   entryPoints: ['src/bin/www'], // 👈 express entry
   bundle: true,
   platform: 'node',
-  target: 'node22',
+  target: 'node20',
   outfile: 'dist/www.js',
 
   // 🔑 CRITICAL FOR PUG / CLEAN-CSS
