@@ -4,3 +4,4 @@
 .ebextensions
 /dist
 /public
+/client/public/dist
