@@ -13,14 +13,14 @@ await build({
 
 /* ---------- CLIENT ---------- */
 await build({
-  entryPoints: ['client/public/javascripts/main.js'],
+  entryPoints: ['client/javascripts/main.js'],
   bundle: true,
 
   platform: 'browser',
   format: 'esm',
   target: 'es2020',
 
-  outfile: 'public/javascripts/main.js',
+  outfile: 'client/public/javascripts/main.js',
 
   external: ['three', 'three/addons/*', 'three/nodes'],
 })
