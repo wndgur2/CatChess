@@ -1,15 +1,23 @@
 import { build } from 'esbuild'
 
-build({
-  entryPoints: ['src/bin/www'], // 👈 express entry
+/* ---------- SERVER ---------- */
+await build({
+  entryPoints: ['src/bin/www'],
   bundle: true,
   platform: 'node',
   target: 'node20',
   outfile: 'dist/www.js',
-
-  // 🔑 CRITICAL FOR PUG / CLEAN-CSS
-  external: ['source-map', 'pug'],
-
-  // keep runtime requires working
+  external: ['pug', 'source-map'],
   packages: 'external',
-}).catch(() => process.exit(1))
+})
+
+/* ---------- CLIENT ---------- */
+await build({
+  entryPoints: ['client/public/javascripts/main.js'],
+  bundle: true,
+  platform: 'browser',
+  format: 'esm',
+  target: 'es2020',
+  outfile: 'public/javascripts/main.js',
+  external: ['three', 'three/addons/*', 'three/nodes'],
+})
