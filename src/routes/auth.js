@@ -7,7 +7,7 @@ const router = express.Router()
 
 const redirectUri = process.env.NODE_ENV
   ? 'http://localhost:8080/auth/google/callback'
-  : 'http://catchess.ap-northeast-2.elasticbeanstalk.com/auth/google/callback'
+  : `${process.env.SERVER_URL}/auth/google/callback`
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,

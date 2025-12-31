@@ -15,7 +15,7 @@ CatChess는 브라우저에서 실행되는 실시간 멀티플레이 오토 배
 
 ### 라이브 빌드 & 자료
 
-- 최신 빌드 플레이: [Cat Chess home](http://catchess.ap-northeast-2.elasticbeanstalk.com/)
+- 최신 빌드 플레이: [Cat Chess home](https://cat-chess.vercel.app/)
 - 게임 플레이 영상: [0.2.9 데모](https://www.youtube.com/watch?v=07bcqwNsibg&t=314s)
 - UI/UX 기획안: [Figma 보드](https://www.figma.com/file/UTLu1K2qiGxK4XhZFt7q1h/catChess?type=design&node-id=0%3A1&mode=design&t=4keMP4w5z6JixYat-1)
 - 로직 다이어그램: [Draw.io 문서](https://drive.google.com/file/d/1AHRsH_nBJkpwJ-txst1yUMQeNCm4xSDl/view?usp=drive_link)
