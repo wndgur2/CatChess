@@ -1,0 +1,8 @@
+{
+  "buildCommand": "npm run build",
+  "functions": {
+    "dist/www.js": {
+      "runtime": "nodejs18.x"
+    }
+  }
+}

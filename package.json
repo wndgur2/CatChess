@@ -3,9 +3,9 @@
     "version": "0.0.0",
     "private": true,
     "scripts": {
-        "start": "NODE_ENV=production nodemon ./src/bin/www",
-        "test": "NODE_ENV=test nodemon ./src/bin/www",
-        "dev": "NODE_ENV=development nodemon ./src/bin/www"
+        "build": "node build.js",
+        "start": "node dist/www.js",
+        "dev": "NODE_ENV=development nodemon src/bin/www"
     },
     "dependencies": {
         "body-parser": "^1.20.2",
@@ -22,5 +22,11 @@
         "nodemon": "^3.0.1",
         "pug": "2.0.0-beta11",
         "ws": "^8.14.2"
+    },
+    "devDependencies": {
+        "esbuild": "^0.27.2"
+    },
+    "overrides": {
+        "source-map": "0.6.1"
     }
 }

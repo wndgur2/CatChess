@@ -12,6 +12,7 @@ app.use(cookieParser())
 app.use(express.static(__dirname + '/../client/public'))
 app.set('view engine', 'pug')
 app.set('views', __dirname + '/../client/views')
+app.set('view options', { compileDebug: false })
 
 const languageMiddleware = (req, res, next) => {
   let lang = req.headers['accept-language']
