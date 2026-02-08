@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 const router = express.Router()
 
-const redirectUri = `${process.env.SERVER_URL}/auth/google/callback`
+const redirectUri = `https://${process.env.SERVER_URL}/auth/google/callback`
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
