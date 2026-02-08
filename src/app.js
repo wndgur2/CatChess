@@ -1,6 +1,7 @@
-let express = require('express')
-const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const bodyParser = require('body-parser')
+
+let express = require('express')
 const authRouter = require('./routes/auth')
 const dataRouter = require('./routes/data')
 const userRouter = require('./routes/user')
@@ -33,7 +34,5 @@ app.get('/', (req, res, next) => {
 app.use('/data', dataRouter)
 app.use('/user', userRouter)
 app.use('/auth', authRouter)
-
-console.log('ENV: ', process.env.NODE_ENV)
 
 module.exports = app

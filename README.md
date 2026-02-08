@@ -117,7 +117,7 @@ CatChess/
    DB_URI=mongodb://localhost:27017/catchess   # 또는 Atlas 접속 문자열
    GOOGLE_CLIENT_ID=구글 OAuth 클라이언트 ID
    GOOGLE_CLIENT_SECRET=구글 OAuth 클라이언트 시크릿
-   PORT=8080
+   PORT=3000
    ```
 4. 개발 서버를 실행합니다.
    ```bash

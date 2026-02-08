@@ -5,14 +5,15 @@ const jwt = require('jsonwebtoken')
 
 const router = express.Router()
 
-const redirectUri = process.env.NODE_ENV
-  ? 'http://localhost:8080/auth/google/callback'
-  : `${process.env.SERVER_URL}/auth/google/callback`
+const redirectUri =
+  process.env.NODE_ENV === 'development'
+    ? 'http://localhost:8080/auth/google/callback'
+    : `${process.env.SERVER_URL}/auth/google/callback`
 
 const oauth2Client = new google.auth.OAuth2(
   process.env.GOOGLE_CLIENT_ID,
   process.env.GOOGLE_CLIENT_SECRET,
-  redirectUri
+  redirectUri,
 )
 const scopes = ['https://www.googleapis.com/auth/userinfo.email']
 

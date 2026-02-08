@@ -13,8 +13,7 @@ export default class Socket {
   static id = getCookie('tempId')
 
   static async init() {
-    // const url = 'ws://localhost:8080'
-    const url = `wss://cat-chess.vercel.app`
+    const url = `wss://${window.location.host}`
     Socket.socket = new WebSocket(url)
 
     Socket.socket.onopen = function (event) {
@@ -89,7 +88,7 @@ export default class Socket {
         }
         case 'itemUpdate': {
           Player.getPlayerById(data.player)._items = data.items.map((item) =>
-            item ? new Item(item) : null
+            item ? new Item(item) : null,
           )
           break
         }
@@ -188,7 +187,7 @@ export default class Socket {
         from: Socket.id,
         type: type,
         data: data,
-      })
+      }),
     )
   }
 }
