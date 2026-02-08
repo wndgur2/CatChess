@@ -13,7 +13,7 @@ export default class Socket {
   static id = getCookie('tempId')
 
   static async init() {
-    const url = `wss://${window.location.host}:3000`
+    const url = `wss://${window.location.host}`
     Socket.socket = new WebSocket(url)
 
     Socket.socket.onopen = function (event) {
