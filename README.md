@@ -1,3 +1,9 @@
+---
+date_started: 2023.12.01
+date_finished: 2024.04.01
+head_count: 1
+role: Full-stack
+---
 # CatChess
 
 _A real-time, browser-based 3D auto battler starring tactical cats._
