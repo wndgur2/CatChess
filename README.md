@@ -7,15 +7,13 @@ _A real-time, browser-based 3D auto battler starring tactical cats._
 ![DEMO_MAIN](https://github.com/wndgur2/CatChess/assets/65120311/127f7c91-6917-416a-accb-38428a96945a)
 ![DEMO_GAME](https://github.com/user-attachments/assets/c83d8e9c-acf6-47d8-bd14-163b70201edd)
 
-## 한국어
-
 ### 개요
 
 CatChess는 브라우저에서 실행되는 실시간 멀티플레이 오토 배틀러입니다. Node.js/Express 백엔드가 매칭, 전투 시뮬레이션, 영속성을 담당하고 Three.js 기반 프런트엔드가 3D 보드와 고양이 모델, 전투 이펙트를 렌더링합니다. WebSocket, WebGL, MongoDB를 결합해 두 플레이어가 끊김 없이 전략 대결을 펼칠 수 있도록 설계했습니다.
 
 ### 라이브 빌드 & 자료
 
-- 최신 빌드 플레이: [Cat Chess home](https://cat-chess.vercel.app/)
+- 최신 버전 플레이: [Cat Chess](https://catchess.sam-lee.cloud/)
 - 게임 플레이 영상: [0.2.9 데모](https://www.youtube.com/watch?v=07bcqwNsibg&t=314s)
 - UI/UX 기획안: [Figma 보드](https://www.figma.com/file/UTLu1K2qiGxK4XhZFt7q1h/catChess?type=design&node-id=0%3A1&mode=design&t=4keMP4w5z6JixYat-1)
 - 로직 다이어그램: [Draw.io 문서](https://drive.google.com/file/d/1AHRsH_nBJkpwJ-txst1yUMQeNCm4xSDl/view?usp=drive_link)
