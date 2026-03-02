@@ -4,6 +4,7 @@ date_finished: 2024.04.01
 head_count: 1
 role: Full-stack
 ---
+
 # CatChess
 
 _A real-time, browser-based 3D auto battler starring tactical cats._
@@ -15,7 +16,7 @@ _A real-time, browser-based 3D auto battler starring tactical cats._
 
 ### 개요
 
-CatChess는 브라우저에서 실행되는 실시간 멀티플레이 오토 배틀러입니다. Node.js/Express 백엔드가 매칭, 전투 시뮬레이션, 영속성을 담당하고 Three.js 기반 프런트엔드가 3D 보드와 고양이 모델, 전투 이펙트를 렌더링합니다. WebSocket, WebGL, MongoDB를 결합해 두 플레이어가 끊김 없이 전략 대결을 펼칠 수 있도록 설계했습니다.
+CatChess는 브라우저에서 실행되는 실시간 멀티플레이 오토 배틀러입니다. Node.js/Express 백엔드가 매칭, 전투 시뮬레이션, 영속성을 담당하고 Three.js 기반 프론트엔드가 3D 보드와 고양이 모델, 전투 이펙트를 렌더링합니다. WebSocket, MongoDB를 결합해 두 플레이어가 끊김 없이 전략 대결을 펼칠 수 있도록 설계했습니다.
 
 ### 라이브 빌드 & 자료
 
@@ -108,44 +109,3 @@ CatChess/
 ├── package.json                     # npm 스크립트와 프로젝트 의존성
 └── README.md                        # 프로젝트 개요 및 가이드
 ```
-
-### 로컬 실행 방법
-
-1. Node.js 18+와 MongoDB(Atlas 또는 로컬 인스턴스)를 준비합니다.
-2. 의존성을 설치합니다.
-   ```bash
-   npm install
-   ```
-3. 프로젝트 루트에 `.env` 파일을 작성합니다.
-   ```ini
-   DB_URI=mongodb://localhost:27017/catchess   # 또는 Atlas 접속 문자열
-   GOOGLE_CLIENT_ID=구글 OAuth 클라이언트 ID
-   GOOGLE_CLIENT_SECRET=구글 OAuth 클라이언트 시크릿
-   PORT=3000
-   ```
-4. 개발 서버를 실행합니다.
-   ```bash
-   npm run dev
-   ```
-5. `http://localhost:8080/?lang=ko` (또는 `lang=en`)로 접속합니다. 개발 모드(`NODE_ENV=development`)에서는 빠른 테스트를 위해 시작 골드/체력이 상승하도록 설정되어 있습니다(`Player.js` 참고).
-
-배포 환경에서는 `npm start`가 `.env`를 불러오고 `PORT`로 바인딩한 뒤 `client/public` 정적 파일을 제공합니다.
-
-### 개발 메모
-
-- 매치 플로우는 `server/modules/Game.js`에서 관리하며 상태가 준비 → 전투 → 결과 → 대기로 순환합니다.
-- `client/public/javascripts/modules/Socket.js`에는 보드 업데이트, 유닛 이동, 전투 결과 동기화에 사용되는 WebSocket 메시지 타입이 정리되어 있습니다.
-- GLTF 모델, 초상화, 오디오 등 에셋은 `client/public/models`, `client/public/images`에 있으며, `main.js`가 유닛 이미지를 선로드합니다.
-- `?lang=ko` 또는 `?lang=en` 쿼리 파라미터로 언어를 강제할 수 있으며 쿠키가 이후 요청에 반영됩니다.
-
-### 어필 포인트
-
-- 무거운 게임 서버 없이도 WebSocket 기반의 실시간 게임 루프를 직접 설계해 권위 서버(authoritative server)를 구현했습니다.
-- Three.js OutlineEffect, GLTF 로더, 맞춤형 고양이 모델을 활용해 전투 상황에서도 직관적인 3D UI를 유지했습니다.
-- 사용자 전적과 장치 로그를 MongoDB에 저장해 밸런스 검토 및 QA 데이터를 확보합니다.
-
-### 향후 계획
-
-- 대용량 GLTF/텍스처 선로딩으로 초기 로딩 시간을 단축합니다.
-- 모바일/태블릿 대응 UI와 입력 개선을 진행합니다.
-- 추가 스킬, 현지화 문구, 튜토리얼 UI를 확장합니다.
